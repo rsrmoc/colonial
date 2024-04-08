@@ -19,3 +19,5 @@ mix.js('resources/js/paginas/controle.js', 'public/js/paginas');
 mix.js('resources/js/paginas/clientes.js', 'public/js/paginas');
 mix.js('resources/js/paginas/contas/pagar.js', 'public/js/paginas/contas');
 mix.js('resources/js/paginas/contas/receber.js', 'public/js/paginas/contas');
+mix.js('resources/js/paginas/home.js', 'public/js/paginas');
+mix.js('resources/js/paginas/previsto_realizado.js', 'public/js/paginas');

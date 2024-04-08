@@ -12,8 +12,10 @@ use App\Http\Controllers\colonial\Inicio;
 use App\Http\Controllers\colonial\Integracoes;
 use App\Http\Controllers\colonial\NegociacaoBoletoController;
 use App\Http\Controllers\colonial\NegociacoesController;
+use App\Http\Controllers\colonial\Paradas;
 use App\Http\Controllers\colonial\Perfis;
-use App\Http\Controllers\colonial\Producao;
+use App\Http\Controllers\colonial\ProdPrevReal;
+use App\Http\Controllers\colonial\TipoParada;
 use App\Http\Controllers\colonial\Usuarios;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Middleware\UserPermissions;
@@ -66,26 +68,27 @@ Route::group([
      Route::post('/hidrico-update/{hidrico}', [Hidrico::class, 'update'])->name('hidrico-update');
      Route::get('/hidrico-delete/{hidrico}', [Hidrico::class, 'destroy'])->name('hidrico-destroy');
 
+     /* Tipo Paradas */
+     Route::get('/tipoparada', [TipoParada::class, 'lista'])->name('tipoparada-listar');
+     Route::get('/tipoparada-criar', [TipoParada::class, 'create'])->name('tipoparada-criar');
+     Route::post('/tipoparada-store', [TipoParada::class, 'store'])->name('tipoparada-store');
+     Route::get('/tipoparada-editar/{tipo}', [TipoParada::class, 'edit'])->name('tipoparada-editar');
+     Route::post('/tipoparada-update/{tipo}', [TipoParada::class, 'update'])->name('tipoparada-update');
+     Route::get('/tipoparada-delete/{tipo}', [TipoParada::class, 'destroy'])->name('tipoparada-destroy');
+
+     /* Paradas */
+     Route::get('/parada', [Paradas::class, 'lista'])->name('parada-listar');
+     Route::get('/parada-criar', [Paradas::class, 'create'])->name('parada-criar');
+     Route::post('/parada-store', [Paradas::class, 'store'])->name('parada-store');
+     Route::get('/parada-editar/{parada}', [Paradas::class, 'edit'])->name('parada-editar');
+     Route::post('/parada-update/{parada}', [Paradas::class, 'update'])->name('parada-update');
+     Route::get('/parada-delete/{parada}', [Paradas::class, 'destroy'])->name('parada-destroy');
+     
     /* Previsto x Realizado */
-     Route::get('/prod_prev_real', [Producao::class, 'listar'])->name('prod_prev_real-listar');  
+     Route::get('/prod_prev_real', [ProdPrevReal::class, 'listar'])->name('prod_prev_real-listar');  
+     Route::post('/prod_prev_real-json', [ProdPrevReal::class, 'listarJson'])->name('prod_prev_real-json');
+     Route::post('/prod_prev_real-detalhes', [ProdPrevReal::class, 'detalhesJson'])->name('prod_prev_real-detalhes');
  
-
-    Route::group([
-        'prefix' => 'json'
-    ], function() {
-
-        Route::get('clientes-boletos-abertos', [Clientes::class, 'jsonBoletosAbertos']);
-        Route::post('negociacao', [NegociacoesController::class, 'createJson']);
-        Route::put('negociacao', [NegociacoesController::class, 'updateJson']);
-        Route::delete('negociacao/{cdNegociacao}', [NegociacoesController::class, 'deleteJson']);
-
-        Route::post('negociacao-boleto', [NegociacaoBoletoController::class, 'createJson']);
-        Route::delete('negociacao-boleto/{negociacaoBoleto}', [NegociacaoBoletoController::class, 'deleteJson']);
-
-        Route::post('historico-cliente', [HistoricoClienteController::class, 'storeJson']);
-        Route::put('historico-cliente', [HistoricoClienteController::class, 'updateJson']);
-        Route::delete('historico-cliente/{negociacaoBoleto}', [HistoricoClienteController::class, 'destroyJson']);
-
-    });
+ 
     
 });

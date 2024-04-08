@@ -20,18 +20,20 @@ class UserPermissions
     public function handle(Request $request, Closure $next)
     {
         $usuario = Auth::user(); 
+
         if ($usuario->admin) return $next($request);
         
          
         $NaoverificarRotas = ['home',null]; 
-        $verificarRotas = ['home', 'perfis','energia','hidrico','producao','usuarios'];
-        $verificarAcao = ['ver','listar','criar','store','editar','update','excluir','destroy',null];
+        $verificarRotas = ['home', 'perfis','energia','hidrico','prod_prev_real','usuarios','parada','tipoparada'];
+        $verificarAcao = ['ver','listar','criar','store','editar','update','excluir','destroy','json','detalhes',null];
 
         $rotaAtual = Route::currentRouteName(); 
         $permissaoRota = substr(Route::currentRouteName(), 0, strpos(Route::currentRouteName(), "-") === false ? null : strpos(Route::currentRouteName(), "-"));
        
         if(in_array($permissaoRota, $NaoverificarRotas)) return $next($request);
-         
+          
+
         if(!in_array($permissaoRota, $verificarRotas)) return redirect()->route('home')->withErrors(['error' => 'Rotina não cadastrada!']);
 
         if(!in_array(str_replace($permissaoRota.'-', '', $rotaAtual), $verificarAcao)) return redirect()->route('home')->withErrors(['error' => 'Ação não cadastrada no sistema!']);

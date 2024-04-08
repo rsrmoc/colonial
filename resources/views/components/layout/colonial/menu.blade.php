@@ -27,14 +27,17 @@
             @endcan 
             <li class="droplink "><a href="#" class="waves-effect waves-button"><span class="menu-icon   fa fa-cogs"></span><p>Produção</p><span class="arrow"></span></a>
                 <ul class="sub-menu"> 
-                        <li class=""><a  ><p>Condomínios</p> </a>  </li> 
+                        <li class=""><a href="{{route('prod_prev_real-listar')}}"  ><p>Ordem de Produção</p> </a>  </li> 
                         <li class="droplink"><a href="#"><p>Controles</p><span class="arrow"></span></a>
-                            <ul class="sub-menu">
-                             
+                            <ul class="sub-menu"> 
                                 <li><a href="{{route('hidrico-listar')}}">Consumo Hidrico</a></li>
                                 <li><a href="{{route('energia-listar')}}">Consumo De Energia</a></li>
-                                <li><a href="#">Perdas por Produto Acabado</a></li>
-                                <li><a href="#">Conversor Cx. em Kg.</a></li>
+                                <li><a href="{{route('parada-listar')}}">Parada de Linha</a></li> 
+                            </ul>
+                        </li>
+                        <li class="droplink"><a href="#"><p>Tabelas</p><span class="arrow"></span></a>
+                            <ul class="sub-menu"> 
+                                <li><a href="{{route('tipoparada-listar')}}">Tipo de Paradas</a></li> 
                             </ul>
                         </li>
                 </ul> 

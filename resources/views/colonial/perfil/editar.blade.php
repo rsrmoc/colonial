@@ -100,6 +100,19 @@
                                                         </div>
                                                     @endif
 
+                                                    @if(strpos($tela->opcao, 'json') !== false)
+                                                        <div class="checkbox" style="margin: 0">
+                                                            <label>
+                                                                <div class="checker">
+                                                                    <span>
+                                                                        <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="json"
+                                                                        @if(strpos($tela->user_permissao['permissoes'], 'json')  !== false) checked @endif />
+                                                                    </span>
+                                                                </div> Json
+                                                            </label>
+                                                        </div>
+                                                    @endif
+
                                                 </div>
                                             </td>
                                         </tr> 

@@ -5,5 +5,7 @@
     "/js/paginas/clientes.js": "/js/paginas/clientes.js",
     "/js/paginas/contas/pagar.js": "/js/paginas/contas/pagar.js",
     "/js/paginas/contas/receber.js": "/js/paginas/contas/receber.js",
+    "/js/paginas/home.js": "/js/paginas/home.js",
+    "/js/paginas/previsto_realizado.js": "/js/paginas/previsto_realizado.js",
     "/css/app.css": "/css/app.css"
 }

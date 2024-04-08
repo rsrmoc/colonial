@@ -81,7 +81,7 @@ Alpine.data('app', function () {
         }];
         _this.chart1.update();
         _this.loadingCharts = false;
-      }, 5000);
+      }, 1000);
     }
   };
 });

@@ -11,7 +11,7 @@ Alpine.data('app', () => ({
     loadingCharts: true,
 
     init() {
-
+         
         this.chart1 = new Chart(chart1Ctx, {
             type: 'line',
             options: {
@@ -19,7 +19,7 @@ Alpine.data('app', () => ({
                 responsive: true
             }
         });
-
+        
         this.chart2 = new Chart(chart2Ctx, {
             type: 'bar',
             data: {
