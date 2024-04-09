@@ -105,23 +105,62 @@ class ProdPrevReal extends Controller
     public function detalhesJson(Request $request) { 
         $request['dias'] = null;
         $request['relacao'] = null;
+        $request['tab']=null;
+        $request['grafico_titulo']=null;
+        $request['data_titulo']=null;
         if($request['tp_detalhe']=='grafico'){
             
+            if($request['unidade']=='KG'){
+                $planejado='sum(valor*kg) planejado'; 
+                $prozuzido='sum(valor_prod*kg) prozuzido'; 
+                $request['ds_unidade']='Kg';
+            }
+            if($request['unidade']=='CX'){
+                $planejado='sum(valor) planejado'; 
+                $prozuzido='sum(valor_prod) prozuzido'; 
+                $request['ds_unidade']='Cx';
+            }
+
             if($request['agrupamento']=='D'){
+                $request['titulo']='DIA: '.$request['date'];
+                $request['tab']='D';
+                $request['grafico_titulo']='Tipo de Produtos';
+                $request['data_titulo']=$request['date'];
+
+                $dados = DB::select("
+                select ItemName nome, sum(valor) planejado_cx, sum(valor*kg)  planejado_kg,
+                sum(valor_prod) produzido_cx,  sum(valor_prod*kg)  produzido_kg,".$planejado.",".$prozuzido."
+                from (
+                    select owor.DocEntry codigo,
+                        CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, owor.duedate,
+                        (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
+                            where ign1.BaseRef=owor.DocEntry
+                        ) valor_prod, owor.ItemCode ,SWeight1 kg ,oitm.ItemName
+                        from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
+                        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+                        where  CONVERT (varchar, owor.duedate, 103) like '%".$request['date']."%'
+                        and oitm.ItmsGrpCod not in (103)
+                ) xx group by ItemName  order by ItemName
+                ");
+
+                foreach($dados as $key => $val){
+                    $dias[] = array( 
+                        "country"=> $val->nome,
+                        "visits"=> $val->prozuzido,
+                        "color"=> "#CD0D74",
+                        'latitude'=>$val->planejado,
+                        'duration'=>$val->planejado,
+                    );
+                }
+                $request['dias'] = $dias; 
 
             }
-            if($request['agrupamento']=='M'){
 
-                if($request['unidade']=='KG'){
-                    $planejado='sum(valor*kg) planejado'; 
-                    $prozuzido='sum(valor_prod*kg) prozuzido'; 
-                    $request['ds_unidade']='Kg';
-                }
-                if($request['unidade']=='CX'){
-                    $planejado='sum(valor) planejado'; 
-                    $prozuzido='sum(valor_prod) prozuzido'; 
-                    $request['ds_unidade']='Cx';
-                }
+            if($request['agrupamento']=='M'){
+                $request['tab']='M';
+                $request['titulo']='MÊS: '.$request['date'];
+                $request['grafico_titulo']='Produção Diária';
+                $request['data_titulo']=$request['date'];
 
                 $dados = DB::select("
                 select data,duedate, sum(valor) planejado_cx, sum(valor*kg)  planejado_kg,
@@ -143,7 +182,7 @@ class ProdPrevReal extends Controller
                     $dias[] = array( 
                         "country"=> $val->data,
                         "visits"=> $val->prozuzido,
-                        "color"=> "#0D52D1",
+                        "color"=> "#B0DE09",
                         'latitude'=>$val->planejado,
                     );
                 }

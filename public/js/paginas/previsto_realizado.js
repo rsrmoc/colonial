@@ -14,6 +14,15 @@ Alpine.data('app', function () {
     chart2: null,
     chart3: null,
     chart4: null,
+    relacaoDetelhes: null,
+    tituloDetalhes: null,
+    tabDetalhes: null,
+    iconHeaderAgua: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #868d99;"></i>',
+    iconHeaderEnergia: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #868d99;"></i>',
+    iconHeaderLenha: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #868d99;"></i>',
+    iconHeaderParadas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #868d99;"></i>',
+    iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #868d99;"></i>',
+    iconHeaderPolpas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #868d99;"></i>',
     chartPrevReal: null,
     loadingCharts: false,
     modalLoadingCharts: true,
@@ -154,8 +163,12 @@ Alpine.data('app', function () {
       var _this2 = this;
       $("#modalDetalhes").modal();
       this.modalLoadingCharts = true;
+      $('#chartDetalhe').html();
       axios.post('/colonial/prod_prev_real-detalhes', dados).then(function (res) {
         console.log(res);
+        _this2.relacaoDetelhes = res.data.relacao;
+        _this2.tituloDetalhes = res.data.titulo;
+        _this2.tabDetalhes = res.data.tab;
         var chart = AmCharts.makeChart("chartDetalhe", {
           "type": "serial",
           "theme": "none",
@@ -163,6 +176,12 @@ Alpine.data('app', function () {
           "marginLeft": 0,
           "dataProvider": res.data.dias,
           "startDuration": 1,
+          "titles": [{
+            "text": res.data.grafico_titulo
+          }, {
+            "text": res.data.data_titulo,
+            "bold": false
+          }],
           "graphs": [{
             "balloonText": "<b>[[category]]: [[value]]</b>",
             "fillColorsField": "color",
@@ -200,7 +219,7 @@ Alpine.data('app', function () {
           "categoryField": "country",
           "categoryAxis": {
             "gridPosition": "start",
-            "labelRotation": 45
+            "labelRotation": 25
           }
         });
       })["catch"](function (err) {

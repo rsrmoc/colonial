@@ -311,6 +311,96 @@ ul {
     }
      
   
+    .container_modal {
+        display: flex;
+        margin: 10px;
+        column-gap: 10px;
+    }
+        
+    .scrollbar {
+        height: 500px;
+        width: 100%;
+        overflow: auto;
+        padding: 0 10px;
+    }
+    #scrollbar3::-webkit-scrollbar {
+       width: 12px;
+    }
+        
+    #scrollbar3::-webkit-scrollbar-track {
+        background-color: #e7e7e7;
+        border: 1px solid #cacaca;
+    }
+        
+    #scrollbar3::-webkit-scrollbar-thumb {
+        background-color: #0D8ECF;
+    }
+
+ 
+
+    .bg-info, .bg-info>a {
+        color: #fff !important;
+    }
+    .bg-info {
+        background-color: #17a2b8 !important;
+    }
+    .small-box {
+        border-radius: .25rem;
+        box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+        display: block;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .small-box>.inner {
+        padding: 7px;
+    }
+
+    .small-box .icon {
+        color: rgba(0, 0, 0, .15);
+        z-index: 0;
+    }
+
+ 
+
+    .small-box .icon>i {
+        font-size: 80px;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        transition: -webkit-transform .3s linear;
+        transition: transform .3s linear;
+        transition: transform .3s linear, -webkit-transform .3s linear;
+    }
+
+    .icon{
+        display: inline-block;
+        font-family: "Ionicons";
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        text-rendering: auto;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+    }
+    .small-box>.small-box-footer {
+        background-color: rgba(0, 0, 0, .1);
+        color: rgba(255, 255, 255, .8);
+        display: block;
+        padding: 3px 0;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        z-index: 10;
+    }
+     .small-box h3 {
+        font-size: 3.2rem;
+        font-weight: 700;
+    }
+ 
+   
 </style>
 
     <div id="main-wrapper" x-data="app">
@@ -319,8 +409,97 @@ ul {
         <script src="{{ asset('assets/grafico/amcharts/serial.js') }}"></script>
         <script src="{{ asset('assets/grafico/amcharts/export.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('assets/grafico/amcharts/export.css') }} type="text/css" media="all" />
+ 
+        
+              
+        <div class="row">
+            <div class="col-lg-2 col-md-4">
+                <div class="panel info-box panel-white" >
+                    <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
+                        <div class="info-box-stats">
+                            <p class="counter" x-html="iconHeaderAgua"></p>
+                            <span class="info-box-title" style="color: #399BFF;">Agua</span>
+                        </div>
+                        <div class="info-box-icon ">
+                            <i class="fa fa-tint " style="color: #399BFF;"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
+                        <div class="info-box-stats">
+                            <p class="counter" x-html="iconHeaderEnergia"></p>
+                            <span class="info-box-title" style="color: #26A65B;">Energia</span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="fa fa-bolt" style="color: #26A65B;"></i>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
+                        <div class="info-box-stats">
+                            <p class="counter" x-html="iconHeaderLenha"></p>
+                            <span class="info-box-title" style="color: #c2a505;">Lenha</span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="glyphicon glyphicon-tree-deciduous" style="color: #c2a505;" aria-hidden="true"></i>
+                        </div>
+                         
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body" style="border-bottom: 3px solid #EF4836;">
+                        <div class="info-box-stats">
+                            <p class="counter" x-html="iconHeaderPerdas"></p>
+                            <span class="info-box-title" style="color: #EF4836;">Perdas</span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="fa fa-exclamation-triangle" style="color: #EF4836;"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body" style="border-bottom: 3px solid #37363E;">
+                        <div class="info-box-stats">
+                            <p class="counter" x-html="iconHeaderParadas"></p>
+                            <span class="info-box-title" style="color: #37363E;" >Paradas</span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="fa fa-stop" style="color: #37363E;"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body" style="border-bottom: 3px solid #e83e8c;">
+                        <div class="info-box-stats">
+                            <p class="counter" x-html="iconHeaderPolpas"></p>
+                            <span class="info-box-title" style="color: #e83e8c">Polpas</span>
+                        </div>
+                        <div class="info-box-icon"> 
+                            <i class="fa fa-apple"  style="color: #e83e8c"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
+        <!--
         <div class="row">
 
 
@@ -361,7 +540,7 @@ ul {
             </div>
      
         </div>
-
+        -->
         {{-- <div style="text-align: center; padding: 100px;">
 
             <img src="{{ asset('assets/images/logo_emp_preto.jpeg') }}">
@@ -450,54 +629,76 @@ ul {
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    <h4 class="modal-title" id="myLargeModalLabel">Modal title</h4>
+                                    <h4 class="modal-title" id="myLargeModalLabel" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhes"></h4>
                                 </div>
                                 <div class="modal-body">
-                                     
 
-                                    <div role="tabpanel">
-                                        <!-- Nav tabs -->
-                                        <ul class="nav nav-tabs nav-justified" role="tablist"> 
-                                            <li role="presentation" class="active"><a href="#tabGrafico" role="tab" data-toggle="tab" aria-expanded="true">Grafico</a></li>
-                                            <li role="presentation"><a href="#tabRelacao" role="tab" data-toggle="tab">Relação</a></li>
-                                        </ul>
+                                    <template x-if="modalLoadingCharts">
+                                        <x-loader class="absolute-loader"/> 
+                                    </template>
+
+                                    <div role="tabpanel"> 
+                                            <!-- Nav tabs -->
+                                            <ul class="nav nav-tabs nav-justified" role="tablist"> 
+                                                <li role="presentation" class="active"><a href="#tabGrafico" role="tab" data-toggle="tab" aria-expanded="true">Grafico</a></li>
+                                                <li role="presentation"><a href="#tabRelacao" role="tab" data-toggle="tab">Relação</a></li>
+                                            </ul> 
                                         <!-- Tab panes -->
                                         <div class="tab-content">
-                                              
-
-                                            <div role="tabpanel" class="tab-pane fade active in" id="tabGrafico">
-                                              
-                                                <!-- HTML -->
-                                                <template x-if="modalLoadingCharts">
-                                                    <x-loader class="absolute-loader"/>
-                                                    
-                                                </template>
-                                                <div id="chartDetalhe"></div>	
-                                                   
-                                            </div>
-
-                                            <div role="tabpanel" class="tab-pane fade" id="tabRelacao">
-                                                <table class="table table-striped" style="margin-bottom: 0">
-                                                    <thead>
-                                                        <tr class="active">
-                                                            <th>Codigo</th>
-                                                            <th >Data</th>
-                                                            <th >Produto</th>
-                                                            <th >Kg/Cx</th>
-                                                            <th >Planejado [CX]</th>
-                                                            <th >Produzido [CX]</th>
-                                                            <th >Planejado [KG]</th>   
-                                                            <th >Produzido [KG]</th>   
-                                                        </tr>
-                                                    </thead>
-                            
-                                                    <tbody>
-                                                   
-                                                    </tbody>
-                                                </table>
-                                             
                                                
+                                            <div role="tabpanel" class="tab-pane  active fade in"  id="tabGrafico">
+                                                    <template x-if="modalLoadingCharts">
+                                                        <x-loader class="absolute-loader"/> 
+                                                    </template>
+                                                    <!-- HTML --> 
+                                                     
+                                                    <div id="chartDetalhe"></div>	 
+                                                   
+                                            </div> 
+
+                                            <div role="tabpanel" class="tab-pane fade"   id="tabRelacao">
+                                                <template x-if="modalLoadingCharts">
+                                                    <x-loader class="absolute-loader"/> 
+                                                </template>
+                                                <div class="container_modal">
+                                                    <div class="scrollbar" id="scrollbar3">
+
+                                                        <table class="table table-striped" style="margin-bottom: 0">
+                                                            <thead>
+                                                                <tr class="active">
+                                                                    <th>Ordem de Produção</th>
+                                                                    <th >Data</th>
+                                                                    <th >Produto</th>
+                                                                    <th class="text-right">Kg/Cx</th>
+                                                                    <th class="text-right">Planejado [CX]</th>
+                                                                    <th class="text-right">Produzido [CX]</th>
+                                                                    <th class="text-right">Planejado [KG]</th>   
+                                                                    <th class="text-right">Produzido [KG]</th>   
+                                                                </tr>
+                                                            </thead> 
+                                                            <tbody>
+                                                                <template x-for="query in relacaoDetelhes">
+                                                                    <tr>
+                                                                        <td x-text="query.codigo"></td>
+                                                                        <td x-text="query.data"></td>
+                                                                        <td x-text="query.ItemCode+' - '+query.ItemName"></td>
+                                                                        <td class="text-right" x-text="(query.kg*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                        <td class="text-right" x-text="(query.valor*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                        <td class="text-right" x-text="(query.valor_prod*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                        <td class="text-right" x-text="(query.valor*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                        <td class="text-right" x-text="(query.valor_prod*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                    </tr>
+                                                                </template>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+
+                                             
+                                                <template x-if="!relacaoDetelhes">
                                                     <p class="text-center" style="padding: 1.2em">Nenhum Consumo Cadastrado</p>
+                                                </template>
                                             
                                             </div> 
                                         </div>
@@ -506,12 +707,7 @@ ul {
 
 
 
-                                    <!-- HTML -->
-                                    <template x-if="modalLoadingCharts">
-                                        <x-loader class="absolute-loader"/>
-                                        
-                                    </template>
-                                    <div id="chartDetalhe"></div>		 
+	 
                                          
                                 </div>
                                 <div class="modal-footer"> 
