@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    public function home() {
+        return view('login');
+    }
+
     public function login(Request $request) {
         $request->validate([
             'email' => 'required|email',
