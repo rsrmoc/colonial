@@ -88,6 +88,7 @@
     .left{ text-align: left; }
     .red{ color: red; }
     .error{ color: red; } 
-    
+    .dt-acao{ min-width: 80px; }
+    .btn-group{ min-width: 80px; }
     
 </style>

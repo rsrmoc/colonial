@@ -13,9 +13,11 @@ use App\Http\Controllers\colonial\Integracoes;
 use App\Http\Controllers\colonial\NegociacaoBoletoController;
 use App\Http\Controllers\colonial\NegociacoesController;
 use App\Http\Controllers\colonial\Paradas;
+use App\Http\Controllers\colonial\Perdas;
 use App\Http\Controllers\colonial\Perfis;
 use App\Http\Controllers\colonial\ProdPrevReal;
 use App\Http\Controllers\colonial\TipoParada;
+use App\Http\Controllers\colonial\TipoPerda;
 use App\Http\Controllers\colonial\Usuarios;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Middleware\UserPermissions;
@@ -83,6 +85,25 @@ Route::group([
      Route::get('/parada-editar/{parada}', [Paradas::class, 'edit'])->name('parada-editar');
      Route::post('/parada-update/{parada}', [Paradas::class, 'update'])->name('parada-update');
      Route::get('/parada-delete/{parada}', [Paradas::class, 'destroy'])->name('parada-destroy');
+
+     
+     /* Tipo Perdas */
+     Route::get('/tipoperda', [TipoPerda::class, 'lista'])->name('tipoperda-listar');
+     Route::get('/tipoperda-criar', [TipoPerda::class, 'create'])->name('tipoperda-criar');
+     Route::post('/tipoperda-store', [TipoPerda::class, 'store'])->name('tipoperda-store');
+     Route::get('/tipoperda-editar/{tipo}', [TipoPerda::class, 'edit'])->name('tipoperda-editar');
+     Route::post('/tipoperda-update/{tipo}', [TipoPerda::class, 'update'])->name('tipoperda-update');
+     Route::get('/tipoperda-delete/{tipo}', [TipoPerda::class, 'destroy'])->name('tipoperda-destroy');
+  
+     /* Perdas */
+     Route::get('/perda', [Perdas::class, 'lista'])->name('perda-listar');
+     Route::get('/perda-criar', [Perdas::class, 'create'])->name('perda-criar');
+     Route::post('/perda-store', [Perdas::class, 'store'])->name('perda-store');
+     Route::get('/perda-editar/{perda}', [Perdas::class, 'edit'])->name('perda-editar');
+     Route::post('/perda-update/{perda}', [Perdas::class, 'update'])->name('perda-update');
+     Route::get('/perda-delete/{perda}', [Perdas::class, 'destroy'])->name('perda-destroy');
+     Route::get('/perda-combo/{ordem}', [Perdas::class, 'combo'])->name('perda-combo');
+
      
     /* Previsto x Realizado */
      Route::get('/prod_prev_real', [ProdPrevReal::class, 'listar'])->name('prod_prev_real-listar');  

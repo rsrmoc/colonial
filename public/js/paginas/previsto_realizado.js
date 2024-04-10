@@ -191,7 +191,7 @@ Alpine.data('app', function () {
             "type": "column",
             "valueField": "visits"
           }, {
-            "balloonText": "latitude:[[value]]",
+            "balloonText": "Previsto : [[value]]",
             "bullet": "round",
             "bulletBorderAlpha": 1,
             "bulletSize": 8,

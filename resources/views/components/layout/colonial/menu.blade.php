@@ -32,12 +32,14 @@
                             <ul class="sub-menu"> 
                                 <li><a href="{{route('hidrico-listar')}}">Consumo Hidrico</a></li>
                                 <li><a href="{{route('energia-listar')}}">Consumo De Energia</a></li>
-                                <li><a href="{{route('parada-listar')}}">Parada de Linha</a></li> 
+                                <li><a href="{{route('parada-listar')}}">Paradas de Linha</a></li> 
+                                <li><a href="{{route('perda-listar')}}">Perdas Por Produção</a></li> 
                             </ul>
                         </li>
                         <li class="droplink"><a href="#"><p>Tabelas</p><span class="arrow"></span></a>
                             <ul class="sub-menu"> 
                                 <li><a href="{{route('tipoparada-listar')}}">Tipo de Paradas</a></li> 
+                                <li><a href="{{route('tipoperda-listar')}}">Tipo de Perdas</a></li> 
                             </ul>
                         </li>
                 </ul> 

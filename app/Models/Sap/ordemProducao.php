@@ -5,7 +5,7 @@ namespace App\Models\Sap;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class ordemProducao extends Model
+class OrdemProducao extends Model
 {
     protected $table = 'SBO_KARAMBI_PRD.dbo.owor';
     protected $primaryKey = 'DocEntry';
