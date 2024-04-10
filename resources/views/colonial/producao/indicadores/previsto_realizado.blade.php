@@ -1,6 +1,11 @@
 <x-layout.colonial.layout>
 <style>
-
+.info-box .info-box-stats span.info-box-title {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: #B0B0B0;
+}
 #chartDetalhe {
   width: 100%;
   height: 500px;
@@ -399,7 +404,9 @@ ul {
         font-size: 3.2rem;
         font-weight: 700;
     }
- 
+    .info-box{
+        cursor: pointer
+    }
    
 </style>
 
@@ -414,7 +421,7 @@ ul {
               
         <div class="row">
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white" >
+                <div class="panel info-box panel-white"  >
                     <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderAgua"></p>

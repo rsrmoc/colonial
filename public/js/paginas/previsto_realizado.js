@@ -44,6 +44,12 @@ Alpine.data('app', function () {
       axios.post('/colonial/prod_prev_real-json', this.parametros).then(function (res) {
         _this.parametros.dti = res.data.request.dti;
         _this.parametros.dtf = res.data.request.dtf;
+        _this.iconHeaderAgua = res.data.request.hidrico + ' (m³/h)';
+        _this.iconHeaderEnergia = res.data.request.energia + ' (Kw)';
+        _this.iconHeaderLenha = res.data.request.lenha + ' (M3)';
+        _this.iconHeaderPerdas = res.data.request.perda;
+        _this.iconHeaderParadas = res.data.request.perda + ' (Min)';
+        _this.iconHeaderPolpas = res.data.request.polpa + ' (Kg)';
         console.log(res.data);
         _this.chartPrevReal = AmCharts.makeChart(chartPrevReal, {
           "type": "serial",

@@ -49,6 +49,12 @@ Alpine.data('app', () => ({
             .then((res) => {
                 this.parametros.dti = res.data.request.dti;
                 this.parametros.dtf = res.data.request.dtf;
+                this.iconHeaderAgua = res.data.request.hidrico+' (m³/h)';
+                this.iconHeaderEnergia = res.data.request.energia+' (Kw)';
+                this.iconHeaderLenha = res.data.request.lenha+' (M3)';
+                this.iconHeaderPerdas = res.data.request.perda;
+                this.iconHeaderParadas = res.data.request.perda+' (Min)';
+                this.iconHeaderPolpas = res.data.request.polpa+' (Kg)';
                 console.log(res.data);
 
                     this.chartPrevReal = AmCharts.makeChart(chartPrevReal, {

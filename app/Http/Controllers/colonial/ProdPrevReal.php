@@ -4,8 +4,13 @@ namespace App\Http\Controllers\colonial;
 
 use App\Http\Controllers\Controller;
 use App\Models\Boleto;
+use App\Models\Energia;
+use App\Models\Hidrico;
 use App\Models\Hospital;
+use App\Models\Parada;
+use App\Models\Perda;
 use App\Models\Produto;
+use App\Models\Sap\Estoque;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +18,8 @@ class ProdPrevReal extends Controller
 {
    
     public function listar() { 
+ 
+ 
         $request['dti']=date('Y-m-d', strtotime("-20 days",strtotime(date('Y-m-d'))));
         $request['dtf']=date('Y-m-d');
         return view('colonial.producao.indicadores/previsto_realizado',compact('request'));
@@ -93,7 +100,31 @@ class ProdPrevReal extends Controller
                         );
         }
 
-     
+        $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->selectRaw("sum(qtde_atual) valor")->first();
+        
+        $energia = Energia::whereRaw("CONVERT(varchar, dt_consumo, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->selectRaw("sum(qtde) valor")->first();
+ 
+        $lenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->whereRaw("WhsCode='MPV'")->selectRaw("sum(Quantity) valor")->first();
+
+        $perda = Perda::whereRaw("CONVERT(varchar, dt_ordem, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->selectRaw("sum(qtde) valor")->first();
+         
+        $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->selectRaw("sum(tempo) valor")->first();
+   
+        $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->whereRaw("ItemCode='013906'")->selectRaw("sum(Quantity) valor")->first();
+
+
+        $request['hidrico'] = ($hidrico->valor) ?  number_format($hidrico->valor,2,",",".") : '0,00';
+        $request['energia'] = ($energia->valor) ?  number_format($energia->valor,2,",",".") : '0,00';
+        $request['lenha'] = ($lenha->valor) ?  number_format($lenha->valor,2,",",".") : '0,00';
+        $request['perda'] = ($perda->valor) ?  number_format($perda->valor,0,",",".") : '0';
+        $request['parada'] = ($parada->valor) ?  number_format($parada->valor,0,",",".") : '0';
+        $request['polpa'] = ($polpa->valor) ?  number_format($polpa->valor,0,",",".") : '0';
         $request['datai'] = date('d/m/Y',strtotime($request['dti']));
         $request['dataf'] = date('d/m/Y',strtotime($request['dtf']));
         $retorno['previsto'] = $data;
