@@ -30,7 +30,7 @@ class Inicio extends Controller
     public function home() {
         
    
-        return view('colonial.inicial/inicial');
+        return view('colonial.inicial/home');
     }
 
  
