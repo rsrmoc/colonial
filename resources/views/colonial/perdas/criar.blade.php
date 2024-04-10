@@ -73,7 +73,7 @@
                     </div>
            
                     <div class="row">
-                        <div class="col-md-11">
+                        <div class="col-md-11 col-sm-11 col-xs-11" >
                             <div class="form-group @if($errors->has('obs')) has-error @endif ">
                                 <label for="fname">Observações Adicionais: <span class="red normal"> </span></label>
                                 <textarea  class="form-control " name="obs" >{{old('obs')}}</textarea>
@@ -100,6 +100,7 @@
     <script>
     
         carregar = function (cod) { 
+            $("#div_combo").empty().html('<div class="form-control" style="text-align: center;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i> Carregando Produtos </div>');  
             $.ajax({ 
                 type: "GET",
                 data: null,

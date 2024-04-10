@@ -58,12 +58,12 @@ class Perdas extends Controller
             'tipo' => 'required|exists:perda_tipo,cd_tipo',
             'qtde' => 'required|integer',
             'produto' => 'required',
-            'obs' => 'required|max:1024' 
+            'obs' => 'nullable|max:1024' 
         ],[
             'ordem.required' => 'O campo Ordem de Produção é obrigatorio',
             'tipo.required' => 'O campo Tipo é obrigatorio',
             'qtde.required' => 'O campo Qtde é obrigatorio',
-            'tempo.produto' => 'O campo Produto é obrigatorio'
+            'produto.required' => 'O campo Produto é obrigatorio'
         ]);
         
         if ($validator->fails()) {  
@@ -115,12 +115,12 @@ class Perdas extends Controller
             'tipo' => 'required|exists:perda_tipo,cd_tipo',
             'qtde' => 'required|integer',
             'produto' => 'required',
-            'obs' => 'required|max:1024' 
+            'obs' => 'nullable|max:1024' 
         ],[
             'ordem.required' => 'O campo Ordem de Produção é obrigatorio',
             'tipo.required' => 'O campo Tipo é obrigatorio',
             'qtde.required' => 'O campo Qtde é obrigatorio',
-            'tempo.produto' => 'O campo Produto é obrigatorio'
+            'produto.required' => 'O campo Produto é obrigatorio'
         ]);
         
         if ($validator->fails()) {  
