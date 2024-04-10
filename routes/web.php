@@ -25,7 +25,7 @@ use App\Http\Middleware\UserPermissions;
 use App\Models\Perfil;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [Inicio::class,  'home']);
+Route::get('/', [Inicio::class,  'login']);
 Route::get('/login', [Inicio::class, 'login'])->name('login')->middleware('guest');
 route::post('/login', [AuthController::class, 'login'])->name('login-action')->middleware('guest');
 
