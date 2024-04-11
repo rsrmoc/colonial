@@ -49,12 +49,12 @@ Alpine.data('app', () => ({
             .then((res) => {
                 this.parametros.dti = res.data.request.dti;
                 this.parametros.dtf = res.data.request.dtf;
-                this.iconHeaderAgua = res.data.request.hidrico+' (m³/h)';
-                this.iconHeaderEnergia = res.data.request.energia+' (Kw)';
-                this.iconHeaderLenha = res.data.request.lenha+' (M3)';
+                this.iconHeaderAgua = res.data.request.hidrico+'<span class="headerUnidade"> (m³/h)</span>';
+                this.iconHeaderEnergia = res.data.request.energia+'<span class="headerUnidade"> (Kw) </span>';
+                this.iconHeaderLenha = res.data.request.lenha+'<span class="headerUnidade"> (M3) </span>';
                 this.iconHeaderPerdas = res.data.request.perda;
-                this.iconHeaderParadas = res.data.request.perda+' (Min)';
-                this.iconHeaderPolpas = res.data.request.polpa+' (Kg)';
+                this.iconHeaderParadas = res.data.request.perda+'<span class="headerUnidade"> (Min)</span>';
+                this.iconHeaderPolpas = res.data.request.polpa+'<span class="headerUnidade"> (Kg) </span>';
                 console.log(res.data);
 
                     this.chartPrevReal = AmCharts.makeChart(chartPrevReal, {

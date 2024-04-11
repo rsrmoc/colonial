@@ -44,12 +44,12 @@ Alpine.data('app', function () {
       axios.post('/colonial/prod_prev_real-json', this.parametros).then(function (res) {
         _this.parametros.dti = res.data.request.dti;
         _this.parametros.dtf = res.data.request.dtf;
-        _this.iconHeaderAgua = res.data.request.hidrico + ' (m³/h)';
-        _this.iconHeaderEnergia = res.data.request.energia + ' (Kw)';
-        _this.iconHeaderLenha = res.data.request.lenha + ' (M3)';
+        _this.iconHeaderAgua = res.data.request.hidrico + '<span class="headerUnidade"> (m³/h)</span>';
+        _this.iconHeaderEnergia = res.data.request.energia + '<span class="headerUnidade"> (Kw) </span>';
+        _this.iconHeaderLenha = res.data.request.lenha + '<span class="headerUnidade"> (M3) </span>';
         _this.iconHeaderPerdas = res.data.request.perda;
-        _this.iconHeaderParadas = res.data.request.perda + ' (Min)';
-        _this.iconHeaderPolpas = res.data.request.polpa + ' (Kg)';
+        _this.iconHeaderParadas = res.data.request.perda + '<span class="headerUnidade"> (Min)</span>';
+        _this.iconHeaderPolpas = res.data.request.polpa + '<span class="headerUnidade"> (Kg) </span>';
         console.log(res.data);
         _this.chartPrevReal = AmCharts.makeChart(chartPrevReal, {
           "type": "serial",

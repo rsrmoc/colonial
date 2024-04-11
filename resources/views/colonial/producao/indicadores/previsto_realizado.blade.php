@@ -407,7 +407,18 @@ ul {
     .info-box{
         cursor: pointer
     }
-   
+    .info-box .info-box-stats p {
+        font-size: 20px;
+        margin-bottom: 14px;
+        color: #374051;
+        font-weight: 300;
+    }
+    .panel .panel-body { 
+        padding: 10px; 
+    }
+    .headerUnidade{
+        font-size: 15px;
+    }
 </style>
 
     <div id="main-wrapper" x-data="app">
@@ -436,13 +447,13 @@ ul {
             </div>
             <div class="col-lg-2 col-md-4">
                 <div class="panel info-box panel-white">
-                    <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
+                    <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderEnergia"></p>
-                            <span class="info-box-title" style="color: #26A65B;">Energia</span>
+                            <span class="info-box-title" style="color: #c2a505;">Energia</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="fa fa-bolt" style="color: #26A65B;"></i>
+                            <i class="fa fa-bolt" style="color: #c2a505;"></i>
                         </div>
                       
                     </div>
@@ -450,13 +461,13 @@ ul {
             </div>
             <div class="col-lg-2 col-md-4">
                 <div class="panel info-box panel-white">
-                    <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
+                    <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderLenha"></p>
-                            <span class="info-box-title" style="color: #c2a505;">Lenha</span>
+                            <span class="info-box-title" style="color: #26A65B;">Lenha</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="glyphicon glyphicon-tree-deciduous" style="color: #c2a505;" aria-hidden="true"></i>
+                            <i class="glyphicon glyphicon-tree-deciduous" style="color: #26A65B;" aria-hidden="true"></i>
                         </div>
                          
                     </div>
