@@ -428,7 +428,7 @@ ul {
         <script src="{{ asset('assets/grafico/amcharts/export.min.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('assets/grafico/amcharts/export.css') }} type="text/css" media="all" />
  
-        
+
               
         <div class="row">
             <div class="col-lg-2 col-md-4">
@@ -565,6 +565,7 @@ ul {
 
         </div> --}}
 
+
         <div class="panel">
             <div class="panel-body">
                 <div class="row" style="margin-bottom: 24px">
@@ -580,8 +581,8 @@ ul {
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24">
                                 <img src="{{ asset('assets/images/filtro.png') }}" data-toggle="modal" data-target="#modalParametrizacao" height="24" style="margin-left: 10px; cursor: pointer;">
                             </div> 
-                        <div id="chart-prev_realizado"></div>
-                    </div>
+                            <div id="chart-prev_realizado"></div>
+                        </div>
 
                     <div class="modal fade" id="modalParametrizacao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                         <div class="modal-dialog">

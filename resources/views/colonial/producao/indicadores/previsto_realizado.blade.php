@@ -447,6 +447,27 @@ ul {
         <!-- Resources -->
  
 
+        <div class="panel">
+            <div class="panel-body">
+                <div class="row"  >
+
+                    <div class="col-md-12">
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Ordem de Produção</h3></div>
+                            <div class="col-md-2" style="text-align: right">
+                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24">
+                                <img src="{{ asset('assets/images/filtro.png') }}" data-toggle="modal" data-target="#modalParametrizacao" height="24" style="margin-left: 10px; cursor: pointer;">
+                            </div>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
          
             <div class="col-lg-4 col-md-8">
