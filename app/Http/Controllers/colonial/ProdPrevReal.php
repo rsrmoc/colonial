@@ -128,12 +128,8 @@ class ProdPrevReal extends Controller
         ) xx group by ItemName  order by ItemName, produzido_kg desc
         ");
 
-        foreach($dadosProd as $key => $val){
-            $Nome = explode('COLONIAL',$val->nome);
-            $Nm = (isset($Nome[1])) ? $Nome[1] : '';
-            $Nome = $Nome[0]."COLONIAL \n ".$Nm;
-            $Produtos[$Nome] = round($val->prozuzido,2);
-
+        foreach($dadosProd as $key => $val){ 
+            $Produtos[$val->nome] = round($val->prozuzido,2); 
         }
  
         $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
