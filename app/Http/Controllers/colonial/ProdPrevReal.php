@@ -130,7 +130,8 @@ class ProdPrevReal extends Controller
 
         foreach($dadosProd as $key => $val){
             $Nome = explode('COLONIAL',$val->nome);
-            $Nome = $Nome[0]."COLONIAL \n ".$Nome[1];
+            $Nm = (isset($Nome[1])) ? $Nome[1] : '';
+            $Nome = $Nome[0]."COLONIAL \n ".$Nm;
             $Produtos[$Nome] = round($val->prozuzido,2);
 
         }
