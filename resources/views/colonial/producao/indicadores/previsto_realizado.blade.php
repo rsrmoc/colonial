@@ -2,7 +2,7 @@
 <style>
 .info-box .info-box-stats span.info-box-title {
     display: block;
-    font-size: 15px;
+    font-size: 16px;
     margin-bottom: 10px;
     color: #B0B0B0;
 }
@@ -444,45 +444,91 @@ ul {
         <script src="{{ asset('assets/grafico/amcharts5/index.js') }}"></script>
         <script src="{{ asset('assets/grafico/amcharts5/xy.js') }}"></script>  
         <script src="{{ asset('assets/grafico/amcharts5/Animated.js') }}"></script> 
+        
+        <script src="{{ asset('assets/grafico/amcharts4/core.js') }}"></script>
+        <script src="{{ asset('assets/grafico/amcharts4/charts.js') }}"></script>  
+        <script src="{{ asset('assets/grafico/amcharts4/themes/animated.js') }}"></script> 
         <!-- Resources -->
- 
 
+  
         <div class="panel">
             <div class="panel-body">
                 <div class="row"  >
-
-                    <div class="col-md-12">
-                        <template x-if="loadingCharts">
-                            <x-loader class="absolute-loader"/>
-                        </template>
-                        <div class="row">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Ordem de Produção</h3></div>
-                            <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24">
-                                <img src="{{ asset('assets/images/filtro.png') }}" data-toggle="modal" data-target="#modalParametrizacao" height="24" style="margin-left: 10px; cursor: pointer;">
-                            </div>  
-                        </div>
-                    </div>
+ 
+                    
+                            <div class="col-md-5" style="font-size: 24px; font-weight: 300;" > <i class="fa fa-line-chart"></i> Indicadores de Produção </div>
+                            <div class="col-md-1" style="padding-right:5px; padding-left: 5px;">
+                                <div class="form-group" style="margin-bottom: 0px;"> 
+                                    <select class="form-control" name="agrupamento" name="parametro-ano" id="parametro-ano" style="width: 100%;" > 
+                                        <option value="">ANO</option> 
+                                        <option value="2024">2024</option> 
+                                        <option value="2023">2023</option> 
+                                        <option value="2022">2022</option> 
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="col-md-2 " style="padding-right:5px; padding-left: 5px;">
+                                <div class="form-group" style="margin-bottom: 0px;"> 
+                                    <select class="form-control" name="parametro-mes" id="parametro-mes" style="width: 100%;" > 
+                                        <option value="">MÊS</option> 
+                                        <option value="01">JANEIRO</option>
+                                        <option value="02">FEVEREIRO</option>
+                                        <option value="03">MARÇO</option>
+                                        <option value="04">ABRIL</option>
+                                        <option value="05">MAIO</option>
+                                        <option value="06">JUNHO</option>
+                                        <option value="07">JULHO</option>
+                                        <option value="08">AGOSTO</option>
+                                        <option value="09">SETEMBRO</option>
+                                        <option value="10">OUTUBRO</option>
+                                        <option value="11">NOVEMBRO</option>
+                                        <option value="12">DEZEMBRO</option>
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="col-md-1 " style="padding-right:5px; padding-left: 5px;">
+                                <div class="form-group" style="margin-bottom: 0px;"> 
+                                    <select class="form-control" name="parametro-dia" id="parametro-dia" style="width: 100%;" > 
+                                        <option value="">DIA</option> 
+                                        <template x-for="i in 31"> 
+                                            <option x-bind:value="i"><span x-text="i"></span></option> 
+                                        </template>
+                                    </select> 
+                                </div>
+                            </div>
+                            <div class="col-md-2 " style=" padding-right:5px; padding-left: 5px;">
+                                <div class="form-group" style="margin-bottom: 0px;"> 
+                                    <select class="form-control" name="parametro-visao" id="parametro-visao" style="width: 100%;" > 
+                                        <option value="KG">KILOS</option> 
+                                        <option value="T">TONELADAS</option> 
+                                        <option value="CX">CAIXAS</option>
+                                    </select> 
+                                </div>
+                            </div> 
+                            <div class="col-md-1 " style="  padding-left: 5px;">
+                                <button type="button" x-on:click="getDataChart1"  class="  btn btn-default"  style="width: 100%; font-weight: 700;" ><i class="fa fa-search"></i> Pesquisar</button>
+                            </div>
+                            
                 </div>
             </div>
         </div>
 
+  
         <div class="row">
          
             <div class="col-lg-4 col-md-8">
-                <div class="panel info-box panel-white">
+                <div class="panel info-box panel-white" style="background: #22BAA0;margin-bottom: 10px;">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">340.658</p>
-                            <span class="info-box-title red" style="color: #44363e;">Produção em Kilos</span>
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdKg"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title red" style="color: #f9fafa; font-weight: 700;">Produção em Kilos</span>
                         </div>
                         <div class="info-box-icon ">
-                            <i class="fa fa-cube" style="color: #22BAA0;"></i>
+                            <i class="fa fa-cube" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
                             <div class="progress progress-xs progress-squared bs-n">
-                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                <div class="progress-bar progress-bar-success" style="color: #f9fafa;" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
                             </div>
                         </div>
@@ -490,18 +536,18 @@ ul {
                 </div>
             </div>
             <div class="col-lg-4 col-md-8">
-                <div class="panel info-box panel-white">
+                <div class="panel info-box panel-white" style="background: #12AFCB; margin-bottom: 10px;">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p><span class="counter">6.698</span></p>
-                            <span class="info-box-title" style="color: #44363e;">Produção em Toneladas</span>
+                            <p><span class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdTo"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></span></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Produção em Toneladas</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="fa fa-cube" style="color: #12AFCB;"></i>
+                            <i class="fa fa-cube" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
                             <div class="progress progress-xs progress-squared bs-n">
-                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
                             </div>
                         </div>
@@ -509,18 +555,18 @@ ul {
                 </div>
             </div>
             <div class="col-lg-4 col-md-8">
-                <div class="panel info-box panel-white">
+                <div class="panel info-box panel-white" style="background: #7a6fbe; margin-bottom: 10px;">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">2.500</p>
-                            <span class="info-box-title" style="color: #44363e;">Produção em Caixas</span>
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdCx"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Produção em Caixas</span>
                         </div>
                         <div class="info-box-icon"> 
-                            <i class="fa fa-cubes" style="color: #7a6fbe;"></i>
+                            <i class="fa fa-cubes" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
                             <div class="progress progress-xs progress-squared bs-n">
-                                <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                <div class="progress-bar progress-bar-primary" style="color: #f9fafa;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
                             </div>
                         </div>
@@ -531,380 +577,143 @@ ul {
               
         <div class="row">
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white"  >
+                <div class="panel info-box panel-white" style="background: #399BFF;" >
                     <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderAgua"></p>
-                            <span class="info-box-title" style="color: #399BFF;">Agua</span>
+                            <p class="counter" x-html="iconHeaderAgua" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Agua</span>
                         </div>
                         <div class="info-box-icon ">
-                            <i class="fa fa-tint " style="color: #399BFF;"></i>
+                            <i class="fa fa-tint " style="color: #f9fafa;"></i>
                         </div>
                         
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white">
+                <div class="panel info-box panel-white" style="background: #c2a505;">
                     <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderEnergia"></p>
-                            <span class="info-box-title" style="color: #c2a505;">Energia</span>
+                            <p class="counter" x-html="iconHeaderEnergia"  style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Energia</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="fa fa-bolt" style="color: #c2a505;"></i>
+                            <i class="fa fa-bolt" style="color: #f9fafa;"></i>
                         </div>
                       
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white">
+                <div class="panel info-box panel-white" style="background: #26A65B;">
                     <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderLenha"></p>
-                            <span class="info-box-title" style="color: #26A65B;">Lenha</span>
+                            <p class="counter" x-html="iconHeaderLenha" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Lenha</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="glyphicon glyphicon-tree-deciduous" style="color: #26A65B;" aria-hidden="true"></i>
+                            <i class="glyphicon glyphicon-tree-deciduous" style="color: #f9fafa;" aria-hidden="true"></i>
                         </div>
                          
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white">
+                <div class="panel info-box panel-white" style="background: #EF4836;">
                     <div class="panel-body" style="border-bottom: 3px solid #EF4836;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderPerdas"></p>
-                            <span class="info-box-title" style="color: #EF4836;">Perdas</span>
+                            <p class="counter" x-html="iconHeaderPerdas" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Perdas</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="fa fa-exclamation-triangle" style="color: #EF4836;"></i>
+                            <i class="fa fa-exclamation-triangle" style="color: #f9fafa;"></i>
                         </div>
                         
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body" style="border-bottom: 3px solid #37363E;">
+                <div class="panel info-box panel-white" style="background: #f1bb07;">
+                    <div class="panel-body" style="border-bottom: 3px solid #f1bb07;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderParadas"></p>
-                            <span class="info-box-title" style="color: #37363E;" >Paradas</span>
+                            <p class="counter" x-html="iconHeaderParadas" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;" >Paradas</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="fa fa-stop" style="color: #37363E;"></i>
+                            <i class="fa fa-stop" style="color: #f9fafa;"></i>
                         </div>
                         
                     </div>
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white">
+                <div class="panel info-box panel-white" style="background: #e83e8c;">
                     <div class="panel-body" style="border-bottom: 3px solid #e83e8c;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderPolpas"></p>
-                            <span class="info-box-title" style="color: #e83e8c">Polpas</span>
+                            <p class="counter" x-html="iconHeaderPolpas" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title"  style="color: #f9fafa; font-weight: 900;">Polpas</span>
                         </div>
                         <div class="info-box-icon"> 
-                            <i class="fa fa-apple"  style="color: #e83e8c"></i>
+                            <i class="fa fa-apple"  style="color: #f9fafa"></i>
                         </div>
                         
                     </div>
                 </div>
             </div>
         </div>
-
-        <!--
-        <div class="row">
-
-
-            <div class="col-md-12">
-                <ul class="topstats clearfix">
-                  <li class="arrow"></li>
-                  <li class="col-xs-6 col-lg-2">
-                    <span class="title"><i class="fa fa-tint"></i> Agua</span>
-                    <h3 class="color-agua">- -</h3>
-                    <span class="diff"><b class="color-agua"><i class="fa fa-caret-down"></i> 26%</b> from yesterday</span>
-                  </li>
-                  <li class="col-xs-6 col-lg-2">
-                    <span class="title"><i class="fa fa-bolt"></i> Energia</span>
-                    <h3 class="color-up">- -</h3>
-                    <span class="diff"><b class="color-up"><i class="fa fa-caret-up"></i> 26%</b> from last week</span>
-                  </li>
-                  <li class="col-xs-6 col-lg-2">
-                    <span class="title"><span class="glyphicon glyphicon-tree-deciduous" aria-hidden="true"></span>Lenha</span>
-                    <h3 class="color-lenha ">- -</h3>
-                    <span class="diff"><b class="color-lenha"><i class="fa fa-caret-up"></i> 26%</b> from last month</span>
-                  </li>
-                  <li class="col-xs-6 col-lg-2">
-                    <span class="title"><i class="fa fa-stop"></i> Paradas</span>
-                    <h3 class="color-warning">- -</h3>
-                    <span class="diff"><b class="color-warning"><i class="fa fa-caret-down"></i> 26%</b> from yesterday</span>
-                  </li>
-                  <li class="col-xs-6 col-lg-2">
-                    <span class="title"><i class="fa fa-exclamation-triangle"></i> Perdas</span>
-                    <h3 class="color-down">- -</h3>
-                    <span class="diff"><b class="color-down"><i class="fa fa-caret-down"></i> 26%</b> from yesterday</span>
-                  </li>
-                  <li class="col-xs-6 col-lg-2">
-                    <span class="title"><i class="fa fa-apple"></i> Polpas</span>
-                    <h3 class="color-polpa">- -<small></small></h3>
-                    <span class="diff"><b class="color-polpa"><i class="fa fa-caret-up"></i> 26%</b> from last week</span>
-                  </li>
-                </ul>
-            </div>
-     
-        </div>
-        -->
-        {{-- <div style="text-align: center; padding: 100px;">
-
-            <img src="{{ asset('assets/images/logo_emp_preto.jpeg') }}">
-
-        </div> --}}
-
-
+   
         <div class="panel">
             <div class="panel-body">
                 <div  >
-        
- <!-- Chart code -->
-<script>
-    am5.ready(function() {
-    
-    
-    // Create root element
-    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-    var root = am5.Root.new("chartdivPrevProd");
-    
-    
-    // Set themes
-    // https://www.amcharts.com/docs/v5/concepts/themes/
-    root.setThemes([
-      am5themes_Animated.new(root)
-    ]);
-    
-    
-    // Create chart
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-    var chart = root.container.children.push(am5xy.XYChart.new(root, {
-      panX: false,
-      panY: false,
-      paddingLeft: 0,
-      wheelX: "panX",
-      wheelY: "zoomX",
-      layout: root.verticalLayout
-    }));
-    
-    var title = chart.plotContainer.children.push(am5.Label.new(root, {
-        text: "Planejado x Produzido",
-        fontSize: 20,
-        fontWeight: "400",
-        x: am5.p50,
-        centerX: am5.p50
-    }))
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Planejado x Produzido</h3></div>
+                        <div class="col-md-2" style="text-align: right">
+                            <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                        </div>  
+                    </div>
+ 
 
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+            
+                            <!-- HTML -->
+                            <div id="chartdivPrevProd"></div>
 
-    // Add legend
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-    var legend = chart.children.push(
-      am5.Legend.new(root, {
-        centerX: am5.p50,
-        x: am5.p50
-      })
-    );
-    
-    var data = [{
-      "year": "2020",
-      "europe": 2.5,
-      "namerica": 2.5, 
-    },{
-      "year": "2021",
-      "europe": 2.5,
-      "namerica": 2.5, 
-    }, {
-      "year": "2022",
-      "europe": 2.6,
-      "namerica": 2.7, 
-    }, {
-      "year": "2023",
-      "europe": 2.8,
-      "namerica": 2.9, 
-    }, {
-      "year": "2024",
-      "europe": 2.8,
-      "namerica": 2.9, 
-    }]
-    
-    
-    // Create axes
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-    var xRenderer = am5xy.AxisRendererX.new(root, {
-      cellStartLocation: 0.1,
-      cellEndLocation: 0.9,
-      minorGridEnabled: true
-    })
-    
-    var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-      categoryField: "year",
-      renderer: xRenderer,
-      tooltip: am5.Tooltip.new(root, {})
-    }));
-    
-    xRenderer.grid.template.setAll({
-      location: 1
-    })
-    
-    xAxis.data.setAll(data);
-    
-    var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-      renderer: am5xy.AxisRendererY.new(root, {
-        strokeOpacity: 0.1
-      })
-    }));
-    
-    
-    // Add series
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-    function makeSeries(name, fieldName, total) {
-      var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-        name: name,
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: fieldName,
-        categoryXField: "year"
-      }));
-    
-      series.columns.template.setAll({
-        tooltipText: "{name}, {categoryX}:{valueY}",
-        width: am5.percent(90),
-        tooltipY: 0,
-        strokeOpacity: 0
-      });
-    
-      series.data.setAll(data);
-        
-    
-      // Make stuff animate on load
-      // https://www.amcharts.com/docs/v5/concepts/animations/
-      series.appear();
-    
-      series.bullets.push(function () {
-        return am5.Bullet.new(root, {
-          locationY: 0,
-          sprite: am5.Label.new(root, {
-            text: "{valueY}",
-            fill: root.interfaceColors.get("alternativeText"),
-            centerY: 0,
-            centerX: am5.p50,
-            populateText: true
-          })
-        });
-      });
-    
-        /*Onclick*/
-      series.columns.template.events.on("click", function(ev) {
-        console.log("Clicked on a column", ev.target);
-      });
-    
-      legend.data.push(series);
-        
-      if (total) {
-        series.bullets.push(function() {
-          var totalLabel = am5.Label.new(root, {
-            text: "{valueY}",
-            fill: root.interfaceColors.get("text"),
-            centerY: am5.p100,
-            centerX: am5.p50,
-            populateText: true,
-            textAlign: "center"
-          });
-    
-          totalLabel.adapters.add("text", function(text, target) {
-            var dataContext = target.dataItem.dataContext;
-            var val = dataContext.europe;
-            return val;
-          });
-    
-          return am5.Bullet.new(root, {
-            locationX: 0.5,
-            locationY: 0.9,
-            sprite: totalLabel
-          });
-        });
-      }
-    }
-    
-    makeSeries("Planejado", "europe",true);
-    makeSeries("Produzido", "namerica",true); 
-    
-    
-    // Make stuff animate on load
-    // https://www.amcharts.com/docs/v5/concepts/animations/
-    chart.appear(1000, 100);
-    
-    }); // end am5.ready()
-    </script>
+                            <template x-if="loadingCharts">
+                                <x-loader class="absolute-loader"/>
+                            </template>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        
-
-                        <!-- HTML -->
-                        <div id="chartdivPrevProd"></div>
-    
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
-                                <table class="table">
-                                    <thead>
-                                        <tr class="active"> 
-                                            <th>Data</th> 
-                                            <th class="text-right">Planejado [ Kg ]</th>   
-                                            <th class="text-right">Produzido [ Kg ]</th>   
-                                            <th class="text-right">Planejado [ T ]</th>   
-                                            <th class="text-right">Produzido [ T ]</th>   
-                                            <th class="text-right">Planejado [ Cx ]</th>
-                                            <th class="text-right">Produzido [ Cx ]</th>
-                                        </tr>
-                                    </thead> 
-                                    <tbody> 
-                                            <tr> 
-                                                <td >27/03/2024</td>  
-                                                <td class="text-right" >17.082,00</td>
-                                                <td class="text-right" >16.806,06</td>
-                                                <td class="text-right" >2.082,00</td>
-                                                <td class="text-right" >1.806,06</td>
-                                                <td class="text-right" >1.300,00</td>
-                                                <td class="text-right" >1.279,00</td>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="active">  
+                                                <th class="text-right">Planejado [ Kg ]</th>   
+                                                <th class="text-right">Produzido [ Kg ]</th>   
+                                                <th class="text-right">Planejado [ T ]</th>   
+                                                <th class="text-right">Produzido [ T ]</th>   
+                                                <th class="text-right">Planejado [ Cx ]</th>
+                                                <th class="text-right">Produzido [ Cx ]</th>
                                             </tr>
-                                            <tr> 
-                                                <td >27/03/2024</td>  
-                                                <td class="text-right" >17.082,00</td>
-                                                <td class="text-right" >16.806,06</td>
-                                                <td class="text-right" >2.082,00</td>
-                                                <td class="text-right" >1.806,06</td>
-                                                <td class="text-right" >1.300,00</td>
-                                                <td class="text-right" >1.279,00</td>
-                                            </tr>
-                                            <tr> 
-                                                <td >27/03/2024</td> 
-                                                <td class="text-right" >1.300,00</td>
-                                                <td class="text-right" >16.806,06</td>
-                                                <td class="text-right" >2.082,00</td>
-                                                <td class="text-right" >1.806,06</td>
-                                                <td class="text-right" >1.279,00</td>
-                                                <td class="text-right" >17.082,00</td>
-                                            </tr>
-                                    </tbody>
-                                </table>
+                                        </thead> 
+                                        <tbody> 
+                                                <tr>  
+                                                    <td class="text-right" x-html="PlanejadoKg" ></td>
+                                                    <td class="text-right" x-html="ProduzidoKg" ></td>
+                                                    <td class="text-right" x-html="PlanejadoTo" ></td>
+                                                    <td class="text-right" x-html="ProduzidoTo" ></td>
+                                                    <td class="text-right" x-html="PlanejadoCx" ></td>
+                                                    <td class="text-right" x-html="ProduzidoCx" ></td>
+                                                </tr> 
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-  
+    
                         </div>
                     </div>
-
-
+ 
                 </div>
             </div>
         </div>
@@ -914,327 +723,41 @@ ul {
 
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Tipo de Produtos</h3></div>
+                            <div class="col-md-2" style="text-align: right">
+                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                            </div>  
+                        </div>
                         
-                        <script>
-                            am5.ready(function() {
-                            
-                            // Data
-                            var allData = { 
-                              "2002": {
-                                "EXTRATO DE TOMATE COLONIAL 48 X 140 GR": 0,
-                                "EXTRATO DE TOMATE COLONIAL 48 X 140 GR": 204,
-                                "Flickr": 20,
-                                "Google Buzz": 30,
-                                "Google+": 321,
-                                "Hi5": 0,
-                                "Instagram": 115,
-                                "MyEXTRATO DE TOMATE COLONIAL 48 X 140 GRSpace": 10,
-                                "EXTRATO DE TOMATE COLONIAL 48 X 140 GR": 30,
-                                "Pinterest": 115,
-                                "Reddit": 365,
-                                "Snapchat": 0,
-                                "TikTok": 412,
-                                "EXTRATO DE TOMATE COLONIAL 48 X 140 GR": 362,
-                                "Twitter": 254,
-                                "WeChat": 541,
-                                "Weibo": 116,
-                                "Whatsapp": 45,
-                                "YouTube": 25
-                              } 
-                            };
-                            
-                            
-                            // Create root element
-                            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                            var root = am5.Root.new("chartdivProdutos");
-                            
-                            root.numberFormatter.setAll({
-                              numberFormat: "#a",
-                            
-                              // Group only into M (millions), and B (billions)
-                              bigNumberPrefixes: [
-                                { number: 1e6, suffix: "M" },
-                                { number: 1e9, suffix: "B" }
-                              ],
-                            
-                              // Do not use small number prefixes at all
-                              smallNumberPrefixes: []
-                            });
-                            
-                            var stepDuration = 2000;
-                            
-                            
-                            // Set themes
-                            // https://www.amcharts.com/docs/v5/concepts/themes/
-                            root.setThemes([am5themes_Animated.new(root)]);
-                            
-                            
-                            // Create chart
-                            // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                            var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                              panX: true,
-                              panY: true,
-                              wheelX: "none",
-                              wheelY: "none",
-                              paddingLeft: 0
-                            }));
-                            
-                            
-                            // We don't want zoom-out button to appear while animating, so we hide it at all
-                            chart.zoomOutButton.set("forceHidden", true);
-                            
-                            
-                            // Create axes
-                            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                            var yRenderer = am5xy.AxisRendererY.new(root, {
-                              minGridDistance: 20,
-                              inversed: true,
-                              minorGridEnabled: true
-                            });
-                            // hide grid
-                            yRenderer.grid.template.set("visible", false);
-                            
-                            var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
-                              maxDeviation: 0,
-                              categoryField: "network",
-                              renderer: yRenderer
-                            }));
-                            
-                            var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
-                              maxDeviation: 0,
-                              min: 0,
-                              strictMinMax: true,
-                              extraMax: 0.1,
-                              renderer: am5xy.AxisRendererX.new(root, {})
-                            }));
-                            
-                            xAxis.set("interpolationDuration", stepDuration / 10);
-                            xAxis.set("interpolationEasing", am5.ease.linear);
-                            
-                            
-                            // Add series
-                            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                            var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                              xAxis: xAxis,
-                              yAxis: yAxis,
-                              valueXField: "value",
-                              categoryYField: "network"
-                            }));
-                            
-                            // Rounded corners for columns
-                            series.columns.template.setAll({ cornerRadiusBR: 5, cornerRadiusTR: 5 });
-                            
-                            // Make each column to be of a different color
-                            series.columns.template.adapters.add("fill", function (fill, target) {
-                              return chart.get("colors").getIndex(series.columns.indexOf(target));
-                            });
-                            
-                            series.columns.template.adapters.add("stroke", function (stroke, target) {
-                              return chart.get("colors").getIndex(series.columns.indexOf(target));
-                            });
-                            
-                            series.columns.template.setAll({
-                                tooltipText: "{network} :  {value}",
-                                width: am5.percent(95),
-                                tooltipY: 0
-                            });
-                             
-                            
-                            // Add label bullet
-                            series.bullets.push(function () {
-                              return am5.Bullet.new(root, {
-                                locationX: 1,
-                                sprite: am5.Label.new(root, {
-                                  text: "{valueXWorking.formatNumber('#.# a')}",
-                                  fill: root.interfaceColors.get("alternativeText"),
-                                  centerX: am5.p100,
-                                  centerY: am5.p50,
-                                  populateText: true
-                                })
-                              });
-                            });
-                            
-                            var label = chart.plotContainer.children.push(am5.Label.new(root, {
-                              text: "Produtos",
-                              fontSize: "2em",
-                              opacity: 0.2,
-                              x: am5.p100,
-                              y: am5.p100,
-                              centerY: am5.p100,
-                              centerX: am5.p100
-                            }));
-                            
-                            // Get series item by category
-                            function getSeriesItem(category) {
-                              for (var i = 0; i < series.dataItems.length; i++) {
-                                var dataItem = series.dataItems[i];
-                                if (dataItem.get("categoryY") == category) {
-                                  return dataItem;
-                                }
-                              }
-                            }
-                            
-                            // Axis sorting
-                            function sortCategoryAxis() {
-                              // sort by value
-                              series.dataItems.sort(function (x, y) {
-                                return y.get("valueX") - x.get("valueX"); // descending
-                                //return x.get("valueX") - y.get("valueX"); // ascending
-                              });
-                            
-                              // go through each axis item
-                              am5.array.each(yAxis.dataItems, function (dataItem) {
-                                // get corresponding series item
-                                var seriesDataItem = getSeriesItem(dataItem.get("category"));
-                            
-                                if (seriesDataItem) {
-                                  // get index of series data item
-                                  var index = series.dataItems.indexOf(seriesDataItem);
-                                  // calculate delta position
-                                  var deltaPosition =
-                                    (index - dataItem.get("index", 0)) / series.dataItems.length;
-                                  // set index to be the same as series data item index
-                                  if (dataItem.get("index") != index) {
-                                    dataItem.set("index", index);
-                                    // set deltaPosition instanlty
-                                    dataItem.set("deltaPosition", -deltaPosition);
-                                    // animate delta position to 0
-                                    dataItem.animate({
-                                      key: "deltaPosition",
-                                      to: 0,
-                                      duration: stepDuration / 2,
-                                      easing: am5.ease.out(am5.ease.cubic)
-                                    });
-                                  }
-                                }
-                              });
-                              // sort axis items by index.
-                              // This changes the order instantly, but as deltaPosition is set, they keep in the same places and then animate to true positions.
-                              yAxis.dataItems.sort(function (x, y) {
-                                return x.get("index") - y.get("index");
-                              });
-                            }
-                            
-                            var year = 2002;
-                            
-                            // update data with values each 1.5 sec
-                            var interval = setInterval(function () {
-                              year++;
-                            
-                              if (year > 2018) {
-                                clearInterval(interval);
-                                clearInterval(sortInterval);
-                              }
-                            
-                              updateData();
-                            }, stepDuration);
-                            
-                            var sortInterval = setInterval(function () {
-                              sortCategoryAxis();
-                            }, 100);
-                            
-                            function setInitialData() {
-                              var d = allData[year];
-                            
-                              for (var n in d) {
-                                series.data.push({ network: n, value: d[n] });
-                                yAxis.data.push({ network: n });
-                              }
-                            }
-                            
-                            function updateData() {
-                              var itemsWithNonZero = 0;
-                            
-                              if (allData[year]) {
-                                label.set("text", year.toString());
-                            
-                                am5.array.each(series.dataItems, function (dataItem) {
-                                  var category = dataItem.get("categoryY");
-                                  var value = allData[year][category];
-                            
-                                  if (value > 0) {
-                                    itemsWithNonZero++;
-                                  }
-                            
-                                  dataItem.animate({
-                                    key: "valueX",
-                                    to: value,
-                                    duration: stepDuration,
-                                    easing: am5.ease.linear
-                                  });
-                                  dataItem.animate({
-                                    key: "valueXWorking",
-                                    to: value,
-                                    duration: stepDuration,
-                                    easing: am5.ease.linear
-                                  });
-                                });
-                            
-                                yAxis.zoom(0, itemsWithNonZero / yAxis.dataItems.length);
-                              }
-                            }
-                            
-                            setInitialData();
-                            setTimeout(function () {
-                              year++;
-                              updateData();
-                            }, 50);
-                            
-                            // Make stuff animate on load
-                            // https://www.amcharts.com/docs/v5/concepts/animations/
-                            series.appear(1000);
-                            chart.appear(1000, 100);
-                            
-                            }); // end am5.ready()
-                            </script>
-
                             <!-- HTML -->
                             <div id="chartdivProdutos"></div>
+                            <template x-if="loadingCharts">
+                                <x-loader class="absolute-loader"/>
+                            </template>
+
                             <div class="row">
-                                <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1">
-                                    <table class="table"   >
+                                <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
+                                    <table class="table">
                                         <thead>
                                             <tr class="active">  
-                                                <th>Produto</th>
-                                                <th class="text-right">Kg/Cx</th>
-                                                <th class="text-right">Planejado [CX]</th>
-                                                <th class="text-right">Produzido [CX]</th>
-                                                <th class="text-right">Planejado [KG]</th>   
-                                                <th class="text-right">Produzido [KG]</th>   
+                                                <th class="text-right">Planejado [ Kg ]</th>   
+                                                <th class="text-right">Produzido [ Kg ]</th>   
+                                                <th class="text-right">Planejado [ T ]</th>   
+                                                <th class="text-right">Produzido [ T ]</th>   
+                                                <th class="text-right">Planejado [ Cx ]</th>
+                                                <th class="text-right">Produzido [ Cx ]</th>
                                             </tr>
                                         </thead> 
-                                        <tbody>
-                                                <tr> 
-                                                    <td  >000125 - CATCHUP COLONIAL 24 X 400 GR TRADICIONAL</td>
-                                                    <td class="text-right" >10,69</td>
-                                                    <td class="text-right" >1.100,00</td>
-                                                    <td class="text-right" >720,00</td>
-                                                    <td class="text-right" >11.759,00</td>
-                                                    <td class="text-right" >7.696,80</td>
-                                                </tr>
-                                                <tr> 
-                                                    <td >006274 - MOLHO DE TOMATE REF. COLONIAL MIO 32x300gr SACHE</td>
-                                                    <td class="text-right" >10,36</td>
-                                                    <td class="text-right" >1.500,00</td>
-                                                    <td class="text-right" >804,00</td>
-                                                    <td class="text-right" >15.540,00</td>
-                                                    <td class="text-right" >8.329,44</td>
-                                                </tr> 
-                                                <tr> 
-                                                    <td  >000125 - CATCHUP COLONIAL 24 X 400 GR TRADICIONAL</td>
-                                                    <td class="text-right" >10,69</td>
-                                                    <td class="text-right" >1.100,00</td>
-                                                    <td class="text-right" >720,00</td>
-                                                    <td class="text-right" >11.759,00</td>
-                                                    <td class="text-right" >7.696,80</td>
-                                                </tr>
-                                                <tr> 
-                                                    <td >006274 - MOLHO DE TOMATE REF. COLONIAL MIO 32x300gr SACHE</td>
-                                                    <td class="text-right" >10,36</td>
-                                                    <td class="text-right" >1.500,00</td>
-                                                    <td class="text-right" >804,00</td>
-                                                    <td class="text-right" >15.540,00</td>
-                                                    <td class="text-right" >8.329,44</td>
+                                        <tbody> 
+                                                <tr>  
+                                                    <td class="text-right" x-html="PlanejadoKg" ></td>
+                                                    <td class="text-right" x-html="ProduzidoKg" ></td>
+                                                    <td class="text-right" x-html="PlanejadoTo" ></td>
+                                                    <td class="text-right" x-html="ProduzidoTo" ></td>
+                                                    <td class="text-right" x-html="PlanejadoCx" ></td>
+                                                    <td class="text-right" x-html="ProduzidoCx" ></td>
                                                 </tr> 
                                         </tbody>
                                     </table>
@@ -1253,7 +776,11 @@ ul {
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-12">
 
-                    
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Comparativo</h3></div>
+                         
+                        </div>
                         <!-- Chart code -->
                         <script>
 
@@ -1517,9 +1044,7 @@ ul {
                 </div>
             </div>
         </div>
-
-
-
+ 
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="panel">
@@ -1880,8 +1405,7 @@ ul {
                 </div>
             </div>
         </div>
-
-
+ 
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="panel">
@@ -2477,8 +2001,7 @@ ul {
                 </div>
             </div>
         </div>
-
-
+ 
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6">
                 <div class="panel">
@@ -2663,8 +2186,7 @@ ul {
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Motivos de Perdas</h3></div>
-                             
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Motivos de Perdas</h3></div> 
                         </div> 
                         
                         <script>

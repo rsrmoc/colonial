@@ -81,15 +81,16 @@ class ProdPrevReal extends Controller
                 and oitm.ItmsGrpCod not in (103)
         ) xx group by ".$Agrupamento2.",".$Agrupamento22."  order by ".$Agrupamento22."
         ");
-
+        $ProduzidoCx=0; $PlanejadoCx=0;
+        $ProduzidoKg=0; $PlanejadoKg=0;
+        $ProduzidoTo=0; $PlanejadoTo=0;     
         foreach($dados as $key => $val){
            if($key % 2 == 0) { $townName2=round($val->planejado_kg); }else{ $townName2=''; }
-           
-           $data[] = array('date'=>$val->data,
-                           'realizado'=>$val->prozuzido,
+             
+           $data[] = array('year'=>$val->data,
+                           'europe'=>round($val->prozuzido,0), 
                            'townName2'=> $townName2,
-                           'latitude'=>$val->planejado,
-                           'color'=>'#4472c4',
+                           'namerica'=>round($val->planejado,0),
                            'unidade'=>$request['unidade'],
                            'agrupamento'=>$request['agrupamento'],
                            'planejado_kg'=>$val->planejado_kg,
@@ -98,8 +99,42 @@ class ProdPrevReal extends Controller
                            'produzido_kg'=>$val->produzido_kg,
                            'tp_detalhe'=>'grafico'
                         );
-        }
+                        $Toneladas = ($val->produzido_kg/1000);
+                        $plaToneladas = ($val->planejado_kg/1000);
 
+                        $ProduzidoCx=($ProduzidoCx+round($val->produzido_cx,0));
+                        $ProduzidoKg=($ProduzidoKg+round($val->produzido_kg,0));
+                        $ProduzidoTo=round(($ProduzidoTo+$Toneladas),2);
+                        
+                        $PlanejadoCx=($PlanejadoCx+round($val->planejado_kg,0));
+                        $PlanejadoKg=($PlanejadoKg+round($val->planejado_kg,0));
+                        $PlanejadoTo=round(($PlanejadoTo+$plaToneladas),2);
+            
+        }
+ 
+        $dadosProd = DB::select("
+        select ItemName nome, sum(valor) planejado_cx, sum(valor*kg)  planejado_kg,
+        sum(valor_prod) produzido_cx,  sum(valor_prod*kg)  produzido_kg,".$planejado.",".$prozuzido."
+        from (
+            select owor.DocEntry codigo,
+                CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, owor.duedate,
+                (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
+                    where ign1.BaseRef=owor.DocEntry
+                ) valor_prod, owor.ItemCode ,SWeight1 kg ,oitm.ItemName
+                from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
+                inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+                where  CONVERT (varchar, owor.duedate, 120) between '".$request['dti']."' and '".$request['dtf']."'
+                and oitm.ItmsGrpCod not in (103)
+        ) xx group by ItemName  order by ItemName, produzido_kg desc
+        ");
+
+        foreach($dadosProd as $key => $val){
+            $Nome = explode('COLONIAL',$val->nome);
+            $Nome = $Nome[0]."COLONIAL \n ".$Nome[1];
+            $Produtos[$Nome] = round($val->prozuzido,2);
+
+        }
+ 
         $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("sum(qtde_atual) valor")->first();
         
@@ -118,18 +153,24 @@ class ProdPrevReal extends Controller
         $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 120) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->whereRaw("ItemCode='013906'")->selectRaw("sum(Quantity) valor")->first();
 
-
+        $request['PlanejadoCx'] =  ($PlanejadoCx) ?  number_format($PlanejadoCx,0,",",".") : '000';
+        $request['PlanejadoKg'] = ($PlanejadoKg) ?  number_format($PlanejadoKg,0,",",".") : '000';
+        $request['PlanejadoTo'] = ($PlanejadoTo) ?  number_format($PlanejadoTo,2,",",".") : '0,00'; 
+        $request['ProduzidoCx'] =  ($ProduzidoCx) ?  number_format($ProduzidoCx,0,",",".") : '000';
+        $request['ProduzidoKg'] = ($ProduzidoKg) ?  number_format($ProduzidoKg,0,",",".") : '000';
+        $request['ProduzidoTo'] = ($ProduzidoTo) ?  number_format($ProduzidoTo,2,",",".") : '0,00';
         $request['hidrico'] = ($hidrico->valor) ?  number_format($hidrico->valor,2,",",".") : '0,00';
         $request['energia'] = ($energia->valor) ?  number_format($energia->valor,2,",",".") : '0,00';
         $request['lenha'] = ($lenha->valor) ?  number_format($lenha->valor,2,",",".") : '0,00';
-        $request['perda'] = ($perda->valor) ?  number_format($perda->valor,0,",",".") : '0';
-        $request['parada'] = ($parada->valor) ?  number_format($parada->valor,0,",",".") : '0';
-        $request['polpa'] = ($polpa->valor) ?  number_format($polpa->valor,0,",",".") : '0';
+        $request['perda'] = ($perda->valor) ?  number_format($perda->valor,0,",",".") : '00';
+        $request['parada'] = ($parada->valor) ?  number_format($parada->valor,0,",",".") : '00';
+        $request['polpa'] = ($polpa->valor) ?  number_format($polpa->valor,0,",",".") : '00';
         $request['datai'] = date('d/m/Y',strtotime($request['dti']));
         $request['dataf'] = date('d/m/Y',strtotime($request['dtf']));
         $retorno['previsto'] = $data;
+        $retorno['dadosProd'] = $dadosProd;
         $retorno['request'] = $request->toArray();
-   
+        $retorno['produtos'] = $Produtos;
         return $retorno;
     }
 

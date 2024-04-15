@@ -21,17 +21,15 @@ class Inicio extends Controller
         ]);
     }
 
-    public function login() {
-        
-   
+    public function login() { 
         return view('login');
     }
 
-    public function home() {
-        
-   
+    public function home() { 
         return view('colonial.inicial/home');
     }
 
- 
+    public function grafico() { 
+        return view('colonial.inicial/inicial');
+    }
 }

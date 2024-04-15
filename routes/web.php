@@ -36,6 +36,7 @@ Route::group([
 
     Route::get('/', [Inicio::class, 'home'])->name('home');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/teste', [Inicio::class, 'grafico'])->name('grafico');
 
     /* Perfil */
     Route::get('/perfis', [Perfis::class, 'index'])->name('perfis-listar');
@@ -86,7 +87,6 @@ Route::group([
      Route::post('/parada-update/{parada}', [Paradas::class, 'update'])->name('parada-update');
      Route::get('/parada-delete/{parada}', [Paradas::class, 'destroy'])->name('parada-destroy');
 
-     
      /* Tipo Perdas */
      Route::get('/tipoperda', [TipoPerda::class, 'lista'])->name('tipoperda-listar');
      Route::get('/tipoperda-criar', [TipoPerda::class, 'create'])->name('tipoperda-criar');
