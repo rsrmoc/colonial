@@ -26,6 +26,7 @@ use App\Models\Perfil;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',  [AuthController::class, 'home']);
+Route::get('/home',  [Inicio::class, 'home']);
 Route::get('/login', [Inicio::class, 'login'])->name('login')->middleware('guest');
 route::post('/login', [AuthController::class, 'login'])->name('login-action')->middleware('guest');
 

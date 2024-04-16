@@ -17,6 +17,10 @@ Alpine.data('app', () => ({
     iconCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     tabCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
 
+    titlePlanejado: 'Planejado x Produzido ',
+    titleTipoProd: 'Tipo de Produtos ',
+    titleComparativo: 'Comparativo ',
+
     ProduzidoCx: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     ProduzidoKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     ProduzidoTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
@@ -37,24 +41,61 @@ Alpine.data('app', () => ({
     chartPrevReal: null,
     loadingCharts: false,
     modalLoadingCharts: true,
+    TotMeses: null,
+    TotDias: 0,
     parametros: {
+        valida: false,
         dti: null,
         dtf:  null,
         agrupamento: '',
         unidade: '',
         ano: '',
         mes: '',
-        dia: '',
+        dia: '', 
     },
 
     init() {
+
+      $('#indicadores-parametros #parametro-ano').on('select2:select', () => {
+        var Ano =$('#indicadores-parametros #parametro-ano').val();
+        var Mes =$('#indicadores-parametros #parametro-mes').val();
+        if(Ano){
+          if(Mes){
+            this.TotDias = this.TotMeses[Ano][Number(Mes)];
+          }
+        } 
+      });
           
-        this.getDataChart1();
+      $('#indicadores-parametros #parametro-mes').on('select2:select', () => { 
+        var Ano =$('#indicadores-parametros #parametro-ano').val();
+        var Mes =$('#indicadores-parametros #parametro-mes').val(); 
+        if(Ano){
+          if(Mes){
+            this.TotDias = this.TotMeses[Ano][Number(Mes)]; 
+          }
+        }  
+      });
+
+ 
+
+      this.getDataChart1();
  
     },
 
   
     getDataChart1() { 
+
+        this.iconHeaderProdTo = this.iconCarregando;
+        this.iconHeaderProdKg = this.iconCarregando;
+        this.iconHeaderProdCx = this.iconCarregando;
+      
+        this.iconHeaderAgua = this.iconCarregando;
+        this.iconHeaderEnergia = this.iconCarregando;
+        this.iconHeaderLenha = this.iconCarregando;
+        this.iconHeaderParadas = this.iconCarregando;
+        this.iconHeaderPerdas = this.iconCarregando;
+        this.iconHeaderPolpas = this.iconCarregando;
+
         this.loadingCharts = true;
         this.parametros.dia = $('#parametro-dia').val();
         this.parametros.mes = $('#parametro-mes').val();
@@ -63,6 +104,12 @@ Alpine.data('app', () => ({
         
         axios.post('/colonial/prod_prev_real-json',this.parametros)
             .then((res) => {
+ 
+                this.titlePlanejado = 'Planejado x Produzido '+res.data.request.ds_unid;
+                this.titleTipoProd = 'Tipo de Produtos '+res.data.request.ds_unid;
+                this.titleComparativo = 'Comparativo '+res.data.request.ds_unid;
+
+                this.chartPrevReal = null;
                 this.parametros.dti = res.data.request.dti;
                 this.parametros.dtf = res.data.request.dtf;
                 this.iconHeaderAgua = res.data.request.hidrico+'<span class="headerUnidade"> (m³/h)</span>';
@@ -82,302 +129,197 @@ Alpine.data('app', () => ({
                 this.PlanejadoCx= res.data.request.PlanejadoCx;
                 this.PlanejadoKg= res.data.request.PlanejadoKg;
                 this.PlanejadoTo= res.data.request.PlanejadoTo;
-
+                this.TotMeses = res.data.request.Meses;
+                this.parametros.valida = true;
+                $('#indicadores-parametros #parametro-ano').val(res.data.request.ano).trigger('change');
+                $('#indicadores-parametros #parametro-mes').val(res.data.request.mes).trigger('change');
+                if(res.data.request.ano){
+                  if(res.data.request.mes){
+                    this.TotDias = this.TotMeses[res.data.request.ano][Number(res.data.request.mes)];
+                  }
+                } 
                 console.log(res.data);
 
                 /* Grafico Planejado x Produzido */ 
-                am5.ready(function() {  
-                      var root = am5.Root.new("chartdivPrevProd"); 
-                        root.setThemes([
-                        am5themes_Animated.new(root)
-                      ]); 
-                      var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                        panX: false,
-                        panY: false,
-                        paddingLeft: 0,
-                        /*
-                        wheelX: "panX",
-                        wheelY: "zoomX",
-                        */
-                        layout: root.verticalLayout
-                  
-                      })); 
-                      var legend = chart.children.push(
-                        am5.Legend.new(root, {
-                            centerX: am5.p50,
-                            x: am5.p50
-                        })
-                      );
-                      
-                      // Data
-                      var colors = chart.get("colors");
-
-                      var data = res.data.previsto
-               
-                      var xRenderer = am5xy.AxisRendererX.new(root, {
-                        cellStartLocation: 0.1,
-                        cellEndLocation: 0.9,
-                        minorGridEnabled: true
-                      })
-                  
-                      var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                        categoryField: "year",
-                        renderer: xRenderer,
-                        tooltip: am5.Tooltip.new(root, {})
-                      }));
-                  
-                      xRenderer.grid.template.setAll({
-                      location: 1
-                      })
-                  
-                      xAxis.data.setAll(data);
-                      
-                      var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                        renderer: am5xy.AxisRendererY.new(root, {
-                            strokeOpacity: 0.1
-                        })
-                      }));
-               
-                      function makeSeries(name, fieldName, total,color) {
-
-                            var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                                name: name,
-                                xAxis: xAxis,
-                                yAxis: yAxis,
-                                valueYField: fieldName,
-                                categoryXField: "year"
-                            }));
-                      
-                            series.columns.template.setAll({
-                                tooltipText: "{name} em {categoryX}\n{valueY}",
-                                width: am5.percent(90),
-                                tooltipY: 0,
-                                strokeOpacity: 0 
-                            });
-                            series.set("fill", am5.color(color));
-                            series.data.setAll(data); 
-                            series.appear();
-                        
-                            series.bullets.push(function () {
-                                return am5.Bullet.new(root, {
-                                locationY: 0,
-                                sprite: am5.Label.new(root, {
-                                    text: "{valueY}",
-                                    fill: root.interfaceColors.get("alternativeText"),
-                                    centerY: 50,
-                                    centerX: am5.p50,
-                                    populateText: true
-                                })
-                                });
-                            });
-                      
-                            /*Onclick*/
-                            series.columns.template.events.on("click", function(ev) {
-                                console.log("Clicked on a column", ev.target);
-                            });
-                      
-                            legend.data.push(series);
-                          
-                            if (total) {
-                                series.bullets.push(function() {
-                                var totalLabel = am5.Label.new(root, {
-                                    
-                                    centerY: am5.p100,
-                                    centerX: am5.p50,
-                                    populateText: true,
-                                    textAlign: "center"
-                                });
-                            
-                            
-                                return am5.Bullet.new(root, {
-                                    locationX: 0.5,
-                                    locationY: 0.9,
-                                    sprite: totalLabel
-                                });
-                                });
-                            }
-                      }
-            
-                      makeSeries("Planejado", "europe",true,"#008000");
-                      makeSeries("Produzido", "namerica",true,"#EF4836"); 
-                    
-                      chart.appear(1000, 100);
-          
-                });   
+                var chart = AmCharts.makeChart("chartdivPrevProd", {
+                  "type": "serial",
+                  "theme": "none",
+                  "categoryField": "label",
+                  "rotate": false,
+                  "startDuration": 1,
+                  "categoryAxis": {
+                    "gridPosition": "start",
+                    "position": "left",
+                    "labelRotation": 20
+                  },
+                  "trendLines": [],
+                  "graphs": [
+                    {
+                      "balloonText": "Planejado: <b>[[value]]</b>",
+                      "fillAlphas": 0.8,
+                      "id": "AmGraph-1",
+                      "lineAlpha": 0.2,
+                      "title": "planejado",
+                      "type": "column",
+                      "valueField": "planejado",
+                      "fillColorsField": "color_planejado", 
+                
+                    },
+                    {
+                      "balloonText": "Produzido: <b>[[value]]</b>",
+                      "fillAlphas": 0.8,
+                      "id": "AmGraph-2",
+                      "lineAlpha": 0.2,
+                      "title": "produzido",
+                      "type": "column",
+                      "valueField": "produzido",
+                      "fillColorsField": "color_produzido"
+                    }
+                  ],
+                  "guides": [],
+                  "valueAxes": [
+                    {
+                      "id": "ValueAxis-1",
+                      "position": "top",
+                      "axisAlpha": 0
+                    }
+                  ],
+                  "allLabels": [],
+                  "balloon": {},
+                  "titles": [],
+                  "dataProvider": res.data.previsto
+                
+                });
                     
                 /* Grafico Produtos */ 
-                am5.ready(function() {
-                             
-                    var allData = { 
-                      "PRODUTO": res.data.produtos
-                    };
-                   
-                    var root = am5.Root.new("chartdivProdutos");
-                    
-                    root.numberFormatter.setAll({
-                      numberFormat: "#a",
-                     
-                      bigNumberPrefixes: [
-                        { number: 1e6, suffix: "M" },
-                        { number: 1e9, suffix: "B" }
-                      ],
-                     
-                      smallNumberPrefixes: []
-                    });
-                  
-                    var stepDuration = 2000;
-                    
-                    root.setThemes([am5themes_Animated.new(root)]);
-                      
-                    var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                      panX: true,
-                      panY: true,
-                      wheelX: "none",
-                      wheelY: "none",
-                      paddingLeft: 0
-                    }));
-                    
-                    chart.zoomOutButton.set("forceHidden", true);
-                      
-                    var yRenderer = am5xy.AxisRendererY.new(root, {
-                      minGridDistance: 20,
-                      inversed: true,
-                      minorGridEnabled: true
-                    });
-                    
-                    yRenderer.grid.template.set("visible", false);
-                    
-                    var yAxis = chart.yAxes.push(am5xy.CategoryAxis.new(root, {
-                      maxDeviation: 0,
-                      categoryField: "network",
-                      renderer: yRenderer
-                    }));
-                  
-                    var xAxis = chart.xAxes.push(am5xy.ValueAxis.new(root, {
-                      maxDeviation: 0,
-                      min: 0,
-                      strictMinMax: true,
-                      extraMax: 0.1,
-                      renderer: am5xy.AxisRendererX.new(root, {})
-                    }));
-                  
-                    xAxis.set("interpolationDuration", stepDuration / 10);
-                    xAxis.set("interpolationEasing", am5.ease.linear);
-                     
-                    var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                      xAxis: xAxis,
-                      yAxis: yAxis,
-                      valueXField: "value",
-                      categoryYField: "network"
-                    }));
-                     
-                    series.columns.template.setAll({ cornerRadiusBR: 5, cornerRadiusTR: 5 });
-                     
-                    series.columns.template.adapters.add("fill", function (fill, target) {   
-                      return gera_cor();
-                    });
-                    
-                    series.columns.template.adapters.add("stroke", function (stroke, target) {
-                      return '#ffffff';
-                    });
+                var chart = AmCharts.makeChart("chartdivProdutos", {
+                  "type": "serial",
+                  "theme": "none",
+                  "rotate": true, 
+                  "dataProvider": res.data.produtos,
+                 
+                  "startDuration": 1,
+                  "graphs": [{
+                    "balloonText": "<b>[[category]]: [[value]]</b>",
+                    "fillColorsField": "color",
+                    "fillAlphas": 0.9,
+                    "lineAlpha": 0.2,
+                    "type": "column",
+                    "valueField": "qtde"
+                  }],
+                  "chartCursor": {
+                    "categoryBalloonEnabled": false,
+                    "cursorAlpha": 0,
+                    "zoomable": false
+                  },
+                  "categoryField": "produto",
+                  "categoryAxis": {
+                    "gridPosition": "start",
+                    "labelRotation": 45
+                  } 
+                
+                });
 
-                    function gera_cor(){
-                      var hexadecimais = '0123456789ABCDEF';
-                      var cor = '#'; 
-                      // Pega um número aleatório no array acima
-                      for (var i = 0; i < 6; i++ ) {
-                      //E concatena à variável cor
-                          cor += hexadecimais[Math.floor(Math.random() * 16)];
-                      }
-                      return cor;
-                  }
-                     
-                    series.columns.template.setAll({
-                        tooltipText: "{network} :  {value}",
-                        width: am5.percent(95),
-                        tooltipY: 0
-                    });
-                    
-                    series.bullets.push(function () {
-                      return am5.Bullet.new(root, {
-                        locationX: 1,
-                        sprite: am5.Label.new(root, {
-                          text: "{valueXWorking.formatNumber('#.# a')}",
-                          fill: root.interfaceColors.get("alternativeText"),
-                          centerX: am5.p100,
-                          centerY: am5.p50,
-                          populateText: true
-                        })
-                      });
-                    });
-                  
-              
-                    function getSeriesItem(category) {
-                      for (var i = 0; i < series.dataItems.length; i++) {
-                        var dataItem = series.dataItems[i];
-                        if (dataItem.get("categoryY") == category) {
-                          return dataItem;
-                        }
-                      }
-                    }
-                   
-                    function sortCategoryAxis() {
-                      // sort by value
-                      series.dataItems.sort(function (x, y) {
-                        return y.get("valueX") - x.get("valueX"); // descending 
-                      });
-                     
-                      am5.array.each(yAxis.dataItems, function (dataItem) { 
-                        var seriesDataItem = getSeriesItem(dataItem.get("category"));
-                    
-                        if (seriesDataItem) { 
-                          var index = series.dataItems.indexOf(seriesDataItem); 
-                          var deltaPosition =
-                            (index - dataItem.get("index", 0)) / series.dataItems.length; 
-                          if (dataItem.get("index") != index) {
-                            dataItem.set("index", index); 
-                            dataItem.set("deltaPosition", -deltaPosition); 
-                            dataItem.animate({
-                              key: "deltaPosition",
-                              to: 0,
-                              duration: stepDuration / 2,
-                              easing: am5.ease.out(am5.ease.cubic)
-                            });
+                if(res.data.request.agrupamento=='D'){
+
+                  var chart = AmCharts.makeChart("chartdiv_comparativo", {
+                      "type": "serial",
+                      "theme": "none",
+                      "categoryField": "label",
+                      "rotate": false,
+                      "startDuration": 1,
+                      "categoryAxis": {
+                          "gridPosition": "start",
+                          "position": "left",
+                          "labelRotation": 20
+                      },
+                      "trendLines": [],
+                      "graphs": [
+                          {
+                              "balloonText": "<b>[[label]]</b> <br> "+res.data.graficoAnos01+" : [[value]]",
+                              "fillAlphas": 0.8,
+                              "id": "AmGraph-1",
+                              "lineAlpha": 0.2,
+                              "title": res.data.graficoAnos01,
+                              "type": "column",
+                              "valueField": "ano01",
+                              "fillColorsField": "color01"
+                          },
+                          {
+                              "balloonText": "<b>[[label]]</b> <br> "+res.data.graficoAnos02+" : [[value]]",
+                              "fillAlphas": 0.8,
+                              "id": "AmGraph-2",
+                              "lineAlpha": 0.2,
+                              "title": res.data.graficoAnos02,
+                              "type": "column",
+                              "valueField": "ano02",
+                              "fillColorsField": "color02", 
+
+                          },
+                          {
+                              "balloonText": "<b>[[label]]</b> <br> "+res.data.graficoAnos03+" : [[value]]",
+                              "fillAlphas": 0.8,
+                              "id": "AmGraph-3",
+                              "lineAlpha": 0.2,
+                              "title": res.data.graficoAnos03,
+                              "type": "column",
+                              "valueField": "ano03",
+                              "fillColorsField": "color03"
                           }
-                        }
-                      }); 
-                      yAxis.dataItems.sort(function (x, y) {
-                        return x.get("index") - y.get("index");
-                      });
-                    }
-                    
-                    var year = 'PRODUTO';
+                      ],
+                      "guides": [],
+                      "valueAxes": [
+                          {
+                              "id": "ValueAxis-1",
+                              "position": "top",
+                              "axisAlpha": 0
+                          }
+                      ],
+                      "allLabels": [],
+                      "balloon": {},
+                      "titles": [],
+                      "dataProvider":  res.data.ComparativoAno
+
+                  });
+
+                }else{
+
                    
-                    var sortInterval = setInterval(function () {
-                      sortCategoryAxis();
-                    }, 100);
-                    
-                    function setInitialData() {
-                      var d = allData[year]; 
-                      for (var n in d) {
-                        series.data.push({ network: n, value: d[n] });
-                        yAxis.data.push({ network: n });
-                      }
-                    }
-                   
-                    setInitialData();
-                    setTimeout(function () {
-                      year++;
-                      updateData();
-                    }, 50);
-                   
-                    series.appear(3000);
-                    chart.appear(3000, 100);
-                  
-                }); // end am5.ready()
+                  var chart = AmCharts.makeChart("chartdiv_comparativo", {
+                      "theme": "none",
+                      "type": "serial",
+                      "startDuration": 2,
+                      "dataProvider": res.data.comparativo,
+                        "graphs": [{
+                            "balloonText": "[[category]]: <b>[[value]]</b>",
+                            "fillColorsField": "color",
+                            "fillAlphas": 1,
+                            "lineAlpha": 0.1,
+                            "type": "column",
+                            "valueField": "visits"
+                        }],
+                      "depth3D": 20,
+                      "angle": 30,
+                        "chartCursor": {
+                            "categoryBalloonEnabled": false,
+                            "cursorAlpha": 0,
+                            "zoomable": false
+                        },
+                        "categoryField": "country",
+                        "categoryAxis": {
+                            "gridPosition": "start",
+                            "labelRotation": 30
+                        }  
+                  });
+                
+                }
+
   
             })
-            .catch((err) => { toastr.error("error",err) })
+            .catch((err) => { 
+              console.log(err.response.data);
+              toastr.error(err.response.data.errors,"Erro") 
+            })
             .finally(() => this.loadingCharts = false);
 
 

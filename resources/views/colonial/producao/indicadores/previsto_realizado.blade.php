@@ -453,7 +453,7 @@ ul {
   
         <div class="panel">
             <div class="panel-body">
-                <div class="row"  >
+                <div class="row" id="indicadores-parametros"  >
  
                     
                             <div class="col-md-5" style="font-size: 24px; font-weight: 300;" > <i class="fa fa-line-chart"></i> Indicadores de Produção </div>
@@ -490,8 +490,8 @@ ul {
                                 <div class="form-group" style="margin-bottom: 0px;"> 
                                     <select class="form-control" name="parametro-dia" id="parametro-dia" style="width: 100%;" > 
                                         <option value="">DIA</option> 
-                                        <template x-for="i in 31"> 
-                                            <option x-bind:value="i"><span x-text="i"></span></option> 
+                                        <template x-for="i in TotDias"> 
+                                            <option x-bind:value="i"><span x-text="i.toString().padStart(2, '0')"></span></option> 
                                         </template>
                                     </select> 
                                 </div>
@@ -500,7 +500,7 @@ ul {
                                 <div class="form-group" style="margin-bottom: 0px;"> 
                                     <select class="form-control" name="parametro-visao" id="parametro-visao" style="width: 100%;" > 
                                         <option value="KG">KILOS</option> 
-                                        <option value="T">TONELADAS</option> 
+                                        <option value="TO">TONELADAS</option> 
                                         <option value="CX">CAIXAS</option>
                                     </select> 
                                 </div>
@@ -667,7 +667,7 @@ ul {
                 <div  >
                     <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Planejado x Produzido</h3></div>
+                        <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titlePlanejado" >Planejado x Produzido</h3></div>
                         <div class="col-md-2" style="text-align: right">
                             <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                         </div>  
@@ -725,7 +725,7 @@ ul {
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Tipo de Produtos</h3></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleTipoProd"></h3></div>
                             <div class="col-md-2" style="text-align: right">
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                             </div>  
@@ -778,268 +778,15 @@ ul {
 
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Comparativo</h3></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleComparativo"></h3></div>
                          
-                        </div>
-                        <!-- Chart code -->
-                        <script>
-
-                            am5.ready(function() {
-                            
-                                // Create root element
-                                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                var root = am5.Root.new("chartdiv_comparativo");
-                                
-                                
-                                // Set themes
-                                // https://www.amcharts.com/docs/v5/concepts/themes/
-                                root.setThemes([
-                                am5themes_Animated.new(root)
-                                ]);
-                            
-                            
-                                // Create chart
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                                panX: false,
-                                panY: false,
-                                paddingLeft: 0,
-                                wheelX: "panX",
-                                wheelY: "zoomX",
-                                layout: root.verticalLayout
-                                }));
-                            
-                            
-                                // Add legend
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
-                                var legend = chart.children.push(
-                                am5.Legend.new(root, {
-                                    centerX: am5.p50,
-                                    x: am5.p50
-                                })
-                                );
-                            
-                                var data = [{
-                                "year": "Janeiro",
-                                "europe": 2.5,
-                                "namerica": 2.5,
-                                "asia": 2.1, 
-                                }, {
-                                "year": "Fevereiro",
-                                "europe": 2.6,
-                                "namerica": 2.7,
-                                "asia": 2.2, 
-                                }, {
-                                "year": "Março",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Abril",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Maio",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Junho",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Julho",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Agosto",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Setembro",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Outubro",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Novembro",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }, {
-                                "year": "Dexembro",
-                                "europe": 2.8,
-                                "namerica": 2.9,
-                                "asia": 2.4, 
-                                }]
-                            
-                            
-                                // Create axes
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                var xRenderer = am5xy.AxisRendererX.new(root, {
-                                cellStartLocation: 0.1,
-                                cellEndLocation: 0.9,
-                                minorGridEnabled: true
-                                })
-                                
-                                var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                                categoryField: "year",
-                                renderer: xRenderer,
-                                tooltip: am5.Tooltip.new(root, {})
-                                }));
-                                
-                                xRenderer.grid.template.setAll({
-                                location: 1
-                                })
-                                
-                                xAxis.data.setAll(data);
-                                
-                                var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                                renderer: am5xy.AxisRendererY.new(root, {
-                                    strokeOpacity: 0.1
-                                })
-                                }));
-                            
-                            
-                                // Add series
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                function makeSeries(name, fieldName, total) {
-                                var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                                    name: name,
-                                    xAxis: xAxis,
-                                    yAxis: yAxis,
-                                    valueYField: fieldName,
-                                    categoryXField: "year"
-                                }));
-                                
-                                series.columns.template.setAll({
-                                    tooltipText: "{name}, {categoryX}:{valueY}",
-                                    width: am5.percent(90),
-                                    tooltipY: 0,
-                                    strokeOpacity: 0
-                                });
-                                
-                                series.data.setAll(data);
-                                
-                            
-                                // Make stuff animate on load
-                                // https://www.amcharts.com/docs/v5/concepts/animations/
-                                series.appear();
-                                
-                                series.bullets.push(function () {
-                                    return am5.Bullet.new(root, {
-                                    locationY: 0,
-                                    sprite: am5.Label.new(root, {
-                                        text: "{valueY}",
-                                        fill: root.interfaceColors.get("alternativeText"),
-                                        centerY: 0,
-                                        centerX: am5.p50,
-                                        populateText: true
-                                    })
-                                    });
-                                });
-                            
-                                /*Onclick*/
-                                series.columns.template.events.on("click", function(ev) {
-                                    console.log("Clicked on a column", ev.target);
-                                });
-                            
-                                legend.data.push(series);
-                                
-                                if (total) {
-                                    series.bullets.push(function() {
-                                    var totalLabel = am5.Label.new(root, {
-                                        text: "{valueY}",
-                                        fill: root.interfaceColors.get("text"),
-                                        centerY: am5.p100,
-                                        centerX: am5.p50,
-                                        populateText: true,
-                                        textAlign: "center"
-                                    });
-                                
-                                    totalLabel.adapters.add("text", function(text, target) {
-                                        var dataContext = target.dataItem.dataContext;
-                                        var val = dataContext.europe;
-                                        return val;
-                                    });
-                                
-                                    return am5.Bullet.new(root, {
-                                        locationX: 0.5,
-                                        locationY: 1,
-                                        sprite: totalLabel
-                                    });
-                                    });
-                                }
-                            }
-                            
-                            makeSeries("2024", "europe",true);
-                            makeSeries("2023", "namerica",true);
-                            makeSeries("2022", "asia"); 
-                            
-                            
-                            // Make stuff animate on load
-                            // https://www.amcharts.com/docs/v5/concepts/animations/
-                            chart.appear(1000, 100);
-                            
-                            }); // end am5.ready()
-                        </script>
-
+                        </div> 
                         <!-- HTML -->
                         <div id="chartdiv_comparativo"></div>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
-                                <table class="table">
-                                    <thead>
-                                        <tr class="active"> 
-                                            <th>Ano</th> 
-                                            <th class="text-right">Planejado [ Kg ]</th>   
-                                            <th class="text-right">Produzido [ Kg ]</th>   
-                                            <th class="text-right">Planejado [ T ]</th>   
-                                            <th class="text-right">Produzido [ T ]</th>   
-                                            <th class="text-right">Planejado [ Cx ]</th>
-                                            <th class="text-right">Produzido [ Cx ]</th>
-                                        </tr>
-                                    </thead> 
-                                    <tbody> 
-                                            <tr> 
-                                                <td >2024</td>  
-                                                <td class="text-right" >17.082,00</td>
-                                                <td class="text-right" >16.806,06</td>
-                                                <td class="text-right" >2.082,00</td>
-                                                <td class="text-right" >1.806,06</td>
-                                                <td class="text-right" >1.300,00</td>
-                                                <td class="text-right" >1.279,00</td>
-                                            </tr>
-                                            <tr> 
-                                                <td >2023</td>  
-                                                <td class="text-right" >17.082,00</td>
-                                                <td class="text-right" >16.806,06</td>
-                                                <td class="text-right" >2.082,00</td>
-                                                <td class="text-right" >1.806,06</td>
-                                                <td class="text-right" >1.300,00</td>
-                                                <td class="text-right" >1.279,00</td>
-                                            </tr>
-                                            <tr> 
-                                                <td >2022</td> 
-                                                <td class="text-right" >1.300,00</td>
-                                                <td class="text-right" >16.806,06</td>
-                                                <td class="text-right" >2.082,00</td>
-                                                <td class="text-right" >1.806,06</td>
-                                                <td class="text-right" >1.279,00</td>
-                                                <td class="text-right" >17.082,00</td>
-                                            </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
+                     
                     </div>
                 </div>
             </div>
@@ -1057,171 +804,93 @@ ul {
                             </div>  
                         </div>
                         <script>
-                                am5.ready(function() {
-                            
-                            
-                                    // Create root element
-                                    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                    var root = am5.Root.new("chartdiv_agua");
-                                    
-                                    // Set themes
-                                    // https://www.amcharts.com/docs/v5/concepts/themes/
-                                    root.setThemes([
-                                    am5themes_Animated.new(root)
-                                    ]);
-                                    
-                                    // Create chart
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                    var chart = root.container.children.push(
-                                    am5xy.XYChart.new(root, {
-                                        panX: true,
-                                        panY: true,
-                                        wheelX: "panX",
-                                        wheelY: "zoomX",
-                                        paddingLeft: 5,
-                                        paddingRight:5
-                                    })
-                                    );
-                            
-                                    // Add cursor
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-                                    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                    cursor.lineY.set("visible", false);
-                                    
-                                    // Create axes
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                    var xRenderer = am5xy.AxisRendererX.new(root, { 
-                                    minGridDistance: 60,
-                                    minorGridEnabled: true
-                                    });
-                            
-                                    var xAxis = chart.xAxes.push(
-                                    am5xy.CategoryAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        categoryField: "country",
-                                        renderer: xRenderer,
-                                        tooltip: am5.Tooltip.new(root, {})
-                                    })
-                                    );
-                                    
-                                    xRenderer.grid.template.setAll({
-                                    location: 1
-                                    })
-                                    
-                                    var yAxis = chart.yAxes.push(
-                                    am5xy.ValueAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        renderer: am5xy.AxisRendererY.new(root, {
-                                        strokeOpacity: 0.1
-                                        })
-                                    })
-                                    );
-                            
-                                    // Create series
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                    var series = chart.series.push(
-                                    am5xy.ColumnSeries.new(root, {
-                                        name: "Series 1",
-                                        xAxis: xAxis,
-                                        yAxis: yAxis,
-                                        valueYField: "value",
-                                        sequencedInterpolation: true,
-                                        categoryXField: "country"
-                                    })
-                                    );
-                            
-                                    series.columns.template.setAll({
-                                    width: am5.percent(120),
-                                    fillOpacity: 0.9,
-                                    strokeOpacity: 0
-                                    });
-                                    series.columns.template.adapters.add("fill", (fill, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                            
-                                    series.columns.template.adapters.add("stroke", (stroke, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                                    
-                                    series.columns.template.set("draw", function(display, target) {
-                                    var w = target.getPrivate("width", 0);
-                                    var h = target.getPrivate("height", 0);
-                                    display.moveTo(0, h);
-                                    display.bezierCurveTo(w / 4, h, w / 4, 0, w / 2, 0);
-                                    display.bezierCurveTo(w - w / 4, 0, w - w / 4, h, w, h);
-                                    });
-                            
-                                    // Set data
-                                    var data = [{
-                                    country: "01",
-                                    value: 2025
-                                    }, {
-                                    country: "02",
-                                    value: 1882
-                                    }, {
-                                    country: "03",
-                                    value: 1809
-                                    }, {
-                                    country: "04",
-                                    value: 1322
-                                    }, {
-                                    country: "05",
-                                    value: 1122
-                                    }, {
-                                    country: "06",
-                                    value: 1114
-                                    }, {
-                                    country: "07",
-                                    value: 984
-                                    }, {
-                                    country: "08",
-                                    value: 711
-                                    }, {
-                                    country: "09",
-                                    value: 665
-                                    }, {
-                                    country: "10",
-                                    value: 443
-                                    }, {
-                                    country: "11",
-                                    value: 441
-                                    }, {
-                                    country: "12",
-                                    value: 441
-                                    }, {
-                                    country: "13",
-                                    value: 441
-                                    }, {
-                                    country: "14",
-                                    value: 441
-                                    }, {
-                                    country: "15",
-                                    value: 441
-                                    }, {
-                                    country: "16",
-                                    value: 441
-                                    }, {
-                                    country: "17",
-                                    value: 441
-                                    }, {
-                                    country: "18",
-                                    value: 441
-                                    }];
-                            
-                                    xAxis.data.setAll(data);
-                                    series.data.setAll(data);
-                                    
-                                    // Make stuff animate on load
-                                    // https://www.amcharts.com/docs/v5/concepts/animations/
-                                    series.appear(1000);
-                                    chart.appear(1000, 100);
-                            
-                                 }); // end am5.ready()
+                            var chart = AmCharts.makeChart("chartdiv_agua", {
+                                "theme": "none",
+                                "type": "serial",
+                                "startDuration": 2,
+                                "dataProvider": [{
+                                    "country": "USA",
+                                    "visits": 4025,
+                                    "color": "#FF0F00"
+                                }, {
+                                    "country": "China",
+                                    "visits": 1882,
+                                    "color": "#FF6600"
+                                }, {
+                                    "country": "Japan",
+                                    "visits": 1809,
+                                    "color": "#FF9E01"
+                                }, {
+                                    "country": "Germany",
+                                    "visits": 1322,
+                                    "color": "#FCD202"
+                                }, {
+                                    "country": "UK",
+                                    "visits": 1122,
+                                    "color": "#F8FF01"
+                                }, {
+                                    "country": "France",
+                                    "visits": 1114,
+                                    "color": "#B0DE09"
+                                }, {
+                                    "country": "India",
+                                    "visits": 984,
+                                    "color": "#04D215"
+                                }, {
+                                    "country": "Spain",
+                                    "visits": 711,
+                                    "color": "#0D8ECF"
+                                }, {
+                                    "country": "Netherlands",
+                                    "visits": 665,
+                                    "color": "#0D52D1"
+                                }, {
+                                    "country": "Russia",
+                                    "visits": 580,
+                                    "color": "#2A0CD0"
+                                },  {
+                                    "country": "Taiwan",
+                                    "visits": 338,
+                                    "color": "#333333"
+                                }],
+                                "valueAxes": [{
+                                    "position": "left",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+                                }],
+                                "graphs": [{
+                                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                                    "colorField": "color",
+                                    "fillAlphas": 0.85,
+                                    "lineAlpha": 0.1,
+                                    "type": "column",
+                                    "topRadius":1,
+                                    "valueField": "visits"
+                                }],
+                                "depth3D": 40,
+                                "angle": 30,
+                                "chartCursor": {
+                                    "categoryBalloonEnabled": false,
+                                    "cursorAlpha": 0,
+                                    "zoomable": false
+                                },
+                                "categoryField": "country",
+                                "categoryAxis": {
+                                    "gridPosition": "start",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+
+                                } 
+
+                            }, 0);
+
                         </script>
 
                         <!-- HTML -->
                         <div id="chartdiv_agua"></div>
-
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
 
                     </div>
                 </div>
@@ -1238,169 +907,79 @@ ul {
                         </div>
 
                         <script>
-                            am5.ready(function() {
-                         
-                                // Create root element
-                                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                var root = am5.Root.new("chartdiv_energia");
-                                
-                                // Set themes
-                                // https://www.amcharts.com/docs/v5/concepts/themes/
-                                root.setThemes([
-                                am5themes_Animated.new(root)
-                                ]);
-                                
-                                // Create chart
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                var chart = root.container.children.push(
-                                am5xy.XYChart.new(root, {
-                                    panX: true,
-                                    panY: true,
-                                    wheelX: "panX",
-                                    wheelY: "zoomX",
-                                    paddingLeft: 5,
-                                    paddingRight:5
-                                })
-                                );
-                        
-                                // Add cursor
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-                                var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                cursor.lineY.set("visible", false);
-                                
-                                // Create axes
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                var xRenderer = am5xy.AxisRendererX.new(root, { 
-                                minGridDistance: 60,
-                                minorGridEnabled: true
-                                });
-                        
-                                var xAxis = chart.xAxes.push(
-                                am5xy.CategoryAxis.new(root, {
-                                    maxDeviation: 0.3,
-                                    categoryField: "country",
-                                    renderer: xRenderer,
-                                    tooltip: am5.Tooltip.new(root, {})
-                                })
-                                );
-                                
-                                xRenderer.grid.template.setAll({
-                                location: 1
-                                })
-                                
-                                var yAxis = chart.yAxes.push(
-                                am5xy.ValueAxis.new(root, {
-                                    maxDeviation: 0.3,
-                                    renderer: am5xy.AxisRendererY.new(root, {
-                                    strokeOpacity: 0.1
-                                    })
-                                })
-                                );
-                        
-                                // Create series
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                var series = chart.series.push(
-                                am5xy.ColumnSeries.new(root, {
-                                    name: "Series 1",
-                                    xAxis: xAxis,
-                                    yAxis: yAxis,
-                                    valueYField: "value",
-                                    sequencedInterpolation: true,
-                                    categoryXField: "country"
-                                })
-                                );
-                        
-                                series.columns.template.setAll({
-                                width: am5.percent(120),
-                                fillOpacity: 0.9,
-                                strokeOpacity: 0
-                                });
-                                series.columns.template.adapters.add("fill", (fill, target) => {
-                                return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                });
-                        
-                                series.columns.template.adapters.add("stroke", (stroke, target) => {
-                                return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                });
-                                
-                                series.columns.template.set("draw", function(display, target) {
-                                var w = target.getPrivate("width", 0);
-                                var h = target.getPrivate("height", 0);
-                                display.moveTo(0, h);
-                                display.bezierCurveTo(w / 4, h, w / 4, 0, w / 2, 0);
-                                display.bezierCurveTo(w - w / 4, 0, w - w / 4, h, w, h);
-                                });
-                        
-                                // Set data
-                                var data = [{
-                                country: "01",
-                                value: 2025
+                            var chart = AmCharts.makeChart("chartdiv_energia", {
+                                "theme": "none",
+                                "type": "serial",
+                                "startDuration": 2,
+                                "dataProvider": [{
+                                    "country": "USA",
+                                    "visits": 2010,
+                                    "color": "#FF0F00"
                                 }, {
-                                country: "02",
-                                value: 1882
+                                    "country": "China",
+                                    "visits": 1882,
+                                    "color": "#FF6600"
+                                },   {
+                                    "country": "UK",
+                                    "visits": 1122,
+                                    "color": "#F8FF01"
                                 }, {
-                                country: "03",
-                                value: 1809
+                                    "country": "France",
+                                    "visits": 1114,
+                                    "color": "#B0DE09"
                                 }, {
-                                country: "04",
-                                value: 1322
+                                    "country": "India",
+                                    "visits": 984,
+                                    "color": "#04D215"
                                 }, {
-                                country: "05",
-                                value: 1122
+                                    "country": "Spain",
+                                    "visits": 711,
+                                    "color": "#0D8ECF"
                                 }, {
-                                country: "06",
-                                value: 1114
-                                }, {
-                                country: "07",
-                                value: 984
-                                }, {
-                                country: "08",
-                                value: 711
-                                }, {
-                                country: "09",
-                                value: 665
-                                }, {
-                                country: "10",
-                                value: 443
-                                }, {
-                                country: "11",
-                                value: 441
-                                }, {
-                                country: "12",
-                                value: 441
-                                }, {
-                                country: "13",
-                                value: 441
-                                }, {
-                                country: "14",
-                                value: 441
-                                }, {
-                                country: "15",
-                                value: 441
-                                }, {
-                                country: "16",
-                                value: 441
-                                }, {
-                                country: "17",
-                                value: 441
-                                }, {
-                                country: "18",
-                                value: 441
-                                }];
-                        
-                                xAxis.data.setAll(data);
-                                series.data.setAll(data);
-                                
-                                // Make stuff animate on load
-                                // https://www.amcharts.com/docs/v5/concepts/animations/
-                                series.appear(1000);
-                                chart.appear(1000, 100);
-                        
-                             }); // end am5.ready()
+                                    "country": "Netherlands",
+                                    "visits": 665,
+                                    "color": "#0D52D1"
+                                }],
+                                "valueAxes": [{
+                                    "position": "left",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+                                }],
+                                "graphs": [{
+                                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                                    "colorField": "color",
+                                    "fillAlphas": 0.85,
+                                    "lineAlpha": 0.1,
+                                    "type": "column",
+                                    "topRadius":1,
+                                    "valueField": "visits"
+                                }],
+                                "depth3D": 40,
+                                "angle": 30,
+                                "chartCursor": {
+                                    "categoryBalloonEnabled": false,
+                                    "cursorAlpha": 0,
+                                    "zoomable": false
+                                },
+                                "categoryField": "country",
+                                "categoryAxis": {
+                                    "gridPosition": "start",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+
+                                } 
+
+                            }, 0);
+
                         </script>
+
 
                     <!-- HTML -->
                     <div id="chartdiv_energia"></div>
+                    <template x-if="loadingCharts">
+                        <x-loader class="absolute-loader"/>
+                    </template>
+
                     </div>
                 </div>
             </div>
@@ -1418,171 +997,77 @@ ul {
                             </div>  
                         </div>
                         <script>
-                                am5.ready(function() {
-                            
-                            
-                                    // Create root element
-                                    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                    var root = am5.Root.new("chartdiv_lenha");
-                                    
-                                    // Set themes
-                                    // https://www.amcharts.com/docs/v5/concepts/themes/
-                                    root.setThemes([
-                                    am5themes_Animated.new(root)
-                                    ]);
-                                    
-                                    // Create chart
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                    var chart = root.container.children.push(
-                                    am5xy.XYChart.new(root, {
-                                        panX: true,
-                                        panY: true,
-                                        wheelX: "panX",
-                                        wheelY: "zoomX",
-                                        paddingLeft: 5,
-                                        paddingRight:5
-                                    })
-                                    );
-                            
-                                    // Add cursor
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-                                    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                    cursor.lineY.set("visible", false);
-                                    
-                                    // Create axes
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                    var xRenderer = am5xy.AxisRendererX.new(root, { 
-                                    minGridDistance: 60,
-                                    minorGridEnabled: true
-                                    });
-                            
-                                    var xAxis = chart.xAxes.push(
-                                    am5xy.CategoryAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        categoryField: "country",
-                                        renderer: xRenderer,
-                                        tooltip: am5.Tooltip.new(root, {})
-                                    })
-                                    );
-                                    
-                                    xRenderer.grid.template.setAll({
-                                    location: 1
-                                    })
-                                    
-                                    var yAxis = chart.yAxes.push(
-                                    am5xy.ValueAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        renderer: am5xy.AxisRendererY.new(root, {
-                                        strokeOpacity: 0.1
-                                        })
-                                    })
-                                    );
-                            
-                                    // Create series
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                    var series = chart.series.push(
-                                    am5xy.ColumnSeries.new(root, {
-                                        name: "Series 1",
-                                        xAxis: xAxis,
-                                        yAxis: yAxis,
-                                        valueYField: "value",
-                                        sequencedInterpolation: true,
-                                        categoryXField: "country"
-                                    })
-                                    );
-                            
-                                    series.columns.template.setAll({
-                                    width: am5.percent(120),
-                                    fillOpacity: 0.9,
-                                    strokeOpacity: 0
-                                    });
-                                    series.columns.template.adapters.add("fill", (fill, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                            
-                                    series.columns.template.adapters.add("stroke", (stroke, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                                    
-                                    series.columns.template.set("draw", function(display, target) {
-                                    var w = target.getPrivate("width", 0);
-                                    var h = target.getPrivate("height", 0);
-                                    display.moveTo(0, h);
-                                    display.bezierCurveTo(w / 4, h, w / 4, 0, w / 2, 0);
-                                    display.bezierCurveTo(w - w / 4, 0, w - w / 4, h, w, h);
-                                    });
-                            
-                                    // Set data
-                                    var data = [{
-                                    country: "01",
-                                    value: 2025
-                                    }, {
-                                    country: "02",
-                                    value: 1882
-                                    }, {
-                                    country: "03",
-                                    value: 1809
-                                    }, {
-                                    country: "04",
-                                    value: 1322
-                                    }, {
-                                    country: "05",
-                                    value: 1122
-                                    }, {
-                                    country: "06",
-                                    value: 1114
-                                    }, {
-                                    country: "07",
-                                    value: 984
-                                    }, {
-                                    country: "08",
-                                    value: 711
-                                    }, {
-                                    country: "09",
-                                    value: 665
-                                    }, {
-                                    country: "10",
-                                    value: 443
-                                    }, {
-                                    country: "11",
-                                    value: 441
-                                    }, {
-                                    country: "12",
-                                    value: 441
-                                    }, {
-                                    country: "13",
-                                    value: 441
-                                    }, {
-                                    country: "14",
-                                    value: 441
-                                    }, {
-                                    country: "15",
-                                    value: 441
-                                    }, {
-                                    country: "16",
-                                    value: 441
-                                    }, {
-                                    country: "17",
-                                    value: 441
-                                    }, {
-                                    country: "18",
-                                    value: 441
-                                    }];
-                            
-                                    xAxis.data.setAll(data);
-                                    series.data.setAll(data);
-                                    
-                                    // Make stuff animate on load
-                                    // https://www.amcharts.com/docs/v5/concepts/animations/
-                                    series.appear(1000);
-                                    chart.appear(1000, 100);
-                            
-                                 }); // end am5.ready()
+                            var chart = AmCharts.makeChart("chartdiv_lenha", {
+                                "theme": "none",
+                                "type": "serial",
+                                "startDuration": 2,
+                                "dataProvider": [{
+                                    "country": "USA",
+                                    "visits": 2010,
+                                    "color": "#FF0F00"
+                                }, {
+                                    "country": "China",
+                                    "visits": 950,
+                                    "color": "#FF6600"
+                                },   {
+                                    "country": "UK",
+                                    "visits": 999,
+                                    "color": "#F8FF01"
+                                }, {
+                                    "country": "France",
+                                    "visits": 1145,
+                                    "color": "#B0DE09"
+                                }, {
+                                    "country": "India",
+                                    "visits": 984,
+                                    "color": "#04D215"
+                                }, {
+                                    "country": "Spain",
+                                    "visits": 711,
+                                    "color": "#0D8ECF"
+                                }, {
+                                    "country": "Netherlands",
+                                    "visits": 665,
+                                    "color": "#0D52D1"
+                                }],
+                                "valueAxes": [{
+                                    "position": "left",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+                                }],
+                                "graphs": [{
+                                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                                    "colorField": "color",
+                                    "fillAlphas": 0.85,
+                                    "lineAlpha": 0.1,
+                                    "type": "column",
+                                    "topRadius":1,
+                                    "valueField": "visits"
+                                }],
+                                "depth3D": 40,
+                                "angle": 30,
+                                "chartCursor": {
+                                    "categoryBalloonEnabled": false,
+                                    "cursorAlpha": 0,
+                                    "zoomable": false
+                                },
+                                "categoryField": "country",
+                                "categoryAxis": {
+                                    "gridPosition": "start",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+
+                                } 
+
+                            }, 0);
+
                         </script>
 
                         <!-- HTML -->
                         <div id="chartdiv_lenha"></div>
-
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
 
                     </div>
                 </div>
@@ -1599,169 +1084,86 @@ ul {
                         </div>
 
                         <script>
-                            am5.ready(function() {
-                         
-                                // Create root element
-                                // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                var root = am5.Root.new("chartdiv_polpa");
-                                
-                                // Set themes
-                                // https://www.amcharts.com/docs/v5/concepts/themes/
-                                root.setThemes([
-                                am5themes_Animated.new(root)
-                                ]);
-                                
-                                // Create chart
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                var chart = root.container.children.push(
-                                am5xy.XYChart.new(root, {
-                                    panX: true,
-                                    panY: true,
-                                    wheelX: "panX",
-                                    wheelY: "zoomX",
-                                    paddingLeft: 5,
-                                    paddingRight:5
-                                })
-                                );
-                        
-                                // Add cursor
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-                                var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                cursor.lineY.set("visible", false);
-                                
-                                // Create axes
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                var xRenderer = am5xy.AxisRendererX.new(root, { 
-                                minGridDistance: 60,
-                                minorGridEnabled: true
-                                });
-                        
-                                var xAxis = chart.xAxes.push(
-                                am5xy.CategoryAxis.new(root, {
-                                    maxDeviation: 0.3,
-                                    categoryField: "country",
-                                    renderer: xRenderer,
-                                    tooltip: am5.Tooltip.new(root, {})
-                                })
-                                );
-                                
-                                xRenderer.grid.template.setAll({
-                                location: 1
-                                })
-                                
-                                var yAxis = chart.yAxes.push(
-                                am5xy.ValueAxis.new(root, {
-                                    maxDeviation: 0.3,
-                                    renderer: am5xy.AxisRendererY.new(root, {
-                                    strokeOpacity: 0.1
-                                    })
-                                })
-                                );
-                        
-                                // Create series
-                                // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                var series = chart.series.push(
-                                am5xy.ColumnSeries.new(root, {
-                                    name: "Series 1",
-                                    xAxis: xAxis,
-                                    yAxis: yAxis,
-                                    valueYField: "value",
-                                    sequencedInterpolation: true,
-                                    categoryXField: "country"
-                                })
-                                );
-                        
-                                series.columns.template.setAll({
-                                width: am5.percent(120),
-                                fillOpacity: 0.9,
-                                strokeOpacity: 0
-                                });
-                                series.columns.template.adapters.add("fill", (fill, target) => {
-                                return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                });
-                        
-                                series.columns.template.adapters.add("stroke", (stroke, target) => {
-                                return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                });
-                                
-                                series.columns.template.set("draw", function(display, target) {
-                                var w = target.getPrivate("width", 0);
-                                var h = target.getPrivate("height", 0);
-                                display.moveTo(0, h);
-                                display.bezierCurveTo(w / 4, h, w / 4, 0, w / 2, 0);
-                                display.bezierCurveTo(w - w / 4, 0, w - w / 4, h, w, h);
-                                });
-                        
-                                // Set data
-                                var data = [{
-                                country: "01",
-                                value: 2025
+                            var chart = AmCharts.makeChart("chartdiv_polpa", {
+                                "theme": "none",
+                                "type": "serial",
+                                "startDuration": 2,
+                                "dataProvider": [{
+                                    "country": "USA",
+                                    "visits": 4025,
+                                    "color": "#FF0F00"
                                 }, {
-                                country: "02",
-                                value: 1882
+                                    "country": "China",
+                                    "visits": 1882,
+                                    "color": "#FF6600"
                                 }, {
-                                country: "03",
-                                value: 1809
+                                    "country": "Japan",
+                                    "visits": 1809,
+                                    "color": "#FF9E01"
                                 }, {
-                                country: "04",
-                                value: 1322
+                                    "country": "Germany",
+                                    "visits": 1322,
+                                    "color": "#FCD202"
                                 }, {
-                                country: "05",
-                                value: 1122
+                                    "country": "UK",
+                                    "visits": 1122,
+                                    "color": "#F8FF01"
                                 }, {
-                                country: "06",
-                                value: 1114
+                                    "country": "France",
+                                    "visits": 1114,
+                                    "color": "#B0DE09"
+                                },  {
+                                    "country": "Netherlands",
+                                    "visits": 665,
+                                    "color": "#0D52D1"
                                 }, {
-                                country: "07",
-                                value: 984
-                                }, {
-                                country: "08",
-                                value: 711
-                                }, {
-                                country: "09",
-                                value: 665
-                                }, {
-                                country: "10",
-                                value: 443
-                                }, {
-                                country: "11",
-                                value: 441
-                                }, {
-                                country: "12",
-                                value: 441
-                                }, {
-                                country: "13",
-                                value: 441
-                                }, {
-                                country: "14",
-                                value: 441
-                                }, {
-                                country: "15",
-                                value: 441
-                                }, {
-                                country: "16",
-                                value: 441
-                                }, {
-                                country: "17",
-                                value: 441
-                                }, {
-                                country: "18",
-                                value: 441
-                                }];
-                        
-                                xAxis.data.setAll(data);
-                                series.data.setAll(data);
-                                
-                                // Make stuff animate on load
-                                // https://www.amcharts.com/docs/v5/concepts/animations/
-                                series.appear(1000);
-                                chart.appear(1000, 100);
-                        
-                             }); // end am5.ready()
+                                    "country": "Russia",
+                                    "visits": 580,
+                                    "color": "#2A0CD0"
+                                },  {
+                                    "country": "Taiwan",
+                                    "visits": 338,
+                                    "color": "#333333"
+                                }],
+                                "valueAxes": [{
+                                    "position": "left",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+                                }],
+                                "graphs": [{
+                                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                                    "colorField": "color",
+                                    "fillAlphas": 0.85,
+                                    "lineAlpha": 0.1,
+                                    "type": "column",
+                                    "topRadius":1,
+                                    "valueField": "visits"
+                                }],
+                                "depth3D": 40,
+                                "angle": 30,
+                                "chartCursor": {
+                                    "categoryBalloonEnabled": false,
+                                    "cursorAlpha": 0,
+                                    "zoomable": false
+                                },
+                                "categoryField": "country",
+                                "categoryAxis": {
+                                    "gridPosition": "start",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+
+                                } 
+
+                            }, 0);
+
                         </script>
 
                     <!-- HTML -->
                     <div id="chartdiv_polpa"></div>
+                    <template x-if="loadingCharts">
+                        <x-loader class="absolute-loader"/>
+                    </template>
+
                     </div>
                 </div>
             </div>
@@ -1779,170 +1181,81 @@ ul {
                             </div>  
                         </div>
                         <script>
-                                am5.ready(function() {
-                             
-                                    // Create root element
-                                    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                    var root = am5.Root.new("chartdiv_parada");
-                                    
-                                    // Set themes
-                                    // https://www.amcharts.com/docs/v5/concepts/themes/
-                                    root.setThemes([
-                                    am5themes_Animated.new(root)
-                                    ]);
-                                    
-                                    // Create chart
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                    var chart = root.container.children.push(
-                                    am5xy.XYChart.new(root, {
-                                        panX: true,
-                                        panY: true,
-                                        wheelX: "panX",
-                                        wheelY: "zoomX",
-                                        paddingLeft: 5,
-                                        paddingRight:5
-                                    })
-                                    );
-                            
-                                    // Add cursor
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-                                    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                    cursor.lineY.set("visible", false);
-                                    
-                                    // Create axes
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                    var xRenderer = am5xy.AxisRendererX.new(root, { 
-                                    minGridDistance: 60,
-                                    minorGridEnabled: true
-                                    });
-                            
-                                    var xAxis = chart.xAxes.push(
-                                    am5xy.CategoryAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        categoryField: "country",
-                                        renderer: xRenderer,
-                                        tooltip: am5.Tooltip.new(root, {})
-                                    })
-                                    );
-                                    
-                                    xRenderer.grid.template.setAll({
-                                    location: 1
-                                    })
-                                    
-                                    var yAxis = chart.yAxes.push(
-                                    am5xy.ValueAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        renderer: am5xy.AxisRendererY.new(root, {
-                                        strokeOpacity: 0.1
-                                        })
-                                    })
-                                    );
-                            
-                                    // Create series
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                    var series = chart.series.push(
-                                    am5xy.ColumnSeries.new(root, {
-                                        name: "Series 1",
-                                        xAxis: xAxis,
-                                        yAxis: yAxis,
-                                        valueYField: "value",
-                                        sequencedInterpolation: true,
-                                        categoryXField: "country"
-                                    })
-                                    );
-                            
-                                    series.columns.template.setAll({
-                                    width: am5.percent(120),
-                                    fillOpacity: 0.9,
-                                    strokeOpacity: 0
-                                    });
-                                    series.columns.template.adapters.add("fill", (fill, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                            
-                                    series.columns.template.adapters.add("stroke", (stroke, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                                    
-                                    series.columns.template.set("draw", function(display, target) {
-                                    var w = target.getPrivate("width", 0);
-                                    var h = target.getPrivate("height", 0);
-                                    display.moveTo(0, h);
-                                    display.bezierCurveTo(w / 4, h, w / 4, 0, w / 2, 0);
-                                    display.bezierCurveTo(w - w / 4, 0, w - w / 4, h, w, h);
-                                    });
-                            
-                                    // Set data
-                                    var data = [{
-                                    country: "01",
-                                    value: 2025
-                                    }, {
-                                    country: "02",
-                                    value: 1882
-                                    }, {
-                                    country: "03",
-                                    value: 1809
-                                    }, {
-                                    country: "04",
-                                    value: 1322
-                                    }, {
-                                    country: "05",
-                                    value: 1122
-                                    }, {
-                                    country: "06",
-                                    value: 1114
-                                    }, {
-                                    country: "07",
-                                    value: 984
-                                    }, {
-                                    country: "08",
-                                    value: 711
-                                    }, {
-                                    country: "09",
-                                    value: 665
-                                    }, {
-                                    country: "10",
-                                    value: 443
-                                    }, {
-                                    country: "11",
-                                    value: 441
-                                    }, {
-                                    country: "12",
-                                    value: 441
-                                    }, {
-                                    country: "13",
-                                    value: 441
-                                    }, {
-                                    country: "14",
-                                    value: 441
-                                    }, {
-                                    country: "15",
-                                    value: 441
-                                    }, {
-                                    country: "16",
-                                    value: 441
-                                    }, {
-                                    country: "17",
-                                    value: 441
-                                    }, {
-                                    country: "18",
-                                    value: 441
-                                    }];
-                            
-                                    xAxis.data.setAll(data);
-                                    series.data.setAll(data);
-                                    
-                                    // Make stuff animate on load
-                                    // https://www.amcharts.com/docs/v5/concepts/animations/
-                                    series.appear(1000);
-                                    chart.appear(1000, 100);
-                            
-                                 }); // end am5.ready()
+                            var chart = AmCharts.makeChart("chartdiv_parada", {
+                                "theme": "none",
+                                "type": "serial",
+                                "startDuration": 2,
+                                "dataProvider": [{
+                                    "country": "USA",
+                                    "visits": 4025,
+                                    "color": "#FF0F00"
+                                }, {
+                                    "country": "China",
+                                    "visits": 1521,
+                                    "color": "#FF6600"
+                                }, {
+                                    "country": "Japan",
+                                    "visits": 1400,
+                                    "color": "#FF9E01"
+                                }, {
+                                    "country": "Germany",
+                                    "visits": 1322,
+                                    "color": "#FCD202"
+                                }, {
+                                    "country": "UK",
+                                    "visits": 1122,
+                                    "color": "#F8FF01"
+                                }, {
+                                    "country": "France",
+                                    "visits": 214,
+                                    "color": "#B0DE09"
+                                }, {
+                                    "country": "Russia",
+                                    "visits": 580,
+                                    "color": "#2A0CD0"
+                                },  {
+                                    "country": "Taiwan",
+                                    "visits": 338,
+                                    "color": "#333333"
+                                }],
+                                "valueAxes": [{
+                                    "position": "left",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+                                }],
+                                "graphs": [{
+                                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                                    "colorField": "color",
+                                    "fillAlphas": 0.85,
+                                    "lineAlpha": 0.1,
+                                    "type": "column",
+                                    "topRadius":1,
+                                    "valueField": "visits"
+                                }],
+                                "depth3D": 40,
+                                "angle": 30,
+                                "chartCursor": {
+                                    "categoryBalloonEnabled": false,
+                                    "cursorAlpha": 0,
+                                    "zoomable": false
+                                },
+                                "categoryField": "country",
+                                "categoryAxis": {
+                                    "gridPosition": "start",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+
+                                } 
+
+                            }, 0);
+
                         </script>
 
                         <!-- HTML -->
                         <div id="chartdiv_parada"></div>
- 
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -1997,6 +1310,9 @@ ul {
                        
                         <!-- HTML -->
                         <div id="chartdiv_tp_parada"></div>
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -2014,170 +1330,81 @@ ul {
                             </div>  
                         </div>
                         <script>
-                                am5.ready(function() {
-                             
-                                    // Create root element
-                                    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                    var root = am5.Root.new("chartdiv_perda");
-                                    
-                                    // Set themes
-                                    // https://www.amcharts.com/docs/v5/concepts/themes/
-                                    root.setThemes([
-                                    am5themes_Animated.new(root)
-                                    ]);
-                                    
-                                    // Create chart
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                    var chart = root.container.children.push(
-                                    am5xy.XYChart.new(root, {
-                                        panX: true,
-                                        panY: true,
-                                        wheelX: "panX",
-                                        wheelY: "zoomX",
-                                        paddingLeft: 5,
-                                        paddingRight:5
-                                    })
-                                    );
-                            
-                                    // Add cursor
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-                                    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                    cursor.lineY.set("visible", false);
-                                    
-                                    // Create axes
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                    var xRenderer = am5xy.AxisRendererX.new(root, { 
-                                    minGridDistance: 60,
-                                    minorGridEnabled: true
-                                    });
-                            
-                                    var xAxis = chart.xAxes.push(
-                                    am5xy.CategoryAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        categoryField: "country",
-                                        renderer: xRenderer,
-                                        tooltip: am5.Tooltip.new(root, {})
-                                    })
-                                    );
-                                    
-                                    xRenderer.grid.template.setAll({
-                                    location: 1
-                                    })
-                                    
-                                    var yAxis = chart.yAxes.push(
-                                    am5xy.ValueAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        renderer: am5xy.AxisRendererY.new(root, {
-                                        strokeOpacity: 0.1
-                                        })
-                                    })
-                                    );
-                            
-                                    // Create series
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                    var series = chart.series.push(
-                                    am5xy.ColumnSeries.new(root, {
-                                        name: "Series 1",
-                                        xAxis: xAxis,
-                                        yAxis: yAxis,
-                                        valueYField: "value",
-                                        sequencedInterpolation: true,
-                                        categoryXField: "country"
-                                    })
-                                    );
-                            
-                                    series.columns.template.setAll({
-                                    width: am5.percent(120),
-                                    fillOpacity: 0.9,
-                                    strokeOpacity: 0
-                                    });
-                                    series.columns.template.adapters.add("fill", (fill, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                            
-                                    series.columns.template.adapters.add("stroke", (stroke, target) => {
-                                    return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-                                    
-                                    series.columns.template.set("draw", function(display, target) {
-                                    var w = target.getPrivate("width", 0);
-                                    var h = target.getPrivate("height", 0);
-                                    display.moveTo(0, h);
-                                    display.bezierCurveTo(w / 4, h, w / 4, 0, w / 2, 0);
-                                    display.bezierCurveTo(w - w / 4, 0, w - w / 4, h, w, h);
-                                    });
-                            
-                                    // Set data
-                                    var data = [{
-                                    country: "01",
-                                    value: 2025
-                                    }, {
-                                    country: "02",
-                                    value: 1882
-                                    }, {
-                                    country: "03",
-                                    value: 1809
-                                    }, {
-                                    country: "04",
-                                    value: 1322
-                                    }, {
-                                    country: "05",
-                                    value: 1122
-                                    }, {
-                                    country: "06",
-                                    value: 1114
-                                    }, {
-                                    country: "07",
-                                    value: 984
-                                    }, {
-                                    country: "08",
-                                    value: 711
-                                    }, {
-                                    country: "09",
-                                    value: 665
-                                    }, {
-                                    country: "10",
-                                    value: 443
-                                    }, {
-                                    country: "11",
-                                    value: 441
-                                    }, {
-                                    country: "12",
-                                    value: 441
-                                    }, {
-                                    country: "13",
-                                    value: 441
-                                    }, {
-                                    country: "14",
-                                    value: 441
-                                    }, {
-                                    country: "15",
-                                    value: 441
-                                    }, {
-                                    country: "16",
-                                    value: 441
-                                    }, {
-                                    country: "17",
-                                    value: 441
-                                    }, {
-                                    country: "18",
-                                    value: 441
-                                    }];
-                            
-                                    xAxis.data.setAll(data);
-                                    series.data.setAll(data);
-                                    
-                                    // Make stuff animate on load
-                                    // https://www.amcharts.com/docs/v5/concepts/animations/
-                                    series.appear(1000);
-                                    chart.appear(1000, 100);
-                            
-                                 }); // end am5.ready()
+                            var chart = AmCharts.makeChart("chartdiv_perda, {
+                                "theme": "none",
+                                "type": "serial",
+                                "startDuration": 2,
+                                "dataProvider": [{
+                                    "country": "USA",
+                                    "visits": 4025,
+                                    "color": "#FF0F00"
+                                }, {
+                                    "country": "China",
+                                    "visits": 1521,
+                                    "color": "#FF6600"
+                                }, {
+                                    "country": "Japan",
+                                    "visits": 1400,
+                                    "color": "#FF9E01"
+                                }, {
+                                    "country": "Germany",
+                                    "visits": 1322,
+                                    "color": "#FCD202"
+                                }, {
+                                    "country": "UK",
+                                    "visits": 1122,
+                                    "color": "#F8FF01"
+                                }, {
+                                    "country": "France",
+                                    "visits": 214,
+                                    "color": "#B0DE09"
+                                }, {
+                                    "country": "Russia",
+                                    "visits": 580,
+                                    "color": "#2A0CD0"
+                                },  {
+                                    "country": "Taiwan",
+                                    "visits": 338,
+                                    "color": "#333333"
+                                }],
+                                "valueAxes": [{
+                                    "position": "left",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+                                }],
+                                "graphs": [{
+                                    "balloonText": "[[category]]: <b>[[value]]</b>",
+                                    "colorField": "color",
+                                    "fillAlphas": 0.85,
+                                    "lineAlpha": 0.1,
+                                    "type": "column",
+                                    "topRadius":1,
+                                    "valueField": "visits"
+                                }],
+                                "depth3D": 40,
+                                "angle": 30,
+                                "chartCursor": {
+                                    "categoryBalloonEnabled": false,
+                                    "cursorAlpha": 0,
+                                    "zoomable": false
+                                },
+                                "categoryField": "country",
+                                "categoryAxis": {
+                                    "gridPosition": "start",
+                                    "axisAlpha":0,
+                                    "gridAlpha":0
+
+                                } 
+
+                            }, 0);
+
                         </script>
 
                         <!-- HTML -->
                         <div id="chartdiv_perda"></div>
- 
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -2231,6 +1458,9 @@ ul {
                        
                         <!-- HTML -->
                         <div id="chartdiv_tp_perda"></div>
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -2238,8 +1468,10 @@ ul {
 
      
     </div>
- 
+  
     <x-slot name="scripts"> 
+     
         <script src="{{ asset('js/paginas/previsto_realizado.js') }}"></script>
+
     </x-slot>
 </x-layout.colonial.layout>

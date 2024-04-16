@@ -11,16 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class Inicio extends Controller
 {
-    public function cadastro() {
-        $hospitais = Hospital::all();
-        $produtos = Produto::all();
-
-        return view('index', [
-            'hospitais' => $hospitais,
-            'produtos' => $produtos,
-        ]);
-    }
-
+  
     public function login() { 
         return view('login');
     }
