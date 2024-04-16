@@ -1330,7 +1330,7 @@ ul {
                             </div>  
                         </div>
                         <script>
-                            var chart = AmCharts.makeChart("chartdiv_perda, {
+                            var chart = AmCharts.makeChart("chartdiv_perda", {
                                 "theme": "none",
                                 "type": "serial",
                                 "startDuration": 2,
