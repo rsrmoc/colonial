@@ -38,8 +38,7 @@ class Hidrico extends Controller
  
         
         $validator = Validator::make($request->all(), [
-            'dt_consumo' => 'required|date',
-            'consumo_anterior' => 'required',
+            'dt_consumo' => 'required|date', 
             'consumo_atual' => 'required' 
         ],[
             'dt_consumo.required' => 'O campo data do consumo é obrigatorio',
@@ -61,8 +60,7 @@ class Hidrico extends Controller
                 $qtde_atual= str_replace(',', '.', $qtde_atual);
                 return ModelsHidrico::create([
                     'dt_consumo' => $request->dt_consumo,
-                    'qtde_atual' => $qtde_atual, 
-                    'qtde_anterior' => $qtde_anterior, 
+                    'qtde_atual' => $qtde_atual,  
                 ]);
 
             }); 
@@ -80,8 +78,7 @@ class Hidrico extends Controller
     public function update(Request $request,ModelsHidrico $hidrico) {
         
         $validator = Validator::make($request->all(), [
-            'dt_consumo' => 'required|date',
-            'consumo_anterior' => 'required',
+            'dt_consumo' => 'required|date', 
             'consumo_atual' => 'required' 
         ],[
             'dt_consumo.required' => 'O campo data do consumo é obrigatorio',
@@ -104,8 +101,7 @@ class Hidrico extends Controller
                 $qtde_atual= str_replace(',', '.', $qtde_atual);
                 return $hidrico->update([
                     'dt_consumo' => $request->dt_consumo,
-                    'qtde_atual' => $qtde_atual, 
-                    'qtde_anterior' => $qtde_anterior, 
+                    'qtde_atual' => $qtde_atual,  
                 ]);
 
                 }); 

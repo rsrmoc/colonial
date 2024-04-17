@@ -160,6 +160,7 @@ Alpine.data('app', () => ({
                       "id": "AmGraph-1",
                       "lineAlpha": 0.2,
                       "title": "planejado",
+                      "labelText": "[[value]]",
                       "type": "column",
                       "valueField": "planejado",
                       "fillColorsField": "color_planejado", 
@@ -171,6 +172,7 @@ Alpine.data('app', () => ({
                       "id": "AmGraph-2",
                       "lineAlpha": 0.2,
                       "title": "produzido",
+                      "labelText": "[[value]]",
                       "type": "column",
                       "valueField": "produzido",
                       "fillColorsField": "color_produzido"
@@ -203,6 +205,7 @@ Alpine.data('app', () => ({
                     "balloonText": "<b>[[category]]: [[value]]</b>",
                     "fillColorsField": "color",
                     "fillAlphas": 0.9,
+                    "labelText": "[[value]]",
                     "lineAlpha": 0.2,
                     "type": "column",
                     "valueField": "qtde"
@@ -220,6 +223,7 @@ Alpine.data('app', () => ({
                 
                 });
 
+                /*Comparativo*/
                 if(res.data.request.agrupamento=='D'){
 
                   var chart = AmCharts.makeChart("chartdiv_comparativo", {
@@ -241,6 +245,7 @@ Alpine.data('app', () => ({
                               "id": "AmGraph-1",
                               "lineAlpha": 0.2,
                               "title": res.data.graficoAnos01,
+                              "labelText": "[[value]]",
                               "type": "column",
                               "valueField": "ano01",
                               "fillColorsField": "color01"
@@ -251,6 +256,7 @@ Alpine.data('app', () => ({
                               "id": "AmGraph-2",
                               "lineAlpha": 0.2,
                               "title": res.data.graficoAnos02,
+                              "labelText": "[[value]]",
                               "type": "column",
                               "valueField": "ano02",
                               "fillColorsField": "color02", 
@@ -262,6 +268,7 @@ Alpine.data('app', () => ({
                               "id": "AmGraph-3",
                               "lineAlpha": 0.2,
                               "title": res.data.graficoAnos03,
+                              "labelText": "[[value]]",
                               "type": "column",
                               "valueField": "ano03",
                               "fillColorsField": "color03"
@@ -313,8 +320,230 @@ Alpine.data('app', () => ({
                   });
                 
                 }
+                 
+                /*Agua*/
+                var chart = AmCharts.makeChart("chartdiv_agua", {
+                  "theme": "none",
+                  "type": "serial",
+                  "startDuration": 2,
+                  "dataProvider": res.data.GraficoAgua,
+                  "graphs": [{
+                      "balloonText": "[[category]]: <b>[[value]]</b>",
+                      "colorField": "color",
+                      "fillAlphas": 0.85,
+                      "lineAlpha": 0.1,
+                      "type": "column",
+                      "topRadius":1,
+                      "valueField": "visits"
+                  }],
+                  "depth3D": 40,
+                  "angle": 30,
+                  "chartCursor": {
+                      "categoryBalloonEnabled": false,
+                      "cursorAlpha": 0,
+                      "zoomable": false
+                  },
+                  "categoryField": "country",
+                  "categoryAxis": {
+                      "gridPosition": "start",
+                      "axisAlpha":0,
+                      "gridAlpha":0
 
+                  } 
+
+                }, 0);
+
+                /*Energia*/
+                var chart = AmCharts.makeChart("chartdiv_energia", {
+                  "theme": "none",
+                  "type": "serial",
+                  "startDuration": 2,
+                  "dataProvider": res.data.GraficoEnergia,
+                  "graphs": [{
+                      "balloonText": "[[category]]: <b>[[value]]</b>",
+                      "colorField": "color",
+                      "fillAlphas": 0.85,
+                      "lineAlpha": 0.1,
+                      "type": "column",
+                      "topRadius":1,
+                      "valueField": "visits"
+                  }],
+                  "depth3D": 40,
+                  "angle": 30,
+                  "chartCursor": {
+                      "categoryBalloonEnabled": false,
+                      "cursorAlpha": 0,
+                      "zoomable": false
+                  },
+                  "categoryField": "country",
+                  "categoryAxis": {
+                      "gridPosition": "start",
+                      "axisAlpha":0,
+                      "gridAlpha":0
+
+                  } 
+
+                }, 0);
+
+                /*Lenha*/
+                var chart = AmCharts.makeChart("chartdiv_lenha", {
+                  "theme": "none",
+                  "type": "serial",
+                  "startDuration": 2,
+                  "dataProvider": res.data.GraficoLenha,
+                  "graphs": [{
+                      "balloonText": "[[category]]: <b>[[value]]</b>",
+                      "colorField": "color",
+                      "fillAlphas": 0.85,
+                      "lineAlpha": 0.1,
+                      "type": "column",
+                      "topRadius":1,
+                      "valueField": "visits"
+                  }],
+                  "depth3D": 40,
+                  "angle": 30,
+                  "chartCursor": {
+                      "categoryBalloonEnabled": false,
+                      "cursorAlpha": 0,
+                      "zoomable": false
+                  },
+                  "categoryField": "country",
+                  "categoryAxis": {
+                      "gridPosition": "start",
+                      "axisAlpha":0,
+                      "gridAlpha":0
+
+                  } 
+
+                }, 0);
+
+                /*Polpa*/
+                var chart = AmCharts.makeChart("chartdiv_polpa", {
+                  "theme": "none",
+                  "type": "serial",
+                  "startDuration": 2,
+                  "dataProvider": res.data.GraficoPolpa,
+                  "graphs": [{
+                      "balloonText": "[[category]]: <b>[[value]]</b>",
+                      "colorField": "color",
+                      "fillAlphas": 0.85,
+                      "lineAlpha": 0.1,
+                      "type": "column",
+                      "topRadius":1,
+                      "valueField": "visits"
+                  }],
+                  "depth3D": 40,
+                  "angle": 30,
+                  "chartCursor": {
+                      "categoryBalloonEnabled": false,
+                      "cursorAlpha": 0,
+                      "zoomable": false
+                  },
+                  "categoryField": "country",
+                  "categoryAxis": {
+                      "gridPosition": "start",
+                      "axisAlpha":0,
+                      "gridAlpha":0
+
+                  } 
+
+                }, 0);
   
+                /*Parada*/
+                var chart = AmCharts.makeChart("chartdiv_parada", {
+                  "theme": "none",
+                  "type": "serial",
+                  "startDuration": 2,
+                  "dataProvider": res.data.GraficoParada,
+                  "graphs": [{
+                      "balloonText": "[[category]]: <b>[[value]]</b>",
+                      "colorField": "color",
+                      "fillAlphas": 0.85,
+                      "lineAlpha": 0.1,
+                      "type": "column",
+                      "topRadius":1,
+                      "valueField": "visits"
+                  }],
+                  "depth3D": 40,
+                  "angle": 30,
+                  "chartCursor": {
+                      "categoryBalloonEnabled": false,
+                      "cursorAlpha": 0,
+                      "zoomable": false
+                  },
+                  "categoryField": "country",
+                  "categoryAxis": {
+                      "gridPosition": "start",
+                      "axisAlpha":0,
+                      "gridAlpha":0 
+                  } 
+
+                }, 0);
+
+                /*TipoParada*/
+                var chart = AmCharts.makeChart( "chartdiv_tp_parada", {
+                  "type": "pie",
+                  "theme": "none",
+                  "dataProvider": res.data.GraficoTp_parada,
+                  "valueField": "litres",
+                  "titleField": "country",
+                   "balloon":{
+                   "fixedPosition":true
+                  },
+                  "labelRadius": 5, 
+                  "marginTop": 0,
+                  "marginBottom": 0,
+                  "marginLeft": 0,
+                  "marginRight": 0,
+                } );
+
+                /*Perda*/
+                var chart = AmCharts.makeChart("chartdiv_perda", {
+                  "theme": "none",
+                  "type": "serial",
+                  "startDuration": 2,
+                  "dataProvider": res.data.GraficoPerda,
+                  "graphs": [{
+                      "balloonText": "[[category]]: <b>[[value]]</b>",
+                      "colorField": "color",
+                      "fillAlphas": 0.85,
+                      "lineAlpha": 0.1,
+                      "type": "column",
+                      "topRadius":1,
+                      "valueField": "visits"
+                  }],
+                  "depth3D": 40,
+                  "angle": 30,
+                  "chartCursor": {
+                      "categoryBalloonEnabled": false,
+                      "cursorAlpha": 0,
+                      "zoomable": false
+                  },
+                  "categoryField": "country",
+                  "categoryAxis": {
+                      "gridPosition": "start",
+                      "axisAlpha":0,
+                      "gridAlpha":0 
+                  } 
+
+                }, 0);
+
+                /*TipoPerda*/
+                var chart = AmCharts.makeChart( "chartdiv_tp_perda", {
+                  "type": "pie",
+                  "theme": "none",
+                  "dataProvider": res.data.GraficoTpPerda,
+                  "valueField": "litres",
+                  "titleField": "country",
+                   "balloon":{
+                   "fixedPosition":true
+                  },
+                  "labelRadius": 5, 
+                  "marginTop": 0,
+                  "marginBottom": 0,
+                  "marginLeft": 0,
+                  "marginRight": 0,
+                } );
             })
             .catch((err) => { 
               console.log(err.response.data);

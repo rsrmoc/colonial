@@ -803,89 +803,7 @@ ul {
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                             </div>  
                         </div>
-                        <script>
-                            var chart = AmCharts.makeChart("chartdiv_agua", {
-                                "theme": "none",
-                                "type": "serial",
-                                "startDuration": 2,
-                                "dataProvider": [{
-                                    "country": "USA",
-                                    "visits": 4025,
-                                    "color": "#FF0F00"
-                                }, {
-                                    "country": "China",
-                                    "visits": 1882,
-                                    "color": "#FF6600"
-                                }, {
-                                    "country": "Japan",
-                                    "visits": 1809,
-                                    "color": "#FF9E01"
-                                }, {
-                                    "country": "Germany",
-                                    "visits": 1322,
-                                    "color": "#FCD202"
-                                }, {
-                                    "country": "UK",
-                                    "visits": 1122,
-                                    "color": "#F8FF01"
-                                }, {
-                                    "country": "France",
-                                    "visits": 1114,
-                                    "color": "#B0DE09"
-                                }, {
-                                    "country": "India",
-                                    "visits": 984,
-                                    "color": "#04D215"
-                                }, {
-                                    "country": "Spain",
-                                    "visits": 711,
-                                    "color": "#0D8ECF"
-                                }, {
-                                    "country": "Netherlands",
-                                    "visits": 665,
-                                    "color": "#0D52D1"
-                                }, {
-                                    "country": "Russia",
-                                    "visits": 580,
-                                    "color": "#2A0CD0"
-                                },  {
-                                    "country": "Taiwan",
-                                    "visits": 338,
-                                    "color": "#333333"
-                                }],
-                                "valueAxes": [{
-                                    "position": "left",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-                                }],
-                                "graphs": [{
-                                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                                    "colorField": "color",
-                                    "fillAlphas": 0.85,
-                                    "lineAlpha": 0.1,
-                                    "type": "column",
-                                    "topRadius":1,
-                                    "valueField": "visits"
-                                }],
-                                "depth3D": 40,
-                                "angle": 30,
-                                "chartCursor": {
-                                    "categoryBalloonEnabled": false,
-                                    "cursorAlpha": 0,
-                                    "zoomable": false
-                                },
-                                "categoryField": "country",
-                                "categoryAxis": {
-                                    "gridPosition": "start",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-
-                                } 
-
-                            }, 0);
-
-                        </script>
-
+                         
                         <!-- HTML -->
                         <div id="chartdiv_agua"></div>
                         <template x-if="loadingCharts">
@@ -905,80 +823,12 @@ ul {
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                             </div>  
                         </div>
-
-                        <script>
-                            var chart = AmCharts.makeChart("chartdiv_energia", {
-                                "theme": "none",
-                                "type": "serial",
-                                "startDuration": 2,
-                                "dataProvider": [{
-                                    "country": "USA",
-                                    "visits": 2010,
-                                    "color": "#FF0F00"
-                                }, {
-                                    "country": "China",
-                                    "visits": 1882,
-                                    "color": "#FF6600"
-                                },   {
-                                    "country": "UK",
-                                    "visits": 1122,
-                                    "color": "#F8FF01"
-                                }, {
-                                    "country": "France",
-                                    "visits": 1114,
-                                    "color": "#B0DE09"
-                                }, {
-                                    "country": "India",
-                                    "visits": 984,
-                                    "color": "#04D215"
-                                }, {
-                                    "country": "Spain",
-                                    "visits": 711,
-                                    "color": "#0D8ECF"
-                                }, {
-                                    "country": "Netherlands",
-                                    "visits": 665,
-                                    "color": "#0D52D1"
-                                }],
-                                "valueAxes": [{
-                                    "position": "left",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-                                }],
-                                "graphs": [{
-                                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                                    "colorField": "color",
-                                    "fillAlphas": 0.85,
-                                    "lineAlpha": 0.1,
-                                    "type": "column",
-                                    "topRadius":1,
-                                    "valueField": "visits"
-                                }],
-                                "depth3D": 40,
-                                "angle": 30,
-                                "chartCursor": {
-                                    "categoryBalloonEnabled": false,
-                                    "cursorAlpha": 0,
-                                    "zoomable": false
-                                },
-                                "categoryField": "country",
-                                "categoryAxis": {
-                                    "gridPosition": "start",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-
-                                } 
-
-                            }, 0);
-
-                        </script>
-
-
-                    <!-- HTML -->
-                    <div id="chartdiv_energia"></div>
-                    <template x-if="loadingCharts">
-                        <x-loader class="absolute-loader"/>
-                    </template>
+ 
+                        <!-- HTML -->
+                        <div id="chartdiv_energia"></div>
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
 
                     </div>
                 </div>
@@ -996,73 +846,7 @@ ul {
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                             </div>  
                         </div>
-                        <script>
-                            var chart = AmCharts.makeChart("chartdiv_lenha", {
-                                "theme": "none",
-                                "type": "serial",
-                                "startDuration": 2,
-                                "dataProvider": [{
-                                    "country": "USA",
-                                    "visits": 2010,
-                                    "color": "#FF0F00"
-                                }, {
-                                    "country": "China",
-                                    "visits": 950,
-                                    "color": "#FF6600"
-                                },   {
-                                    "country": "UK",
-                                    "visits": 999,
-                                    "color": "#F8FF01"
-                                }, {
-                                    "country": "France",
-                                    "visits": 1145,
-                                    "color": "#B0DE09"
-                                }, {
-                                    "country": "India",
-                                    "visits": 984,
-                                    "color": "#04D215"
-                                }, {
-                                    "country": "Spain",
-                                    "visits": 711,
-                                    "color": "#0D8ECF"
-                                }, {
-                                    "country": "Netherlands",
-                                    "visits": 665,
-                                    "color": "#0D52D1"
-                                }],
-                                "valueAxes": [{
-                                    "position": "left",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-                                }],
-                                "graphs": [{
-                                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                                    "colorField": "color",
-                                    "fillAlphas": 0.85,
-                                    "lineAlpha": 0.1,
-                                    "type": "column",
-                                    "topRadius":1,
-                                    "valueField": "visits"
-                                }],
-                                "depth3D": 40,
-                                "angle": 30,
-                                "chartCursor": {
-                                    "categoryBalloonEnabled": false,
-                                    "cursorAlpha": 0,
-                                    "zoomable": false
-                                },
-                                "categoryField": "country",
-                                "categoryAxis": {
-                                    "gridPosition": "start",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-
-                                } 
-
-                            }, 0);
-
-                        </script>
-
+                        
                         <!-- HTML -->
                         <div id="chartdiv_lenha"></div>
                         <template x-if="loadingCharts">
@@ -1082,81 +866,7 @@ ul {
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                             </div>  
                         </div>
-
-                        <script>
-                            var chart = AmCharts.makeChart("chartdiv_polpa", {
-                                "theme": "none",
-                                "type": "serial",
-                                "startDuration": 2,
-                                "dataProvider": [{
-                                    "country": "USA",
-                                    "visits": 4025,
-                                    "color": "#FF0F00"
-                                }, {
-                                    "country": "China",
-                                    "visits": 1882,
-                                    "color": "#FF6600"
-                                }, {
-                                    "country": "Japan",
-                                    "visits": 1809,
-                                    "color": "#FF9E01"
-                                }, {
-                                    "country": "Germany",
-                                    "visits": 1322,
-                                    "color": "#FCD202"
-                                }, {
-                                    "country": "UK",
-                                    "visits": 1122,
-                                    "color": "#F8FF01"
-                                }, {
-                                    "country": "France",
-                                    "visits": 1114,
-                                    "color": "#B0DE09"
-                                },  {
-                                    "country": "Netherlands",
-                                    "visits": 665,
-                                    "color": "#0D52D1"
-                                }, {
-                                    "country": "Russia",
-                                    "visits": 580,
-                                    "color": "#2A0CD0"
-                                },  {
-                                    "country": "Taiwan",
-                                    "visits": 338,
-                                    "color": "#333333"
-                                }],
-                                "valueAxes": [{
-                                    "position": "left",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-                                }],
-                                "graphs": [{
-                                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                                    "colorField": "color",
-                                    "fillAlphas": 0.85,
-                                    "lineAlpha": 0.1,
-                                    "type": "column",
-                                    "topRadius":1,
-                                    "valueField": "visits"
-                                }],
-                                "depth3D": 40,
-                                "angle": 30,
-                                "chartCursor": {
-                                    "categoryBalloonEnabled": false,
-                                    "cursorAlpha": 0,
-                                    "zoomable": false
-                                },
-                                "categoryField": "country",
-                                "categoryAxis": {
-                                    "gridPosition": "start",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-
-                                } 
-
-                            }, 0);
-
-                        </script>
+ 
 
                     <!-- HTML -->
                     <div id="chartdiv_polpa"></div>
@@ -1180,77 +890,7 @@ ul {
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                             </div>  
                         </div>
-                        <script>
-                            var chart = AmCharts.makeChart("chartdiv_parada", {
-                                "theme": "none",
-                                "type": "serial",
-                                "startDuration": 2,
-                                "dataProvider": [{
-                                    "country": "USA",
-                                    "visits": 4025,
-                                    "color": "#FF0F00"
-                                }, {
-                                    "country": "China",
-                                    "visits": 1521,
-                                    "color": "#FF6600"
-                                }, {
-                                    "country": "Japan",
-                                    "visits": 1400,
-                                    "color": "#FF9E01"
-                                }, {
-                                    "country": "Germany",
-                                    "visits": 1322,
-                                    "color": "#FCD202"
-                                }, {
-                                    "country": "UK",
-                                    "visits": 1122,
-                                    "color": "#F8FF01"
-                                }, {
-                                    "country": "France",
-                                    "visits": 214,
-                                    "color": "#B0DE09"
-                                }, {
-                                    "country": "Russia",
-                                    "visits": 580,
-                                    "color": "#2A0CD0"
-                                },  {
-                                    "country": "Taiwan",
-                                    "visits": 338,
-                                    "color": "#333333"
-                                }],
-                                "valueAxes": [{
-                                    "position": "left",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-                                }],
-                                "graphs": [{
-                                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                                    "colorField": "color",
-                                    "fillAlphas": 0.85,
-                                    "lineAlpha": 0.1,
-                                    "type": "column",
-                                    "topRadius":1,
-                                    "valueField": "visits"
-                                }],
-                                "depth3D": 40,
-                                "angle": 30,
-                                "chartCursor": {
-                                    "categoryBalloonEnabled": false,
-                                    "cursorAlpha": 0,
-                                    "zoomable": false
-                                },
-                                "categoryField": "country",
-                                "categoryAxis": {
-                                    "gridPosition": "start",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-
-                                } 
-
-                            }, 0);
-
-                        </script>
-
+                       
                         <!-- HTML -->
                         <div id="chartdiv_parada"></div>
                         <template x-if="loadingCharts">
@@ -1267,47 +907,7 @@ ul {
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Tipo de Paradas</h3></div>
                              
                         </div> 
-
-                        <script>
-                            var chart = AmCharts.makeChart( "chartdiv_tp_parada", {
-                              "type": "pie",
-                              "theme": "none",
-                              "dataProvider": [ {
-                                "country": "Lithuania",
-                                "litres": 501.9
-                              }, {
-                                "country": "Czech Republic",
-                                "litres": 301.9
-                              }, {
-                                "country": "Ireland",
-                                "litres": 201.1
-                              }, {
-                                "country": "Germany",
-                                "litres": 165.8
-                              }, {
-                                "country": "Australia",
-                                "litres": 139.9
-                              }, {
-                                "country": "Austria",
-                                "litres": 128.3
-                              }, {
-                                "country": "UK",
-                                "litres": 99
-                              }, {
-                                "country": "Belgium",
-                                "litres": 60
-                              }, {
-                                "country": "The Netherlands",
-                                "litres": 50
-                              } ],
-                              "valueField": "litres",
-                              "titleField": "country",
-                               "balloon":{
-                               "fixedPosition":true
-                              } 
-                            } );
-                        </script> 
-                       
+ 
                         <!-- HTML -->
                         <div id="chartdiv_tp_parada"></div>
                         <template x-if="loadingCharts">
@@ -1329,76 +929,7 @@ ul {
                                 <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
                             </div>  
                         </div>
-                        <script>
-                            var chart = AmCharts.makeChart("chartdiv_perda", {
-                                "theme": "none",
-                                "type": "serial",
-                                "startDuration": 2,
-                                "dataProvider": [{
-                                    "country": "USA",
-                                    "visits": 4025,
-                                    "color": "#FF0F00"
-                                }, {
-                                    "country": "China",
-                                    "visits": 1521,
-                                    "color": "#FF6600"
-                                }, {
-                                    "country": "Japan",
-                                    "visits": 1400,
-                                    "color": "#FF9E01"
-                                }, {
-                                    "country": "Germany",
-                                    "visits": 1322,
-                                    "color": "#FCD202"
-                                }, {
-                                    "country": "UK",
-                                    "visits": 1122,
-                                    "color": "#F8FF01"
-                                }, {
-                                    "country": "France",
-                                    "visits": 214,
-                                    "color": "#B0DE09"
-                                }, {
-                                    "country": "Russia",
-                                    "visits": 580,
-                                    "color": "#2A0CD0"
-                                },  {
-                                    "country": "Taiwan",
-                                    "visits": 338,
-                                    "color": "#333333"
-                                }],
-                                "valueAxes": [{
-                                    "position": "left",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-                                }],
-                                "graphs": [{
-                                    "balloonText": "[[category]]: <b>[[value]]</b>",
-                                    "colorField": "color",
-                                    "fillAlphas": 0.85,
-                                    "lineAlpha": 0.1,
-                                    "type": "column",
-                                    "topRadius":1,
-                                    "valueField": "visits"
-                                }],
-                                "depth3D": 40,
-                                "angle": 30,
-                                "chartCursor": {
-                                    "categoryBalloonEnabled": false,
-                                    "cursorAlpha": 0,
-                                    "zoomable": false
-                                },
-                                "categoryField": "country",
-                                "categoryAxis": {
-                                    "gridPosition": "start",
-                                    "axisAlpha":0,
-                                    "gridAlpha":0
-
-                                } 
-
-                            }, 0);
-
-                        </script>
+ 
 
                         <!-- HTML -->
                         <div id="chartdiv_perda"></div>
@@ -1415,46 +946,6 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Motivos de Perdas</h3></div> 
                         </div> 
-                        
-                        <script>
-                            var chart = AmCharts.makeChart( "chartdiv_tp_perda", {
-                              "type": "pie",
-                              "theme": "none",
-                              "dataProvider": [ {
-                                "country": "Lithuania",
-                                "litres": 501.9
-                              }, {
-                                "country": "Czech Republic",
-                                "litres": 301.9
-                              }, {
-                                "country": "Ireland",
-                                "litres": 201.1
-                              }, {
-                                "country": "Germany",
-                                "litres": 165.8
-                              }, {
-                                "country": "Australia",
-                                "litres": 139.9
-                              }, {
-                                "country": "Austria",
-                                "litres": 128.3
-                              }, {
-                                "country": "UK",
-                                "litres": 99
-                              }, {
-                                "country": "Belgium",
-                                "litres": 60
-                              }, {
-                                "country": "The Netherlands",
-                                "litres": 50
-                              } ],
-                              "valueField": "litres",
-                              "titleField": "country",
-                               "balloon":{
-                               "fixedPosition":true
-                              } 
-                            } );
-                        </script> 
                        
                         <!-- HTML -->
                         <div id="chartdiv_tp_perda"></div>
