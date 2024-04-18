@@ -126,7 +126,7 @@ Alpine.data('app', function () {
         _this2.iconHeaderPerdas = res.data.request.perda;
         _this2.iconHeaderParadas = res.data.request.perda + '<span class="headerUnidade"> (Min)</span>';
         _this2.iconHeaderPolpas = res.data.request.polpa + '<span class="headerUnidade"> (Kg) </span>';
-        _this2.iconHeaderPolpasKg = res.data.request.PolpaKg + '<span class="headerUnidade"> (Kg) </span>';
+        _this2.iconHeaderPolpasKg = res.data.request.PolpaKg + '<span class="headerUnidade"> (kg/kg) </span>';
         _this2.iconHeaderProdTo = res.data.request.ProduzidoTo + '<span class="headerUnidade"> (T) </span>';
         _this2.iconHeaderProdKg = res.data.request.ProduzidoKg + '<span class="headerUnidade"> (Kg) </span>';
         _this2.iconHeaderProdCx = res.data.request.ProduzidoCx + '<span class="headerUnidade"> (Cx) </span>';
@@ -528,6 +528,7 @@ Alpine.data('app', function () {
     },
     xls: function xls(tipo) {
       location.href = '/colonial/prod_prev_real-xls/' + tipo + '?dtf=' + this.parametros.dtf + '&dti=' + this.parametros.dti;
+      toastr['success']('XLS gerado com sucesso');
     },
     getDataChartDetalhes: function getDataChartDetalhes(dados) {
       var _this3 = this;

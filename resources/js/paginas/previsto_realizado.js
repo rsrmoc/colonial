@@ -145,7 +145,7 @@ Alpine.data('app', () => ({
                 this.iconHeaderPerdas = res.data.request.perda;
                 this.iconHeaderParadas = res.data.request.perda+'<span class="headerUnidade"> (Min)</span>';
                 this.iconHeaderPolpas = res.data.request.polpa+'<span class="headerUnidade"> (Kg) </span>';
-                this.iconHeaderPolpasKg = res.data.request.PolpaKg+'<span class="headerUnidade"> (Kg) </span>';
+                this.iconHeaderPolpasKg = res.data.request.PolpaKg+'<span class="headerUnidade"> (kg/kg) </span>';
 
                 this.iconHeaderProdTo = res.data.request.ProduzidoTo+'<span class="headerUnidade"> (T) </span>';
                 this.iconHeaderProdKg = res.data.request.ProduzidoKg+'<span class="headerUnidade"> (Kg) </span>';
@@ -585,7 +585,7 @@ Alpine.data('app', () => ({
     xls(tipo){ 
       
       location.href = '/colonial/prod_prev_real-xls/'+tipo+'?dtf='+this.parametros.dtf+'&dti='+this.parametros.dti;
-    
+      toastr['success']('XLS gerado com sucesso');
     },
 
     getDataChartDetalhes(dados) { 
