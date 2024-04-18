@@ -26,7 +26,7 @@ class UserPermissions
          
         $NaoverificarRotas = ['home',null]; 
         $verificarRotas = ['home', 'perfis','energia','hidrico','prod_prev_real','usuarios','parada','tipoparada','tipoperda','perda'];
-        $verificarAcao = ['ver','listar','criar','store','editar','update','excluir','destroy','json','detalhes',null,'combo'];
+        $verificarAcao = ['ver','listar','criar','store','editar','update','excluir','destroy','json','detalhes',null,'combo','xls'];
 
         $rotaAtual = Route::currentRouteName(); 
         $permissaoRota = substr(Route::currentRouteName(), 0, strpos(Route::currentRouteName(), "-") === false ? null : strpos(Route::currentRouteName(), "-"));

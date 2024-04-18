@@ -416,7 +416,7 @@ ul {
         cursor: pointer
     }
     .info-box .info-box-stats p {
-        font-size: 20px;
+        font-size: 17px;
         font-weight: 400;
         margin-bottom: 10px;
         color: #484f5e; 
@@ -425,11 +425,17 @@ ul {
         padding: 10px; 
     }
     .headerUnidade{
-        font-size: 15px;
+        font-size: 13px;
     }
     .table>thead>tr>th {
         vertical-align: bottom;
-        border-bottom: 3px solid #4472c4;
+        border-bottom: 3px solid #FF0F00;
+        
+    }
+    .table>tbody>tr>td {
+        font-size: 20px;
+        font-weight: 400;
+        font-style: italic;
     }
 </style>
 
@@ -512,8 +518,7 @@ ul {
                 </div>
             </div>
         </div>
-
-  
+ 
         <div class="row">
          
             <div class="col-lg-4 col-md-8">
@@ -580,8 +585,9 @@ ul {
                 <div class="panel info-box panel-white" style="background: #399BFF;" >
                     <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderAgua" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Agua</span>
+                            <p class="counter" x-html="iconHeaderAgua" style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa; "></i></p>
+                            <p class="counter" x-html="iconHeaderAguaKg" style="color: #f9fafa; margin-bottom: 5px; font-weight: 700; font-size: 15px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Agua</span>
                         </div>
                         <div class="info-box-icon ">
                             <i class="fa fa-tint " style="color: #f9fafa;"></i>
@@ -590,12 +596,13 @@ ul {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4">
+            <div class="col-lg-2 col-md-4"> 
                 <div class="panel info-box panel-white" style="background: #c2a505;">
                     <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderEnergia"  style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Energia</span>
+                            <p class="counter" x-html="iconHeaderEnergia"  style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" x-html="iconHeaderEnergiaKg" style="color: #f9fafa; margin-bottom: 5px; font-weight: 700; font-size: 15px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Energia</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-bolt" style="color: #f9fafa;"></i>
@@ -608,8 +615,9 @@ ul {
                 <div class="panel info-box panel-white" style="background: #26A65B;">
                     <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderLenha" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Lenha</span>
+                            <p class="counter" x-html="iconHeaderLenha" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" x-html="iconHeaderLenhaKg" style="color: #f9fafa; margin-bottom: 5px; font-weight: 700; font-size: 15px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Lenha</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="glyphicon glyphicon-tree-deciduous" style="color: #f9fafa;" aria-hidden="true"></i>
@@ -619,11 +627,27 @@ ul {
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
+                <div class="panel info-box panel-white" style="background: #e83e8c;">
+                    <div class="panel-body" style="border-bottom: 3px solid #e83e8c;">
+                        <div class="info-box-stats">
+                            <p class="counter" x-html="iconHeaderPolpas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" x-html="iconHeaderPolpasKg" style="color: #f9fafa; margin-bottom: 5px; font-weight: 700; font-size: 15px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title"  style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Polpas</span>
+                        </div>
+                        <div class="info-box-icon"> 
+                            <i class="fa fa-apple"  style="color: #f9fafa"></i>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4">
                 <div class="panel info-box panel-white" style="background: #EF4836;">
                     <div class="panel-body" style="border-bottom: 3px solid #EF4836;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderPerdas" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Perdas</span>
+                            <p class="counter" x-html="iconHeaderPerdas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter"  style="color: #f9fafa; margin-bottom: 5px; font-weight: 700; font-size: 15px;"> -- </p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Perdas</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-exclamation-triangle" style="color: #f9fafa;"></i>
@@ -636,8 +660,9 @@ ul {
                 <div class="panel info-box panel-white" style="background: #f1bb07;">
                     <div class="panel-body" style="border-bottom: 3px solid #f1bb07;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderParadas" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;" >Paradas</span>
+                            <p class="counter" x-html="iconHeaderParadas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter"  style="color: #f9fafa; margin-bottom: 5px; font-weight: 700; font-size: 15px;"> -- </p>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;" >Paradas</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-stop" style="color: #f9fafa;"></i>
@@ -646,20 +671,7 @@ ul {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white" style="background: #e83e8c;">
-                    <div class="panel-body" style="border-bottom: 3px solid #e83e8c;">
-                        <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderPolpas" style="color: #f9fafa;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title"  style="color: #f9fafa; font-weight: 900;">Polpas</span>
-                        </div>
-                        <div class="info-box-icon"> 
-                            <i class="fa fa-apple"  style="color: #f9fafa"></i>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
+
         </div>
    
         <div class="panel">
@@ -668,8 +680,8 @@ ul {
                     <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titlePlanejado" >Planejado x Produzido</h3></div>
-                        <div class="col-md-2" style="text-align: right">
-                            <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                        <div  class="col-md-2" style="text-align: right">
+                            <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
                         </div>  
                     </div>
  
@@ -727,7 +739,7 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleTipoProd"></h3></div>
                             <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                                <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
                             </div>  
                         </div>
                         
@@ -800,7 +812,7 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Agua</h3></div>
                             <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                                <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('A')" style="cursor: pointer;" height="24"> 
                             </div>  
                         </div>
                          
@@ -820,7 +832,7 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Energia</h3></div>
                             <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                                <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('E')" style="cursor: pointer;" height="24"> 
                             </div>  
                         </div>
  
@@ -843,7 +855,7 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Lenha</h3></div>
                             <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                                <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('L')" style="cursor: pointer;" height="24"> 
                             </div>  
                         </div>
                         
@@ -863,7 +875,7 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Polpa</h3></div>
                             <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                                <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('O')" style="cursor: pointer;" height="24"> 
                             </div>  
                         </div>
  
@@ -887,7 +899,7 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Parada de Linha</h3></div>
                             <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                                <img src="{{ asset('assets/images/xlsx.png') }}"  x-on:click="xls('P')" style="cursor: pointer;" height="24"> 
                             </div>  
                         </div>
                        
@@ -926,7 +938,7 @@ ul {
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Perdas</h3></div>
                             <div class="col-md-2" style="text-align: right">
-                                <img src="{{ asset('assets/images/xlsx.png') }}" height="24"> 
+                                <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('D')" style="cursor: pointer;" height="24"> 
                             </div>  
                         </div>
  

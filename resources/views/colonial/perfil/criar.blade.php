@@ -97,6 +97,29 @@
                                                         </div>
                                                     @endif
 
+                                                    @if(strpos($tela->opcao, 'json') !== false)
+                                                        <div class="checkbox" style="margin: 0">
+                                                            <label>
+                                                                <div class="checker">
+                                                                    <span>
+                                                                        <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="json" />
+                                                                    </span>
+                                                                </div> Json
+                                                            </label>
+                                                        </div>
+                                                    @endif
+
+                                                    @if(strpos($tela->opcao, 'xls') !== false)
+                                                        <div class="checkbox" style="margin: 0">
+                                                            <label>
+                                                                <div class="checker">
+                                                                    <span>
+                                                                        <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="xls" />
+                                                                    </span>
+                                                                </div> Xls
+                                                            </label>
+                                                        </div>
+                                                    @endif
                                                     
                                                 </div>
                                             </td>

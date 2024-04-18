@@ -40,7 +40,7 @@
                                 <tbody>
                                    
                                     @foreach ($permissoes as $tela)
-                                  
+                                        {!! $tela->opcao.'<br>' !!}
                                         <tr>
                                             <td>{{ $tela->cd_permissao }}</td>
 
@@ -109,6 +109,19 @@
                                                                         @if(strpos($tela->user_permissao['permissoes'], 'json')  !== false) checked @endif />
                                                                     </span>
                                                                 </div> Json
+                                                            </label>
+                                                        </div>
+                                                    @endif
+
+                                                    @if(strpos($tela->opcao, 'xls') !== false)
+                                                        <div class="checkbox" style="margin: 0">
+                                                            <label>
+                                                                <div class="checker">
+                                                                    <span>
+                                                                        <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="xls"
+                                                                        @if(strpos($tela->user_permissao['permissoes'], 'xls')  !== false) checked @endif />
+                                                                    </span>
+                                                                </div> Xls
                                                             </label>
                                                         </div>
                                                     @endif

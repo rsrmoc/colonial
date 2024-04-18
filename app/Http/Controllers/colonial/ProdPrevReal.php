@@ -514,6 +514,7 @@ class ProdPrevReal extends Controller
                     $DadosAno[$key][$ano]=0;
                 }
             } 
+            $request['ds_mes'] =($request['mes']) ? $MESES[$request['mes']] : null; 
 
      
 
@@ -704,7 +705,22 @@ class ProdPrevReal extends Controller
             } 
         } 
 
-        $request['Meses'] =$MES; 
+        $ProdKg=($ProduzidoKg) ? $ProduzidoKg : 0;
+        $hidricos=($hidrico->valor) ? $hidrico->valor : 0;
+        $AguaKg= number_format(($hidricos/$ProdKg),4,",",".");
+
+        $energias=($energia->valor) ? $energia->valor : 0;
+        $EnergiaKg= number_format(($energias/$ProdKg),4,",",".");
+
+        $lenhas=($lenha->valor) ? $lenha->valor : 0;
+        $LenhaKg= number_format(($lenhas/$ProdKg),4,",",".");
+
+        $polpas=($polpa->valor) ? $polpa->valor : 0;
+        $PolpaKg= number_format(($polpas/$ProdKg),4,",",".");
+
+
+
+        $request['Meses'] =$MES;
         $request['PlanejadoCx'] =  ($PlanejadoCx) ?  number_format($PlanejadoCx,0,",",".") : '000';
         $request['PlanejadoKg'] = ($PlanejadoKg) ?  number_format($PlanejadoKg,0,",",".") : '000';
         $request['PlanejadoTo'] = ($PlanejadoTo) ?  number_format($PlanejadoTo,2,",",".") : '0,00'; 
@@ -719,6 +735,10 @@ class ProdPrevReal extends Controller
         $request['polpa'] = ($polpa->valor) ?  number_format($polpa->valor,0,",",".") : '00';
         $request['datai'] = date('d/m/Y',strtotime($request['dti']));
         $request['dataf'] = date('d/m/Y',strtotime($request['dtf']));
+        $request['AguaKg'] = $AguaKg;
+        $request['EnergiaKg'] = $EnergiaKg;
+        $request['LenhaKg'] = $LenhaKg;
+        $request['PolpaKg'] = $PolpaKg;
         $retorno['previsto'] = $data;
         $retorno['dadosProd'] = $dadosProd;
         $retorno['request'] = $request->toArray();
@@ -736,8 +756,6 @@ class ProdPrevReal extends Controller
         $retorno['GraficoTp_parada']=$tipoParada;
         $retorno['GraficoPerda']=$Perda;
         $retorno['GraficoTpPerda']=$tipoPerda;
-        
-        
         
         return $retorno;
     }
@@ -845,6 +863,89 @@ class ProdPrevReal extends Controller
         return $request;
     }
     
+    public function xls(Request $request,$tipo) {
+        if($tipo=='M'){
+            $DADOS = DB::select("
+            select codigo,nome, data, kg,
+            valor planejado_cx, 
+            valor*kg planejado_kg,
+            ((valor*kg)/1000) planejado_to, 
+            valor_prod produzido_cx, 
+            valor_prod*kg produzido_kg,
+            ((valor_prod*kg)/1000) produzido_to 
+            from (
+                select owor.DocEntry codigo,
+                    CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
+                    (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
+                        where ign1.BaseRef=owor.DocEntry
+                    ) valor_prod, owor.ItemCode ,SWeight1 kg,ProdName nome 
+                    from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
+                    inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+                    where CONVERT(CHAR(10),owor.duedate, 23) between '".$request['dti']."' and '".$request['dtf']."'
+                    and oitm.ItmsGrpCod not in (103)
+            ) xx
+            order by 1
+            ");
+            return view('colonial.producao.indicadores/xls_movimento',compact('request','DADOS'));
+        }
+        if($tipo=='A'){
+            $DADOS = DB::select("
+            select *
+            from hidricos 
+            where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+            order by dt_consumo
+            ");
+            return view('colonial.producao.indicadores/xls_agua',compact('request','DADOS'));
+        }
+        if($tipo=='E'){
+            $DADOS = DB::select("
+            select *
+            from energias 
+            where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+            order by dt_consumo
+            ");
+            return view('colonial.producao.indicadores/xls_energia',compact('request','DADOS'));
+        }
+        if($tipo=='L'){
+            $DADOS = DB::select("
+            select DocEntry codigo,ItemCode cod,Dscription descricao,Quantity qtde,DocDate data
+            from SBO_KARAMBI_PRD.dbo.IGE1 where WhsCode='MPV' 
+            and CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."'
+            order by DocDate
+            ");
+            return view('colonial.producao.indicadores/xls_lenha_polpa',compact('request','DADOS'));
+        }
+        if($tipo=='O'){
+            $DADOS = DB::select("
+            select DocEntry codigo,ItemCode cod,Dscription descricao,Quantity qtde,DocDate data
+            from SBO_KARAMBI_PRD.dbo.IGE1 where ItemCode='013906'
+            and CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."'
+            order by DocDate
+            ");
+            return view('colonial.producao.indicadores/xls_lenha_polpa',compact('request','DADOS'));
+        }
+        if($tipo=='P'){
+            $DADOS = DB::select("
+            select cd_producao_parada codigo,cd_ordem,nm_tipo,tempo,obs_parada,dt_ordem
+            from producao_parada 
+            inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
+            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+            order by 1 
+            ");
+            return view('colonial.producao.indicadores/xls_parada',compact('request','DADOS'));
+        }
+        if($tipo=='D'){
+            $DADOS = DB::select("
+            select cd_perda codigo,cd_ordem,cd_produto,nm_produto,qtde,dt_ordem,obs_perda,nm_tipo
+            from perda 
+            inner join  perda_tipo on perda_tipo.cd_tipo=perda.cd_tipo_perda
+            where CONVERT(CHAR(10),perda.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            order by 1 
+            ");
+            return view('colonial.producao.indicadores/xls_perda',compact('request','DADOS'));
+        }
+    }
+
     public function gerar_cor($cod) {
         $Cores = array('#FF0F00','#FF6600','#FF9E01','#FCD202','#F8FF01','#B0DE09','#04D215','#0D8ECF','#0D52D1','#2A0CD0','#8A0CCF','#CD0D74');
         if($cod<=11){

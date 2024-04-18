@@ -32,11 +32,15 @@ Alpine.data('app', function () {
     iconHeaderProdKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderProdCx: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderAgua: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderAguaKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderEnergia: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderEnergiaKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderLenha: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderLenhaKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderParadas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPolpasKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     chartPrevReal: null,
     loadingCharts: false,
     modalLoadingCharts: true,
@@ -51,6 +55,13 @@ Alpine.data('app', function () {
       ano: '',
       mes: '',
       dia: ''
+    },
+    parametrosXLS: {
+      dt_comparativa_ano: null,
+      dt_comparativa_dia: null,
+      dt_comparativa_mes: null,
+      dtf: null,
+      dti: null
     },
     init: function init() {
       var _this = this;
@@ -80,17 +91,26 @@ Alpine.data('app', function () {
       this.iconHeaderProdKg = this.iconCarregando;
       this.iconHeaderProdCx = this.iconCarregando;
       this.iconHeaderAgua = this.iconCarregando;
+      this.iconHeaderAguaKg = this.iconCarregando;
       this.iconHeaderEnergia = this.iconCarregando;
+      this.iconHeaderEnergiaKg = this.iconCarregando;
       this.iconHeaderLenha = this.iconCarregando;
+      this.iconHeaderLenhaKg = this.iconCarregando;
       this.iconHeaderParadas = this.iconCarregando;
       this.iconHeaderPerdas = this.iconCarregando;
       this.iconHeaderPolpas = this.iconCarregando;
+      this.iconHeaderPolpasKg = this.iconCarregando;
       this.loadingCharts = true;
       this.parametros.dia = $('#parametro-dia').val();
       this.parametros.mes = $('#parametro-mes').val();
       this.parametros.ano = $('#parametro-ano').val();
       this.parametros.unidade = $('#parametro-visao').val();
       axios.post('/colonial/prod_prev_real-json', this.parametros).then(function (res) {
+        _this2.parametrosXLS.dt_comparativa_ano = res.data.request.dt_comparativa_ano;
+        _this2.parametrosXLS.dt_comparativa_mes = res.data.request.dt_comparativa_mes;
+        _this2.parametrosXLS.dt_comparativa_dia = res.data.request.dt_comparativa_dia;
+        _this2.parametrosXLS.dti = res.data.request.dti;
+        _this2.parametrosXLS.dtf = res.data.request.dtf;
         _this2.titlePlanejado = 'Planejado x Produzido ' + res.data.request.ds_unid;
         _this2.titleTipoProd = 'Tipo de Produtos ' + res.data.request.ds_unid;
         _this2.titleComparativo = 'Comparativo ' + res.data.request.ds_unid;
@@ -98,11 +118,15 @@ Alpine.data('app', function () {
         _this2.parametros.dti = res.data.request.dti;
         _this2.parametros.dtf = res.data.request.dtf;
         _this2.iconHeaderAgua = res.data.request.hidrico + '<span class="headerUnidade"> (m³/h)</span>';
+        _this2.iconHeaderAguaKg = res.data.request.AguaKg + '<span class="headerUnidade"> (m³/kg)</span>';
         _this2.iconHeaderEnergia = res.data.request.energia + '<span class="headerUnidade"> (Kw) </span>';
+        _this2.iconHeaderEnergiaKg = res.data.request.EnergiaKg + '<span class="headerUnidade"> (Kw/kg) </span>';
         _this2.iconHeaderLenha = res.data.request.lenha + '<span class="headerUnidade"> (M3) </span>';
+        _this2.iconHeaderLenhaKg = res.data.request.LenhaKg + '<span class="headerUnidade"> (m3/kg) </span>';
         _this2.iconHeaderPerdas = res.data.request.perda;
         _this2.iconHeaderParadas = res.data.request.perda + '<span class="headerUnidade"> (Min)</span>';
         _this2.iconHeaderPolpas = res.data.request.polpa + '<span class="headerUnidade"> (Kg) </span>';
+        _this2.iconHeaderPolpasKg = res.data.request.PolpaKg + '<span class="headerUnidade"> (Kg) </span>';
         _this2.iconHeaderProdTo = res.data.request.ProduzidoTo + '<span class="headerUnidade"> (T) </span>';
         _this2.iconHeaderProdKg = res.data.request.ProduzidoKg + '<span class="headerUnidade"> (Kg) </span>';
         _this2.iconHeaderProdCx = res.data.request.ProduzidoCx + '<span class="headerUnidade"> (Cx) </span>';
@@ -501,6 +525,9 @@ Alpine.data('app', function () {
       })["finally"](function () {
         return _this2.loadingCharts = false;
       });
+    },
+    xls: function xls(tipo) {
+      location.href = '/colonial/prod_prev_real-xls/' + tipo + '?dtf=' + this.parametros.dtf + '&dti=' + this.parametros.dti;
     },
     getDataChartDetalhes: function getDataChartDetalhes(dados) {
       var _this3 = this;

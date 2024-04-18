@@ -33,11 +33,16 @@ Alpine.data('app', () => ({
     iconHeaderProdCx: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     
     iconHeaderAgua: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderAguaKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
     iconHeaderEnergia: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderEnergiaKg : '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderLenha: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderLenhaKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+     
     iconHeaderParadas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPolpasKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     chartPrevReal: null,
     loadingCharts: false,
     modalLoadingCharts: true,
@@ -52,6 +57,13 @@ Alpine.data('app', () => ({
         ano: '',
         mes: '',
         dia: '', 
+    },
+    parametrosXLS:{
+      dt_comparativa_ano: null,
+      dt_comparativa_dia: null,
+      dt_comparativa_mes: null,
+      dtf: null,
+      dti: null
     },
 
     init() {
@@ -90,11 +102,17 @@ Alpine.data('app', () => ({
         this.iconHeaderProdCx = this.iconCarregando;
       
         this.iconHeaderAgua = this.iconCarregando;
+        this.iconHeaderAguaKg = this.iconCarregando;
+        
         this.iconHeaderEnergia = this.iconCarregando;
+        this.iconHeaderEnergiaKg = this.iconCarregando;
         this.iconHeaderLenha = this.iconCarregando;
+        this.iconHeaderLenhaKg = this.iconCarregando;
+        
         this.iconHeaderParadas = this.iconCarregando;
         this.iconHeaderPerdas = this.iconCarregando;
         this.iconHeaderPolpas = this.iconCarregando;
+        this.iconHeaderPolpasKg = this.iconCarregando;
 
         this.loadingCharts = true;
         this.parametros.dia = $('#parametro-dia').val();
@@ -105,6 +123,12 @@ Alpine.data('app', () => ({
         axios.post('/colonial/prod_prev_real-json',this.parametros)
             .then((res) => {
  
+                this.parametrosXLS.dt_comparativa_ano= res.data.request.dt_comparativa_ano;
+                this.parametrosXLS.dt_comparativa_mes= res.data.request.dt_comparativa_mes;
+                this.parametrosXLS.dt_comparativa_dia= res.data.request.dt_comparativa_dia;
+                this.parametrosXLS.dti= res.data.request.dti;
+                this.parametrosXLS.dtf= res.data.request.dtf;
+
                 this.titlePlanejado = 'Planejado x Produzido '+res.data.request.ds_unid;
                 this.titleTipoProd = 'Tipo de Produtos '+res.data.request.ds_unid;
                 this.titleComparativo = 'Comparativo '+res.data.request.ds_unid;
@@ -113,16 +137,20 @@ Alpine.data('app', () => ({
                 this.parametros.dti = res.data.request.dti;
                 this.parametros.dtf = res.data.request.dtf;
                 this.iconHeaderAgua = res.data.request.hidrico+'<span class="headerUnidade"> (m³/h)</span>';
+                this.iconHeaderAguaKg = res.data.request.AguaKg+'<span class="headerUnidade"> (m³/kg)</span>';
                 this.iconHeaderEnergia = res.data.request.energia+'<span class="headerUnidade"> (Kw) </span>';
+                this.iconHeaderEnergiaKg = res.data.request.EnergiaKg+'<span class="headerUnidade"> (Kw/kg) </span>';
                 this.iconHeaderLenha = res.data.request.lenha+'<span class="headerUnidade"> (M3) </span>';
+                this.iconHeaderLenhaKg = res.data.request.LenhaKg+'<span class="headerUnidade"> (m3/kg) </span>';
                 this.iconHeaderPerdas = res.data.request.perda;
                 this.iconHeaderParadas = res.data.request.perda+'<span class="headerUnidade"> (Min)</span>';
                 this.iconHeaderPolpas = res.data.request.polpa+'<span class="headerUnidade"> (Kg) </span>';
+                this.iconHeaderPolpasKg = res.data.request.PolpaKg+'<span class="headerUnidade"> (Kg) </span>';
 
                 this.iconHeaderProdTo = res.data.request.ProduzidoTo+'<span class="headerUnidade"> (T) </span>';
                 this.iconHeaderProdKg = res.data.request.ProduzidoKg+'<span class="headerUnidade"> (Kg) </span>';
                 this.iconHeaderProdCx = res.data.request.ProduzidoCx+'<span class="headerUnidade"> (Cx) </span>';
-
+ 
                 this.ProduzidoCx = res.data.request.ProduzidoCx;
                 this.ProduzidoKg= res.data.request.ProduzidoKg;
                 this.ProduzidoTo= res.data.request.ProduzidoTo;
@@ -553,6 +581,11 @@ Alpine.data('app', () => ({
 
 
 
+    },
+    xls(tipo){ 
+      
+      location.href = '/colonial/prod_prev_real-xls/'+tipo+'?dtf='+this.parametros.dtf+'&dti='+this.parametros.dti;
+    
     },
 
     getDataChartDetalhes(dados) { 
