@@ -462,11 +462,11 @@ ul {
                 <div class="row" id="indicadores-parametros"  >
  
                     
-                            <div class="col-md-5" style="font-size: 24px; font-weight: 300;" > <i class="fa fa-line-chart"></i> Indicadores de Produção </div>
+                            <div class="col-md-4" style="font-size: 24px; font-weight: 300;" > <i class="fa fa-line-chart"></i> Indicadores de Produção </div>
                             <div class="col-md-1" style="padding-right:5px; padding-left: 5px;">
                                 <div class="form-group" style="margin-bottom: 0px;"> 
-                                    <select class="form-control" name="agrupamento" name="parametro-ano" id="parametro-ano" style="width: 100%;" > 
-                                        <option value="">ANO</option> 
+                                    <select class="form-control" name="agrupamento" name="parametro-ano" id="parametro-ano" style="width: 100%; " > 
+                                        <option value="" >ANO</option> 
                                         <option value="2024">2024</option> 
                                         <option value="2023">2023</option> 
                                         <option value="2022">2022</option> 
@@ -511,7 +511,7 @@ ul {
                                     </select> 
                                 </div>
                             </div> 
-                            <div class="col-md-1 " style="  padding-left: 5px;">
+                            <div class="col-md-2 " style="  padding-left: 5px;">
                                 <button type="button" x-on:click="getDataChart1"  class="  btn btn-default"  style="width: 100%; font-weight: 700;" ><i class="fa fa-search"></i> Pesquisar</button>
                             </div>
                             
