@@ -14,6 +14,8 @@ Alpine.data('app', () => ({
     relacaoDetelhes: null,
     tituloDetalhes: null,
     tabDetalhes: null, 
+    graficoBarra: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoPizza: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-pizza.png'> </div>",
     iconCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     tabCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
 
@@ -220,6 +222,10 @@ Alpine.data('app', () => ({
                   "dataProvider": res.data.previsto
                 
                 });
+                if(!res.data.previsto){
+                  $("#chartdivPrevProd").html(this.graficoBarra);
+                }
+                
                     
                 /* Grafico Produtos */ 
                 var chart = AmCharts.makeChart("chartdivProdutos", {
@@ -250,11 +256,15 @@ Alpine.data('app', () => ({
                   } 
                 
                 });
+                if(!res.data.produtos){
+                  $("#chartdivProdutos").html(this.graficoBarra);
+                }
 
                 /*Comparativo*/
                 if(res.data.request.agrupamento=='D'){
-
-                  var chart = AmCharts.makeChart("chartdiv_comparativo", {
+ 
+                  if(res.data.ComparativoAno){
+                    var chart = AmCharts.makeChart("chartdiv_comparativo", {
                       "type": "serial",
                       "theme": "none",
                       "categoryField": "label",
@@ -315,12 +325,16 @@ Alpine.data('app', () => ({
                       "titles": [],
                       "dataProvider":  res.data.ComparativoAno
 
-                  });
-
+                    });
+                  }else{
+                    $("#chartdiv_agua").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                  }
+                  
                 }else{
 
-                   
-                  var chart = AmCharts.makeChart("chartdiv_comparativo", {
+                    
+                  if(!res.data.comparativo){
+                    var chart = AmCharts.makeChart("chartdiv_comparativo", {
                       "theme": "none",
                       "type": "serial",
                       "startDuration": 2,
@@ -345,241 +359,276 @@ Alpine.data('app', () => ({
                             "gridPosition": "start",
                             "labelRotation": 30
                         }  
-                  });
-                
+                    });
+                  }else{
+                    $("#chartdiv_comparativo").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                  }
+ 
                 }
                  
-                /*Agua*/
-                var chart = AmCharts.makeChart("chartdiv_agua", {
-                  "theme": "none",
-                  "type": "serial",
-                  "startDuration": 2,
-                  "dataProvider": res.data.GraficoAgua,
-                  "graphs": [{
-                      "balloonText": "[[category]]: <b>[[value]]</b>",
-                      "colorField": "color",
-                      "fillAlphas": 0.85,
-                      "lineAlpha": 0.1,
-                      "type": "column",
-                      "topRadius":1,
-                      "valueField": "visits"
-                  }],
-                  "depth3D": 40,
-                  "angle": 30,
-                  "chartCursor": {
-                      "categoryBalloonEnabled": false,
-                      "cursorAlpha": 0,
-                      "zoomable": false
-                  },
-                  "categoryField": "country",
-                  "categoryAxis": {
-                      "gridPosition": "start",
-                      "axisAlpha":0,
-                      "gridAlpha":0
+                /*Agua*/ 
+                if(res.data.GraficoAgua){
+                  var chart = AmCharts.makeChart("chartdiv_agua", {
+                    "theme": "none",
+                    "type": "serial",
+                    "startDuration": 2,
+                    "dataProvider": res.data.GraficoAgua,
+                    "graphs": [{
+                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "colorField": "color",
+                        "fillAlphas": 0.85,
+                        "lineAlpha": 0.1,
+                        "type": "column",
+                        "topRadius":1,
+                        "valueField": "visits"
+                    }],
+                    "depth3D": 40,
+                    "angle": 30,
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "country",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "axisAlpha":0,
+                        "gridAlpha":0
+  
+                    } 
+  
+                  }, 0);
+                }else{
+                  $("#chartdiv_agua").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                }
 
-                  } 
+                /*Energia*/ 
+                if(res.data.GraficoEnergia){
+                  var chart = AmCharts.makeChart("chartdiv_energia", {
+                    "theme": "none",
+                    "type": "serial",
+                    "startDuration": 2,
+                    "dataProvider": res.data.GraficoEnergia,
+                    "graphs": [{
+                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "colorField": "color",
+                        "fillAlphas": 0.85,
+                        "lineAlpha": 0.1,
+                        "type": "column",
+                        "topRadius":1,
+                        "valueField": "visits"
+                    }],
+                    "depth3D": 40,
+                    "angle": 30,
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "country",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "axisAlpha":0,
+                        "gridAlpha":0
+  
+                    } 
+  
+                  }, 0);
+                }else{
+                  $("#chartdiv_energia").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                }
 
-                }, 0);
-
-                /*Energia*/
-                var chart = AmCharts.makeChart("chartdiv_energia", {
-                  "theme": "none",
-                  "type": "serial",
-                  "startDuration": 2,
-                  "dataProvider": res.data.GraficoEnergia,
-                  "graphs": [{
-                      "balloonText": "[[category]]: <b>[[value]]</b>",
-                      "colorField": "color",
-                      "fillAlphas": 0.85,
-                      "lineAlpha": 0.1,
-                      "type": "column",
-                      "topRadius":1,
-                      "valueField": "visits"
-                  }],
-                  "depth3D": 40,
-                  "angle": 30,
-                  "chartCursor": {
-                      "categoryBalloonEnabled": false,
-                      "cursorAlpha": 0,
-                      "zoomable": false
-                  },
-                  "categoryField": "country",
-                  "categoryAxis": {
-                      "gridPosition": "start",
-                      "axisAlpha":0,
-                      "gridAlpha":0
-
-                  } 
-
-                }, 0);
-
-                /*Lenha*/
-                var chart = AmCharts.makeChart("chartdiv_lenha", {
-                  "theme": "none",
-                  "type": "serial",
-                  "startDuration": 2,
-                  "dataProvider": res.data.GraficoLenha,
-                  "graphs": [{
-                      "balloonText": "[[category]]: <b>[[value]]</b>",
-                      "colorField": "color",
-                      "fillAlphas": 0.85,
-                      "lineAlpha": 0.1,
-                      "type": "column",
-                      "topRadius":1,
-                      "valueField": "visits"
-                  }],
-                  "depth3D": 40,
-                  "angle": 30,
-                  "chartCursor": {
-                      "categoryBalloonEnabled": false,
-                      "cursorAlpha": 0,
-                      "zoomable": false
-                  },
-                  "categoryField": "country",
-                  "categoryAxis": {
-                      "gridPosition": "start",
-                      "axisAlpha":0,
-                      "gridAlpha":0
-
-                  } 
-
-                }, 0);
+                /*Lenha*/ 
+                if(res.data.GraficoLenha){
+                  var chart = AmCharts.makeChart("chartdiv_lenha", {
+                    "theme": "none",
+                    "type": "serial",
+                    "startDuration": 2,
+                    "dataProvider": res.data.GraficoLenha,
+                    "graphs": [{
+                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "colorField": "color",
+                        "fillAlphas": 0.85,
+                        "lineAlpha": 0.1,
+                        "type": "column",
+                        "topRadius":1,
+                        "valueField": "visits"
+                    }],
+                    "depth3D": 40,
+                    "angle": 30,
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "country",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "axisAlpha":0,
+                        "gridAlpha":0
+  
+                    } 
+  
+                  }, 0);
+                }else{
+                  $("#chartdiv_lenha").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                }
 
                 /*Polpa*/
-                var chart = AmCharts.makeChart("chartdiv_polpa", {
-                  "theme": "none",
-                  "type": "serial",
-                  "startDuration": 2,
-                  "dataProvider": res.data.GraficoPolpa,
-                  "graphs": [{
-                      "balloonText": "[[category]]: <b>[[value]]</b>",
-                      "colorField": "color",
-                      "fillAlphas": 0.85,
-                      "lineAlpha": 0.1,
-                      "type": "column",
-                      "topRadius":1,
-                      "valueField": "visits"
-                  }],
-                  "depth3D": 40,
-                  "angle": 30,
-                  "chartCursor": {
-                      "categoryBalloonEnabled": false,
-                      "cursorAlpha": 0,
-                      "zoomable": false
-                  },
-                  "categoryField": "country",
-                  "categoryAxis": {
-                      "gridPosition": "start",
-                      "axisAlpha":0,
-                      "gridAlpha":0
-
-                  } 
-
-                }, 0);
+                if(res.data.GraficoPolpa){
+                  var chart = AmCharts.makeChart("chartdiv_polpa", {
+                    "theme": "none",
+                    "type": "serial",
+                    "startDuration": 2,
+                    "dataProvider": res.data.GraficoPolpa,
+                    "graphs": [{
+                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "colorField": "color",
+                        "fillAlphas": 0.85,
+                        "lineAlpha": 0.1,
+                        "type": "column",
+                        "topRadius":1,
+                        "valueField": "visits"
+                    }],
+                    "depth3D": 40,
+                    "angle": 30,
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "country",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "axisAlpha":0,
+                        "gridAlpha":0
   
-                /*Parada*/
-                var chart = AmCharts.makeChart("chartdiv_parada", {
-                  "theme": "none",
-                  "type": "serial",
-                  "startDuration": 2,
-                  "dataProvider": res.data.GraficoParada,
-                  "graphs": [{
-                      "balloonText": "[[category]]: <b>[[value]]</b>",
-                      "colorField": "color",
-                      "fillAlphas": 0.85,
-                      "lineAlpha": 0.1,
-                      "type": "column",
-                      "topRadius":1,
-                      "valueField": "visits"
-                  }],
-                  "depth3D": 40,
-                  "angle": 30,
-                  "chartCursor": {
-                      "categoryBalloonEnabled": false,
-                      "cursorAlpha": 0,
-                      "zoomable": false
-                  },
-                  "categoryField": "country",
-                  "categoryAxis": {
-                      "gridPosition": "start",
-                      "axisAlpha":0,
-                      "gridAlpha":0 
-                  } 
-
-                }, 0);
+                    } 
+  
+                  }, 0);
+                }else{
+                  $("#chartdiv_polpa").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                }
+ 
+                /*Parada*/ 
+                if(res.data.GraficoParada){
+                  var chart = AmCharts.makeChart("chartdiv_parada", {
+                    "theme": "none",
+                    "type": "serial",
+                    "startDuration": 2,
+                    "dataProvider": res.data.GraficoParada,
+                    "graphs": [{
+                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "colorField": "color",
+                        "fillAlphas": 0.85,
+                        "lineAlpha": 0.1,
+                        "type": "column",
+                        "topRadius":1,
+                        "valueField": "visits"
+                    }],
+                    "depth3D": 40,
+                    "angle": 30,
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "country",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "axisAlpha":0,
+                        "gridAlpha":0 
+                    } 
+  
+                  }, 0);
+                }else{ 
+                  $("#chartdiv_parada").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                }
 
                 /*TipoParada*/
-                var chart = AmCharts.makeChart( "chartdiv_tp_parada", {
-                  "type": "pie",
-                  "theme": "none",
-                  "dataProvider": res.data.GraficoTp_parada,
-                  "valueField": "litres",
-                  "titleField": "country",
-                   "balloon":{
-                   "fixedPosition":true
-                  },
-                  "labelRadius": 5, 
-                  "marginTop": 0,
-                  "marginBottom": 0,
-                  "marginLeft": 0,
-                  "marginRight": 0,
-                } );
+                if(res.data.GraficoTp_parada){
+                  var chart = AmCharts.makeChart( "chartdiv_tp_parada", {
+                    "type": "pie",
+                    "theme": "none",
+                    "dataProvider": res.data.GraficoTp_parada,
+                    "valueField": "litres",
+                    "titleField": "country",
+                     "balloon":{
+                     "fixedPosition":true
+                    },
+                    "labelRadius": 5, 
+                    "marginTop": 0,
+                    "marginBottom": 0,
+                    "marginLeft": 0,
+                    "marginRight": 0,
+                  } );
+                }else{
+                  $("#chartdiv_tp_parada").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
+                }
 
-                /*Perda*/
-                var chart = AmCharts.makeChart("chartdiv_perda", {
-                  "theme": "none",
-                  "type": "serial",
-                  "startDuration": 2,
-                  "dataProvider": res.data.GraficoPerda,
-                  "graphs": [{
-                      "balloonText": "[[category]]: <b>[[value]]</b>",
-                      "colorField": "color",
-                      "fillAlphas": 0.85,
-                      "lineAlpha": 0.1,
-                      "type": "column",
-                      "topRadius":1,
-                      "valueField": "visits"
-                  }],
-                  "depth3D": 40,
-                  "angle": 30,
-                  "chartCursor": {
-                      "categoryBalloonEnabled": false,
-                      "cursorAlpha": 0,
-                      "zoomable": false
-                  },
-                  "categoryField": "country",
-                  "categoryAxis": {
-                      "gridPosition": "start",
-                      "axisAlpha":0,
-                      "gridAlpha":0 
-                  } 
+                /*Perda*/ 
+                if(res.data.GraficoTp_parada){
+                  var chart = AmCharts.makeChart("chartdiv_perda", {
+                    "theme": "none",
+                    "type": "serial",
+                    "startDuration": 2,
+                    "dataProvider": res.data.GraficoPerda,
+                    "graphs": [{
+                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "colorField": "color",
+                        "fillAlphas": 0.85,
+                        "lineAlpha": 0.1,
+                        "type": "column",
+                        "topRadius":1,
+                        "valueField": "visits"
+                    }],
+                    "depth3D": 40,
+                    "angle": 30,
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "country",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "axisAlpha":0,
+                        "gridAlpha":0 
+                    } 
+  
+                  }, 0);
+                }else{ 
+                  $("#chartdiv_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                }
 
-                }, 0);
+                /*TipoPerda*/ 
+                if(res.data.GraficoTpPerda){ 
+                  var chart = AmCharts.makeChart( "chartdiv_tp_perda", {
+                    "type": "pie",
+                    "theme": "none",
+                    "dataProvider": res.data.GraficoTpPerda,
+                    "valueField": "litres",
+                    "titleField": "country",
+                     "balloon":{
+                     "fixedPosition":true
+                    },
+                    "labelRadius": 5, 
+                    "marginTop": 0,
+                    "marginBottom": 0,
+                    "marginLeft": 0,
+                    "marginRight": 0,
+                  } );
+                }else{
+                  $("#chartdiv_tp_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
+                }
 
-                /*TipoPerda*/
-                var chart = AmCharts.makeChart( "chartdiv_tp_perda", {
-                  "type": "pie",
-                  "theme": "none",
-                  "dataProvider": res.data.GraficoTpPerda,
-                  "valueField": "litres",
-                  "titleField": "country",
-                   "balloon":{
-                   "fixedPosition":true
-                  },
-                  "labelRadius": 5, 
-                  "marginTop": 0,
-                  "marginBottom": 0,
-                  "marginLeft": 0,
-                  "marginRight": 0,
-                } );
             })
             .catch((err) => { 
-              console.log(err.response.data);
-              toastr.error(err.response.data.errors,"Erro") 
+              console.log(err.response.data); 
+              toastr.error(err.response.data.message,"Erro") 
             })
             .finally(() => this.loadingCharts = false);
-
-
+ 
 
     },
     xls(tipo){ 

@@ -14,6 +14,7 @@ use App\Models\Sap\Estoque;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class ProdPrevReal extends Controller
 {
@@ -37,6 +38,7 @@ class ProdPrevReal extends Controller
     }
  
     public function listarJson(Request $request) { 
+      try{
 
         if($request['valida']==true){
             $validator = Validator::make($request->all(), [
@@ -233,6 +235,11 @@ class ProdPrevReal extends Controller
         $tipoParada=null;
         $Agua=null;
         $Comparativo=null;
+        $dadosAgua = DB::select(" select top(1) qtde_atual from hidricos where CONVERT(CHAR(10),dt_consumo, 23) < '".$request['dti']."' order by dt_consumo desc");
+        $QtdeAguaAnterior= (isset($dadosAgua[0]->qtde_atual)) ? $dadosAgua[0]->qtde_atual : 0;
+
+        $dadosAgua = DB::select(" select top(1) qtde  from energias where CONVERT(CHAR(10),dt_consumo, 23) < '".$request['dti']."' order by dt_consumo desc");
+        $QtdeEnergiaAnterior= (isset($dadosAgua[0]->qtde)) ? $dadosAgua[0]->qtde : 0;
 
         if($request['agrupamento']=='M'){
 
@@ -264,15 +271,17 @@ class ProdPrevReal extends Controller
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by year(dt_consumo)
             order by 1 "); 
-            foreach($dadosAgua as $val){  
+            $qtdeAnterior=$QtdeAguaAnterior;
+            foreach($dadosAgua as $val){   
                 $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde,2);
+                $Ar['visits']=round($val->qtde-$qtdeAnterior,2);
                 if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
                     $Ar['color']='#FF0F00';
                 }else{
                     $Ar['color']='#f5d433';
                 }
                 $Agua[]=$Ar; 
+                $qtdeAnterior = $val->qtde;
             } 
 
             /* energia ANO */ 
@@ -283,15 +292,17 @@ class ProdPrevReal extends Controller
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by year(dt_consumo)
             order by 1 "); 
+            $qtdeAnterior=$QtdeEnergiaAnterior; 
             foreach($dadosEnergia as $val){  
                 $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde,2);
+                $Ar['visits']=round($val->qtde-$qtdeAnterior,2);
                 if($request['ano']==$val->data){
                     $Ar['color']='#FF0F00';
                 }else{
                     $Ar['color']='#f5d433';
                 }
                 $Energia[]=$Ar; 
+                $qtdeAnterior = $val->qtde;
             } 
 
             /* lenha ANO */
@@ -375,9 +386,8 @@ class ProdPrevReal extends Controller
                 );
 
             }
-
-
-            /* agua DIA */ 
+ 
+            /* agua DIA */  
             $dadosAgua = DB::select(" 
             select CAST( right(replicate('0',2) + convert(VARCHAR,day(dt_consumo)),2) AS NVARCHAR(2)) data, 
             sum(saldo) qtde
@@ -385,15 +395,17 @@ class ProdPrevReal extends Controller
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by day(dt_consumo)
             order by 1 "); 
+            $qtdeAnterior=$QtdeAguaAnterior;
             foreach($dadosAgua as $val){  
                 $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde,2);
+                $Ar['visits']=round(($val->qtde-$qtdeAnterior),2);
                 if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
                     $Ar['color']='#3f24d4';
                 }else{
                     $Ar['color']='#2599d3';
                 }
                 $Agua[]=$Ar; 
+                $qtdeAnterior = $val->qtde;
             } 
 
             /* energia DIA */ 
@@ -404,15 +416,17 @@ class ProdPrevReal extends Controller
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by day(dt_consumo)
             order by 1 "); 
+            $qtdeAnterior=$QtdeEnergiaAnterior; 
             foreach($dadosEnergia as $val){  
                 $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde,2);
+                $Ar['visits']=round($val->qtde-$qtdeAnterior,2);
                 if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
                     $Ar['color']='#1dd62c';
                 }else{
                     $Ar['color']='#b7e121';
                 }
                 $Energia[]=$Ar; 
+                $qtdeAnterior = $val->qtde;
             } 
 
             /* lenha DIA */
@@ -496,6 +510,7 @@ class ProdPrevReal extends Controller
 
         $Anos=null;
         $ComparativoAno=null;
+        
         if($request['agrupamento']=='D'){ 
 
             /* Comparativo MESES */  
@@ -515,9 +530,7 @@ class ProdPrevReal extends Controller
                 }
             } 
             $request['ds_mes'] =($request['mes']) ? $MESES[$request['mes']] : null; 
-
-     
-
+ 
             $dadosProd = DB::select(" 
             select  CAST(year(owor.duedate) AS NVARCHAR(4))+CAST( right(replicate('0',2) + convert(VARCHAR,MONTH(owor.duedate)),2) AS NVARCHAR(2)) data, 
             year(owor.duedate) ano,CAST( right(replicate('0',2) + convert(VARCHAR,MONTH(owor.duedate)),2) AS NVARCHAR(2)) mes,".$produzidoComparativo." qtde
@@ -544,20 +557,22 @@ class ProdPrevReal extends Controller
                 $ComparativoAno[] = $Array; 
             }
 
-            /* agua MESES */ 
+            /* agua MESES */  
             $dadosAgua = DB::select(" 
             select CAST( right(replicate('0',2) + convert(VARCHAR,day(dt_consumo)),2) AS NVARCHAR(2)) data, 
-            sum(saldo) qtde
+            sum(qtde_atual) qtde
             from hidricos 
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by day(dt_consumo)
             order by 1 "); 
+            $qtdeAnterior = $QtdeAguaAnterior;
             foreach($dadosAgua as $key => $val){  
                 $Agua[]=array( 
                     "country"=>$val->data,
-                    "visits"=>round($val->qtde,2),
+                    "visits"=>round($val->qtde-$qtdeAnterior,2),
                     "color"=> $this->gerar_cor($key)
-                );
+                ); 
+                $qtdeAnterior=$val->qtde;
             } 
 
             
@@ -569,12 +584,14 @@ class ProdPrevReal extends Controller
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by day(dt_consumo)
             order by 1 "); 
+            $qtdeAnterior=$QtdeEnergiaAnterior; 
             foreach($dadosEnergia as $key => $val){  
                 $Energia[]=array( 
                     "country"=>$val->data,
-                    "visits"=>round($val->qtde,2),
+                    "visits"=>round($val->qtde-$qtdeAnterior,2),
                     "color"=> $this->gerar_cor($key)
                 );
+                $qtdeAnterior=$val->qtde;
             }
 
             /* lenha MESES */
@@ -707,19 +724,34 @@ class ProdPrevReal extends Controller
 
         $ProdKg=($ProduzidoKg) ? $ProduzidoKg : 0;
         $hidricos=($hidrico->valor) ? $hidrico->valor : 0;
-        $AguaKg= number_format(($hidricos/$ProdKg),4,",",".");
-
+        if($hidricos==0){
+            $AguaKg= number_format('0',4,",",".");    
+        }else{
+            $AguaKg= number_format(($hidricos/$ProdKg),4,",",".");
+        }
+         
         $energias=($energia->valor) ? $energia->valor : 0;
-        $EnergiaKg= number_format(($energias/$ProdKg),4,",",".");
-
+        if($energias==0){
+            $EnergiaKg= number_format('0',4,",",".");
+        }else{
+            $EnergiaKg= number_format(($energias/$ProdKg),4,",",".");
+        }
+         
         $lenhas=($lenha->valor) ? $lenha->valor : 0;
-        $LenhaKg= number_format(($lenhas/$ProdKg),4,",",".");
-
+        if($lenhas==0){
+            $LenhaKg= number_format('0',4,",",".");
+        }else{
+            $LenhaKg= number_format(($lenhas/$ProdKg),4,",",".");
+        }
+         
         $polpas=($polpa->valor) ? $polpa->valor : 0;
-        $PolpaKg= number_format(($polpas/$ProdKg),4,",",".");
-
-
-
+        if($polpas==0){
+            $PolpaKg= number_format('0',4,",",".");
+        }else{
+            $PolpaKg= number_format(($polpas/$ProdKg),4,",",".");
+        } 
+ 
+  
         $request['Meses'] =$MES;
         $request['PlanejadoCx'] =  ($PlanejadoCx) ?  number_format($PlanejadoCx,0,",",".") : '000';
         $request['PlanejadoKg'] = ($PlanejadoKg) ?  number_format($PlanejadoKg,0,",",".") : '000';
@@ -758,6 +790,11 @@ class ProdPrevReal extends Controller
         $retorno['GraficoTpPerda']=$tipoPerda;
         
         return $retorno;
+
+      }catch (Throwablee $error) {
+        return response()->json(['errors' => [$error->getMessage()]], 500);
+      }
+      
     }
 
     public function detalhesJson(Request $request) { 
