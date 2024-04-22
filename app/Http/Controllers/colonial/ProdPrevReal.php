@@ -295,7 +295,8 @@ class ProdPrevReal extends Controller
             $qtdeAnterior=$QtdeEnergiaAnterior; 
             foreach($dadosEnergia as $val){  
                 $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde-$qtdeAnterior,2);
+                //$Ar['visits']=round($val->qtde-$qtdeAnterior,2);
+                $Ar['visits']=round($val->qtde,2);
                 if($request['ano']==$val->data){
                     $Ar['color']='#FF0F00';
                 }else{
@@ -419,7 +420,8 @@ class ProdPrevReal extends Controller
             $qtdeAnterior=$QtdeEnergiaAnterior; 
             foreach($dadosEnergia as $val){  
                 $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde-$qtdeAnterior,2);
+                //$Ar['visits']=round($val->qtde-$qtdeAnterior,2);
+                $Ar['visits']=round($val->qtde,2);
                 if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
                     $Ar['color']='#1dd62c';
                 }else{
@@ -588,7 +590,8 @@ class ProdPrevReal extends Controller
             foreach($dadosEnergia as $key => $val){  
                 $Energia[]=array( 
                     "country"=>$val->data,
-                    "visits"=>round($val->qtde-$qtdeAnterior,2),
+                    //"visits"=>round($val->qtde-$qtdeAnterior,2),
+                    "visits"=>round($val->qtde,2),
                     "color"=> $this->gerar_cor($key)
                 );
                 $qtdeAnterior=$val->qtde;
