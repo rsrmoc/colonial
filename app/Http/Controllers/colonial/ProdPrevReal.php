@@ -175,7 +175,8 @@ class ProdPrevReal extends Controller
         $ProduzidoCx=0; $PlanejadoCx=0;
         $ProduzidoKg=0; $PlanejadoKg=0;
         $ProduzidoTo=0; $PlanejadoTo=0;     
-        $data=null;
+        $data=null; $ProduzidoCxPerc=0;
+        $ProduzidoKgPerc=0;$ProduzidoToPerc=0;
         foreach($dados as $key => $val){
            if($key % 2 == 0) { $townName2=round($val->planejado_kg); }else{ $townName2=''; }
              
@@ -206,6 +207,9 @@ class ProdPrevReal extends Controller
                         $PlanejadoTo=round(($PlanejadoTo+$plaToneladas),2);
             
         }
+        if(($ProduzidoCx>0) && ($PlanejadoCx>0)){ $ProduzidoCxPerc=round((($ProduzidoCx/$PlanejadoCx)*100),2); }
+        if(($ProduzidoKg>0) && ($PlanejadoKg>0)){ $ProduzidoKgPerc=round((($ProduzidoKg/$PlanejadoKg)*100),2); }
+        if(($ProduzidoTo>0) && ($PlanejadoTo>0)){ $ProduzidoToPerc=round((($ProduzidoTo/$PlanejadoTo)*100),2); }
 
   
         /* Produto */ 
@@ -753,9 +757,13 @@ class ProdPrevReal extends Controller
         }else{
             $PolpaKg= number_format(($polpas/$ProdKg),4,",",".");
         } 
- 
   
+
         $request['Meses'] =$MES;
+        $request['ProduzidoCxPerc'] =  ($ProduzidoCxPerc) ?  number_format($ProduzidoCxPerc,2,",",".") : '00';
+        $request['ProduzidoKgPerc'] =  ($ProduzidoKgPerc) ?  number_format($ProduzidoKgPerc,2,",",".") : '00';
+        $request['ProduzidoToPerc'] =  ($ProduzidoToPerc) ?  number_format($ProduzidoToPerc,2,",",".") : '00';
+
         $request['PlanejadoCx'] =  ($PlanejadoCx) ?  number_format($PlanejadoCx,0,",",".") : '000';
         $request['PlanejadoKg'] = ($PlanejadoKg) ?  number_format($PlanejadoKg,0,",",".") : '000';
         $request['PlanejadoTo'] = ($PlanejadoTo) ?  number_format($PlanejadoTo,2,",",".") : '0,00'; 

@@ -28,10 +28,10 @@ class Perdas extends Controller
             $perda  = Perda::where('dt_ordem', 'LIKE', "%{$request->b}%") 
                 ->orWhere('cd_ordem', 'LIKE', "%{$request->b}%")
                 ->orderByRaw('dt_ordem desc')
-                ->paginate(25)->appends($request->query());
+                ->paginate(50)->appends($request->query());
         } else {
             $perda  = Perda::orderByRaw('dt_ordem desc')    
-            ->paginate(25)->appends($request->query());
+            ->paginate(50)->appends($request->query());
         }
 
         //$perda->load('tab_ordem','tab_tipo','tab_produto');

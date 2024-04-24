@@ -30,6 +30,9 @@ Alpine.data('app', function () {
     PlanejadoCx: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     PlanejadoKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     PlanejadoTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    ProduzidoCxPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    ProduzidoKgPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    ProduzidoToPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     iconHeaderProdTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderProdKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderProdCx: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
@@ -138,6 +141,9 @@ Alpine.data('app', function () {
         _this2.PlanejadoCx = res.data.request.PlanejadoCx;
         _this2.PlanejadoKg = res.data.request.PlanejadoKg;
         _this2.PlanejadoTo = res.data.request.PlanejadoTo;
+        _this2.ProduzidoCxPerc = res.data.request.ProduzidoCxPerc;
+        _this2.ProduzidoKgPerc = res.data.request.ProduzidoKgPerc;
+        _this2.ProduzidoToPerc = res.data.request.ProduzidoToPerc;
         _this2.TotMeses = res.data.request.Meses;
         _this2.parametros.valida = true;
         $('#indicadores-parametros #parametro-ano').val(res.data.request.ano).trigger('change');

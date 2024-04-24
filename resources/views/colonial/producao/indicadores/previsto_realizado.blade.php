@@ -697,26 +697,32 @@ ul {
                             </template>
 
                             <div class="row">
-                                <div class="col-xs-12 col-sm-8 col-md-8 col-md-offset-2">
+                                <div class="col-xs-12 col-sm-10 col-md-10 col-md-offset-1">
                                     <table class="table">
                                         <thead>
                                             <tr class="active">  
                                                 <th class="text-right">Planejado [ Kg ]</th>   
                                                 <th class="text-right">Produzido [ Kg ]</th>   
+                                                <th class="text-right">[ Kg ] Produzidos [ % ]</th> 
                                                 <th class="text-right">Planejado [ T ]</th>   
                                                 <th class="text-right">Produzido [ T ]</th>   
+                                                <th class="text-right">[ T ] Produzidas [ % ]</th>
                                                 <th class="text-right">Planejado [ Cx ]</th>
                                                 <th class="text-right">Produzido [ Cx ]</th>
+                                                <th class="text-right">[ Cx ] Produzidas [ % ]</th>
                                             </tr>
                                         </thead> 
                                         <tbody> 
                                                 <tr>  
                                                     <td class="text-right" x-html="PlanejadoKg" ></td>
                                                     <td class="text-right" x-html="ProduzidoKg" ></td>
+                                                    <td class="text-right" x-html="ProduzidoKgPerc" ></td>
                                                     <td class="text-right" x-html="PlanejadoTo" ></td>
                                                     <td class="text-right" x-html="ProduzidoTo" ></td>
+                                                    <td class="text-right" x-html="ProduzidoToPerc" ></td>
                                                     <td class="text-right" x-html="PlanejadoCx" ></td>
                                                     <td class="text-right" x-html="ProduzidoCx" ></td>
+                                                    <td class="text-right" x-html="ProduzidoCxPerc" ></td>
                                                 </tr> 
                                         </tbody>
                                     </table>
@@ -756,20 +762,26 @@ ul {
                                             <tr class="active">  
                                                 <th class="text-right">Planejado [ Kg ]</th>   
                                                 <th class="text-right">Produzido [ Kg ]</th>   
+                                                <th class="text-right">[ Kg ] Produzidos [ % ]</th> 
                                                 <th class="text-right">Planejado [ T ]</th>   
                                                 <th class="text-right">Produzido [ T ]</th>   
+                                                <th class="text-right">[ T ] Produzidas [ % ]</th>
                                                 <th class="text-right">Planejado [ Cx ]</th>
                                                 <th class="text-right">Produzido [ Cx ]</th>
+                                                <th class="text-right">[ Cx ] Produzidas [ % ]</th>
                                             </tr>
                                         </thead> 
                                         <tbody> 
                                                 <tr>  
                                                     <td class="text-right" x-html="PlanejadoKg" ></td>
                                                     <td class="text-right" x-html="ProduzidoKg" ></td>
+                                                    <td class="text-right" x-html="ProduzidoKgPerc" ></td>
                                                     <td class="text-right" x-html="PlanejadoTo" ></td>
                                                     <td class="text-right" x-html="ProduzidoTo" ></td>
+                                                    <td class="text-right" x-html="ProduzidoToPerc" ></td>
                                                     <td class="text-right" x-html="PlanejadoCx" ></td>
                                                     <td class="text-right" x-html="ProduzidoCx" ></td>
+                                                    <td class="text-right" x-html="ProduzidoCxPerc" ></td>
                                                 </tr> 
                                         </tbody>
                                     </table>

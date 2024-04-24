@@ -29,6 +29,9 @@ Alpine.data('app', () => ({
     PlanejadoCx: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     PlanejadoKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     PlanejadoTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    ProduzidoCxPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    ProduzidoKgPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    ProduzidoToPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     
     iconHeaderProdTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderProdKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
@@ -159,6 +162,11 @@ Alpine.data('app', () => ({
                 this.PlanejadoCx= res.data.request.PlanejadoCx;
                 this.PlanejadoKg= res.data.request.PlanejadoKg;
                 this.PlanejadoTo= res.data.request.PlanejadoTo;
+                
+                this.ProduzidoCxPerc= res.data.request.ProduzidoCxPerc;
+                this.ProduzidoKgPerc= res.data.request.ProduzidoKgPerc;
+                this.ProduzidoToPerc= res.data.request.ProduzidoToPerc;
+
                 this.TotMeses = res.data.request.Meses;
                 this.parametros.valida = true;
                 $('#indicadores-parametros #parametro-ano').val(res.data.request.ano).trigger('change');

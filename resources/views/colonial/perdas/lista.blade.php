@@ -85,7 +85,7 @@
                         {{ $perda->links() }}
                     </div>
                     @if (empty($perda))
-                        <p class="text-center" style="padding: 1.2em">Nenhuma Parada Cadastrada</p>
+                        <p class="text-center" style="padding: 1.2em">Nenhuma Perda Cadastrada</p>
                     @endif
                 </div>
             </div>
