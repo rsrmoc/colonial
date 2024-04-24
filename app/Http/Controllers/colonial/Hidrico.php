@@ -19,7 +19,7 @@ class Hidrico extends Controller
 
         $ip = DB::select("SELECT CONNECTIONPROPERTY('local_net_address') ip");
         $ip = $ip[0]->ip;
-        if($ip=='192.168.0.181'){
+        if($ip=='192.168.0.180'){
             $select = "hidricos.*";
         }else{
 
@@ -30,6 +30,7 @@ class Hidrico extends Controller
             when LAG(qtde_atual,1,0) OVER(  ORDER BY qtde_atual  ASC)=0 then '0' 
             else ( qtde_atual- LAG(qtde_atual,1,0) OVER(  ORDER BY qtde_atual  ASC)) ";
         }
+        
         if ($request->has('b')) {
             $hidrico  = ModelsHidrico::where('dt_consumo', 'LIKE', "%{$request->b}%")
                 ->orWhere('id', 'LIKE', "%{$request->b}%")
@@ -37,7 +38,8 @@ class Hidrico extends Controller
                 ->selectRaw($select)
                 ->paginate(50)->appends($request->query());
         } else {
-            $hidrico  = ModelsHidrico::orderByRaw('dt_consumo')->paginate(25)->appends($request->query());
+            $hidrico  = ModelsHidrico::orderByRaw('dt_consumo desc')
+            ->selectRaw($select)->paginate(25)->appends($request->query());
         }
 
         return view('colonial.hidricos.lista', compact('hidrico'));
