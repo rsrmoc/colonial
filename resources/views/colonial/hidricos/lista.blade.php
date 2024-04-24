@@ -58,7 +58,7 @@
                                         <td class="text-center">{{  date( 'd/m/Y' , strtotime( $linha->dt_consumo ) ) }}</td> 
                                         <td class="text-right">{{ number_format($linha->qtde_anterior,2,",",".") }}</td> 
                                         <td class="text-right">{{ number_format($linha->qtde_atual,2,",",".") }}</td> 
-                                        <td class="text-right">{{ number_format($linha->qtde_atual - $linha->qtde_anterior,2,",",".") }}</td> 
+                                        <td class="text-right">{{ number_format($linha->saldo,2,",",".") }}</td> 
                                         <td class="text-center"> 
                                                 <div class="btn-group">
                                                     @if (auth()->user()->isPermissao('hidrico', 'criar'))
@@ -79,7 +79,9 @@
                             @endforeach
                         </tbody>
                     </table>
-
+                    <div style="float: right">
+                        {{ $hidrico->links() }}
+                    </div> 
                     @if (empty($hidrico))
                         <p class="text-center" style="padding: 1.2em">Nenhum Consumo Cadastrado</p>
                     @endif

@@ -75,7 +75,9 @@
                             @endforeach
                         </tbody>
                     </table>
-
+                    <div style="float: right">
+                        {{ $energia->links() }}
+                    </div> 
                     @if (empty($energia))
                         <p class="text-center" style="padding: 1.2em">Nenhum Consumo Cadastrado</p>
                     @endif

@@ -24,6 +24,7 @@
                                 @endif
                             </div>
                         </div>
+                        <!--
                         <div class="col-md-2">
                             <div class="form-group @if($errors->has('consumo_anterior')) has-error @endif ">
                                 <label for="fname">Consumo Anterior: <span class="red normal">*</span></label>
@@ -33,7 +34,7 @@
                                 @endif
                             </div>
                         </div>
-                     
+                        -->
                         <div class="col-md-2">
                             <div class="form-group @if($errors->has('consumo_atual')) has-error @endif ">
                                 <label for="fname">Consumo Atual: <span class="red normal">*</span></label>
