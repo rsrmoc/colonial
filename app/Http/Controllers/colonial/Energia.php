@@ -19,10 +19,10 @@ class Energia extends Controller
         if ($request->has('b')) {
             $energia  = ModelsEnergia::where('dt_consumo', 'LIKE', "%{$request->b}%")
                 ->orWhere('id', 'LIKE', "%{$request->b}%")
-                ->orderBy('dt_consumo')
+                ->orderByRaw('dt_consumo desc')
                 ->paginate(25)->appends($request->query());
         } else {
-            $energia  = ModelsEnergia::orderBy('dt_consumo')->paginate(25)->appends($request->query());
+            $energia  = ModelsEnergia::orderByRaw('dt_consumo desc')->paginate(25)->appends($request->query());
         }
 
         return view('colonial.energias.lista', compact('energia'));
