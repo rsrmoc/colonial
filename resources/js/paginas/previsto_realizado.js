@@ -163,9 +163,9 @@ Alpine.data('app', () => ({
                 this.PlanejadoKg= res.data.request.PlanejadoKg;
                 this.PlanejadoTo= res.data.request.PlanejadoTo;
                 
-                this.ProduzidoCxPerc= res.data.request.ProduzidoCxPerc+' %';
-                this.ProduzidoKgPerc= res.data.request.ProduzidoKgPerc+' %';
-                this.ProduzidoToPerc= res.data.request.ProduzidoToPerc+' %';
+                this.ProduzidoCxPerc= res.data.request.ProduzidoCxPerc+'%';
+                this.ProduzidoKgPerc= res.data.request.ProduzidoKgPerc+'%';
+                this.ProduzidoToPerc= res.data.request.ProduzidoToPerc+'%';
 
                 this.TotMeses = res.data.request.Meses;
                 this.parametros.valida = true;
