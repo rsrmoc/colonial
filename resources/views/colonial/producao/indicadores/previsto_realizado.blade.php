@@ -703,13 +703,13 @@ ul {
                                             <tr class="active">  
                                                 <th class="text-right">Planejado [ Kg ]</th>   
                                                 <th class="text-right">Produzido [ Kg ]</th>   
-                                                <th class="text-right">[ Kg ] Produzidos [ % ]</th> 
+                                                <th class="text-right"> [ % ]</th> 
                                                 <th class="text-right">Planejado [ T ]</th>   
                                                 <th class="text-right">Produzido [ T ]</th>   
-                                                <th class="text-right">[ T ] Produzidas [ % ]</th>
+                                                <th class="text-right"> [ % ]</th>
                                                 <th class="text-right">Planejado [ Cx ]</th>
                                                 <th class="text-right">Produzido [ Cx ]</th>
-                                                <th class="text-right">[ Cx ] Produzidas [ % ]</th>
+                                                <th class="text-right"> [ % ]</th>
                                             </tr>
                                         </thead> 
                                         <tbody> 
@@ -762,13 +762,13 @@ ul {
                                             <tr class="active">  
                                                 <th class="text-right">Planejado [ Kg ]</th>   
                                                 <th class="text-right">Produzido [ Kg ]</th>   
-                                                <th class="text-right">[ Kg ] Produzidos [ % ]</th> 
+                                                <th class="text-right"> [ % ]</th> 
                                                 <th class="text-right">Planejado [ T ]</th>   
                                                 <th class="text-right">Produzido [ T ]</th>   
-                                                <th class="text-right">[ T ] Produzidas [ % ]</th>
+                                                <th class="text-right">  [ % ]</th>
                                                 <th class="text-right">Planejado [ Cx ]</th>
                                                 <th class="text-right">Produzido [ Cx ]</th>
-                                                <th class="text-right">[ Cx ] Produzidas [ % ]</th>
+                                                <th class="text-right"> [ % ]</th>
                                             </tr>
                                         </thead> 
                                         <tbody> 
