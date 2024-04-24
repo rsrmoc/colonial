@@ -182,30 +182,40 @@ Alpine.data('app', () => ({
                     "position": "left",
                     "labelRotation": 20
                   },
+                  "legend": {
+                    "align": "center",
+                    "useGraphSettings": true,
+                    "equalWidths": false, 
+                    "valueAlign": "left",
+                    "valueText": "[[value]] ([[percents]]%)",
+                    "valueWidth": 100
+                },
                   "trendLines": [],
                   "graphs": [
                     {
-                      "balloonText": "Planejado: <b>[[value]]</b>",
+                      "balloonText": "Planejado: <b>[[value]] ("+res.data.request.ds_unidade+") </b>",
                       "fillAlphas": 0.8,
                       "id": "AmGraph-1",
                       "lineAlpha": 0.2,
-                      "title": "planejado",
+                      "title": "Planejado",
                       "labelText": "[[value]]",
                       "type": "column",
                       "valueField": "planejado",
                       "fillColorsField": "color_planejado", 
+                      "lineColor": "#008000",
                 
                     },
                     {
-                      "balloonText": "Produzido: <b>[[value]]</b>",
+                      "balloonText": "Produzido: <b>[[value]] ("+res.data.request.ds_unidade+")</b>",
                       "fillAlphas": 0.8,
                       "id": "AmGraph-2",
                       "lineAlpha": 0.2,
-                      "title": "produzido",
+                      "title": "Produzido",
                       "labelText": "[[value]]",
                       "type": "column",
                       "valueField": "produzido",
-                      "fillColorsField": "color_produzido"
+                      "fillColorsField": "color_produzido",
+                      "lineColor": "#FF0F00",
                     }
                   ],
                   "guides": [],
@@ -236,7 +246,7 @@ Alpine.data('app', () => ({
                  
                   "startDuration": 1,
                   "graphs": [{
-                    "balloonText": "<b>[[category]]: [[value]]</b>",
+                    "balloonText": "<b>[[category]]: [[value]] ("+res.data.request.ds_unidade+") </b>",
                     "fillColorsField": "color",
                     "fillAlphas": 0.9,
                     "labelText": "[[value]]",
@@ -275,10 +285,18 @@ Alpine.data('app', () => ({
                           "position": "left",
                           "labelRotation": 20
                       },
+                      "legend": {
+                        "align": "center",
+                        "useGraphSettings": true,
+                        "equalWidths": false, 
+                        "valueAlign": "left",
+                        "valueText": "[[value]] ([[percents]]%)",
+                        "valueWidth": 100
+                      },
                       "trendLines": [],
                       "graphs": [
                           {
-                              "balloonText": "<b>[[label]]</b> <br> "+res.data.graficoAnos01+" : [[value]]",
+                              "balloonText": "<b>[[label]]</b> <br> <b>"+res.data.graficoAnos01+"</b> : [[value]] ("+res.data.request.ds_unidade+")",
                               "fillAlphas": 0.8,
                               "id": "AmGraph-1",
                               "lineAlpha": 0.2,
@@ -286,10 +304,11 @@ Alpine.data('app', () => ({
                               "labelText": "[[value]]",
                               "type": "column",
                               "valueField": "ano01",
-                              "fillColorsField": "color01"
+                              "fillColorsField": "color01",
+                              "lineColor": "#008000"
                           },
                           {
-                              "balloonText": "<b>[[label]]</b> <br> "+res.data.graficoAnos02+" : [[value]]",
+                              "balloonText": "<b>[[label]]</b> <br> <b>"+res.data.graficoAnos02+" </b>: [[value]] ("+res.data.request.ds_unidade+")",
                               "fillAlphas": 0.8,
                               "id": "AmGraph-2",
                               "lineAlpha": 0.2,
@@ -298,10 +317,11 @@ Alpine.data('app', () => ({
                               "type": "column",
                               "valueField": "ano02",
                               "fillColorsField": "color02", 
+                              "lineColor": "#2A0CD0"
 
                           },
                           {
-                              "balloonText": "<b>[[label]]</b> <br> "+res.data.graficoAnos03+" : [[value]]",
+                              "balloonText": "<b>[[label]]</b> <br> <b>"+res.data.graficoAnos03+"</b> : [[value]] ("+res.data.request.ds_unidade+")",
                               "fillAlphas": 0.8,
                               "id": "AmGraph-3",
                               "lineAlpha": 0.2,
@@ -309,7 +329,8 @@ Alpine.data('app', () => ({
                               "labelText": "[[value]]",
                               "type": "column",
                               "valueField": "ano03",
-                              "fillColorsField": "color03"
+                              "fillColorsField": "color03",
+                              "lineColor": "#FF0F00"
                           }
                       ],
                       "guides": [],
@@ -340,7 +361,7 @@ Alpine.data('app', () => ({
                       "startDuration": 2,
                       "dataProvider": res.data.comparativo,
                         "graphs": [{
-                            "balloonText": "[[category]]: <b>[[value]]</b>",
+                            "balloonText": "[[category]]: <b>[[value]]  ("+res.data.request.ds_unidade+")</b>",
                             "fillColorsField": "color",
                             "fillAlphas": 1,
                             "lineAlpha": 0.1,
@@ -374,7 +395,7 @@ Alpine.data('app', () => ({
                     "startDuration": 2,
                     "dataProvider": res.data.GraficoAgua,
                     "graphs": [{
-                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "balloonText": " DIA [[category]] :  <b>[[value]] (m³/h)</b>",
                         "colorField": "color",
                         "fillAlphas": 0.85,
                         "lineAlpha": 0.1,
@@ -409,8 +430,8 @@ Alpine.data('app', () => ({
                     "type": "serial",
                     "startDuration": 2,
                     "dataProvider": res.data.GraficoEnergia,
-                    "graphs": [{
-                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                    "graphs": [{ 
+                        "balloonText": " DIA [[category]] :  <b>[[value]] (Kw)</b>",
                         "colorField": "color",
                         "fillAlphas": 0.85,
                         "lineAlpha": 0.1,
@@ -446,7 +467,7 @@ Alpine.data('app', () => ({
                     "startDuration": 2,
                     "dataProvider": res.data.GraficoLenha,
                     "graphs": [{
-                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                      "balloonText": " DIA [[category]] :  <b>[[value]] (M3)</b>",
                         "colorField": "color",
                         "fillAlphas": 0.85,
                         "lineAlpha": 0.1,
@@ -481,8 +502,8 @@ Alpine.data('app', () => ({
                     "type": "serial",
                     "startDuration": 2,
                     "dataProvider": res.data.GraficoPolpa,
-                    "graphs": [{
-                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                    "graphs": [{ 
+                        "balloonText": " DIA [[category]] :  <b>[[value]] (kg)</b>",
                         "colorField": "color",
                         "fillAlphas": 0.85,
                         "lineAlpha": 0.1,
@@ -517,8 +538,8 @@ Alpine.data('app', () => ({
                     "type": "serial",
                     "startDuration": 2,
                     "dataProvider": res.data.GraficoParada,
-                    "graphs": [{
-                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                    "graphs": [{ 
+                        "balloonText": " DIA [[category]] :  <b>[[value]] (Min)</b>",
                         "colorField": "color",
                         "fillAlphas": 0.85,
                         "lineAlpha": 0.1,
@@ -573,8 +594,8 @@ Alpine.data('app', () => ({
                     "type": "serial",
                     "startDuration": 2,
                     "dataProvider": res.data.GraficoPerda,
-                    "graphs": [{
-                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                    "graphs": [{ 
+                        "balloonText": " DIA [[category]] :  <b>[[value]]</b>",
                         "colorField": "color",
                         "fillAlphas": 0.85,
                         "lineAlpha": 0.1,

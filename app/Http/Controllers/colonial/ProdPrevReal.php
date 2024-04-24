@@ -201,7 +201,7 @@ class ProdPrevReal extends Controller
                         $ProduzidoKg=($ProduzidoKg+round($val->produzido_kg,0));
                         $ProduzidoTo=round(($ProduzidoTo+$Toneladas),2);
                         
-                        $PlanejadoCx=($PlanejadoCx+round($val->planejado_kg,0));
+                        $PlanejadoCx=($PlanejadoCx+round($val->planejado_cx,0));
                         $PlanejadoKg=($PlanejadoKg+round($val->planejado_kg,0));
                         $PlanejadoTo=round(($PlanejadoTo+$plaToneladas),2);
             
@@ -548,8 +548,8 @@ class ProdPrevReal extends Controller
             } 
             foreach($DadosAno as $keyMes => $val){  
                 $Array['label']= $MESES[$keyMes];
-                $Array['color01']= "#FF9E01";
-                $Array['color02']= "#FF6600";
+                $Array['color01']= "#008000";
+                $Array['color02']= "#2A0CD0";
                 $Array['color03']= "#FF0F00";
                 $X=1;
                 foreach($val as $KeyVal => $valores){ 
