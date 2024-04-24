@@ -141,9 +141,9 @@ Alpine.data('app', function () {
         _this2.PlanejadoCx = res.data.request.PlanejadoCx;
         _this2.PlanejadoKg = res.data.request.PlanejadoKg;
         _this2.PlanejadoTo = res.data.request.PlanejadoTo;
-        _this2.ProduzidoCxPerc = res.data.request.ProduzidoCxPerc;
-        _this2.ProduzidoKgPerc = res.data.request.ProduzidoKgPerc;
-        _this2.ProduzidoToPerc = res.data.request.ProduzidoToPerc;
+        _this2.ProduzidoCxPerc = res.data.request.ProduzidoCxPerc + ' %';
+        _this2.ProduzidoKgPerc = res.data.request.ProduzidoKgPerc + ' %';
+        _this2.ProduzidoToPerc = res.data.request.ProduzidoToPerc + ' %';
         _this2.TotMeses = res.data.request.Meses;
         _this2.parametros.valida = true;
         $('#indicadores-parametros #parametro-ano').val(res.data.request.ano).trigger('change');
