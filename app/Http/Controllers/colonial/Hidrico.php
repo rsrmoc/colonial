@@ -28,7 +28,7 @@ class Hidrico extends Controller
             LAG(qtde_atual,1,0) OVER(  ORDER BY qtde_atual  ASC) qtde_anterior,
             case 
             when LAG(qtde_atual,1,0) OVER(  ORDER BY qtde_atual  ASC)=0 then '0' 
-            else ( qtde_atual- LAG(qtde_atual,1,0) OVER(  ORDER BY qtde_atual  ASC)) ";
+            else ( qtde_atual- LAG(qtde_atual,1,0) OVER(  ORDER BY qtde_atual  ASC)) end saldo";
         }
         
         if ($request->has('b')) {
