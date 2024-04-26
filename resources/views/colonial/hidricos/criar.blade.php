@@ -19,7 +19,7 @@
                         <div class="col-md-2">
                             <div class="form-group @if($errors->has('dt_consumo')) has-error @endif ">
                                 <label for="fname">Data do Consumo: <span class="red normal">*</span></label>
-                                <input type="date" class="form-control "     value="{{old('dt_consumo')}}" placeholder="Data Consumo " name="dt_consumo"   />
+                                <input type="date" class="form-control " value="{{old('dt_consumo')}}" placeholder="Data Consumo " name="dt_consumo"   />
                                 @if($errors->has('dt_consumo'))
                                     <div class="error">{{ $errors->first('dt_consumo') }}</div>
                                 @endif

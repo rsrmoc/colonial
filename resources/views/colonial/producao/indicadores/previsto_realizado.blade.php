@@ -39,12 +39,18 @@
     text-shadow: none;
     padding: 12px 0;
 }
- 
+  
 #chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha, #chartdiv_perda, #chartdiv_parada, 
 #chartdiv_polpa, #chartdiv_tp_parada, #chartdiv_tp_perda
 {
   width: 100%;
   height: 500px;
+}
+
+#chartdivPercProd
+{
+  width: 100%;
+  height: 200px;
 }
   
 ul, ol {
@@ -691,6 +697,7 @@ ul {
             
                             <!-- HTML -->
                             <div id="chartdivPrevProd"></div>
+                            <div id="chartdivPercProd"></div>
 
                             <template x-if="loadingCharts">
                                 <x-loader class="absolute-loader"/>

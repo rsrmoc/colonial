@@ -148,7 +148,7 @@ Alpine.data('app', () => ({
                 this.iconHeaderLenha = res.data.request.lenha+'<span class="headerUnidade"> (M3) </span>';
                 this.iconHeaderLenhaKg = res.data.request.LenhaKg+'<span class="headerUnidade"> (m3/kg) </span>';
                 this.iconHeaderPerdas = res.data.request.perda;
-                this.iconHeaderParadas = res.data.request.perda+'<span class="headerUnidade"> (Min)</span>';
+                this.iconHeaderParadas = res.data.request.parada+'<span class="headerUnidade"> (Min)</span>';
                 this.iconHeaderPolpas = res.data.request.polpa+'<span class="headerUnidade"> (Kg) </span>';
                 this.iconHeaderPolpasKg = res.data.request.PolpaKg+'<span class="headerUnidade"> (kg/kg) </span>';
 
@@ -180,6 +180,8 @@ Alpine.data('app', () => ({
 
                 /* Grafico Planejado x Produzido */ 
                 var chart = AmCharts.makeChart("chartdivPrevProd", {
+                  "decimalSeparator": ",",
+                  "thousandsSeparator": ".",
                   "type": "serial",
                   "theme": "none",
                   "categoryField": "label",
@@ -244,9 +246,66 @@ Alpine.data('app', () => ({
                   $("#chartdivPrevProd").html(this.graficoBarra);
                 }
                 
+                /* Grafico Porcentagem Produzida */ 
+                var chart = AmCharts.makeChart("chartdivPercProd", {
+                  "decimalSeparator": ",",
+                  "thousandsSeparator": ".",
+                  "type": "serial",
+                  "theme": "none",
+                  "categoryField": "label",
+                  "rotate": false,
+                  "startDuration": 1,
+                  "categoryAxis": {
+                    "gridPosition": "start",
+                    "position": "left",
+                    "labelRotation": 20
+                  },
+                  "legend": {
+                    "align": "center",
+                    "useGraphSettings": true,
+                    "equalWidths": false, 
+                    "valueAlign": "left",
+                    "valueText": "[[value]] ([[percents]]%)",
+                    "valueWidth": 100
+                },
+                  "trendLines": [],
+                  "graphs": [
+                    {
+                      "balloonText": "Produzido (%): <b>[[value]] ("+res.data.request.ds_unidade+")  </b>",
+                      "fillAlphas": 0.8,
+                      "id": "AmGraph-1",
+                      "lineAlpha": 0.2,
+                      "title": "% de Produção",
+                      "labelText": "[[value]]",
+                      "type": "column",
+                      "valueField": "producao",
+                      "fillColorsField": "color_producao", 
+                      "lineColor": "#2A0CD0",
+                
+                    }
+                  ],
+                  "guides": [],
+                  "valueAxes": [
+                    {
+                      "id": "ValueAxis-1",
+                      "position": "top",
+                      "axisAlpha": 0
+                    }
+                  ],
+                  "allLabels": [],
+                  "balloon": {},
+                  "titles": [],
+                  "dataProvider": res.data.prod_per
+                
+                });
+                if(!res.data.prod_per){
+                  $("#chartdivPercProd").html(this.graficoBarra);
+                }
                     
                 /* Grafico Produtos */ 
                 var chart = AmCharts.makeChart("chartdivProdutos", {
+                  "decimalSeparator": ",",
+                  "thousandsSeparator": ".",
                   "type": "serial",
                   "theme": "none",
                   "rotate": true, 
@@ -283,6 +342,8 @@ Alpine.data('app', () => ({
  
                   if(res.data.ComparativoAno){
                     var chart = AmCharts.makeChart("chartdiv_comparativo", {
+                      "decimalSeparator": ",",
+                      "thousandsSeparator": ".",
                       "type": "serial",
                       "theme": "none",
                       "categoryField": "label",
@@ -364,6 +425,8 @@ Alpine.data('app', () => ({
                     
                   if(!res.data.comparativo){
                     var chart = AmCharts.makeChart("chartdiv_comparativo", {
+                      "decimalSeparator": ",",
+                      "thousandsSeparator": ".",
                       "theme": "none",
                       "type": "serial",
                       "startDuration": 2,
@@ -398,6 +461,8 @@ Alpine.data('app', () => ({
                 /*Agua*/ 
                 if(res.data.GraficoAgua){
                   var chart = AmCharts.makeChart("chartdiv_agua", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "theme": "none",
                     "type": "serial",
                     "startDuration": 2,
@@ -434,6 +499,8 @@ Alpine.data('app', () => ({
                 /*Energia*/ 
                 if(res.data.GraficoEnergia){
                   var chart = AmCharts.makeChart("chartdiv_energia", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "theme": "none",
                     "type": "serial",
                     "startDuration": 2,
@@ -470,6 +537,8 @@ Alpine.data('app', () => ({
                 /*Lenha*/ 
                 if(res.data.GraficoLenha){
                   var chart = AmCharts.makeChart("chartdiv_lenha", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "theme": "none",
                     "type": "serial",
                     "startDuration": 2,
@@ -506,6 +575,8 @@ Alpine.data('app', () => ({
                 /*Polpa*/
                 if(res.data.GraficoPolpa){
                   var chart = AmCharts.makeChart("chartdiv_polpa", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "theme": "none",
                     "type": "serial",
                     "startDuration": 2,
@@ -542,6 +613,8 @@ Alpine.data('app', () => ({
                 /*Parada*/ 
                 if(res.data.GraficoParada){
                   var chart = AmCharts.makeChart("chartdiv_parada", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "theme": "none",
                     "type": "serial",
                     "startDuration": 2,
@@ -577,6 +650,8 @@ Alpine.data('app', () => ({
                 /*TipoParada*/
                 if(res.data.GraficoTp_parada){
                   var chart = AmCharts.makeChart( "chartdiv_tp_parada", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "type": "pie",
                     "theme": "none",
                     "dataProvider": res.data.GraficoTp_parada,
@@ -598,6 +673,8 @@ Alpine.data('app', () => ({
                 /*Perda*/ 
                 if(res.data.GraficoTp_parada){
                   var chart = AmCharts.makeChart("chartdiv_perda", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "theme": "none",
                     "type": "serial",
                     "startDuration": 2,
@@ -633,6 +710,8 @@ Alpine.data('app', () => ({
                 /*TipoPerda*/ 
                 if(res.data.GraficoTpPerda){ 
                   var chart = AmCharts.makeChart( "chartdiv_tp_perda", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
                     "type": "pie",
                     "theme": "none",
                     "dataProvider": res.data.GraficoTpPerda,

@@ -180,7 +180,14 @@ class ProdPrevReal extends Controller
         foreach($dados as $key => $val){
            if($key % 2 == 0) { $townName2=round($val->planejado_kg); }else{ $townName2=''; }
              
-           $data[] = array('label'=>$val->data,
+                        if(($val->prozuzido>0) && ($val->planejado>0)){ $valorPerc=round((($val->prozuzido/$val->planejado)*100),2); }else{ $valorPerc=0; } 
+                        $prod_per[]=array( 
+                            "label"=>$val->data,
+                            "producao"=>$valorPerc,
+                            "color_producao"=> "#2A0CD0"
+                        ); 
+
+                        $data[] = array('label'=>$val->data,
                            'produzido'=>round($val->prozuzido,0), 
                            'townName2'=> $townName2,
                            'planejado'=>round($val->planejado,0),
@@ -192,9 +199,11 @@ class ProdPrevReal extends Controller
                            'produzido_kg'=>$val->produzido_kg,
                            'tp_detalhe'=>'grafico',
                            "color_planejado"=> "#008000",
-                           "color_produzido"=>"#FF0F00" 
-
+                           "color_produzido"=>"#FF0F00"  
                         );
+                        
+                        
+
                         $Toneladas = ($val->produzido_kg/1000);
                         $plaToneladas = ($val->planejado_kg/1000);
 
@@ -783,6 +792,7 @@ class ProdPrevReal extends Controller
         $request['LenhaKg'] = $LenhaKg;
         $request['PolpaKg'] = $PolpaKg;
         $retorno['previsto'] = $data;
+        $retorno['prod_per'] = $prod_per; 
         $retorno['dadosProd'] = $dadosProd;
         $retorno['request'] = $request->toArray();
         $retorno['produtos'] = $Produtos;
