@@ -40,8 +40,8 @@
     padding: 12px 0;
 }
   
-#chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha, #chartdiv_perda, #chartdiv_parada, 
-#chartdiv_polpa, #chartdiv_tp_parada, #chartdiv_tp_perda
+#chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha, #chartdiv_parada, 
+#chartdiv_polpa, #chartdiv_tp_parada, #chartdiv_tp_perda, #chartdiv_grupo_perda
 {
   width: 100%;
   height: 500px;
@@ -51,6 +51,12 @@
 {
   width: 100%;
   height: 200px;
+}
+
+#chartdiv_perda
+{
+  width: 100%;
+  height: 300px;
 }
   
 ul, ol {
@@ -588,7 +594,7 @@ ul {
               
         <div class="row">
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white" style="background: #399BFF;" >
+                <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" >
                     <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderAgua" style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa; "></i></p>
@@ -603,7 +609,7 @@ ul {
                 </div>
             </div>
             <div class="col-lg-2 col-md-4"> 
-                <div class="panel info-box panel-white" style="background: #c2a505;">
+                <div class="panel info-box panel-white" style="background: #c2a505; margin-bottom: 10px;">
                     <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderEnergia"  style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -618,7 +624,7 @@ ul {
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white" style="background: #26A65B;">
+                <div class="panel info-box panel-white" style="background: #26A65B; margin-bottom: 10px;">
                     <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderLenha" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -633,7 +639,7 @@ ul {
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white" style="background: #e83e8c;">
+                <div class="panel info-box panel-white" style="background: #e83e8c; margin-bottom: 10px;">
                     <div class="panel-body" style="border-bottom: 3px solid #e83e8c;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderPolpas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -648,10 +654,12 @@ ul {
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white" style="background: #EF4836;">
+                <div class="panel info-box panel-white" style="background: #EF4836; margin-bottom: 10px;">
                     <div class="panel-body" style="border-bottom: 3px solid #EF4836;">
                         <div class="info-box-stats">
-                            <p class="counter" x-html="iconHeaderPerdas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" x-html="iconHeaderPerdas" style="color: #f9fafa;margin-bottom: 0px;">
+                                <i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>
+                            </p>
                             <p class="counter"  style="color: #f9fafa; margin-bottom: 5px; font-weight: 700; font-size: 15px;"> -- </p>
                             <span class="info-box-title" style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Perdas</span>
                         </div>
@@ -663,7 +671,7 @@ ul {
                 </div>
             </div>
             <div class="col-lg-2 col-md-4">
-                <div class="panel info-box panel-white" style="background: #f1bb07;">
+                <div class="panel info-box panel-white" style="background: #f1bb07; margin-bottom: 10px;">
                     <div class="panel-body" style="border-bottom: 3px solid #f1bb07;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderParadas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -680,6 +688,79 @@ ul {
 
         </div>
    
+        <div class="row">
+         
+            <div class="col-lg-3 col-md-6">
+                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;">
+                    <div class="panel-body" style="    padding: 5px;">
+                        <div class="info-box-stats">
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;     margin-bottom: 2px;" x-html="iconHeaderPerdasEmb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title red" style="color: #f9fafa; font-weight: 400; font-style: italic; margin-bottom: 0px;">Perda de Embalagens</span>
+                        </div>
+                      
+                        <div class="info-box-progress">
+                            <div class="progress progress-xs progress-squared bs-n">
+                                <div class="progress-bar progress-bar-success" style="color: #f9fafa;" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;">
+                    <div class="panel-body" style="    padding: 5px;">
+                        <div class="info-box-stats">
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;     margin-bottom: 2px;" x-html="iconHeaderPerdasIns"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title red" style="color: #f9fafa; font-weight: 400; font-style: italic; margin-bottom: 0px;">Perda de Insumos</span>
+                        </div>
+                      
+                        <div class="info-box-progress">
+                            <div class="progress progress-xs progress-squared bs-n">
+                                <div class="progress-bar progress-bar-success" style="color: #f9fafa;" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;">
+                    <div class="panel-body" style="    padding: 5px;">
+                        <div class="info-box-stats">
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;     margin-bottom: 2px;" x-html="iconHeaderPerdasPol"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title red" style="color: #f9fafa; font-weight: 400; font-style: italic; margin-bottom: 0px;">Perda de Polpas</span>
+                        </div>
+                      
+                        <div class="info-box-progress">
+                            <div class="progress progress-xs progress-squared bs-n">
+                                <div class="progress-bar progress-bar-success" style="color: #f9fafa;" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;">
+                    <div class="panel-body" style="    padding: 5px;">
+                        <div class="info-box-stats">
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;     margin-bottom: 2px;" x-html="iconHeaderPerdasOut"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <span class="info-box-title red" style="color: #f9fafa; font-weight: 400; font-style: italic; margin-bottom: 0px;">Perda de Outros</span>
+                        </div>
+                      
+                        <div class="info-box-progress">
+                            <div class="progress progress-xs progress-squared bs-n">
+                                <div class="progress-bar progress-bar-success" style="color: #f9fafa;" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div class="panel">
             <div class="panel-body">
                 <div  >
@@ -950,7 +1031,7 @@ ul {
         </div>
         <div style='text-align: center; '> </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="panel">
                     <div class="panel-body">
                         <div class="row">
@@ -964,6 +1045,22 @@ ul {
 
                         <!-- HTML -->
                         <div id="chartdiv_perda"></div>
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Perdas Por Grupo de Produtos</h3></div> 
+                        </div> 
+                       
+                        <!-- HTML -->
+                        <div id="chartdiv_grupo_perda"></div>
                         <template x-if="loadingCharts">
                             <x-loader class="absolute-loader"/>
                         </template>

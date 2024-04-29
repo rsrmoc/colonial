@@ -57,11 +57,10 @@ class Hidrico extends Controller
         
         $validator = Validator::make($request->all(), [
             'dt_consumo' => 'required|date', 
-            'consumo_atual' => 'required' 
+            'saldo' => 'required' 
         ],[
             'dt_consumo.required' => 'O campo data do consumo é obrigatorio',
-            'consumo_anterior.required' => 'O campo consumo anterior é obrigatorio',
-            'consumo_atual.required' => 'O campo consumo atual é obrigatorio'
+            'saldo.required' => 'O campo Saldo é obrigatorio' 
         ]);
         
         if ($validator->fails()) {  
@@ -71,14 +70,20 @@ class Hidrico extends Controller
         try {
            $retorno= DB::transaction(function () use($request) {
 
-                $qtde_anterior= str_replace('.', '', $request->consumo_anterior);
-                $qtde_anterior= str_replace(',', '.', $qtde_anterior);
+                $saldo= str_replace('.', '', $request->saldo);
+                $saldo= str_replace(',', '.', $saldo);
+ 
+                $consumo_atual= str_replace('.', '', $request->consumo_atual);
+                $consumo_atual= str_replace(',', '.', $consumo_atual);
 
-                $qtde_atual= str_replace('.', '', $request->consumo_atual);
-                $qtde_atual= str_replace(',', '.', $qtde_atual);
+                $consumo_anterior= str_replace('.', '', $request->consumo_anterior);
+                $consumo_anterior= str_replace(',', '.', $consumo_anterior);
+
                 return ModelsHidrico::create([
                     'dt_consumo' => $request->dt_consumo,
-                    'qtde_atual' => $qtde_atual,  
+                    'saldo' => $saldo,  
+                    'qtde_atual' => $consumo_atual,
+                    'qtde_anterior' => $consumo_anterior,
                 ]);
 
             }); 
@@ -97,11 +102,10 @@ class Hidrico extends Controller
         
         $validator = Validator::make($request->all(), [
             'dt_consumo' => 'required|date', 
-            'consumo_atual' => 'required' 
+            'saldo' => 'required' 
         ],[
             'dt_consumo.required' => 'O campo data do consumo é obrigatorio',
-            'consumo_anterior.required' => 'O campo consumo anterior é obrigatorio',
-            'consumo_atual.required' => 'O campo consumo atual é obrigatorio'
+            'saldo.required' => 'O saldo é obrigatorio', 
         ]);
         
         if ($validator->fails()) {  
@@ -112,14 +116,20 @@ class Hidrico extends Controller
 
            $retorno = DB::transaction(function () use($request,$hidrico) {
                
-                $qtde_anterior= str_replace('.', '', $request->consumo_anterior);
-                $qtde_anterior= str_replace(',', '.', $qtde_anterior);
+                $saldo= str_replace('.', '', $request->saldo);
+                $saldo= str_replace(',', '.', $saldo);
 
-                $qtde_atual= str_replace('.', '', $request->consumo_atual);
-                $qtde_atual= str_replace(',', '.', $qtde_atual);
+                $consumo_atual= str_replace('.', '', $request->consumo_atual);
+                $consumo_atual= str_replace(',', '.', $consumo_atual);
+
+                $consumo_anterior= str_replace('.', '', $request->consumo_anterior);
+                $consumo_anterior= str_replace(',', '.', $consumo_anterior);
+
                 return $hidrico->update([
                     'dt_consumo' => $request->dt_consumo,
-                    'qtde_atual' => $qtde_atual,  
+                    'saldo' => $saldo,  
+                    'qtde_atual' => $consumo_atual,
+                    'qtde_anterior' => $consumo_anterior,
                 ]);
 
                 }); 

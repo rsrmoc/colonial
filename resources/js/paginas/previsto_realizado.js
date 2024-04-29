@@ -15,6 +15,7 @@ Alpine.data('app', () => ({
     tituloDetalhes: null,
     tabDetalhes: null, 
     graficoBarra: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoBarra2: "<div style='text-align: center;margin-top: 25px;'> <img src='/assets/images/grafico-barra.png'> </div>",
     graficoPizza: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-pizza.png'> </div>",
     iconCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     tabCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
@@ -48,6 +49,11 @@ Alpine.data('app', () => ({
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpasKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    
+    iconHeaderPerdasEmb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPerdasPol: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPerdasIns: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPerdasOut: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     chartPrevReal: null,
     loadingCharts: false,
     modalLoadingCharts: true,
@@ -155,6 +161,11 @@ Alpine.data('app', () => ({
                 this.iconHeaderProdTo = res.data.request.ProduzidoTo+'<span class="headerUnidade"> (T) </span>';
                 this.iconHeaderProdKg = res.data.request.ProduzidoKg+'<span class="headerUnidade"> (Kg) </span>';
                 this.iconHeaderProdCx = res.data.request.ProduzidoCx+'<span class="headerUnidade"> (Cx) </span>';
+                this.iconHeaderPerdasEmb = res.data.request.embalagens;
+                this.iconHeaderPerdasPol = res.data.request.polpas;
+                this.iconHeaderPerdasIns = res.data.request.insumos;
+                this.iconHeaderPerdasOut = res.data.request.outros;
+
  
                 this.ProduzidoCx = res.data.request.ProduzidoCx;
                 this.ProduzidoKg= res.data.request.ProduzidoKg;
@@ -299,7 +310,7 @@ Alpine.data('app', () => ({
                 
                 });
                 if(!res.data.prod_per){
-                  $("#chartdivPercProd").html(this.graficoBarra);
+                  $("#chartdivPercProd").html(this.graficoBarra2);
                 }
                     
                 /* Grafico Produtos */ 
@@ -705,6 +716,29 @@ Alpine.data('app', () => ({
                   }, 0);
                 }else{ 
                   $("#chartdiv_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+                }
+
+                /*TipoPerda*/ 
+                if(res.data.GraficoGrupoPerda){ 
+                  var chart = AmCharts.makeChart( "chartdiv_grupo_perda", {
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": ".",
+                    "type": "pie",
+                    "theme": "none",
+                    "dataProvider": res.data.GraficoGrupoPerda,
+                    "valueField": "litres",
+                    "titleField": "country",
+                     "balloon":{
+                     "fixedPosition":true
+                    },
+                    "labelRadius": 5, 
+                    "marginTop": 0,
+                    "marginBottom": 0,
+                    "marginLeft": 0,
+                    "marginRight": 0,
+                  } );
+                }else{
+                  $("#chartdiv_grupo_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
                 }
 
                 /*TipoPerda*/ 

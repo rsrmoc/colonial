@@ -50,7 +50,7 @@
 					 <tr>
 						<td>'.mb_strtoupper($val->id).'</td> 
 						<td>'.substr($val->dt_consumo,0,10).' </td> 
-						<td>'.number_format($val->saldo,2,",",".").'</td> 
+						<td>'.number_format($val->qtde_atual,2,",",".").'</td> 
 					 </tr>'; 
 				 }
 				  

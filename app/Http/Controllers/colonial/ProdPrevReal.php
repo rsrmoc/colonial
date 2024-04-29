@@ -21,6 +21,8 @@ class ProdPrevReal extends Controller
    
     public function listar() { 
   
+   
+ 
       
         $MESES = array(1 => "JANEIRO", 2 => "FEVEREIRO", 3 => "MARÇO", 4 => "ABRIL", 5 => "MAIO", 6 => "JUNHO", 7 => "JULHO", 8 => "AGOSTO", 9 => "SETEMBRO", 10 => "OUTUBRO", 11 => "NOVEMBRO", 12 => "DEZEMBRO");
         for ($x = 0; $x <= 10; $x++) {
@@ -37,6 +39,8 @@ class ProdPrevReal extends Controller
         return view('colonial.producao.indicadores/previsto_realizado',compact('request','MESES','ANO','MES'));
     }
  
+
+
     public function listarJson(Request $request) { 
       try{
 
@@ -57,8 +61,12 @@ class ProdPrevReal extends Controller
             $request['mes']=date('m'); 
             $request['dia']=null;
         }
+        $MESES = array(1 => "JANEIRO", 2 => "FEVEREIRO", 3 => "MARÇO", 4 => "ABRIL", 5 => "MAIO", 6 => "JUNHO", 7 => "JULHO", 8 => "AGOSTO", 9 => "SETEMBRO", 10 => "OUTUBRO", 11 => "NOVEMBRO", 12 => "DEZEMBRO");
+        $mes = $request['mes'];       
+        $ano = $request['ano'];  
+        $ultimo_dia = date("t", mktime(0,0,0,$mes,'01',$ano));
+        $request['ultimo_dia']=$ultimo_dia;
 
-        
         $dataParametro=$request['ano']; 
         if($request['mes']){
             $dataParametro=$dataParametro.'-'.$request['mes'];
@@ -177,6 +185,7 @@ class ProdPrevReal extends Controller
         $ProduzidoTo=0; $PlanejadoTo=0;     
         $data=null; $ProduzidoCxPerc=0;
         $ProduzidoKgPerc=0;$ProduzidoToPerc=0;
+        $prod_per=null;
         foreach($dados as $key => $val){
            if($key % 2 == 0) { $townName2=round($val->planejado_kg); }else{ $townName2=''; }
              
@@ -287,7 +296,7 @@ class ProdPrevReal extends Controller
             $qtdeAnterior=$QtdeAguaAnterior;
             foreach($dadosAgua as $val){   
                 $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde-$qtdeAnterior,2);
+                $Ar['visits']=round($val->qtde,2);
                 if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
                     $Ar['color']='#FF0F00';
                 }else{
@@ -357,27 +366,27 @@ class ProdPrevReal extends Controller
                 $Parada[]=$Ar;
             }
 
-            /* perda ANO */  
+            /* perda MES */  
             $dadosPerda = DB::select(" 
-            select year(perda.dt_cadastro) data, 
-            sum(qtde) qtde
+            select month(perda.dt_ordem) data, 
+            count(qtde) qtde
             from perda 
-            inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-            where CONVERT(CHAR(10),perda.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by year(perda.dt_cadastro)
+            inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda 
+            where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            group by month(perda.dt_ordem)
             order by 1 "); 
             foreach($dadosPerda as $key => $val){  
-                $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde);
-                if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
-                    $Ar['color']='#FF0F00';
-                }else{
-                    $Ar['color']='#f59f9a';
-                }
-                $Perda[]=$Ar;
+          
+                $ArrayPerda[$val->data]=round($val->qtde);
                 
             } 
+            foreach($MESES as $key => $mes){
 
+                $Ar['country']=$mes;
+                $Ar['visits']= (isset($ArrayPerda[$key])) ? round($ArrayPerda[$key]) : null; 
+                $Perda[]=$Ar;
+            }
+          
         }
  
         if($request['agrupamento']=='P'){
@@ -412,7 +421,7 @@ class ProdPrevReal extends Controller
             $qtdeAnterior=$QtdeAguaAnterior;
             foreach($dadosAgua as $val){  
                 $Ar['country']=$val->data;
-                $Ar['visits']=round(($val->qtde-$qtdeAnterior),2);
+                $Ar['visits']=round(($val->qtde),2);
                 if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
                     $Ar['color']='#3f24d4';
                 }else{
@@ -501,12 +510,12 @@ class ProdPrevReal extends Controller
 
             /* perda MESES */  
             $dadosPerda = DB::select(" 
-            select CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_cadastro)),2) AS NVARCHAR(2)) data, 
-            sum(qtde) qtde
+            select CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_ordem)),2) AS NVARCHAR(2)) data, 
+            count(qtde) qtde
             from perda 
             inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-            where CONVERT(CHAR(10),perda.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_cadastro)),2) AS NVARCHAR(2))
+            where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_ordem)),2) AS NVARCHAR(2))
             order by 1 "); 
             foreach($dadosPerda as $key => $val){  
                 $Ar['country']=$val->data;
@@ -575,21 +584,21 @@ class ProdPrevReal extends Controller
             /* agua MESES */  
             $dadosAgua = DB::select(" 
             select CAST( right(replicate('0',2) + convert(VARCHAR,day(dt_consumo)),2) AS NVARCHAR(2)) data, 
-            sum(qtde_atual) qtde
+            sum(saldo) qtde
             from hidricos 
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
-            group by day(dt_consumo)
+            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(dt_consumo)),2) AS NVARCHAR(2))
             order by 1 "); 
-            $qtdeAnterior = $QtdeAguaAnterior;
+            
             foreach($dadosAgua as $key => $val){  
                 $Agua[]=array( 
                     "country"=>$val->data,
-                    "visits"=>round($val->qtde-$qtdeAnterior,2),
+                    "visits"=>round($val->qtde,2),
                     "color"=> $this->gerar_cor($key)
                 ); 
-                $qtdeAnterior=$val->qtde;
+                
             } 
-
+        
             
             /* energia MESES */  
             $dadosEnergia = DB::select(" 
@@ -660,20 +669,25 @@ class ProdPrevReal extends Controller
 
             /* perda MESES */  
             $dadosPerda = DB::select(" 
-            select CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_cadastro)),2) AS NVARCHAR(2)) data, 
-            sum(qtde) qtde
+            select CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_ordem)),2) AS NVARCHAR(2)) data, 
+            count(qtde) qtde
             from perda 
             inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-            where CONVERT(CHAR(10),perda.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_cadastro)),2) AS NVARCHAR(2))
+            where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_ordem)),2) AS NVARCHAR(2))
             order by 1 "); 
             foreach($dadosPerda as $key => $val){  
-                $Perda[]=array( 
-                    "country"=>$val->data,
-                    "visits"=>round($val->qtde,2),
-                    "color"=> $this->gerar_cor($key)
-                );
+                $Per[$val->data]=round($val->qtde,2);
             } 
+
+            for ($i = 1; $i <= $request['ultimo_dia']; $i++) {
+               
+                $Perda[]=array( 
+                    "country"=>$i,
+                    "visits"=>(isset($Per[$i])) ? $Per[$i] : null,
+                    "color"=> $this->gerar_cor($i)
+                );
+            }
  
         }
   
@@ -697,20 +711,24 @@ class ProdPrevReal extends Controller
         $tipoPerda=null; 
         $dadosParada = DB::select(" 
         select nm_tipo data, 
-        sum(qtde) qtde
+        count(qtde) qtde
         from perda 
         inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-        where CONVERT(CHAR(10),perda.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+        where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."'
         group by nm_tipo
         order by 1  "); 
         foreach($dadosParada as $val){  
+             
             $Ar['country']=$val->data;
             $Ar['litres']=round($val->qtde,2); 
             $tipoPerda[]=$Ar;
+            
+    
         }
 
+      
         $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
-        ->selectRaw("sum(qtde_atual) valor")->first();
+        ->selectRaw("sum(saldo) valor")->first();
         
         $energia = Energia::whereRaw("CONVERT(varchar, dt_consumo, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("sum(qtde) valor")->first();
@@ -718,8 +736,9 @@ class ProdPrevReal extends Controller
         $lenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->whereRaw("WhsCode='MPV'")->selectRaw("sum(Quantity) valor")->first();
 
-        $perda = Perda::whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
-        ->selectRaw("sum(qtde) valor")->first();
+        $perda = Perda::join(DB::raw('SBO_KARAMBI_PRD.dbo.oitm'),DB::raw("CONVERT(INT, CONVERT(VARBINARY, oitm.ItemCode))"),DB::raw("CONVERT(INT, CONVERT(VARBINARY, perda.cd_produto))"))
+        ->whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->selectRaw("count(qtde) valor")->first();
          
         $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("sum(tempo) valor")->first();
@@ -727,6 +746,30 @@ class ProdPrevReal extends Controller
         $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->whereRaw("ItemCode='013906'")->selectRaw("sum(Quantity) valor")->first();
 
+        $perdaGrupo = Perda::
+        join(DB::raw('SBO_KARAMBI_PRD.dbo.oitm'),DB::raw("CONVERT(INT, CONVERT(VARBINARY, oitm.ItemCode))"),DB::raw("CONVERT(INT, CONVERT(VARBINARY, perda.cd_produto))"))
+        ->whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->selectRaw("count(qtde) valor, case when ItmsGrpCod = '103' then 'POLPA' when ItmsGrpCod = '105' then 'EMBALAGEM' when ItmsGrpCod = '109' then 'INSUMO' else 'OUTROS' end grupo")
+        ->groupByRaw("case when ItmsGrpCod = '103' then 'POLPA' when ItmsGrpCod = '105' then 'EMBALAGEM' when ItmsGrpCod = '109' then 'INSUMO' else 'OUTROS' end")->get();
+        
+        $request['polpas']=0; $request['embalagens']=0; $request['insumos']=0; $request['outros']=0;
+        $grupoPerdas=null;
+        
+        foreach($perdaGrupo as $Tipos){
+            
+            if($Tipos->grupo=='POLPA'){ $request['polpas']=$Tipos->valor; }
+            if($Tipos->grupo=='EMBALAGEM'){ $request['embalagens']=$Tipos->valor; }
+            if($Tipos->grupo=='INSUMO'){ $request['insumos']=$Tipos->valor; }
+            if($Tipos->grupo=='OUTROS'){ $request['outros']=$Tipos->valor; }
+
+            $grupoPerdas[]=array( 
+                "country"=>$Tipos->grupo,
+                "litres"=>$Tipos->valor 
+            );
+        }
+
+
+        
 
         $MESES = array(1 => "JANEIRO", 2 => "FEVEREIRO", 3 => "MARÇO", 4 => "ABRIL", 5 => "MAIO", 6 => "JUNHO", 7 => "JULHO", 8 => "AGOSTO", 9 => "SETEMBRO", 10 => "OUTUBRO", 11 => "NOVEMBRO", 12 => "DEZEMBRO");
         for ($x = 0; $x <= 10; $x++) {
@@ -779,7 +822,7 @@ class ProdPrevReal extends Controller
         $request['ProduzidoCx'] =  ($ProduzidoCx) ?  number_format($ProduzidoCx,0,",",".") : '000';
         $request['ProduzidoKg'] = ($ProduzidoKg) ?  number_format($ProduzidoKg,0,",",".") : '000';
         $request['ProduzidoTo'] = ($ProduzidoTo) ?  number_format($ProduzidoTo,2,",",".") : '0,00';
-        $request['hidrico'] = ($hidrico->valor) ?  number_format($hidrico->valor,2,",",".") : '0,00';
+        $request['hidrico'] = ($hidrico->valor) ?  number_format(($hidrico->valor),2,",",".") : '0,00';
         $request['energia'] = ($energia->valor) ?  number_format($energia->valor,2,",",".") : '0,00';
         $request['lenha'] = ($lenha->valor) ?  number_format($lenha->valor,2,",",".") : '0,00';
         $request['perda'] = ($perda->valor) ?  number_format($perda->valor,0,",",".") : '00';
@@ -809,7 +852,8 @@ class ProdPrevReal extends Controller
         $retorno['GraficoTp_parada']=$tipoParada;
         $retorno['GraficoPerda']=$Perda;
         $retorno['GraficoTpPerda']=$tipoPerda;
-        
+        $retorno['GraficoGrupoPerda']=$grupoPerdas;
+
         return $retorno;
 
       }catch (Throwablee $error) {

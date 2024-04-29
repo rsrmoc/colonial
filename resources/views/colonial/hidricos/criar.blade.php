@@ -25,16 +25,39 @@
                                 @endif
                             </div>
                         </div>
- 
+
+                        <div class="col-md-2">
+                            <div class="form-group @if($errors->has('consumo_anterior')) has-error @endif ">
+                                <label for="fname">Consumo Anterior: <span class="red normal"></span></label>
+                                <input type="text" class="form-control " x-mask:dynamic="$money($input, ',')" value="{{ old('consumo_anterior') }}" placeholder="Consumo Anterior" name="consumo_anterior"   />
+                                @if($errors->has('consumo_anterior'))
+                                    <div class="error">{{ $errors->first('consumo_anterior') }}</div>
+                                @endif
+                            </div>
+                        </div>
+                  
                         <div class="col-md-2">
                             <div class="form-group @if($errors->has('consumo_atual')) has-error @endif ">
-                                <label for="fname">Consumo Atual: <span class="red normal">*</span></label>
-                                <input type="text" class="form-control " x-mask:dynamic="$money($input, ',')" value="{{old('consumo_atual')}}" placeholder="Consumo Atual" name="consumo_atual"   />
+                                <label for="fname">Consumo Atual: <span class="red normal"></span></label>
+                                <input type="text" class="form-control " x-mask:dynamic="$money($input, ',')" value="{{ old('consumo_atual') }}" placeholder="Consumo Atual" name="consumo_atual"   />
                                 @if($errors->has('consumo_atual'))
                                     <div class="error">{{ $errors->first('consumo_atual') }}</div>
                                 @endif
                             </div>
                         </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group @if($errors->has('saldo')) has-error @endif ">
+                                <label for="fname">Saldo: <span class="red normal">*</span></label>
+                                <input type="text" class="form-control " x-mask:dynamic="$money($input, ',')" value="{{old('saldo')}}" placeholder="saldo" name="saldo"   />
+                                @if($errors->has('saldo'))
+                                    <div class="error">{{ $errors->first('saldo') }}</div>
+                                @endif
+                            </div>
+                        </div>
+ 
+                      
+
                     </div>
            
  

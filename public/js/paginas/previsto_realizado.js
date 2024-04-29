@@ -18,6 +18,7 @@ Alpine.data('app', function () {
     tituloDetalhes: null,
     tabDetalhes: null,
     graficoBarra: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoBarra2: "<div style='text-align: center;margin-top: 25px;'> <img src='/assets/images/grafico-barra.png'> </div>",
     graficoPizza: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-pizza.png'> </div>",
     iconCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     tabCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
@@ -46,6 +47,10 @@ Alpine.data('app', function () {
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpasKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPerdasEmb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPerdasPol: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPerdasIns: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPerdasOut: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     chartPrevReal: null,
     loadingCharts: false,
     modalLoadingCharts: true,
@@ -135,6 +140,10 @@ Alpine.data('app', function () {
         _this2.iconHeaderProdTo = res.data.request.ProduzidoTo + '<span class="headerUnidade"> (T) </span>';
         _this2.iconHeaderProdKg = res.data.request.ProduzidoKg + '<span class="headerUnidade"> (Kg) </span>';
         _this2.iconHeaderProdCx = res.data.request.ProduzidoCx + '<span class="headerUnidade"> (Cx) </span>';
+        _this2.iconHeaderPerdasEmb = res.data.request.embalagens;
+        _this2.iconHeaderPerdasPol = res.data.request.polpas;
+        _this2.iconHeaderPerdasIns = res.data.request.insumos;
+        _this2.iconHeaderPerdasOut = res.data.request.outros;
         _this2.ProduzidoCx = res.data.request.ProduzidoCx;
         _this2.ProduzidoKg = res.data.request.ProduzidoKg;
         _this2.ProduzidoTo = res.data.request.ProduzidoTo;
@@ -263,7 +272,7 @@ Alpine.data('app', function () {
           "dataProvider": res.data.prod_per
         });
         if (!res.data.prod_per) {
-          $("#chartdivPercProd").html(_this2.graficoBarra);
+          $("#chartdivPercProd").html(_this2.graficoBarra2);
         }
 
         /* Grafico Produtos */
@@ -644,6 +653,29 @@ Alpine.data('app', function () {
           }, 0);
         } else {
           $("#chartdiv_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+        }
+
+        /*TipoPerda*/
+        if (res.data.GraficoGrupoPerda) {
+          var chart = AmCharts.makeChart("chartdiv_grupo_perda", {
+            "decimalSeparator": ",",
+            "thousandsSeparator": ".",
+            "type": "pie",
+            "theme": "none",
+            "dataProvider": res.data.GraficoGrupoPerda,
+            "valueField": "litres",
+            "titleField": "country",
+            "balloon": {
+              "fixedPosition": true
+            },
+            "labelRadius": 5,
+            "marginTop": 0,
+            "marginBottom": 0,
+            "marginLeft": 0,
+            "marginRight": 0
+          });
+        } else {
+          $("#chartdiv_grupo_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
         }
 
         /*TipoPerda*/
