@@ -12,16 +12,19 @@ Alpine.data('app', () => ({
     chart3: null,
     chart4: null,
     relacaoDetelhes: null,
-    tituloDetalhesModal: null, 
-    hidricoDetalhes: null, 
-    energiaDetalhes: null, 
-    lenhaDetalhes: null, 
-    perdaDetalhes: null, 
-    paradaDetalhes: null, 
-    polpaDetalhes: null, 
-    produzido_cxDetalhes: null, 
-    produzido_kgDetalhes: null, 
-    produzido_toDetalhes: null, 
+    tituloDetalhesModal: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>', 
+    hidricoDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>', 
+    energiaDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    lenhaDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    perdaDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>', 
+    paradaDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    polpaDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    produzido_cxDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>', 
+    produzido_kgDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>', 
+    produzido_toDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
+    tabProdDetalhes:null,
+    tabPerdaDetalhes:null,
+    tabParadaDetalhes:null,
     tabDetalhes: null, 
     graficoBarra: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-barra.png'> </div>",
     graficoBarra2: "<div style='text-align: center;margin-top: 25px;'> <img src='/assets/images/grafico-barra.png'> </div>",
@@ -878,17 +881,35 @@ Alpine.data('app', () => ({
       this.modalLoadingCharts = true;
       $("#modalDetalhesProducao").modal(); 
 
+
+      this.hidricoDetalhes =  this.tabCarregando;
+      this.energiaDetalhes =  this.tabCarregando;
+      this.lenhaDetalhes = this.tabCarregando;
+      this.perdaDetalhes =  this.tabCarregando;
+      this.paradaDetalhes =  this.tabCarregando;
+      this.polpaDetalhes =  this.tabCarregando; 
+      this.produzido_cxDetalhes =  this.tabCarregando;
+      this.produzido_kgDetalhes  =  this.tabCarregando;
+      this.produzido_toDetalhes =  this.tabCarregando;
+      
       axios.post('/colonial/prod_prev_real-detalhes',dados)
       .then((res) => {
-        console.log(res.data.data);
+        console.log(res.data);
         this.tituloDetalhesModal = 'DATA: '+res.data.data;
 
-        this.hidricoDetalhes = 'DATA: '+res.data.hidrico;
-        this.energiaDetalhes = 'DATA: '+res.data.energia;
-        this.lenhaDetalhes = 'DATA: '+res.data.lenha;
-        this.perdaDetalhes = 'DATA: '+res.data.perda;
-        this.paradaDetalhes = 'DATA: '+res.data.parada;
-        this.polpaDetalhes = 'DATA: '+res.data.polpa;
+        this.hidricoDetalhes =  res.data.hidrico+'<span class="headerUnidade"> (m³/h)</span>';
+        this.energiaDetalhes =  res.data.energia+'<span class="headerUnidade"> (kw)</span>';
+        this.lenhaDetalhes = res.data.lenha+'<span class="headerUnidade"> (m³)</span>';
+        this.perdaDetalhes =  res.data.perda;
+        this.paradaDetalhes =  res.data.parada+'<span class="headerUnidade"> (min)</span>';
+        this.polpaDetalhes =  res.data.polpa+'<span class="headerUnidade"> (kg)</span>';
+
+        this.produzido_cxDetalhes =  res.data.produzido_cx+'<span class="headerUnidade"> (Cx)</span>';
+        this.produzido_kgDetalhes  =  res.data.produzido_kg+'<span class="headerUnidade"> (Kg)</span>';
+        this.produzido_toDetalhes =  res.data.produzido_to+'<span class="headerUnidade"> (To)</span>';
+        this.tabProdDetalhes = res.data.listaProducao;
+        this.tabPerdaDetalhes = res.data.dadosPerda;
+        this.tabParadaDetalhes = res.data.dadosParada;
 
       })
       .catch((err) => { 

@@ -98,7 +98,7 @@ class ProdPrevReal extends Controller
             order by producao_parada.dt_cadastro "); 
            
             $retorno['dadosPerda'] = DB::select(" 
-            select nm_tipo,qtde, perda.dt_ordem,nm_produto
+            select nm_tipo,qtde, perda.dt_ordem,nm_produto,obs_perda
             from perda 
             inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
             where CONVERT(CHAR(10),perda.dt_ordem, 103) = '".$request['label']."' 

@@ -1101,7 +1101,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #22BAA0;margin-bottom: 10px;">
                                     <div class="panel-body">
                                         <div class="info-box-stats">
-                                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdKg"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="produzido_kgDetalhes"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                                             <span class="info-box-title red" style="color: #f9fafa; font-weight: 700;">Produção em Kilos</span>
                                         </div>
                                         <div class="info-box-icon ">
@@ -1120,7 +1120,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #12AFCB; margin-bottom: 10px;">
                                     <div class="panel-body">
                                         <div class="info-box-stats">
-                                            <p><span class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdTo"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></span></p>
+                                            <p><span class="counter" style="color: #f9fafa; font-weight: 900;" x-html="produzido_toDetalhes"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></span></p>
                                             <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Produção em Toneladas</span>
                                         </div>
                                         <div class="info-box-icon">
@@ -1139,7 +1139,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #7a6fbe; margin-bottom: 10px;">
                                     <div class="panel-body">
                                         <div class="info-box-stats">
-                                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdCx"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="produzido_cxDetalhes"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                                             <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Produção em Caixas</span>
                                         </div>
                                         <div class="info-box-icon"> 
@@ -1161,7 +1161,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" >
                                     <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
                                         <div class="info-box-stats">
-                                            <p class="counter" x-html="iconHeaderAgua" style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa; "></i></p>
+                                            <p class="counter" x-html="hidricoDetalhes" style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa; "></i></p>
                                             <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Agua</span>
                                         </div>
                                         <div class="info-box-icon ">
@@ -1175,7 +1175,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #c2a505; margin-bottom: 10px;">
                                     <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
                                         <div class="info-box-stats">
-                                            <p class="counter" x-html="iconHeaderEnergia"  style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <p class="counter" x-html="energiaDetalhes"  style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                                             <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Energia</span>
                                         </div>
                                         <div class="info-box-icon">
@@ -1189,7 +1189,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #26A65B; margin-bottom: 10px;">
                                     <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
                                         <div class="info-box-stats">
-                                            <p class="counter" x-html="iconHeaderLenha" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <p class="counter" x-html="lenhaDetalhes" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                                             <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Lenha</span>
                                         </div>
                                         <div class="info-box-icon">
@@ -1203,7 +1203,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #e83e8c; margin-bottom: 10px;">
                                     <div class="panel-body" style="border-bottom: 3px solid #e83e8c;">
                                         <div class="info-box-stats">
-                                            <p class="counter" x-html="iconHeaderPolpas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <p class="counter" x-html="polpaDetalhes" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                                             <span class="info-box-title"  style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Polpas</span>
                                         </div>
                                         <div class="info-box-icon"> 
@@ -1217,7 +1217,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #EF4836; margin-bottom: 10px;">
                                     <div class="panel-body" style="border-bottom: 3px solid #EF4836;">
                                         <div class="info-box-stats">
-                                            <p class="counter" x-html="iconHeaderPerdas" style="color: #f9fafa;margin-bottom: 0px;">
+                                            <p class="counter" x-html="perdaDetalhes" style="color: #f9fafa;margin-bottom: 0px;">
                                                 <i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>
                                             </p>
                                             <span class="info-box-title" style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Perdas</span>
@@ -1233,7 +1233,7 @@ ul {
                                 <div class="panel info-box panel-white" style="background: #f1bb07; margin-bottom: 10px;">
                                     <div class="panel-body" style="border-bottom: 3px solid #f1bb07;">
                                         <div class="info-box-stats">
-                                            <p class="counter" x-html="iconHeaderParadas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <p class="counter" x-html="paradaDetalhes" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                                             <span class="info-box-title" style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;" >Paradas</span>
                                         </div>
                                         <div class="info-box-icon">
@@ -1259,31 +1259,97 @@ ul {
                                 <div class="tab-content">
                                     
                                     <div role="tabpanel" class="tab-pane  active fade in"  id="tabProducaoModal">
-                                        #tabProducaoModal         
+                                              
                                         <template x-if="modalLoadingCharts">
                                             <div style="padding: 200px"> 
                                                 <x-loader class="absolute-loader"/>                           
                                             </div>
                                         </template>
+
+                                        <table class="table table-striped" style="margin-bottom: 0">
+                                            <thead>
+                                                <tr class="active">
+                                                    <th>Ordem de Produção</th>
+                                                    <th >Produto</th>
+                                                    <th class="text-right">Kg/Cx</th>
+                                                    <th class="text-right">Planejado [CX]</th>
+                                                    <th class="text-right">Produzido [CX]</th>
+                                                    <th class="text-right">Planejado [KG]</th>   
+                                                    <th class="text-right">Produzido [KG]</th>   
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                                                <template x-for="query in tabProdDetalhes">
+                                                    <tr style="font-size: 16px;">
+                                                        <td style="font-size: 16px;" x-text="query.codigo"></td>
+                                                        <td style="font-size: 16px;" x-text="query.ItemCode+' - '+query.nome"></td>
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.kg*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
                                         
                                     </div> 
     
                                     <div role="tabpanel" class="tab-pane fade"   id="tabPerdasModal">
-                                        #tabPerdasModal
+                                         
                                         <template x-if="modalLoadingCharts">
                                             <div style="padding: 200px"> 
                                                 <x-loader class="absolute-loader"/>                           
                                             </div>
                                         </template>
+                                        <table class="table table-striped" style="margin-bottom: 0">
+                                            <thead>
+                                                <tr class="active">
+                                                    <th>Produto</th>
+                                                    <th >Tipo de Perda</th>
+                                                    <th >Observações</th>
+                                                    <th class="text-right">Qtde.</th> 
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                                                <template x-for="query in tabPerdaDetalhes">
+                                                    <tr style="font-size: 16px;">
+                                                        <td style="font-size: 16px;" x-text="query.nm_produto"></td>
+                                                        <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                        <td style="font-size: 16px;" x-text="query.obs_perda"></td> 
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                         
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
                                     </div> 
     
-                                    <div role="tabpanel" class="tab-pane fade"   id="tabParadasModal">
-                                        #tabParadasModal
+                                    <div role="tabpanel" class="tab-pane fade"   id="tabParadasModal"> 
                                         <template x-if="modalLoadingCharts">
                                             <div style="padding: 200px"> 
                                                 <x-loader class="absolute-loader"/>                           
                                             </div>
                                         </template>
+                                        <table class="table table-striped" style="margin-bottom: 0">
+                                            <thead>
+                                                <tr class="active">
+                                                    <th >Tipo de Perada</th>
+                                                    <th >Observações</th>
+                                                    <th class="text-right">Tempo(min)</th> 
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                                                <template x-for="query in tabParadaDetalhes">
+                                                    <tr style="font-size: 16px;">
+                                                        <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                        <td style="font-size: 16px;" x-text="query.obs_parada"></td> 
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                         
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
                                     </div> 
                                 </div>
                         </div>
