@@ -94,14 +94,14 @@ class ProdPrevReal extends Controller
             select nm_tipo , producao_parada.dt_cadastro, tempo qtde,obs_parada
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 103) = '".$request['label']."'
+            where CONVERT(CHAR(10),producao_parada.created_at, 103) = '".$request['label']."'
             order by producao_parada.dt_cadastro "); 
            
             $retorno['dadosPerda'] = DB::select(" 
             select nm_tipo,qtde, perda.dt_ordem,nm_produto,obs_perda
             from perda 
             inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-            where CONVERT(CHAR(10),perda.dt_ordem, 103) = '".$request['label']."' 
+            where CONVERT(CHAR(10),perda.created_at, 103) = '".$request['label']."' 
             order by perda.dt_ordem  "); 
 
             return $retorno;
@@ -271,7 +271,6 @@ class ProdPrevReal extends Controller
              
                         if(($val->prozuzido>0) && ($val->planejado>0)){ $valorPerc=round((($val->prozuzido/$val->planejado)*100),2); }else{ $valorPerc=0; } 
                         $prod_per[]=array( 
-                            "label"=>$val->data,
                             "label"=>$val->data,
                             "producao"=>$valorPerc,
                             'planejado_kg'=>$val->planejado_kg,
@@ -448,7 +447,7 @@ class ProdPrevReal extends Controller
             sum(tempo) qtde
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            where CONVERT(CHAR(10),producao_parada.created_at, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
             group by year(producao_parada.dt_cadastro)
             order by 1"); 
             foreach($dadosParada as $val){  
@@ -590,7 +589,7 @@ class ProdPrevReal extends Controller
             sum(tempo) qtde
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            where CONVERT(CHAR(10),producao_parada.created_at, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
             group by CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_cadastro)),2) AS NVARCHAR(2))
             order by 1"); 
             foreach($dadosParada as $val){  
@@ -752,7 +751,7 @@ class ProdPrevReal extends Controller
             sum(tempo) qtde
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            where CONVERT(CHAR(10),producao_parada.created_at, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
             group by CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_cadastro)),2) AS NVARCHAR(2)) 
             order by 1"); 
             foreach($dadosParada as $key => $val){  
@@ -794,7 +793,7 @@ class ProdPrevReal extends Controller
         sum(tempo) qtde
         from producao_parada 
         inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-        where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+        where CONVERT(CHAR(10),producao_parada.created_at, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
         group by nm_tipo
         order by 1 "); 
         foreach($dadosParada as $val){  
@@ -836,7 +835,7 @@ class ProdPrevReal extends Controller
         ->selectRaw("count(qtde) valor")->first();
  
 
-        $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
+        $parada = Parada::whereRaw("CONVERT(varchar, created_at, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("sum(tempo) valor")->first();
    
         $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")

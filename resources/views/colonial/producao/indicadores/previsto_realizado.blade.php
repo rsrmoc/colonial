@@ -1334,7 +1334,7 @@ ul {
                                         <table class="table table-striped" style="margin-bottom: 0">
                                             <thead>
                                                 <tr class="active">
-                                                    <th >Tipo de Perada</th>
+                                                    <th >Tipo de Parada</th>
                                                     <th >Observações</th>
                                                     <th class="text-right">Tempo(min)</th> 
                                                 </tr>
