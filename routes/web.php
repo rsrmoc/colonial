@@ -109,8 +109,8 @@ Route::group([
     /* Previsto x Realizado */
      Route::get('/prod_prev_real', [ProdPrevReal::class, 'listar'])->name('prod_prev_real-listar');  
      Route::post('/prod_prev_real-json', [ProdPrevReal::class, 'listarJson'])->name('prod_prev_real-json');
-     Route::post('/prod_prev_real-detalhes', [ProdPrevReal::class, 'detalhesJson'])->name('prod_prev_real-detalhes');
-     Route::get('/prod_prev_real-xls/{tipo}', [ProdPrevReal::class, 'xls'])->name('prod_prev_real-xls'); 
+     Route::post('/prod_prev_real-detalhes', [ProdPrevReal::class, 'modalJson'])->name('prod_prev_real-detalhes');
+     Route::get('/prod_prev_real-xls/{tipo}', [ProdPrevReal::class, 'xls'])->name('prod_prev_real-xls');  
  
  
     

@@ -22,6 +22,7 @@ class Perda extends Model
         'obs_perda',
         'cd_tipo_perda',
         'dt_ordem',
+        'grupo',
         'cd_usuario',
         'dt_cadastro',
         'created_at',

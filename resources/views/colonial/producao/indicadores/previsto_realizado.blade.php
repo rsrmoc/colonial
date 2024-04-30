@@ -1029,7 +1029,7 @@ ul {
                 </div>
             </div>
         </div>
-        <div style='text-align: center; '> </div>
+         
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="panel">
@@ -1084,9 +1084,222 @@ ul {
                 </div>
             </div>
         </div>
+ 
 
+        <div class="modal fade bs-example-modal-lg modal-fullscreen-xl" id="modalDetalhesProducao" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhesModal">dsdsd</h4>
+                    </div>
+                    <div class="modal-body">
+    
+                        <div class="row">
+             
+                            <div class="col-lg-4 col-md-8">
+                                <div class="panel info-box panel-white" style="background: #22BAA0;margin-bottom: 10px;">
+                                    <div class="panel-body">
+                                        <div class="info-box-stats">
+                                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdKg"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <span class="info-box-title red" style="color: #f9fafa; font-weight: 700;">Produção em Kilos</span>
+                                        </div>
+                                        <div class="info-box-icon ">
+                                            <i class="fa fa-cube" style="color: #f9fafa;"></i>
+                                        </div>
+                                        <div class="info-box-progress">
+                                            <div class="progress progress-xs progress-squared bs-n">
+                                                <div class="progress-bar progress-bar-success" style="color: #f9fafa;" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-8">
+                                <div class="panel info-box panel-white" style="background: #12AFCB; margin-bottom: 10px;">
+                                    <div class="panel-body">
+                                        <div class="info-box-stats">
+                                            <p><span class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdTo"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></span></p>
+                                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Produção em Toneladas</span>
+                                        </div>
+                                        <div class="info-box-icon">
+                                            <i class="fa fa-cube" style="color: #f9fafa;"></i>
+                                        </div>
+                                        <div class="info-box-progress">
+                                            <div class="progress progress-xs progress-squared bs-n">
+                                                <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-8">
+                                <div class="panel info-box panel-white" style="background: #7a6fbe; margin-bottom: 10px;">
+                                    <div class="panel-body">
+                                        <div class="info-box-stats">
+                                            <p class="counter" style="color: #f9fafa; font-weight: 900;" x-html="iconHeaderProdCx"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Produção em Caixas</span>
+                                        </div>
+                                        <div class="info-box-icon"> 
+                                            <i class="fa fa-cubes" style="color: #f9fafa;"></i>
+                                        </div>
+                                        <div class="info-box-progress">
+                                            <div class="progress progress-xs progress-squared bs-n">
+                                                <div class="progress-bar progress-bar-primary" style="color: #f9fafa;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- Row -->
+                              
+                        <div class="row">
+                            <div class="col-lg-2 col-md-4">
+                                <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" >
+                                    <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
+                                        <div class="info-box-stats">
+                                            <p class="counter" x-html="iconHeaderAgua" style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa; "></i></p>
+                                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Agua</span>
+                                        </div>
+                                        <div class="info-box-icon ">
+                                            <i class="fa fa-tint " style="color: #f9fafa;"></i>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-4"> 
+                                <div class="panel info-box panel-white" style="background: #c2a505; margin-bottom: 10px;">
+                                    <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
+                                        <div class="info-box-stats">
+                                            <p class="counter" x-html="iconHeaderEnergia"  style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Energia</span>
+                                        </div>
+                                        <div class="info-box-icon">
+                                            <i class="fa fa-bolt" style="color: #f9fafa;"></i>
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-4">
+                                <div class="panel info-box panel-white" style="background: #26A65B; margin-bottom: 10px;">
+                                    <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
+                                        <div class="info-box-stats">
+                                            <p class="counter" x-html="iconHeaderLenha" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-bottom: 0px;">Lenha</span>
+                                        </div>
+                                        <div class="info-box-icon">
+                                            <i class="glyphicon glyphicon-tree-deciduous" style="color: #f9fafa;" aria-hidden="true"></i>
+                                        </div>
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-4">
+                                <div class="panel info-box panel-white" style="background: #e83e8c; margin-bottom: 10px;">
+                                    <div class="panel-body" style="border-bottom: 3px solid #e83e8c;">
+                                        <div class="info-box-stats">
+                                            <p class="counter" x-html="iconHeaderPolpas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <span class="info-box-title"  style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Polpas</span>
+                                        </div>
+                                        <div class="info-box-icon"> 
+                                            <i class="fa fa-apple"  style="color: #f9fafa"></i>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-4">
+                                <div class="panel info-box panel-white" style="background: #EF4836; margin-bottom: 10px;">
+                                    <div class="panel-body" style="border-bottom: 3px solid #EF4836;">
+                                        <div class="info-box-stats">
+                                            <p class="counter" x-html="iconHeaderPerdas" style="color: #f9fafa;margin-bottom: 0px;">
+                                                <i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>
+                                            </p>
+                                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Perdas</span>
+                                        </div>
+                                        <div class="info-box-icon">
+                                            <i class="fa fa-exclamation-triangle" style="color: #f9fafa;"></i>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-4">
+                                <div class="panel info-box panel-white" style="background: #f1bb07; margin-bottom: 10px;">
+                                    <div class="panel-body" style="border-bottom: 3px solid #f1bb07;">
+                                        <div class="info-box-stats">
+                                            <p class="counter" x-html="iconHeaderParadas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;" >Paradas</span>
+                                        </div>
+                                        <div class="info-box-icon">
+                                            <i class="fa fa-stop" style="color: #f9fafa;"></i>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                
+                        </div>
+                    
+                        <br>
      
+                        <div role="tabpanel"> 
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-justified" role="tablist"> 
+                                    <li role="presentation" class="active"><a href="#tabProducaoModal" role="tab" data-toggle="tab" aria-expanded="true">Produção</a></li>
+                                    <li role="presentation"><a href="#tabPerdasModal" role="tab" data-toggle="tab">Perdas</a></li>
+                                    <li role="presentation"><a href="#tabParadasModal" role="tab" data-toggle="tab">Paradas</a></li>
+                                </ul> 
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    
+                                    <div role="tabpanel" class="tab-pane  active fade in"  id="tabProducaoModal">
+                                        #tabProducaoModal         
+                                        <template x-if="modalLoadingCharts">
+                                            <div style="padding: 200px"> 
+                                                <x-loader class="absolute-loader"/>                           
+                                            </div>
+                                        </template>
+                                        
+                                    </div> 
+    
+                                    <div role="tabpanel" class="tab-pane fade"   id="tabPerdasModal">
+                                        #tabPerdasModal
+                                        <template x-if="modalLoadingCharts">
+                                            <div style="padding: 200px"> 
+                                                <x-loader class="absolute-loader"/>                           
+                                            </div>
+                                        </template>
+                                    </div> 
+    
+                                    <div role="tabpanel" class="tab-pane fade"   id="tabParadasModal">
+                                        #tabParadasModal
+                                        <template x-if="modalLoadingCharts">
+                                            <div style="padding: 200px"> 
+                                                <x-loader class="absolute-loader"/>                           
+                                            </div>
+                                        </template>
+                                    </div> 
+                                </div>
+                        </div>
+    
+       
+                    </div>
+                    <div class="modal-footer"> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+ 
+
   
     <x-slot name="scripts"> 
      

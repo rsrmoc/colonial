@@ -12,7 +12,16 @@ Alpine.data('app', () => ({
     chart3: null,
     chart4: null,
     relacaoDetelhes: null,
-    tituloDetalhes: null,
+    tituloDetalhesModal: null, 
+    hidricoDetalhes: null, 
+    energiaDetalhes: null, 
+    lenhaDetalhes: null, 
+    perdaDetalhes: null, 
+    paradaDetalhes: null, 
+    polpaDetalhes: null, 
+    produzido_cxDetalhes: null, 
+    produzido_kgDetalhes: null, 
+    produzido_toDetalhes: null, 
     tabDetalhes: null, 
     graficoBarra: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-barra.png'> </div>",
     graficoBarra2: "<div style='text-align: center;margin-top: 25px;'> <img src='/assets/images/grafico-barra.png'> </div>",
@@ -105,7 +114,6 @@ Alpine.data('app', () => ({
  
     },
 
-  
     getDataChart1() { 
 
         this.iconHeaderProdTo = this.iconCarregando;
@@ -303,6 +311,17 @@ Alpine.data('app', () => ({
                       "axisAlpha": 0
                     }
                   ],
+                  "listeners": [{
+                    "event": "clickGraphItem",
+                    "method":(event) => {
+                      
+                      this.getDetalhesProducao(event.item.dataContext); 
+                      
+                      //console.log(event);
+                      //console.log(event.item.dataContext);
+                      //alert(event.item.category); 
+                    }
+                  }],
                   "allLabels": [],
                   "balloon": {},
                   "titles": [],
@@ -773,6 +792,7 @@ Alpine.data('app', () => ({
  
 
     },
+
     xls(tipo){ 
       
       location.href = '/colonial/prod_prev_real-xls/'+tipo+'?dtf='+this.parametros.dtf+'&dti='+this.parametros.dti;
@@ -849,6 +869,34 @@ Alpine.data('app', () => ({
       })
       .catch((err) => { toastr.error("error",err) })
       .finally(() => this.modalLoadingCharts = false); 
+
+    },
+
+    getDetalhesProducao(dados){
+     
+      console.log(dados);
+      this.modalLoadingCharts = true;
+      $("#modalDetalhesProducao").modal(); 
+
+      axios.post('/colonial/prod_prev_real-detalhes',dados)
+      .then((res) => {
+        console.log(res.data.data);
+        this.tituloDetalhesModal = 'DATA: '+res.data.data;
+
+        this.hidricoDetalhes = 'DATA: '+res.data.hidrico;
+        this.energiaDetalhes = 'DATA: '+res.data.energia;
+        this.lenhaDetalhes = 'DATA: '+res.data.lenha;
+        this.perdaDetalhes = 'DATA: '+res.data.perda;
+        this.paradaDetalhes = 'DATA: '+res.data.parada;
+        this.polpaDetalhes = 'DATA: '+res.data.polpa;
+
+      })
+      .catch((err) => { 
+        console.log(err.response.data); 
+        toastr.error(err.response.data.message,"Erro") 
+      })
+      .finally(() => this.modalLoadingCharts = false);
+
 
     },
     

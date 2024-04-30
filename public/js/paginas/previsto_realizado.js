@@ -15,7 +15,16 @@ Alpine.data('app', function () {
     chart3: null,
     chart4: null,
     relacaoDetelhes: null,
-    tituloDetalhes: null,
+    tituloDetalhesModal: null,
+    hidricoDetalhes: null,
+    energiaDetalhes: null,
+    lenhaDetalhes: null,
+    perdaDetalhes: null,
+    paradaDetalhes: null,
+    polpaDetalhes: null,
+    produzido_cxDetalhes: null,
+    produzido_kgDetalhes: null,
+    produzido_toDetalhes: null,
     tabDetalhes: null,
     graficoBarra: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-barra.png'> </div>",
     graficoBarra2: "<div style='text-align: center;margin-top: 25px;'> <img src='/assets/images/grafico-barra.png'> </div>",
@@ -266,6 +275,17 @@ Alpine.data('app', function () {
             "position": "top",
             "axisAlpha": 0
           }],
+          "listeners": [{
+            "event": "clickGraphItem",
+            "method": function method(event) {
+              _this2.getDetalhesProducao(event.item.dataContext);
+
+              //console.log(event);
+              //console.log(event.item.dataContext);
+              //alert(event.item.category); 
+            }
+          }],
+
           "allLabels": [],
           "balloon": {},
           "titles": [],
@@ -778,6 +798,27 @@ Alpine.data('app', function () {
         toastr.error("error", err);
       })["finally"](function () {
         return _this3.modalLoadingCharts = false;
+      });
+    },
+    getDetalhesProducao: function getDetalhesProducao(dados) {
+      var _this4 = this;
+      console.log(dados);
+      this.modalLoadingCharts = true;
+      $("#modalDetalhesProducao").modal();
+      axios.post('/colonial/prod_prev_real-detalhes', dados).then(function (res) {
+        console.log(res.data.data);
+        _this4.tituloDetalhesModal = 'DATA: ' + res.data.data;
+        _this4.hidricoDetalhes = 'DATA: ' + res.data.hidrico;
+        _this4.energiaDetalhes = 'DATA: ' + res.data.energia;
+        _this4.lenhaDetalhes = 'DATA: ' + res.data.lenha;
+        _this4.perdaDetalhes = 'DATA: ' + res.data.perda;
+        _this4.paradaDetalhes = 'DATA: ' + res.data.parada;
+        _this4.polpaDetalhes = 'DATA: ' + res.data.polpa;
+      })["catch"](function (err) {
+        console.log(err.response.data);
+        toastr.error(err.response.data.message, "Erro");
+      })["finally"](function () {
+        return _this4.modalLoadingCharts = false;
       });
     },
     formatTextLabel: function formatTextLabel(value) {

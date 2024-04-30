@@ -39,7 +39,79 @@ class ProdPrevReal extends Controller
         return view('colonial.producao.indicadores/previsto_realizado',compact('request','MESES','ANO','MES'));
     }
  
+    public function modalJson(Request $request) { 
+        try{
 
+            $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 103) = '".$request['label']."' ")
+            ->selectRaw("sum(saldo) valor")->first();
+            
+            $energia = Energia::whereRaw("CONVERT(varchar, dt_consumo, 103) = '".$request['label']."' ")
+            ->selectRaw("sum(qtde) valor")->first();
+     
+            $lenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) = '".$request['label']."'")
+            ->whereRaw("WhsCode='MPV'")->selectRaw("sum(Quantity) valor")->first();
+    
+            $perda = Perda::whereRaw("CONVERT(varchar, dt_ordem, 103)  = '".$request['label']."' ")
+            ->selectRaw("count(qtde) valor")->first();
+     
+    
+            $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 103) = '".$request['label']."' ")
+            ->selectRaw("sum(tempo) valor")->first();
+        
+            $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) = '".$request['label']."' ")
+            ->whereRaw("ItemCode='013906'")->selectRaw("sum(Quantity) valor")->first();
+
+            $retorno['data'] = $request['label'];
+            $retorno['hidrico'] = ($hidrico->valor) ?  number_format(($hidrico->valor),2,",",".") : '0,00';
+            $retorno['energia'] = ($energia->valor) ?  number_format($energia->valor,2,",",".") : '0,00';
+            $retorno['lenha'] = ($lenha->valor) ?  number_format($lenha->valor,2,",",".") : '0,00';
+            $retorno['perda'] = ($perda->valor) ?  number_format($perda->valor,0,",",".") : '00';
+            $retorno['parada'] = ($parada->valor) ?  number_format($parada->valor,0,",",".") : '00';
+            $retorno['polpa'] = ($polpa->valor) ?  number_format($polpa->valor,0,",",".") : '00';
+            $retorno['produzido_cx'] = ($request['produzido_cx']) ?  number_format($request['produzido_cx'],0,",",".") : '00';
+            $retorno['produzido_kg'] = ($request['produzido_kg']) ?  number_format($request['produzido_kg'],0,",",".") : '00';
+            $retorno['produzido_to'] = ($request['produzido_to']) ?  number_format($request['produzido_to'],0,",",".") : '00';
+
+            $retorno['listaProducao'] = DB::select("select owor.DocEntry codigo,
+            CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
+            (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
+                where ign1.BaseRef=owor.DocEntry
+            ) valor_prod, owor.ItemCode ,
+            case 
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
+            else  CONVERT(decimal(10,5), SWeight1)  end  kg,
+            ProdName nome 
+            from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
+            inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+            where CONVERT(CHAR(10),owor.duedate, 103) = '".$request['label']."' 
+            and oitm.ItmsGrpCod not in (103)");
+
+            /* tipo parada */  
+            $retorno['dadosParada'] = DB::select(" 
+            select nm_tipo , producao_parada.dt_cadastro, tempo qtde,obs_parada
+            from producao_parada 
+            inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
+            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 103) = '".$request['label']."'
+            order by producao_parada.dt_cadastro "); 
+           
+            $retorno['dadosPerda'] = DB::select(" 
+            select nm_tipo,qtde, perda.dt_ordem,nm_produto
+            from perda 
+            inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
+            where CONVERT(CHAR(10),perda.dt_ordem, 103) = '".$request['label']."' 
+            order by perda.dt_ordem  "); 
+
+            return $retorno;
+
+
+      }catch (Throwablee $error) {
+        return response()->json(['errors' => [$error->getMessage()]], 500);
+      }
+      
+    }
 
     public function listarJson(Request $request) { 
       try{
@@ -164,16 +236,24 @@ class ProdPrevReal extends Controller
             $request['ds_unid']=' [ Toneladas ]';
         }
   
+        
         /* Previsto */
         $dados = DB::select("
         select ".$Agrupamento1.", ".$Agrupamento12.", sum(valor) planejado_cx, sum(valor*kg)  planejado_kg,
         sum(valor_prod) produzido_cx,  sum(valor_prod*kg)  produzido_kg,".$planejado.",".$prozuzido."
         from (
-            select owor.DocEntry codigo,
+                select owor.DocEntry codigo,
                 CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
                 (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
                     where ign1.BaseRef=owor.DocEntry
-                ) valor_prod, owor.ItemCode ,SWeight1 kg,ProdName nome 
+                ) valor_prod, owor.ItemCode ,
+                case 
+                when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
+                when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
+                when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
+                when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
+                else  CONVERT(decimal(10,5), SWeight1)  end  kg,
+                ProdName nome 
                 from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
                 inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
                 where CONVERT(CHAR(10),owor.duedate, 23) between '".$request['dti']."' and '".$request['dtf']."'
@@ -192,7 +272,14 @@ class ProdPrevReal extends Controller
                         if(($val->prozuzido>0) && ($val->planejado>0)){ $valorPerc=round((($val->prozuzido/$val->planejado)*100),2); }else{ $valorPerc=0; } 
                         $prod_per[]=array( 
                             "label"=>$val->data,
+                            "label"=>$val->data,
                             "producao"=>$valorPerc,
+                            'planejado_kg'=>$val->planejado_kg,
+                            'planejado_to'=> ($val->planejado_kg) ? ($val->planejado_kg/1000) : '0',
+                            'planejado_cx'=>$val->planejado_cx,
+                            'produzido_cx'=>$val->produzido_cx,
+                            'produzido_kg'=>$val->produzido_kg,
+                            'produzido_to'=> ($val->produzido_kg) ? ($val->produzido_kg/1000) : '0',
                             "color_producao"=> "#2A0CD0"
                         ); 
 
@@ -233,10 +320,19 @@ class ProdPrevReal extends Controller
         /* Produto */ 
         $dadosProd = DB::select(" 
         select ItemName nome, sum(quantity) produzido_cx,sum(quantity*SWeight1) produzido_kg,sum((quantity*SWeight1)/1000) produzido_to,".$prozuzidoProd." produzido
-        from SBO_KARAMBI_PRD.dbo.ign1 
-        inner join (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor on ign1.BaseRef=owor.DocEntry
-        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-        where CONVERT(CHAR(10),owor.duedate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+        from (
+            select ItemName,quantity, 
+            case 
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
+            else  CONVERT(decimal(10,5), SWeight1) end SWeight1
+            from SBO_KARAMBI_PRD.dbo.ign1 
+            inner join (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor on ign1.BaseRef=owor.DocEntry
+            inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+            where CONVERT(CHAR(10),owor.duedate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+        ) query
         group by ItemName 
         order by ".$prozuzidoProd." desc");
         $Produtos=null;
@@ -736,21 +832,19 @@ class ProdPrevReal extends Controller
         $lenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->whereRaw("WhsCode='MPV'")->selectRaw("sum(Quantity) valor")->first();
 
-        $perda = Perda::join(DB::raw('SBO_KARAMBI_PRD.dbo.oitm'),DB::raw("CONVERT(INT, CONVERT(VARBINARY, oitm.ItemCode))"),DB::raw("CONVERT(INT, CONVERT(VARBINARY, perda.cd_produto))"))
-        ->whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
+        $perda = Perda::whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("count(qtde) valor")->first();
-         
+ 
+
         $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("sum(tempo) valor")->first();
    
         $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->whereRaw("ItemCode='013906'")->selectRaw("sum(Quantity) valor")->first();
 
-        $perdaGrupo = Perda::
-        join(DB::raw('SBO_KARAMBI_PRD.dbo.oitm'),DB::raw("CONVERT(INT, CONVERT(VARBINARY, oitm.ItemCode))"),DB::raw("CONVERT(INT, CONVERT(VARBINARY, perda.cd_produto))"))
-        ->whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
-        ->selectRaw("count(qtde) valor, case when ItmsGrpCod = '103' then 'POLPA' when ItmsGrpCod = '105' then 'EMBALAGEM' when ItmsGrpCod = '109' then 'INSUMO' else 'OUTROS' end grupo")
-        ->groupByRaw("case when ItmsGrpCod = '103' then 'POLPA' when ItmsGrpCod = '105' then 'EMBALAGEM' when ItmsGrpCod = '109' then 'INSUMO' else 'OUTROS' end")->get();
+        $perdaGrupo = Perda::whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
+        ->selectRaw("count(qtde) valor, case when grupo = '103' then 'POLPA' when grupo = '105' then 'EMBALAGEM' when grupo = '109' then 'INSUMO' else 'OUTROS' end grupo")
+        ->groupByRaw("case when grupo = '103' then 'POLPA' when grupo = '105' then 'EMBALAGEM' when grupo = '109' then 'INSUMO' else 'OUTROS' end")->get();
         
         $request['polpas']=0; $request['embalagens']=0; $request['insumos']=0; $request['outros']=0;
         $grupoPerdas=null;
@@ -980,7 +1074,13 @@ class ProdPrevReal extends Controller
                     CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
                     (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
                         where ign1.BaseRef=owor.DocEntry
-                    ) valor_prod, owor.ItemCode ,SWeight1 kg,ProdName nome 
+                    ) valor_prod, owor.ItemCode ,
+                    case 
+                        when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
+                        when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
+                        when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
+                        when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
+                    else  CONVERT(decimal(10,5), SWeight1) end kg,ProdName nome 
                     from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
                     inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
                     where CONVERT(CHAR(10),owor.duedate, 23) between '".$request['dti']."' and '".$request['dtf']."'
