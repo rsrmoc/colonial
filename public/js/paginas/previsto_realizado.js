@@ -211,7 +211,9 @@ Alpine.data('app', function () {
             "type": "column",
             "valueField": "planejado",
             "fillColorsField": "color_planejado",
-            "lineColor": "#008000"
+            "lineColor": "#008000",
+            "labelRotation": 270,
+            "dashLength": 2
           }, {
             "balloonText": "Produzido: <b>[[value]] (" + res.data.request.ds_unidade + ")</b>",
             "fillAlphas": 0.8,
@@ -222,7 +224,9 @@ Alpine.data('app', function () {
             "type": "column",
             "valueField": "produzido",
             "fillColorsField": "color_produzido",
-            "lineColor": "#FF0F00"
+            "lineColor": "#FF0F00",
+            "labelRotation": 270,
+            "dashLength": 2
           }],
           "guides": [],
           "valueAxes": [{
@@ -367,7 +371,9 @@ Alpine.data('app', function () {
                 "type": "column",
                 "valueField": "ano01",
                 "fillColorsField": "color01",
-                "lineColor": "#008000"
+                "lineColor": "#008000",
+                "labelRotation": 270,
+                "dashLength": 2
               }, {
                 "balloonText": "<b>[[label]]</b> <br> <b>" + res.data.graficoAnos02 + " </b>: [[value]] (" + res.data.request.ds_unidade + ")",
                 "fillAlphas": 0.8,
@@ -378,7 +384,9 @@ Alpine.data('app', function () {
                 "type": "column",
                 "valueField": "ano02",
                 "fillColorsField": "color02",
-                "lineColor": "#2A0CD0"
+                "lineColor": "#2A0CD0",
+                "labelRotation": 270,
+                "dashLength": 2
               }, {
                 "balloonText": "<b>[[label]]</b> <br> <b>" + res.data.graficoAnos03 + "</b> : [[value]] (" + res.data.request.ds_unidade + ")",
                 "fillAlphas": 0.8,
@@ -389,7 +397,9 @@ Alpine.data('app', function () {
                 "type": "column",
                 "valueField": "ano03",
                 "fillColorsField": "color03",
-                "lineColor": "#FF0F00"
+                "lineColor": "#FF0F00",
+                "labelRotation": 270,
+                "dashLength": 2
               }],
               "guides": [],
               "valueAxes": [{

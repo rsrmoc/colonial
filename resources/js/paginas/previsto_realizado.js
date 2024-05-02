@@ -237,6 +237,8 @@ Alpine.data('app', () => ({
                       "valueField": "planejado",
                       "fillColorsField": "color_planejado", 
                       "lineColor": "#008000",
+                      "labelRotation": 270, 
+                      "dashLength": 2, 
                 
                     },
                     {
@@ -250,6 +252,8 @@ Alpine.data('app', () => ({
                       "valueField": "produzido",
                       "fillColorsField": "color_produzido",
                       "lineColor": "#FF0F00",
+                      "labelRotation": 270, 
+                      "dashLength": 2, 
                     }
                   ],
                   "guides": [],
@@ -408,7 +412,9 @@ Alpine.data('app', () => ({
                               "type": "column",
                               "valueField": "ano01",
                               "fillColorsField": "color01",
-                              "lineColor": "#008000"
+                              "lineColor": "#008000",
+                              "labelRotation": 270, 
+                              "dashLength": 2, 
                           },
                           {
                               "balloonText": "<b>[[label]]</b> <br> <b>"+res.data.graficoAnos02+" </b>: [[value]] ("+res.data.request.ds_unidade+")",
@@ -420,7 +426,9 @@ Alpine.data('app', () => ({
                               "type": "column",
                               "valueField": "ano02",
                               "fillColorsField": "color02", 
-                              "lineColor": "#2A0CD0"
+                              "lineColor": "#2A0CD0",
+                              "labelRotation": 270, 
+                              "dashLength": 2, 
 
                           },
                           {
@@ -433,7 +441,9 @@ Alpine.data('app', () => ({
                               "type": "column",
                               "valueField": "ano03",
                               "fillColorsField": "color03",
-                              "lineColor": "#FF0F00"
+                              "lineColor": "#FF0F00",
+                              "labelRotation": 270, 
+                              "dashLength": 2, 
                           }
                       ],
                       "guides": [],

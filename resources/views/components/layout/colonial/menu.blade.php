@@ -40,6 +40,7 @@
                             <ul class="sub-menu"> 
                                 <li><a href="{{route('tipoparada-listar')}}">Tipo de Paradas</a></li> 
                                 <li><a href="{{route('tipoperda-listar')}}">Tipo de Perdas</a></li> 
+                                <li><a href="{{route('equipamento-listar')}}">Equipamentos</a></li> 
                             </ul>
                         </li>
                 </ul> 

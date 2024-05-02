@@ -45,17 +45,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
          
-
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
-                            <span class="user-name">Cadastro <i class="fa fa-angle-down"></i></span> 
-                        </a>
-                        <ul class="dropdown-menu dropdown-list" role="menu">
-                            <li role="presentation"><a href=""><span   class="icon-doc"></span>&nbsp;&nbsp;Tipo de Parada</a></li> 
-                            
-                             
-                        </ul>
-                    </li>
+ 
                     
 
                     <li class="dropdown">

@@ -18,7 +18,7 @@
                    
                         <div class="col-md-4">
                             <div class="form-group @if($errors->has('nm_tipo')) has-error @endif ">
-                                <label for="fname">Consumo (Kw): <span class="red normal">*</span></label>
+                                <label for="fname">Descrição: <span class="red normal">*</span></label>
                                 <input type="text" class="form-control " value="{{old('nm_tipo', $tipo->nm_tipo)}}" placeholder="Descrição" name="nm_tipo"   />
                                 @if($errors->has('nm_tipo'))
                                     <div class="error">{{ $errors->first('nm_tipo') }}</div>

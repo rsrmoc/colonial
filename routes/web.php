@@ -6,7 +6,8 @@ use App\Http\Controllers\colonial\Bot;
 use App\Http\Controllers\colonial\Clientes;
 use App\Http\Controllers\colonial\Condominios;
 use App\Http\Controllers\colonial\Controle;
-use App\Http\Controllers\colonial\Energia; 
+use App\Http\Controllers\colonial\Energia;
+use App\Http\Controllers\colonial\Equipamentos;
 use App\Http\Controllers\colonial\Hidrico; 
 use App\Http\Controllers\colonial\Inicio;
 use App\Http\Controllers\colonial\Integracoes;
@@ -89,6 +90,14 @@ Route::group([
      Route::get('/parada-delete/{parada}', [Paradas::class, 'destroy'])->name('parada-destroy');
 
      /* Tipo Perdas */
+     Route::get('/equipamento', [Equipamentos::class, 'lista'])->name('equipamento-listar');
+     Route::get('/equipamento-criar', [Equipamentos::class, 'create'])->name('equipamento-criar');
+     Route::post('/equipamento-store', [Equipamentos::class, 'store'])->name('equipamento-store');
+     Route::get('/equipamento-editar/{equipamento}', [Equipamentos::class, 'edit'])->name('equipamento-editar');
+     Route::post('/equipamento-update/{equipamento}', [Equipamentos::class, 'update'])->name('equipamento-update');
+     Route::get('/equipamento-delete/{equipamento}', [Equipamentos::class, 'destroy'])->name('equipamento-destroy');
+
+     /* Tipo Perdas */
      Route::get('/tipoperda', [TipoPerda::class, 'lista'])->name('tipoperda-listar');
      Route::get('/tipoperda-criar', [TipoPerda::class, 'create'])->name('tipoperda-criar');
      Route::post('/tipoperda-store', [TipoPerda::class, 'store'])->name('tipoperda-store');
@@ -105,6 +114,7 @@ Route::group([
      Route::get('/perda-delete/{perda}', [Perdas::class, 'destroy'])->name('perda-destroy');
      Route::get('/perda-combo/{ordem}', [Perdas::class, 'combo'])->name('perda-combo');
 
+     
      
     /* Previsto x Realizado */
      Route::get('/prod_prev_real', [ProdPrevReal::class, 'listar'])->name('prod_prev_real-listar');  
