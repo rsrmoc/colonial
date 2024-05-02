@@ -520,7 +520,7 @@ class ProdPrevReal extends Controller
             sum(Quantity) qtde")->groupByRaw("month(DocDate)")
             ->orderByRaw("1")->get();  
             foreach($dadosPolpa as $val){  
-                $Ar['country']=$val->data;
+                $Ar['country']=str_pad($val->data, 2 , '0' , STR_PAD_LEFT);
                 $Ar['visits']=round($val->qtde,2);
                 if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
                     $Ar['color']='#d22581';
