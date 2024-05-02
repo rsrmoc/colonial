@@ -20,14 +20,14 @@
   width: 100%; 
 }
 #chart-prev_realizado {
-            width: 100%;
-            height: 500px;
-          }
+    width: 100%;
+    height: 500px;
+}
 
 
 
 
-          .topstats {
+ .topstats {
     background: #fff;
     padding: 0;
     color: #76747A;
@@ -40,14 +40,14 @@
     padding: 12px 0;
 }
   
-#chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha, #chartdiv_parada, 
-#chartdiv_polpa, #chartdiv_tp_parada, #chartdiv_tp_perda, #chartdiv_grupo_perda
+#chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, 
+ #chartdiv_tp_parada, #chartdiv_tp_perda, #chartdiv_grupo_perda
 {
   width: 100%;
   height: 500px;
 }
 
-#chartdivPercProd
+#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha
 {
   width: 100%;
   height: 350px;
@@ -905,7 +905,7 @@ ul {
         </div>
  
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="panel">
                     <div class="panel-body">
                         <div class="row">
@@ -924,8 +924,11 @@ ul {
 
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            </div> 
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="panel">
                     <div class="panel-body">
                         <div class="row">
@@ -948,7 +951,7 @@ ul {
         </div>
  
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="panel">
                     <div class="panel-body">
                         <div class="row">
@@ -968,7 +971,10 @@ ul {
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
+        </div>
+            
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="panel">
                     <div class="panel-body">
                         <div class="row">
@@ -992,7 +998,7 @@ ul {
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="panel">
                     <div class="panel-body">
                         <div class="row">
@@ -1008,18 +1014,7 @@ ul {
                         <template x-if="loadingCharts">
                             <x-loader class="absolute-loader"/>
                         </template>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Tipo de Paradas</h3></div>
-                             
-                        </div> 
- 
+
                         <!-- HTML -->
                         <div id="chartdiv_tp_parada"></div>
                         <template x-if="loadingCharts">
@@ -1027,7 +1022,7 @@ ul {
                         </template>
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
          
         <div class="row">

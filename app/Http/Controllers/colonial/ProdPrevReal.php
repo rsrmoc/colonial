@@ -413,84 +413,77 @@ class ProdPrevReal extends Controller
 
             /* agua ANO */ 
             $dadosAgua = DB::select(" 
-            select year(dt_consumo) data, 
+            select month(dt_consumo) data, 
             sum(saldo) qtde
             from hidricos 
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
-            group by year(dt_consumo)
-            order by 1 "); 
-            $qtdeAnterior=$QtdeAguaAnterior;
-            foreach($dadosAgua as $val){   
-                $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde,2);
-                if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
-                    $Ar['color']='#FF0F00';
-                }else{
-                    $Ar['color']='#f5d433';
-                }
-                $Agua[]=$Ar; 
-                $qtdeAnterior = $val->qtde;
+            group by month(dt_consumo)
+            order by 1 ");  
+            foreach($dadosAgua as $key => $val){   
+                $ArrayAgua[$val->data]=round($val->qtde,2); 
             } 
+            foreach($MESES as $key => $mes){ 
+                $Ar['country']=$mes;
+                $Ar['visits']= (isset($ArrayAgua[$key])) ? round($ArrayAgua[$key],2) : null; 
+                $Ar['color']=$this->gerar_cor($key);
+                $Agua[]=$Ar;  
+            }
 
             /* energia ANO */ 
             $dadosEnergia = DB::select(" 
-            select year(dt_consumo) data, 
+            select month(dt_consumo) data, 
             sum(qtde) qtde
             from energias 
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
-            group by year(dt_consumo)
-            order by 1 "); 
-            $qtdeAnterior=$QtdeEnergiaAnterior; 
-            foreach($dadosEnergia as $val){  
-                $Ar['country']=$val->data;
-                //$Ar['visits']=round($val->qtde-$qtdeAnterior,2);
-                $Ar['visits']=round($val->qtde,2);
-                if($request['ano']==$val->data){
-                    $Ar['color']='#FF0F00';
-                }else{
-                    $Ar['color']='#f5d433';
-                }
-                $Energia[]=$Ar; 
-                $qtdeAnterior = $val->qtde;
+            group by month(dt_consumo)
+            order by 1 ");  
+            foreach($dadosEnergia as $key => $val){   
+                $ArrayEnergia[$val->data]=round($val->qtde,2); 
             } 
+            foreach($MESES as $key => $mes){ 
+                $Ar['country']=$mes;
+                $Ar['visits']= (isset($ArrayEnergia[$key])) ? round($ArrayEnergia[$key],2) : null; 
+                $Ar['color']=$this->gerar_cor($key);
+                $Energia[]=$Ar;  
+            }
+
 
             /* lenha ANO */
             $dadosLenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
             ->whereRaw("WhsCode='MPV'")
-            ->selectRaw("year(DocDate) data,
-            sum(Quantity) qtde")->groupByRaw("year(DocDate)")
-            ->orderByRaw("1 ")->get(); 
-            foreach($dadosLenha as $val){  
-              
-                $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde,2);
-                if($request['ano']==$val->data){
-                    $Ar['color']='#04D215';
-                }else{
-                    $Ar['color']='#B0DE09';
-                }
-                $Lenha[]=$Ar; 
+            ->selectRaw("month(DocDate) data,
+            sum(Quantity) qtde")->groupByRaw("month(DocDate)")
+            ->orderByRaw("1 ")->get();  
+            foreach($dadosLenha as $key => $val){   
+                $ArrayLenha[$val->data]=round($val->qtde,2); 
+            } 
+            foreach($MESES as $key => $mes){ 
+                $Ar['country']=$mes;
+                $Ar['visits']= (isset($ArrayLenha[$key])) ? round($ArrayLenha[$key],2) : null; 
+                $Ar['color']=$this->gerar_cor($key);
+                $Lenha[]=$Ar;  
             }
+
 
             /* parada ANO */  
             $dadosParada = DB::select(" 
-            select year(producao_parada.dt_cadastro) data, 
+            select month(producao_parada.dt_cadastro) data, 
             sum(tempo) qtde
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
             where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by year(producao_parada.dt_cadastro)
-            order by 1"); 
-            foreach($dadosParada as $val){  
-                $Ar['country']=$val->data;
-                $Ar['visits']=round($val->qtde,2);
-                if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
-                    $Ar['color']='#FF0F00';
-                }else{
-                    $Ar['color']='#f59f9a';
-                }
-                $Parada[]=$Ar;
+            group by month(producao_parada.dt_cadastro)
+            order by 1");  
+            foreach($dadosParada as $key => $val){   
+                $ArrayParada[$val->data]=round($val->qtde,2); 
+            } 
+            foreach($MESES as $key => $mes){ 
+                $Ar['country']=$mes;
+                $Ar['visits']= (isset($ArrayParada[$key])) ? round($ArrayParada[$key],2) : null; 
+                $Ar['color']=$this->gerar_cor($key+1);
+                $Parada[]=$Ar;  
             }
+
 
             /* perda MES */  
             $dadosPerda = DB::select(" 
@@ -501,15 +494,13 @@ class ProdPrevReal extends Controller
             where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
             group by month(perda.dt_ordem)
             order by 1 "); 
-            foreach($dadosPerda as $key => $val){  
-          
-                $ArrayPerda[$val->data]=round($val->qtde);
-                
+            foreach($dadosPerda as $key => $val){   
+                $ArrayPerda[$val->data]=round($val->qtde); 
             } 
-            foreach($MESES as $key => $mes){
-
+            foreach($MESES as $key => $mes){ 
                 $Ar['country']=$mes;
                 $Ar['visits']= (isset($ArrayPerda[$key])) ? round($ArrayPerda[$key]) : null; 
+                $Ar['color']=$this->gerar_cor($key+5);
                 $Perda[]=$Ar;
             }
 
@@ -519,16 +510,16 @@ class ProdPrevReal extends Controller
             ->selectRaw(" month(DocDate) data,
             sum(Quantity) qtde")->groupByRaw("month(DocDate)")
             ->orderByRaw("1")->get();  
-            foreach($dadosPolpa as $val){  
-                $Ar['country']=str_pad($val->data, 2 , '0' , STR_PAD_LEFT);
-                $Ar['visits']=round($val->qtde,2);
-                if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
-                    $Ar['color']='#d22581';
-                }else{
-                    $Ar['color']='#f58cc4';
-                }
-                $Polpa[]=$Ar;
+           
+            foreach($dadosPolpa as $key => $val){   
+                $ArrayPolpa[$val->data]=round($val->qtde); 
             } 
+            foreach($MESES as $key => $mes){ 
+                $Ar['country']=$mes;
+                $Ar['visits']= (isset($ArrayPolpa[$key])) ? round($ArrayPolpa[$key]) : null; 
+                $Ar['color']=$this->gerar_cor($key+2);
+                $Polpa[]=$Ar;
+            }
           
         }
  
@@ -725,24 +716,24 @@ class ProdPrevReal extends Controller
             }
 
             /* agua MESES */  
-            $dadosAgua = DB::select(" 
+            $dadosAgua = DB::select("  
             select CAST( right(replicate('0',2) + convert(VARCHAR,day(dt_consumo)),2) AS NVARCHAR(2)) data, 
             sum(saldo) qtde
             from hidricos 
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by CAST( right(replicate('0',2) + convert(VARCHAR,day(dt_consumo)),2) AS NVARCHAR(2))
-            order by 1 "); 
-            
+            order by 1 ");  
             foreach($dadosAgua as $key => $val){  
+                $Agu[$val->data]=round($val->qtde,2);
+            }  
+            for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Agua[]=array( 
-                    "country"=>$val->data,
-                    "visits"=>round($val->qtde,2),
-                    "color"=> $this->gerar_cor($key)
-                ); 
-                
-            } 
-        
-            
+                    "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
+                    "visits"=>(isset($Agu[$i])) ? $Agu[$i] : null,
+                    "color"=> $this->gerar_cor($i)
+                );
+            }
+         
             /* energia MESES */  
             $dadosEnergia = DB::select(" 
             select CAST( right(replicate('0',2) + convert(VARCHAR,day(dt_consumo)),2) AS NVARCHAR(2)) data, 
@@ -750,17 +741,18 @@ class ProdPrevReal extends Controller
             from energias 
             where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
             group by day(dt_consumo)
-            order by 1 "); 
-            $qtdeAnterior=$QtdeEnergiaAnterior; 
+            order by 1 ");  
             foreach($dadosEnergia as $key => $val){  
+                $Ene[$val->data]=round($val->qtde,2);
+            }   
+            for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Energia[]=array( 
-                    "country"=>$val->data,
-                    //"visits"=>round($val->qtde-$qtdeAnterior,2),
-                    "visits"=>round($val->qtde,2),
-                    "color"=> $this->gerar_cor($key)
+                    "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
+                    "visits"=>(isset($Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "color"=> $this->gerar_cor($i)
                 );
-                $qtdeAnterior=$val->qtde;
             }
+        
 
             /* lenha MESES */
             $dadosLenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
@@ -768,12 +760,15 @@ class ProdPrevReal extends Controller
             ->selectRaw("CAST( right(replicate('0',2) + convert(VARCHAR,day(DocDate)),2) AS NVARCHAR(2)) data,
             sum(Quantity) qtde")->groupByRaw("CAST( right(replicate('0',2) + convert(VARCHAR,day(DocDate)),2) AS NVARCHAR(2))")
             ->orderByRaw("1 ")
-            ->get();  
+            ->get();   
             foreach($dadosLenha as $key => $val){  
+                $Len[$val->data]=round($val->qtde,2);
+            }   
+            for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Lenha[]=array( 
-                    "country"=>$val->data,
-                    "visits"=>round($val->qtde,2),
-                    "color"=> $this->gerar_cor($key)
+                    "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
+                    "visits"=>(isset($Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "color"=> $this->gerar_cor($i)
                 );
             }
 
@@ -783,15 +778,17 @@ class ProdPrevReal extends Controller
             ->selectRaw("CAST( right(replicate('0',2) + convert(VARCHAR,day(DocDate)),2) AS NVARCHAR(2)) data,
             sum(Quantity) qtde")->groupByRaw("CAST( right(replicate('0',2) + convert(VARCHAR,day(DocDate)),2) AS NVARCHAR(2))")
             ->orderByRaw("1 ") 
-            ->get(); 
-            
+            ->get();  
             foreach($dadosPolpa as $key => $val){  
+                $Pol[$val->data]=round($val->qtde,2);
+            }   
+            for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Polpa[]=array( 
-                    "country"=>$val->data,
-                    "visits"=>round($val->qtde,2),
-                    "color"=> $this->gerar_cor($key)
+                    "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
+                    "visits"=>(isset($Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "color"=> $this->gerar_cor($i)
                 );
-            } 
+            }
 
             /* parada MESES */  
             $dadosParada = DB::select(" 
@@ -801,14 +798,17 @@ class ProdPrevReal extends Controller
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
             where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
             group by CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_cadastro)),2) AS NVARCHAR(2)) 
-            order by 1"); 
+            order by 1");  
             foreach($dadosParada as $key => $val){  
+                $Par[$val->data]=round($val->qtde,2);
+            }   
+            for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Parada[]=array( 
-                    "country"=>$val->data,
-                    "visits"=>round($val->qtde,2),
-                    "color"=> $this->gerar_cor($key)
+                    "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
+                    "visits"=>(isset($Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "color"=> $this->gerar_cor($i)
                 );
-            } 
+            }
 
             /* perda MESES */  
             $dadosPerda = DB::select(" 
@@ -821,10 +821,8 @@ class ProdPrevReal extends Controller
             order by 1 "); 
             foreach($dadosPerda as $key => $val){  
                 $Per[$val->data]=round($val->qtde,2);
-            } 
-
-            for ($i = 1; $i <= $request['ultimo_dia']; $i++) {
-               
+            }  
+            for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Perda[]=array( 
                     "country"=>$i,
                     "visits"=>(isset($Per[$i])) ? $Per[$i] : null,
