@@ -704,7 +704,7 @@ Alpine.data('app', () => ({
                 }
 
                 /*Perda*/ 
-                if(res.data.GraficoTp_parada){
+                if(res.data.GraficoPerda){
                   var chart = AmCharts.makeChart("chartdiv_perda", {
                     "decimalSeparator": ",",
                     "thousandsSeparator": ".",

@@ -651,7 +651,7 @@ class ProdPrevReal extends Controller
                 $Parada[]=$Ar;
             }
 
-            /* perda MESES */  
+            /* perda DIA */   
             $dadosPerda = DB::select(" 
             select CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_ordem)),2) AS NVARCHAR(2)) data, 
             count(qtde) qtde
