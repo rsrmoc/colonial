@@ -512,6 +512,23 @@ class ProdPrevReal extends Controller
                 $Ar['visits']= (isset($ArrayPerda[$key])) ? round($ArrayPerda[$key]) : null; 
                 $Perda[]=$Ar;
             }
+
+            /* polpa MES */
+            $dadosPolpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
+            ->whereRaw("ItemCode='013906'")
+            ->selectRaw(" month(DocDate) data,
+            sum(Quantity) qtde")->groupByRaw("month(DocDate)")
+            ->orderByRaw("1")->get();  
+            foreach($dadosPolpa as $val){  
+                $Ar['country']=$val->data;
+                $Ar['visits']=round($val->qtde,2);
+                if(str_pad($request['dia'] , 2 , '0' , STR_PAD_LEFT)==$val->data){
+                    $Ar['color']='#d22581';
+                }else{
+                    $Ar['color']='#f58cc4';
+                }
+                $Polpa[]=$Ar;
+            } 
           
         }
  
@@ -602,7 +619,7 @@ class ProdPrevReal extends Controller
             ->whereRaw("ItemCode='013906'")
             ->selectRaw("CAST( right(replicate('0',2) + convert(VARCHAR,day(DocDate)),2) AS NVARCHAR(2)) data,
             sum(Quantity) qtde")->groupByRaw("CAST( right(replicate('0',2) + convert(VARCHAR,day(DocDate)),2) AS NVARCHAR(2))")
-            ->orderByRaw("1 ")->get(); 
+            ->orderByRaw("1 ")->get();  
             foreach($dadosPolpa as $val){  
                 $Ar['country']=$val->data;
                 $Ar['visits']=round($val->qtde,2);
