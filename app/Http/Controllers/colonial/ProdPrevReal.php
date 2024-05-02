@@ -883,7 +883,7 @@ class ProdPrevReal extends Controller
         $request['embalagens']=0; 
         $request['insumos']=0; 
         $request['outros']=0;
-        
+
         $grupoPerdas=null;
         
         foreach($perdaGrupo as $Tipos){
@@ -914,28 +914,28 @@ class ProdPrevReal extends Controller
 
         $ProdKg=($ProduzidoKg) ? $ProduzidoKg : 0;
         $hidricos=($hidrico->valor) ? $hidrico->valor : 0;
-        if($hidricos==0){
+        if(($hidricos==0) || ($ProdKg==0)){
             $AguaKg= number_format('0',4,",",".");    
         }else{
             $AguaKg= number_format(($hidricos/$ProdKg),4,",",".");
         }
          
-        $energias=($energia->valor) ? $energia->valor : 0;
-        if($energias==0){
+        $energias=($energia->valor) ? $energia->valor : 0; 
+        if(($energias==0) || ($ProdKg==0)){
             $EnergiaKg= number_format('0',4,",",".");
         }else{
             $EnergiaKg= number_format(($energias/$ProdKg),4,",",".");
         }
          
         $lenhas=($lenha->valor) ? $lenha->valor : 0;
-        if($lenhas==0){
+        if(($lenhas==0) || ($ProdKg==0)){ 
             $LenhaKg= number_format('0',4,",",".");
         }else{
             $LenhaKg= number_format(($lenhas/$ProdKg),4,",",".");
         }
          
         $polpas=($polpa->valor) ? $polpa->valor : 0;
-        if($polpas==0){
+        if(($polpas==0) || ($ProdKg==0)){  
             $PolpaKg= number_format('0',4,",",".");
         }else{
             $PolpaKg= number_format(($polpas/$ProdKg),4,",",".");
