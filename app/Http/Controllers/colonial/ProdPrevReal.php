@@ -42,23 +42,23 @@ class ProdPrevReal extends Controller
     public function modalJson(Request $request) { 
         try{
 
-            $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 103) = '".$request['label']."' ")
+            $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 103) like '%".$request['label']."%' ")
             ->selectRaw("sum(saldo) valor")->first();
             
-            $energia = Energia::whereRaw("CONVERT(varchar, dt_consumo, 103) = '".$request['label']."' ")
+            $energia = Energia::whereRaw("CONVERT(varchar, dt_consumo, 103) like '%".$request['label']."%' ")
             ->selectRaw("sum(qtde) valor")->first();
      
-            $lenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) = '".$request['label']."'")
+            $lenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) like '%".$request['label']."%' ")
             ->whereRaw("WhsCode='MPV'")->selectRaw("sum(Quantity) valor")->first();
     
-            $perda = Perda::whereRaw("CONVERT(varchar, dt_ordem, 103)  = '".$request['label']."' ")
+            $perda = Perda::whereRaw("CONVERT(varchar, dt_ordem, 103)  like '%".$request['label']."%' ")
             ->selectRaw("count(qtde) valor")->first();
      
     
-            $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 103) = '".$request['label']."' ")
+            $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 103) like '%".$request['label']."%' ")
             ->selectRaw("sum(tempo) valor")->first();
         
-            $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) = '".$request['label']."' ")
+            $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) like '%".$request['label']."%' ")
             ->whereRaw("ItemCode='013906'")->selectRaw("sum(Quantity) valor")->first();
 
             $retorno['data'] = $request['label'];
@@ -71,7 +71,19 @@ class ProdPrevReal extends Controller
             $retorno['produzido_cx'] = ($request['produzido_cx']) ?  number_format($request['produzido_cx'],0,",",".") : '00';
             $retorno['produzido_kg'] = ($request['produzido_kg']) ?  number_format($request['produzido_kg'],0,",",".") : '00';
             $retorno['produzido_to'] = ($request['produzido_to']) ?  number_format($request['produzido_to'],0,",",".") : '00';
+  
+            if($request['agrupamento']=='P'){
+                $ParametroProducao="where CONVERT(CHAR(10),owor.duedate, 23) like '%".$request['dti']."%' and upper(ProdName) = upper('".$request['label']."') ";
+                $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23) like '%".$request['dti']."%'";
+                $ParametroPerda="where CONVERT(CHAR(10),perda.dt_cadastro, 23) like '%".$request['dti']."%' ";
+            }else{
+                $ParametroProducao="where CONVERT(CHAR(10),owor.duedate, 103) like '%".$request['label']."%'"; 
+                $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_cadastro, 103) like '%".$request['label']."%'";
+                $ParametroPerda="where CONVERT(CHAR(10),perda.dt_cadastro, 103) like '%".$request['label']."%' ";
+            }
 
+      
+            
             $retorno['listaProducao'] = DB::select("select owor.DocEntry codigo,
             CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
             (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
@@ -86,22 +98,29 @@ class ProdPrevReal extends Controller
             ProdName nome 
             from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
             inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-            where CONVERT(CHAR(10),owor.duedate, 103) = '".$request['label']."' 
+            ".$ParametroProducao."
             and oitm.ItmsGrpCod not in (103)");
-
+            $totais['pCX']=0; $totais['pKG']=0; $totais['prCX']=0; $totais['prKG']=0;
+            foreach($retorno['listaProducao'] as $valores){
+                $totais['pCX']=($totais['pCX']+$valores->valor);
+                $totais['pKG']=($totais['pKG']+($valores->valor*$valores->kg));
+                $totais['prCX']=($totais['prCX']+$valores->valor_prod);
+                $totais['prKG']=($totais['prKG']+($valores->valor_prod*$valores->kg));
+            }
+            $retorno['totais'] = $totais;
             /* tipo parada */  
             $retorno['dadosParada'] = DB::select(" 
             select nm_tipo , producao_parada.dt_cadastro, tempo qtde,obs_parada
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.created_at, 103) = '".$request['label']."'
+            ".$ParametroParada."
             order by producao_parada.dt_cadastro "); 
            
             $retorno['dadosPerda'] = DB::select(" 
             select nm_tipo,qtde, perda.dt_ordem,nm_produto,obs_perda
             from perda 
             inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-            where CONVERT(CHAR(10),perda.created_at, 103) = '".$request['label']."' 
+            ".$ParametroPerda."
             order by perda.dt_ordem  "); 
 
             return $retorno;
@@ -131,6 +150,9 @@ class ProdPrevReal extends Controller
         }else{
             $request['ano']=date('Y');
             $request['mes']=date('m'); 
+            $request['dia']=null;
+        }
+        if(empty($request['mes'])){
             $request['dia']=null;
         }
         $MESES = array(1 => "JANEIRO", 2 => "FEVEREIRO", 3 => "MARÇO", 4 => "ABRIL", 5 => "MAIO", 6 => "JUNHO", 7 => "JULHO", 8 => "AGOSTO", 9 => "SETEMBRO", 10 => "OUTUBRO", 11 => "NOVEMBRO", 12 => "DEZEMBRO");
@@ -235,8 +257,7 @@ class ProdPrevReal extends Controller
             $produzidoComparativo='sum((quantity*SWeight1)/1000)';
             $request['ds_unid']=' [ Toneladas ]';
         }
-  
-        
+ 
         /* Previsto */
         $dados = DB::select("
         select ".$Agrupamento1.", ".$Agrupamento12.", sum(valor) planejado_cx, sum(valor*kg)  planejado_kg,
@@ -244,6 +265,7 @@ class ProdPrevReal extends Controller
         from (
                 select owor.DocEntry codigo,
                 CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
+                CONVERT (varchar, owor.duedate, 23) dia, 
                 (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
                     where ign1.BaseRef=owor.DocEntry
                 ) valor_prod, owor.ItemCode ,
@@ -269,7 +291,12 @@ class ProdPrevReal extends Controller
         foreach($dados as $key => $val){
            if($key % 2 == 0) { $townName2=round($val->planejado_kg); }else{ $townName2=''; }
              
-                        if(($val->prozuzido>0) && ($val->planejado>0)){ $valorPerc=round((($val->prozuzido/$val->planejado)*100),2); }else{ $valorPerc=0; } 
+                        if(($val->prozuzido>0) && ($val->planejado>0)){ 
+                            $valorPerc=round((($val->prozuzido/$val->planejado)*100),2); 
+                        }else{ 
+                            $valorPerc=0; 
+                        } 
+                        
                         $prod_per[]=array( 
                             "label"=>$val->data,
                             "producao"=>$valorPerc,
@@ -278,11 +305,15 @@ class ProdPrevReal extends Controller
                             'planejado_cx'=>$val->planejado_cx,
                             'produzido_cx'=>$val->produzido_cx,
                             'produzido_kg'=>$val->produzido_kg,
+                            'dti'=>$request['dti'],
+                            'dtf'=>$request['dtf'],
+                            'agrupamento'=>$request['agrupamento'],
                             'produzido_to'=> ($val->produzido_kg) ? ($val->produzido_kg/1000) : '0',
                             "color_producao"=> "#2A0CD0"
                         ); 
 
-                        $data[] = array('label'=>$val->data,
+                        $data[] = array(
+                           'label'=>$val->data,
                            'produzido'=>round($val->prozuzido,0), 
                            'townName2'=> $townName2,
                            'planejado'=>round($val->planejado,0),
@@ -485,6 +516,9 @@ class ProdPrevReal extends Controller
         }
  
         if($request['agrupamento']=='P'){
+
+           
+
 
             /* Comparativo DIA */  
             $dadosComp = DB::select(" 
@@ -845,7 +879,11 @@ class ProdPrevReal extends Controller
         ->selectRaw("count(qtde) valor, case when grupo = '103' then 'POLPA' when grupo = '105' then 'EMBALAGEM' when grupo = '109' then 'INSUMO' else 'OUTROS' end grupo")
         ->groupByRaw("case when grupo = '103' then 'POLPA' when grupo = '105' then 'EMBALAGEM' when grupo = '109' then 'INSUMO' else 'OUTROS' end")->get();
         
-        $request['polpas']=0; $request['embalagens']=0; $request['insumos']=0; $request['outros']=0;
+        $request['polpas']=0; 
+        $request['embalagens']=0; 
+        $request['insumos']=0; 
+        $request['outros']=0;
+        
         $grupoPerdas=null;
         
         foreach($perdaGrupo as $Tipos){

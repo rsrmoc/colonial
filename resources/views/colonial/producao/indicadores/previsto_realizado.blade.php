@@ -50,7 +50,7 @@
 #chartdivPercProd
 {
   width: 100%;
-  height: 200px;
+  height: 350px;
 }
 
 #chartdiv_perda
@@ -1095,8 +1095,7 @@ ul {
                     </div>
                     <div class="modal-body">
     
-                        <div class="row">
-             
+                        <div class="row"> 
                             <div class="col-lg-4 col-md-8">
                                 <div class="panel info-box panel-white" style="background: #22BAA0;margin-bottom: 10px;">
                                     <div class="panel-body">
@@ -1270,6 +1269,7 @@ ul {
                                             <thead>
                                                 <tr class="active">
                                                     <th>Ordem de Produção</th>
+                                                    <th class="text-center">Data</th>
                                                     <th >Produto</th>
                                                     <th class="text-right">Kg/Cx</th>
                                                     <th class="text-right">Planejado [CX]</th>
@@ -1281,13 +1281,23 @@ ul {
                                             <tbody>
                                                 <template x-for="query in tabProdDetalhes">
                                                     <tr style="font-size: 16px;">
-                                                        <td style="font-size: 16px;" x-text="query.codigo"></td>
+                                                        <td  style="font-size: 16px;" x-text="query.codigo"></td>
+                                                        <td class="text-center" style="font-size: 16px;" x-text="query.data"></td>
                                                         <td style="font-size: 16px;" x-text="query.ItemCode+' - '+query.nome"></td>
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.kg*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.valor*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.valor*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                    </tr>
+                                                </template>
+                                                <template x-if="tabProdDetalhes">
+                                                    <tr style="font-size: 16px;">
+                                                        <th  style="font-size: 16px;" colspan="4">TOTAIS </th>  
+                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.pCX*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prCX*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.pKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
                                                     </tr>
                                                 </template>
                                             </tbody>

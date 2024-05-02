@@ -12,6 +12,7 @@ Alpine.data('app', () => ({
     chart3: null,
     chart4: null,
     relacaoDetelhes: null,
+    totais_toDetalhes: null,
     tituloDetalhesModal: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>', 
     hidricoDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>', 
     energiaDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
@@ -289,7 +290,7 @@ Alpine.data('app', () => ({
                     "valueAlign": "left",
                     "valueText": "[[value]] ([[percents]]%)",
                     "valueWidth": 100
-                },
+                  },
                   "trendLines": [],
                   "graphs": [
                     {
@@ -328,9 +329,9 @@ Alpine.data('app', () => ({
                   "allLabels": [],
                   "balloon": {},
                   "titles": [],
-                  "dataProvider": res.data.prod_per
-                
+                  "dataProvider": res.data.prod_per 
                 });
+ 
                 if(!res.data.prod_per){
                   $("#chartdivPercProd").html(this.graficoBarra2);
                 }
@@ -454,9 +455,8 @@ Alpine.data('app', () => ({
                   }
                   
                 }else{
-
-                    
-                  if(!res.data.comparativo){
+ 
+                  if(res.data.comparativo){
                     var chart = AmCharts.makeChart("chartdiv_comparativo", {
                       "decimalSeparator": ",",
                       "thousandsSeparator": ".",
@@ -880,8 +880,6 @@ Alpine.data('app', () => ({
       console.log(dados);
       this.modalLoadingCharts = true;
       $("#modalDetalhesProducao").modal(); 
-
-
       this.hidricoDetalhes =  this.tabCarregando;
       this.energiaDetalhes =  this.tabCarregando;
       this.lenhaDetalhes = this.tabCarregando;
@@ -892,10 +890,17 @@ Alpine.data('app', () => ({
       this.produzido_kgDetalhes  =  this.tabCarregando;
       this.produzido_toDetalhes =  this.tabCarregando;
       
+ 
       axios.post('/colonial/prod_prev_real-detalhes',dados)
       .then((res) => {
         console.log(res.data);
-        this.tituloDetalhesModal = 'DATA: '+res.data.data;
+ 
+
+        if(dados.agrupamento=='P'){
+          this.tituloDetalhesModal = 'PRODUTO: '+res.data.data;
+        }else{
+          this.tituloDetalhesModal = 'DATA: '+res.data.data;
+        }
 
         this.hidricoDetalhes =  res.data.hidrico+'<span class="headerUnidade"> (m³/h)</span>';
         this.energiaDetalhes =  res.data.energia+'<span class="headerUnidade"> (kw)</span>';
@@ -910,6 +915,8 @@ Alpine.data('app', () => ({
         this.tabProdDetalhes = res.data.listaProducao;
         this.tabPerdaDetalhes = res.data.dadosPerda;
         this.tabParadaDetalhes = res.data.dadosParada;
+
+        this.totais_toDetalhes = res.data.totais;
 
       })
       .catch((err) => { 

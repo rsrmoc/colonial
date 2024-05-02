@@ -15,6 +15,7 @@ Alpine.data('app', function () {
     chart3: null,
     chart4: null,
     relacaoDetelhes: null,
+    totais_toDetalhes: null,
     tituloDetalhesModal: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     hidricoDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     energiaDetalhes: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
@@ -405,7 +406,7 @@ Alpine.data('app', function () {
             $("#chartdiv_agua").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
           }
         } else {
-          if (!res.data.comparativo) {
+          if (res.data.comparativo) {
             var chart = AmCharts.makeChart("chartdiv_comparativo", {
               "decimalSeparator": ",",
               "thousandsSeparator": ".",
@@ -819,7 +820,11 @@ Alpine.data('app', function () {
       this.produzido_toDetalhes = this.tabCarregando;
       axios.post('/colonial/prod_prev_real-detalhes', dados).then(function (res) {
         console.log(res.data);
-        _this4.tituloDetalhesModal = 'DATA: ' + res.data.data;
+        if (dados.agrupamento == 'P') {
+          _this4.tituloDetalhesModal = 'PRODUTO: ' + res.data.data;
+        } else {
+          _this4.tituloDetalhesModal = 'DATA: ' + res.data.data;
+        }
         _this4.hidricoDetalhes = res.data.hidrico + '<span class="headerUnidade"> (m³/h)</span>';
         _this4.energiaDetalhes = res.data.energia + '<span class="headerUnidade"> (kw)</span>';
         _this4.lenhaDetalhes = res.data.lenha + '<span class="headerUnidade"> (m³)</span>';
@@ -832,6 +837,7 @@ Alpine.data('app', function () {
         _this4.tabProdDetalhes = res.data.listaProducao;
         _this4.tabPerdaDetalhes = res.data.dadosPerda;
         _this4.tabParadaDetalhes = res.data.dadosParada;
+        _this4.totais_toDetalhes = res.data.totais;
       })["catch"](function (err) {
         console.log(err.response.data);
         toastr.error(err.response.data.message, "Erro");
