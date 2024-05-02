@@ -41,16 +41,22 @@
 }
   
 #chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, 
- #chartdiv_tp_parada, #chartdiv_tp_perda, #chartdiv_grupo_perda
+#chartdiv_tp_perda, #chartdiv_grupo_perda
 {
   width: 100%;
   height: 500px;
 }
 
-#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha
+#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha 
 {
   width: 100%;
   height: 350px;
+}
+
+#chartdiv_tp_parada
+{
+  width: 100%;
+  height: 400px;
 }
 
 #chartdiv_perda
@@ -1015,6 +1021,7 @@ ul {
                             <x-loader class="absolute-loader"/>
                         </template>
 
+                        <div class="col-md-12"><h3 class="panel-title text-center" style="color: #0e0e0e; margin-top: 60px;">Tipos de Parada</h3></div>
                         <!-- HTML -->
                         <div id="chartdiv_tp_parada"></div>
                         <template x-if="loadingCharts">

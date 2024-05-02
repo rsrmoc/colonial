@@ -30,9 +30,10 @@ Alpine.data('app', function () {
     tabPerdaDetalhes: null,
     tabParadaDetalhes: null,
     tabDetalhes: null,
-    graficoBarra: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoBarra: "<div style='text-align: center;margin-top: 110px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoBarraTipo: "<div style='text-align: center;margin-top: 40px;'> <img src='/assets/images/grafico-barra.png'> </div>",
     graficoBarra2: "<div style='text-align: center;margin-top: 25px;'> <img src='/assets/images/grafico-barra.png'> </div>",
-    graficoPizza: "<div style='text-align: center;margin-top: 150px;'> <img src='/assets/images/grafico-pizza.png'> </div>",
+    graficoPizza: "<div style='text-align: center;margin-top: 110px;'> <img src='/assets/images/grafico-pizza.png'> </div>",
     iconCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     tabCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     titlePlanejado: 'Planejado x Produzido ',
@@ -231,7 +232,6 @@ Alpine.data('app', function () {
           }],
           "allLabels": [],
           "balloon": {},
-          "titles": [],
           "dataProvider": res.data.previsto
         });
         if (!res.data.previsto) {
@@ -455,6 +455,7 @@ Alpine.data('app', function () {
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
               "type": "column",
+              "labelText": "[[value]]",
               "topRadius": 1,
               "valueField": "visits"
             }],
@@ -491,6 +492,7 @@ Alpine.data('app', function () {
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
               "type": "column",
+              "labelText": "[[value]]",
               "topRadius": 1,
               "valueField": "visits"
             }],
@@ -527,6 +529,7 @@ Alpine.data('app', function () {
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
               "type": "column",
+              "labelText": "[[value]]",
               "topRadius": 1,
               "valueField": "visits"
             }],
@@ -563,6 +566,7 @@ Alpine.data('app', function () {
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
               "type": "column",
+              "labelText": "[[value]]",
               "topRadius": 1,
               "valueField": "visits"
             }],
@@ -598,6 +602,7 @@ Alpine.data('app', function () {
               "colorField": "color",
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
+              "labelText": "[[value]]",
               "type": "column",
               "topRadius": 1,
               "valueField": "visits"
@@ -625,26 +630,37 @@ Alpine.data('app', function () {
           var chart = AmCharts.makeChart("chartdiv_tp_parada", {
             "decimalSeparator": ",",
             "thousandsSeparator": ".",
-            "type": "pie",
+            "type": "serial",
             "theme": "none",
+            "rotate": true,
             "dataProvider": res.data.GraficoTp_parada,
-            "valueField": "litres",
-            "titleField": "country",
-            "balloon": {
-              "fixedPosition": true
+            "startDuration": 1,
+            "graphs": [{
+              "balloonText": "<b>[[category]]: [[value]] (" + res.data.request.ds_unidade + ") </b>",
+              "fillColorsField": "color",
+              "fillAlphas": 0.9,
+              "labelText": "[[value]]",
+              "lineAlpha": 0.2,
+              "type": "column",
+              "valueField": "qtde"
+            }],
+            "chartCursor": {
+              "categoryBalloonEnabled": false,
+              "cursorAlpha": 0,
+              "zoomable": false
             },
-            "labelRadius": 5,
-            "marginTop": 0,
-            "marginBottom": 0,
-            "marginLeft": 0,
-            "marginRight": 0
+            "categoryField": "produto",
+            "categoryAxis": {
+              "gridPosition": "start",
+              "labelRotation": 45
+            }
           });
         } else {
-          $("#chartdiv_tp_parada").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
+          $("#chartdiv_tp_parada").html("<div style='text-align: center;'> <img style='padding-top: 40px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
         }
 
         /*Perda*/
-        if (res.data.GraficoTp_parada) {
+        if (res.data.GraficoPerda) {
           var chart = AmCharts.makeChart("chartdiv_perda", {
             "decimalSeparator": ",",
             "thousandsSeparator": ".",
@@ -657,6 +673,7 @@ Alpine.data('app', function () {
               "colorField": "color",
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
+              "labelText": "[[value]]",
               "type": "column",
               "topRadius": 1,
               "valueField": "visits"
@@ -679,7 +696,7 @@ Alpine.data('app', function () {
           $("#chartdiv_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
         }
 
-        /*TipoPerda*/
+        /*GrupoPerda*/
         if (res.data.GraficoGrupoPerda) {
           var chart = AmCharts.makeChart("chartdiv_grupo_perda", {
             "decimalSeparator": ",",

@@ -841,13 +841,24 @@ class ProdPrevReal extends Controller
         inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
         where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
         group by nm_tipo
-        order by 1 "); 
-        foreach($dadosParada as $val){  
+        order by 2 desc "); 
+        foreach($dadosParada as $key => $val){
+
+            /*
             $Ar['country']=$val->data;
             $Ar['litres']=round($val->qtde,2); 
             $tipoParada[]=$Ar;
-        }
+            */
 
+            $tipoParada[]=array(
+                "produto"=>$val->data,
+                "qtde"=>round($val->qtde,2),
+                "color"=> $this->gerar_cor($key)
+            );
+ 
+
+        }
+ 
         /* tipo perda */ 
         $tipoPerda=null; 
         $dadosParada = DB::select(" 
