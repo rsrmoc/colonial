@@ -215,6 +215,10 @@ Alpine.data('app', () => ({
                     "position": "left",
                     "labelRotation": 20
                   },
+                  "titles": [{
+                    "text": "Traffic incidents per year",
+                    "size": 15
+                  }],
                   "legend": {
                     "align": "center",
                     "useGraphSettings": true,
