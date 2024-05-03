@@ -959,6 +959,12 @@ class ProdPrevReal extends Controller
         }
          
         $polpas=($polpa->valor) ? $polpa->valor : 0;
+        if($polpas==0){ 
+            $PolpaTo= number_format('0',4,",",".");
+        }else{ 
+            $PolpaTo= number_format(($polpas/1000),2,",",".");
+        }
+
         if(($polpas==0) || ($ProdKg==0)){  
             $PolpaKg= number_format('0',4,",",".");
         }else{
@@ -989,6 +995,7 @@ class ProdPrevReal extends Controller
         $request['EnergiaKg'] = $EnergiaKg;
         $request['LenhaKg'] = $LenhaKg;
         $request['PolpaKg'] = $PolpaKg;
+        $request['PolpaTo'] = $PolpaTo; 
         $retorno['previsto'] = $data;
         $retorno['prod_per'] = $prod_per; 
         $retorno['dadosProd'] = $dadosProd;

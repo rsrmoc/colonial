@@ -61,6 +61,7 @@ Alpine.data('app', function () {
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpasKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPolpasTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasEmb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasPol: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasIns: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
@@ -124,6 +125,7 @@ Alpine.data('app', function () {
       this.iconHeaderPerdas = this.iconCarregando;
       this.iconHeaderPolpas = this.iconCarregando;
       this.iconHeaderPolpasKg = this.iconCarregando;
+      this.iconHeaderPolpasTo = this.iconCarregando;
       this.loadingCharts = true;
       this.parametros.dia = $('#parametro-dia').val();
       this.parametros.mes = $('#parametro-mes').val();
@@ -150,6 +152,7 @@ Alpine.data('app', function () {
         _this2.iconHeaderPerdas = res.data.request.perda;
         _this2.iconHeaderParadas = res.data.request.parada + '<span class="headerUnidade"> (Min)</span>';
         _this2.iconHeaderPolpas = res.data.request.polpa + '<span class="headerUnidade"> (Kg) </span>';
+        _this2.iconHeaderPolpasTo = res.data.request.PolpaTo + '<span class="headerUnidade"> (T) </span>';
         _this2.iconHeaderPolpasKg = res.data.request.PolpaKg + '<span class="headerUnidade"> (kg/kg) </span>';
         _this2.iconHeaderProdTo = res.data.request.ProduzidoTo + '<span class="headerUnidade"> (T) </span>';
         _this2.iconHeaderProdKg = res.data.request.ProduzidoKg + '<span class="headerUnidade"> (Kg) </span>';
