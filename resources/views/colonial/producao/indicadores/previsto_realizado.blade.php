@@ -41,13 +41,13 @@
 }
   
 #chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, 
-#chartdiv_tp_perda, #chartdiv_grupo_perda
+#chartdiv_tp_perda
 {
   width: 100%;
   height: 500px;
 }
 
-#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha 
+#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha , #chartdiv_grupo_perda
 {
   width: 100%;
   height: 350px;
@@ -1013,29 +1013,18 @@ ul {
                         <template x-if="loadingCharts">
                             <x-loader class="absolute-loader"/>
                         </template>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="row">
+
+                        <div class="row" style="margin-top: 50px;">
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Perdas Por Grupo de Produtos</h3></div> 
-                        </div> 
-                       
+                        </div>  
                         <!-- HTML -->
                         <div id="chartdiv_grupo_perda"></div>
                         <template x-if="loadingCharts">
                             <x-loader class="absolute-loader"/>
                         </template>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6">
-                <div class="panel">
-                    <div class="panel-body">
-                        <div class="row">
+
+                        <div class="row" style="margin-top: 50px;">
                             <div class="col-md-2"></div>
                             <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Motivos de Perdas</h3></div> 
                         </div> 
@@ -1045,9 +1034,12 @@ ul {
                         <template x-if="loadingCharts">
                             <x-loader class="absolute-loader"/>
                         </template>
+
                     </div>
                 </div>
             </div>
+         
+        
         </div>
  
 

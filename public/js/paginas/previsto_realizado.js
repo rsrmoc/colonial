@@ -231,14 +231,19 @@ Alpine.data('app', function () {
             "labelRotation": 270,
             "dashLength": 2
           }],
-          "guides": [],
-          "valueAxes": [{
-            "id": "ValueAxis-1",
-            "position": "top",
-            "axisAlpha": 0
+          "allLabels": [{
+            "text": "Produzido",
+            "x": "28%",
+            "y": "97%",
+            "bold": true,
+            "align": "botton"
+          }, {
+            "text": "Planejado",
+            "x": "0%",
+            "y": "-100",
+            "bold": true,
+            "align": "botton"
           }],
-          "allLabels": [],
-          "balloon": {},
           "dataProvider": res.data.previsto
         });
         if (!res.data.previsto) {
@@ -649,7 +654,7 @@ Alpine.data('app', function () {
             "dataProvider": res.data.GraficoTp_parada,
             "startDuration": 1,
             "graphs": [{
-              "balloonText": "<b>[[category]]: [[value]] (" + res.data.request.ds_unidade + ") </b>",
+              "balloonText": "<b>[[category]]: [[value]]  </b>",
               "fillColorsField": "color",
               "fillAlphas": 0.9,
               "labelText": "[[value]]",
@@ -714,19 +719,30 @@ Alpine.data('app', function () {
           var chart = AmCharts.makeChart("chartdiv_grupo_perda", {
             "decimalSeparator": ",",
             "thousandsSeparator": ".",
-            "type": "pie",
+            "type": "serial",
             "theme": "none",
+            "rotate": true,
             "dataProvider": res.data.GraficoGrupoPerda,
-            "valueField": "litres",
-            "titleField": "country",
-            "balloon": {
-              "fixedPosition": true
+            "startDuration": 1,
+            "graphs": [{
+              "balloonText": "<b>[[category]]: [[value]]   </b>",
+              "fillColorsField": "color",
+              "fillAlphas": 0.9,
+              "labelText": "[[value]]",
+              "lineAlpha": 0.2,
+              "type": "column",
+              "valueField": "qtde"
+            }],
+            "chartCursor": {
+              "categoryBalloonEnabled": false,
+              "cursorAlpha": 0,
+              "zoomable": false
             },
-            "labelRadius": 5,
-            "marginTop": 0,
-            "marginBottom": 0,
-            "marginLeft": 0,
-            "marginRight": 0
+            "categoryField": "produto",
+            "categoryAxis": {
+              "gridPosition": "start",
+              "labelRotation": 45
+            }
           });
         } else {
           $("#chartdiv_grupo_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
@@ -737,20 +753,51 @@ Alpine.data('app', function () {
           var chart = AmCharts.makeChart("chartdiv_tp_perda", {
             "decimalSeparator": ",",
             "thousandsSeparator": ".",
+            "type": "serial",
+            "theme": "none",
+            "rotate": true,
+            "dataProvider": res.data.GraficoTpPerda,
+            "startDuration": 1,
+            "graphs": [{
+              "balloonText": "<b>[[category]]: [[value]]   </b>",
+              "fillColorsField": "color",
+              "fillAlphas": 0.9,
+              "labelText": "[[value]]",
+              "lineAlpha": 0.2,
+              "type": "column",
+              "valueField": "qtde"
+            }],
+            "chartCursor": {
+              "categoryBalloonEnabled": false,
+              "cursorAlpha": 0,
+              "zoomable": false
+            },
+            "categoryField": "produto",
+            "categoryAxis": {
+              "gridPosition": "start",
+              "labelRotation": 45
+            }
+          });
+
+          /*
+          var chart = AmCharts.makeChart( "chartdiv_tp_perda", {
+            "decimalSeparator": ",",
+            "thousandsSeparator": ".",
             "type": "pie",
             "theme": "none",
             "dataProvider": res.data.GraficoTpPerda,
             "valueField": "litres",
             "titleField": "country",
-            "balloon": {
-              "fixedPosition": true
+             "balloon":{
+             "fixedPosition":true
             },
-            "labelRadius": 5,
+            "labelRadius": 5, 
             "marginTop": 0,
             "marginBottom": 0,
             "marginLeft": 0,
-            "marginRight": 0
-          });
+            "marginRight": 0,
+          } );
+          */
         } else {
           $("#chartdiv_tp_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
         }

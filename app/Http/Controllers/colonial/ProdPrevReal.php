@@ -869,13 +869,14 @@ class ProdPrevReal extends Controller
         inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
         where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."'
         group by nm_tipo
-        order by 1  "); 
-        foreach($dadosParada as $val){  
-             
-            $Ar['country']=$val->data;
-            $Ar['litres']=round($val->qtde,2); 
-            $tipoPerda[]=$Ar;
-            
+        order by 2 desc"); 
+        foreach($dadosParada as $key => $val){  
+                          
+            $tipoPerda[]=array( 
+                "produto"=>$val->data,
+                "qtde"=>round($val->qtde,2),  
+                "color"=> $this->gerar_cor($key)
+            );
     
         }
 
@@ -901,7 +902,8 @@ class ProdPrevReal extends Controller
 
         $perdaGrupo = Perda::whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("count(qtde) valor, case when grupo = '103' then 'POLPA' when grupo = '105' then 'EMBALAGEM' when grupo = '109' then 'INSUMO' else 'OUTROS' end grupo")
-        ->groupByRaw("case when grupo = '103' then 'POLPA' when grupo = '105' then 'EMBALAGEM' when grupo = '109' then 'INSUMO' else 'OUTROS' end")->get();
+        ->groupByRaw("case when grupo = '103' then 'POLPA' when grupo = '105' then 'EMBALAGEM' when grupo = '109' then 'INSUMO' else 'OUTROS' end")
+        ->orderByRaw("1 desc")->get();
         
         $request['polpas']=0; 
         $request['embalagens']=0; 
@@ -910,7 +912,7 @@ class ProdPrevReal extends Controller
 
         $grupoPerdas=null;
         
-        foreach($perdaGrupo as $Tipos){
+        foreach($perdaGrupo as $key => $Tipos){
             
             if($Tipos->grupo=='POLPA'){ $request['polpas']=$Tipos->valor; }
             if($Tipos->grupo=='EMBALAGEM'){ $request['embalagens']=$Tipos->valor; }
@@ -918,8 +920,9 @@ class ProdPrevReal extends Controller
             if($Tipos->grupo=='OUTROS'){ $request['outros']=$Tipos->valor; }
 
             $grupoPerdas[]=array( 
-                "country"=>$Tipos->grupo,
-                "litres"=>$Tipos->valor 
+                "produto"=>$Tipos->grupo,
+                "qtde"=>$Tipos->valor,  
+                "color"=> $this->gerar_cor($key)
             );
         }
 
