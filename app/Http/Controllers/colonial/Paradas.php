@@ -22,12 +22,13 @@ class Paradas extends Controller
     public function lista(Request $request) {
 
         if ($request->has('b')) {
-            $parada  = Parada::where('dt_ordem', 'LIKE', "%{$request->b}%") 
+            $parada  = Parada::where('dt_ordem', 'LIKE', "%{$request->b}%")
+                ->whereRaw(" dt_ordem is not null") 
                 ->orWhere('cd_ordem', 'LIKE', "%{$request->b}%")
                 ->orderByRaw('dt_ordem desc')
                 ->paginate(25)->appends($request->query());
         } else {
-            $parada  = Parada::orderByRaw('dt_ordem desc')->paginate(25)->appends($request->query());
+            $parada  = Parada::whereRaw(" dt_ordem is not null")->orderByRaw('dt_ordem desc')->paginate(25)->appends($request->query());
         }
 
         $parada->load('tab_ordem','tab_tipo','tab_equipamento');

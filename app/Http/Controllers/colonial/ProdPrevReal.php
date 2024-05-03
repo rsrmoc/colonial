@@ -467,12 +467,12 @@ class ProdPrevReal extends Controller
 
             /* parada ANO */  
             $dadosParada = DB::select(" 
-            select month(producao_parada.dt_cadastro) data, 
+            select month(producao_parada.dt_ordem) data, 
             sum(tempo) qtde
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by month(producao_parada.dt_cadastro)
+            where CONVERT(CHAR(10),producao_parada.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            group by month(producao_parada.dt_ordem)
             order by 1");  
             foreach($dadosParada as $key => $val){   
                 $ArrayParada[$val->data]=round($val->qtde,2); 
@@ -624,12 +624,12 @@ class ProdPrevReal extends Controller
 
             /* parada DIA */  
             $dadosParada = DB::select(" 
-            select CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_cadastro)),2) AS NVARCHAR(2)) data, 
+            select CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_ordem)),2) AS NVARCHAR(2)) data, 
             sum(tempo) qtde
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_cadastro)),2) AS NVARCHAR(2))
+            where CONVERT(CHAR(10),producao_parada.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_ordem)),2) AS NVARCHAR(2))
             order by 1"); 
             foreach($dadosParada as $val){  
                 $Ar['country']=$val->data;
@@ -792,12 +792,12 @@ class ProdPrevReal extends Controller
 
             /* parada MESES */  
             $dadosParada = DB::select(" 
-            select CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_cadastro)),2) AS NVARCHAR(2)) data, 
+            select CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_ordem)),2) AS NVARCHAR(2)) data, 
             sum(tempo) qtde
             from producao_parada 
             inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-            where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_cadastro)),2) AS NVARCHAR(2)) 
+            where CONVERT(CHAR(10),producao_parada.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            group by CAST( right(replicate('0',2) + convert(VARCHAR,day(producao_parada.dt_ordem)),2) AS NVARCHAR(2)) 
             order by 1");  
             foreach($dadosParada as $key => $val){  
                 $Par[$val->data]=round($val->qtde,2);
@@ -810,6 +810,7 @@ class ProdPrevReal extends Controller
                 );
             }
 
+           
             /* perda MESES */  
             $dadosPerda = DB::select(" 
             select CAST( right(replicate('0',2) + convert(VARCHAR,day(perda.dt_ordem)),2) AS NVARCHAR(2)) data, 
@@ -825,7 +826,7 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Perda[]=array( 
                     "country"=>$i,
-                    "visits"=>(isset($Per[$i])) ? $Per[$i] : null,
+                    "visits"=>(isset($Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
                     "color"=> $this->gerar_cor($i)
                 );
             }
@@ -839,7 +840,7 @@ class ProdPrevReal extends Controller
         sum(tempo) qtde
         from producao_parada 
         inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-        where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+        where CONVERT(CHAR(10),producao_parada.dt_ordem, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
         group by nm_tipo
         order by 2 desc "); 
         foreach($dadosParada as $key => $val){
