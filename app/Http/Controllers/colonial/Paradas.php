@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Boleto;
 use App\Models\Condominio;
 use App\Models\Energia as ModelsEnergia;
+use App\Models\Equipamento;
 use App\Models\Hospital;
 use App\Models\Parada;
 use App\Models\Produto;
@@ -21,7 +22,7 @@ class Paradas extends Controller
     public function lista(Request $request) {
 
         if ($request->has('b')) {
-            $parada  = Parada::where('dt_ordem', 'LIKE', "%{$request->b}%")
+            $parada  = Parada::where('dt_ordem', 'LIKE', "%{$request->b}%") 
                 ->orWhere('cd_ordem', 'LIKE', "%{$request->b}%")
                 ->orderByRaw('dt_ordem desc')
                 ->paginate(25)->appends($request->query());
@@ -29,7 +30,7 @@ class Paradas extends Controller
             $parada  = Parada::orderByRaw('dt_ordem desc')->paginate(25)->appends($request->query());
         }
 
-        $parada->load('tab_ordem','tab_tipo');
+        $parada->load('tab_ordem','tab_tipo','tab_equipamento');
         
         //dd($parada->toArray());
 
@@ -40,8 +41,9 @@ class Paradas extends Controller
     public function create() {
         $ordem = ordemProducao::whereRaw("DueDate > (GETDATE()-30)")->orderByRaw("DueDate desc")->whereNotIn("DocEntry",[207])->get(); 
         $tipo = TipoParada::whereRaw("sn_ativo='S'")->orderBy("nm_tipo")->get(); 
+        $equipamento = Equipamento::whereRaw("sn_ativo='S'")->orderBy("nm_equipamento")->get(); 
   
-        return view('colonial.paradas.criar', compact('ordem','tipo'));
+        return view('colonial.paradas.criar', compact('ordem','tipo','equipamento'));
     }
  
     public function store(Request $request) {
@@ -49,6 +51,7 @@ class Paradas extends Controller
         
         $validator = Validator::make($request->all(), [
             'ordem' => 'required',
+            'equipamento' => 'nullable|exists:equipamento,cd_equipamento',
             'tipo' => 'required|exists:producao_tipo,cd_tipo',
             'tempo' => 'required|integer',
             'obs' => 'required|max:1024' 
@@ -70,6 +73,7 @@ class Paradas extends Controller
                 return Parada::create([
                     'cd_ordem' => $request->ordem,
                     'cd_parada' => $request->tipo,
+                    'cd_equipamento' => $request->equipamento,
                     'tempo' => $request->tempo, 
                     'obs_parada' => $request->obs,
                     'dt_cadastro' => date('Y-m-d H:i'),
@@ -90,13 +94,15 @@ class Paradas extends Controller
         $Dt =$parada->dt_ordem;
         $ordem = ordemProducao::whereRaw("DueDate > (GETDATE()-30)")->orderByRaw("DueDate desc")->get(); 
         $tipo = TipoParada::whereRaw("sn_ativo='S'")->orderBy("nm_tipo")->get(); 
-        return view('colonial.paradas.editar', compact('parada','ordem','tipo'));
+        $equipamento = Equipamento::whereRaw("sn_ativo='S'")->orderBy("nm_equipamento")->get(); 
+        return view('colonial.paradas.editar', compact('parada','ordem','tipo','equipamento'));
     }
     public function update(Request $request,Parada $parada) {
         
         $validator = Validator::make($request->all(), [
             'ordem' => 'required',
             'tipo' => 'required|exists:producao_tipo,cd_tipo',
+            'equipamento' => 'nullable|exists:equipamento,cd_equipamento',
             'tempo' => 'required|integer',
             'obs' => 'required|max:1024' 
         ],[
@@ -118,6 +124,7 @@ class Paradas extends Controller
             return $parada->update([
                 'cd_ordem' => $request->ordem,
                 'cd_parada' => $request->tipo,
+                'cd_equipamento' => $request->equipamento,
                 'tempo' => $request->tempo, 
                 'obs_parada' => $request->obs,
                 'dt_cadastro' => date('Y-m-d H:i'),
@@ -142,4 +149,11 @@ class Paradas extends Controller
         catch(\Exception $e) { abort(500); }
     }
     
+    public function combo(Request $request, $data) { 
+
+        
+        $dados = ordemProducao::whereRaw(" CONVERT(CHAR(10),duedate, 23) = '".$request['data']."'")->orderByRaw("DueDate desc")->whereNotIn("DocEntry",[207])->get(); 
+        return view('colonial.paradas.combo', compact('dados','request'));
+
+    }
 }

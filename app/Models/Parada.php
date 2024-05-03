@@ -18,6 +18,7 @@ class Parada extends Model
         'obs_parada',
         'dt_ordem',
         'cd_usuario',
+        'cd_equipamento',
         'dt_cadastro',
         'created_at',
         'updated_at', 
@@ -33,4 +34,8 @@ class Parada extends Model
         return $this->belongsTo(TipoParada::class, 'cd_parada','cd_tipo');
     } 
 
+    public function tab_equipamento()
+    {
+        return $this->belongsTo(Equipamento::class, 'cd_equipamento','cd_equipamento');
+    } 
 }

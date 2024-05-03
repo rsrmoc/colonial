@@ -55,9 +55,9 @@ class Perdas extends Controller
         
         $validator = Validator::make($request->all(), [
             'ordem' => 'required',
-            'tipo' => 'required|exists:perda_tipo,cd_tipo',
-            'qtde' => 'required|integer',
-            'produto' => 'required',
+            'tipo' => 'required|array|min:1',
+            'qtde' => 'required|array|min:1',
+            'produto' => 'required|array|min:1',
             'obs' => 'nullable|max:1024' 
         ],[
             'ordem.required' => 'O campo Ordem de Produção é obrigatorio',
@@ -72,22 +72,35 @@ class Perdas extends Controller
          
         try {
            $retorno= DB::transaction(function () use($request) {
-
+                $Tipo = $request->tipo;
+                $Qtde = $request->qtde;
                 $ordem = ordemProducao::find($request->ordem); 
-                $produto = SapProduto::find($request->produto);
-                return Perda::create([
-                    'cd_ordem' => $request->ordem,
-                    'cd_tipo_perda' => $request->tipo,
-                    'cd_produto' => $request->produto,
-                    'nm_produto' => $produto->ItemName,
-                    'qtde' => $request->qtde, 
-                    'grupo' =>$produto->ItmsGrpCod,
-                    'obs_perda' => $request->obs,
-                    'dt_cadastro' => date('Y-m-d H:i'),
-                    'cd_usuario' => Auth::user()->id,
-                    'dt_ordem' => $ordem->DueDate,
-                ]);
-
+                foreach($request->produto as $key => $prod){
+                    $produto = SapProduto::find($prod);
+                    if(($Tipo[$key]) && (!$Qtde[$key])){
+                        return back()->withErrors(['error' => 'No produto ( '.$produto->ItemName.' ) não foi informado a QTDE do produto!'])->withInput();
+                    }
+                    if((!$Tipo[$key]) && ($Qtde[$key])){
+                        return back()->withErrors(['error' => 'No produto ( '.$produto->ItemName.' ) não foi informado o TIPO DE PERDA!'])->withInput();
+                    }
+                    if(($Tipo[$key]) && ($Qtde[$key])){
+                           Perda::create([
+                            'cd_ordem' => $request->ordem,
+                            'cd_tipo_perda' => ($Tipo[$key]) ? $Tipo[$key] : null,
+                            'cd_produto' => $prod,
+                            'nm_produto' => $produto->ItemName,
+                            'qtde' => ($Qtde[$key]) ? $Qtde[$key] : null, 
+                            'grupo' =>$produto->ItmsGrpCod,
+                            'obs_perda' => $request->obs,
+                            'dt_cadastro' => date('Y-m-d H:i'),
+                            'cd_usuario' => Auth::user()->id,
+                            'dt_ordem' => $ordem->DueDate,
+                        ]);
+                    }  
+                }
+                
+                return true;
+ 
             }); 
 
             return redirect()->route('perda-listar')->with('success', 'Perda cadastrada com sucesso!');
@@ -104,18 +117,19 @@ class Perdas extends Controller
         $dias = date_interval_format($resultado, '%a'); 
         $dias = $dias +2;
         $produtos = Estoque::whereRaw("BaseRef = ".$perda->cd_ordem)->selectRaw("itemcode,dscription")->Get();
-        $ordem = ordemProducao::whereRaw("DueDate > (GETDATE()-".$dias.")")->orderByRaw("DueDate desc")->get(); 
-        $tipo = TipoPerda::whereRaw("sn_ativo='S'")->orderBy("nm_tipo")->get(); 
-        return view('colonial.perdas.editar', compact('perda','ordem','tipo','produtos'));
+        $tipo = TipoPerda::whereRaw("sn_ativo='S'")->orderBy("nm_tipo")->get();   
+        $prodPerda = Perda::whereRaw("cd_ordem=".$perda->cd_ordem)->orderBy("created_at")->get();
+        $ordem = ordemProducao::whereRaw("DocEntry=".$perda->cd_ordem)->orderByRaw("DueDate desc")->get(); 
+        return view('colonial.perdas.editar', compact('perda','ordem','tipo','produtos','prodPerda'));
     }
 
     public function update(Request $request,Perda $perda) {
         
         $validator = Validator::make($request->all(), [
             'ordem' => 'required',
-            'tipo' => 'required|exists:perda_tipo,cd_tipo',
-            'qtde' => 'required|integer',
-            'produto' => 'required',
+            'tipo' => 'required|array|min:1',
+            'qtde' => 'required|array|min:1',
+            'produto' => 'required|array|min:1',
             'obs' => 'nullable|max:1024' 
         ],[
             'ordem.required' => 'O campo Ordem de Produção é obrigatorio',
@@ -131,25 +145,53 @@ class Perdas extends Controller
         try {
 
            $retorno = DB::transaction(function () use($request,$perda) {
-               
-            $ordem = ordemProducao::find($request->ordem); 
-            $produto = SapProduto::find($request->produto);
-            
-            return $perda->update([
-                'cd_ordem' => $request->ordem,
-                'cd_tipo_perda' => $request->tipo,
-                'cd_produto' => $request->produto,
-                'nm_produto' => $produto->ItemName,
-                'qtde' => $request->qtde, 
-                'grupo' =>$produto->ItmsGrpCod,   
-                'obs_perda' => $request->obs, 
-                'cd_usuario' => Auth::user()->id,
-                'dt_ordem' => $ordem->DueDate,
-            ]);
+                
+                $Tipo = $request->tipo;
+                $Qtde = $request->qtde;  
+                $ordem = ordemProducao::find($request->ordem); 
+                $erro='N';
+                foreach($request->produto as $key => $prod){
+                    $produto = SapProduto::find($prod);
+                    if(($Tipo[$key]) && (!$Qtde[$key])){
+                        return back()->withErrors(['error' => 'No produto ( '.$produto->ItemName.' ) não foi informado a QTDE do produto!'])->withInput();
+                        $erro='S';
+                    }
+                    if((!$Tipo[$key]) && ($Qtde[$key])){
+                        return back()->withErrors(['error' => 'No produto ( '.$produto->ItemName.' ) não foi informado o TIPO DE PERDA!'])->withInput();
+                        $erro='S';
+                    }
+                }
 
+                if($erro=='S'){
+                    return false;
+                }
+
+                Perda::whereRaw("cd_ordem=".$request->ordem)->delete();
+                
+                foreach($request->produto as $key => $prod){
+                    $produto = SapProduto::find($prod);
+                     
+                    if(($Tipo[$key]) && ($Qtde[$key])){
+                           Perda::create([
+                            'cd_ordem' => $request->ordem,
+                            'cd_tipo_perda' => $Tipo[$key],
+                            'cd_produto' => $prod,
+                            'nm_produto' => $produto->ItemName,
+                            'qtde' => $Qtde[$key], 
+                            'grupo' =>$produto->ItmsGrpCod,
+                            'obs_perda' => $request->obs,
+                            'dt_cadastro' => date('Y-m-d H:i'),
+                            'cd_usuario' => Auth::user()->id,
+                            'dt_ordem' => $ordem->DueDate,
+                        ]);
+                    } 
+                } 
+                return true;
             }); 
- 
-            return redirect()->route('perda-listar')->with('success', 'Perda atualizada com sucesso!');
+            if($retorno==true){
+                return redirect()->route('perda-listar')->with('success', 'Perda atualizada com sucesso!');
+            }
+            
 
         }
         catch(\Exception $e) {
@@ -164,9 +206,9 @@ class Perdas extends Controller
 
     public function combo(Request $request, $ordem) { 
         
-        $dados = Estoque::whereRaw("BaseRef = ".$ordem)->selectRaw("itemcode,dscription")->Get();
-        
-        return view('colonial.perdas.combo', compact('dados'));
+        $dados = Estoque::whereRaw("BaseRef = ".$ordem)->selectRaw("itemcode,dscription")->Get(); 
+        $tipo = TipoPerda::whereRaw("sn_ativo='S'")->orderBy("nm_tipo")->get(); 
+        return view('colonial.perdas.combo', compact('dados','tipo'));
     }
     
 }

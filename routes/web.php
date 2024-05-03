@@ -88,6 +88,7 @@ Route::group([
      Route::get('/parada-editar/{parada}', [Paradas::class, 'edit'])->name('parada-editar');
      Route::post('/parada-update/{parada}', [Paradas::class, 'update'])->name('parada-update');
      Route::get('/parada-delete/{parada}', [Paradas::class, 'destroy'])->name('parada-destroy');
+     Route::get('/parada-combo/{data}', [Paradas::class, 'combo'])->name('parada-combo');
 
      /* Tipo Perdas */
      Route::get('/equipamento', [Equipamentos::class, 'lista'])->name('equipamento-listar');

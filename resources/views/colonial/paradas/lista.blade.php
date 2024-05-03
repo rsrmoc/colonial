@@ -47,6 +47,7 @@
                                 <th  >Ordem de Produção</th>  
                                 <th  >Produto</th>  
                                 <th  >Tipo de Parada</th>  
+                                <th  >Equipamento</th>
                                 <th class="text-center">Tempo (Min)</th>  
                                 <th class="text-center">Ação</th>
                             </tr>
@@ -60,6 +61,7 @@
                                         <td>{{ $linha->cd_ordem }}</td> 
                                         <td>{{ $linha['tab_ordem']['ItemCode'].' - '.$linha['tab_ordem']['ProdName'] }}</td> 
                                         <td  >{{ $linha['tab_tipo']['nm_tipo'] }}</td> 
+                                        <td  >{{ mb_strtoupper($linha['tab_equipamento']['nm_equipamento'])  }}</td> 
                                         <td class="text-center">{{ $linha->tempo }}</td> 
                                         <td class="text-center dt-acao" > 
                                                 <div class="btn-group">
