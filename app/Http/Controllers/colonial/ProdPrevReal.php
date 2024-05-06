@@ -76,12 +76,12 @@ class ProdPrevReal extends Controller
     
                 if($request['agrupamento']=='P'){
                     $ParametroProducao="where CONVERT(CHAR(10),owor.duedate, 23) like '%".$request['dti']."%' and upper(ProdName) = upper('".$request['label']."') ";
-                    $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_cadastro, 23) like '%".$request['dti']."%'";
-                    $ParametroPerda="where CONVERT(CHAR(10),perda.dt_cadastro, 23) like '%".$request['dti']."%' ";
+                    $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_ordem, 23) like '%".$request['dti']."%'";
+                    $ParametroPerda="where CONVERT(CHAR(10),perda.dt_ordem, 23) like '%".$request['dti']."%' ";
                 }else{
                     $ParametroProducao="where CONVERT(CHAR(10),owor.duedate, 103) like '%".$request['label']."%'"; 
-                    $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_cadastro, 103) like '%".$request['label']."%'";
-                    $ParametroPerda="where CONVERT(CHAR(10),perda.dt_cadastro, 103) like '%".$request['label']."%' ";
+                    $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_ordem, 103) like '%".$request['label']."%'";
+                    $ParametroPerda="where CONVERT(CHAR(10),perda.dt_ordem, 103) like '%".$request['label']."%' ";
                 }
 
       
