@@ -47,7 +47,7 @@
   height: 500px;
 }
 
-#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha , #chartdiv_grupo_perda
+#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha, #chartdiv_grupo_perda, #chartdiv_Equip_parada
 {
   width: 100%;
   height: 350px;
@@ -587,7 +587,7 @@ ul {
                         <div class="info-box-stats">
 
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderPolpas"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderPolpasTo"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderPolpasTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                             <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Consumo de Polpa KG</span>
                         </div>
                         <div class="info-box-icon">
@@ -879,7 +879,7 @@ ul {
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Agua</h3></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Agua [ M3 ]</h3></div>
                             <div class="col-md-2" style="text-align: right">
                                 <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('A')" style="cursor: pointer;" height="24"> 
                             </div>  
@@ -902,7 +902,7 @@ ul {
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Energia</h3></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Energia [ KW ]</h3></div>
                             <div class="col-md-2" style="text-align: right">
                                 <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('E')" style="cursor: pointer;" height="24"> 
                             </div>  
@@ -925,7 +925,7 @@ ul {
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Lenha</h3></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Lenha [ M3 ]</h3></div>
                             <div class="col-md-2" style="text-align: right">
                                 <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('L')" style="cursor: pointer;" height="24"> 
                             </div>  
@@ -948,7 +948,7 @@ ul {
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Polpa</h3></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Consumo de Polpa [ KG ]</h3></div>
                             <div class="col-md-2" style="text-align: right">
                                 <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('O')" style="cursor: pointer;" height="24"> 
                             </div>  
@@ -972,7 +972,7 @@ ul {
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-2"></div>
-                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Parada de Linha</h3></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Parada de Linha [ Minutos ]</h3></div>
                             <div class="col-md-2" style="text-align: right">
                                 <img src="{{ asset('assets/images/xlsx.png') }}"  x-on:click="xls('P')" style="cursor: pointer;" height="24"> 
                             </div>  
@@ -990,6 +990,14 @@ ul {
                         <template x-if="loadingCharts">
                             <x-loader class="absolute-loader"/>
                         </template>
+
+                        <div class="col-md-12"><h3 class="panel-title text-center" style="color: #0e0e0e; margin-top: 60px;">Paradas Por Equipamentos</h3></div>
+                        <!-- HTML -->
+                        <div id="chartdiv_Equip_parada"></div>
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
+
                     </div>
                 </div>
             </div> 
@@ -1233,6 +1241,7 @@ ul {
                                                     <th class="text-right">Produzido [CX]</th>
                                                     <th class="text-right">Planejado [KG]</th>   
                                                     <th class="text-right">Produzido [KG]</th>   
+                                                    <th class="text-right">Paradas [Min]</th>  
                                                 </tr>
                                             </thead> 
                                             <tbody>
@@ -1246,6 +1255,7 @@ ul {
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.valor*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
                                                         <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                        <td style="font-size: 16px;" class="text-right" x-text="query.tempo" ></td>
                                                     </tr>
                                                 </template>
                                                 <template x-if="tabProdDetalhes">
@@ -1255,6 +1265,7 @@ ul {
                                                         <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prCX*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
                                                         <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.pKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
                                                         <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.Tempo).toLocaleString('pt-br', {minimumFractionDigits: 2})"  ></th>
                                                     </tr>
                                                 </template>
                                             </tbody>
@@ -1328,6 +1339,121 @@ ul {
                 </div>
             </div>
         </div>
+
+        <div class="modal fade bs-example-modal-lg modal-fullscreen-xl" id="modalDetalhesParada" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhesModal">dsdsd</h4>
+                    </div>
+                    <div class="modal-body">
+    
+                        
+                        <br>
+     
+                        <div role="tabpanel"> 
+                                <!-- Nav tabs -->
+                                 
+                                    
+                                <template x-if="modalLoadingCharts">
+                                    <div style="padding: 100px"> 
+                                        <x-loader class="absolute-loader"/>                           
+                                    </div>
+                                </template>
+                                <table class="table table-striped" style="margin-bottom: 0">
+                                    <thead>
+                                        <tr class="active">
+                                            <th >Codigo</th>
+                                            <th >Data</th>
+                                            <th >Equipamento</th>
+                                            <th >Tipo de Parada</th>
+                                            <th >Observações</th>
+                                            <th class="text-right">Tempo(min)</th> 
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <template x-for="query in dadosParada">
+                                            <tr style="font-size: 16px;">
+                                                <td style="font-size: 16px;" x-text="query.cd_producao_parada"></td>
+                                                <td style="font-size: 16px;" x-text="query.dt_ordem"></td>
+                                                <td style="font-size: 16px;" x-text="query.nm_equipamento"></td>
+                                                <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                <td style="font-size: 16px;" x-text="query.obs_parada"></td> 
+                                                <td style="font-size: 16px;" class="text-right" x-text="(query.tempo).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                 
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+     
+                        </div>
+    
+       
+                    </div>
+                    <div class="modal-footer"> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade bs-example-modal-lg modal-fullscreen-xl" id="modalDetalhesPerda" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhesModal">dsdsd</h4>
+                    </div>
+                    <div class="modal-body">
+    
+                        
+                        <br>
+     
+                        <div role="tabpanel"> 
+                                <!-- Nav tabs -->
+                                 
+                                    
+                                <template x-if="modalLoadingCharts">
+                                    <div style="padding: 100px"> 
+                                        <x-loader class="absolute-loader"/>                           
+                                    </div>
+                                </template>
+                                <table class="table table-striped" style="margin-bottom: 0">
+                                    <thead>
+                                        <tr class="active">
+                                            <th >Codigo</th>
+                                            <th >Data</th> 
+                                            <th >Produto</th>
+                                            <th >Tipo de Perda</th>
+                                            <th >Observações</th>
+                                            <th class="text-right">Qtde.</th> 
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <template x-for="query in dadosPerda">
+                                            <tr style="font-size: 16px;">
+                                                <td style="font-size: 16px;" x-text="query.cd_perda"></td>
+                                                <td style="font-size: 16px;" x-text="query.dt_ordem"></td> 
+                                                <td style="font-size: 16px;" x-text="query.cd_produto+' - '+query.nm_produto"></td> 
+                                                <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                <td style="font-size: 16px;" x-text="query.obs_perda"></td> 
+                                                <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                 
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+     
+                        </div>
+    
+       
+                    </div>
+                    <div class="modal-footer"> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     </div>
 

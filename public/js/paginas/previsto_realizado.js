@@ -14,6 +14,8 @@ Alpine.data('app', function () {
     chart2: null,
     chart3: null,
     chart4: null,
+    dadosParada: null,
+    dadosPerda: null,
     relacaoDetelhes: null,
     totais_toDetalhes: null,
     tituloDetalhesModal: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
@@ -61,7 +63,7 @@ Alpine.data('app', function () {
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPolpasKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-    iconHeaderPolpasTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderPolpasTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasEmb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasPol: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasIns: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
@@ -125,7 +127,7 @@ Alpine.data('app', function () {
       this.iconHeaderPerdas = this.iconCarregando;
       this.iconHeaderPolpas = this.iconCarregando;
       this.iconHeaderPolpasKg = this.iconCarregando;
-      this.iconHeaderPolpasTo = this.iconCarregando;
+      this.iconHeaderPolpasTb = this.iconCarregando;
       this.loadingCharts = true;
       this.parametros.dia = $('#parametro-dia').val();
       this.parametros.mes = $('#parametro-mes').val();
@@ -152,7 +154,7 @@ Alpine.data('app', function () {
         _this2.iconHeaderPerdas = res.data.request.perda;
         _this2.iconHeaderParadas = res.data.request.parada + '<span class="headerUnidade"> (Min)</span>';
         _this2.iconHeaderPolpas = res.data.request.polpa + '<span class="headerUnidade"> (Kg) </span>';
-        _this2.iconHeaderPolpasTo = res.data.request.PolpaTo + '<span class="headerUnidade"> (T) </span>';
+        _this2.iconHeaderPolpasTb = res.data.request.PolpaTb + '<span class="headerUnidade"> (Tb) </span>';
         _this2.iconHeaderPolpasKg = res.data.request.PolpaKg + '<span class="headerUnidade"> (kg/kg) </span>';
         _this2.iconHeaderProdTo = res.data.request.ProduzidoTo + '<span class="headerUnidade"> (T) </span>';
         _this2.iconHeaderProdKg = res.data.request.ProduzidoKg + '<span class="headerUnidade"> (Kg) </span>';
@@ -186,6 +188,7 @@ Alpine.data('app', function () {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
           "type": "serial",
+          "fontSize": 12,
           "theme": "none",
           "categoryField": "label",
           "rotate": false,
@@ -231,19 +234,6 @@ Alpine.data('app', function () {
             "labelRotation": 270,
             "dashLength": 2
           }],
-          "allLabels": [{
-            "text": "Produzido",
-            "x": "28%",
-            "y": "97%",
-            "bold": true,
-            "align": "botton"
-          }, {
-            "text": "Planejado",
-            "x": "0%",
-            "y": "-100",
-            "bold": true,
-            "align": "botton"
-          }],
           "dataProvider": res.data.previsto
         });
         if (!res.data.previsto) {
@@ -255,6 +245,7 @@ Alpine.data('app', function () {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
           "type": "serial",
+          "fontSize": 12,
           "theme": "none",
           "categoryField": "label",
           "rotate": false,
@@ -302,9 +293,6 @@ Alpine.data('app', function () {
             }
           }],
 
-          "allLabels": [],
-          "balloon": {},
-          "titles": [],
           "dataProvider": res.data.prod_per
         });
         if (!res.data.prod_per) {
@@ -315,6 +303,7 @@ Alpine.data('app', function () {
         var chart = AmCharts.makeChart("chartdivProdutos", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
+          "fontSize": 11,
           "type": "serial",
           "theme": "none",
           "rotate": true,
@@ -350,6 +339,7 @@ Alpine.data('app', function () {
             var chart = AmCharts.makeChart("chartdiv_comparativo", {
               "decimalSeparator": ",",
               "thousandsSeparator": ".",
+              "fontSize": 12,
               "type": "serial",
               "theme": "none",
               "categoryField": "label",
@@ -463,12 +453,13 @@ Alpine.data('app', function () {
           var chart = AmCharts.makeChart("chartdiv_agua", {
             "decimalSeparator": ",",
             "thousandsSeparator": ".",
+            "fontSize": 12,
             "theme": "none",
             "type": "serial",
             "startDuration": 2,
             "dataProvider": res.data.GraficoAgua,
             "graphs": [{
-              "balloonText": " DIA [[category]] :  <b>[[value]] (m³/h)</b>",
+              "balloonText": " DIA [[category]] :  <b>[[value]] (M3)</b>",
               "colorField": "color",
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
@@ -616,7 +607,7 @@ Alpine.data('app', function () {
             "startDuration": 2,
             "dataProvider": res.data.GraficoParada,
             "graphs": [{
-              "balloonText": " DIA [[category]] :  <b>[[value]] (Min)</b>",
+              "balloonText": " DIA [[category]] :  <b>[[value]] ( Minutos )</b>",
               "colorField": "color",
               "fillAlphas": 0.85,
               "lineAlpha": 0.1,
@@ -637,7 +628,13 @@ Alpine.data('app', function () {
               "gridPosition": "start",
               "axisAlpha": 0,
               "gridAlpha": 0
-            }
+            },
+            "listeners": [{
+              "event": "clickGraphItem",
+              "method": function method(event) {
+                _this2.getDetalheParada(event.item.dataContext);
+              }
+            }]
           }, 0);
         } else {
           $("#chartdiv_parada").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
@@ -654,7 +651,7 @@ Alpine.data('app', function () {
             "dataProvider": res.data.GraficoTp_parada,
             "startDuration": 1,
             "graphs": [{
-              "balloonText": "<b>[[category]]: [[value]]  </b>",
+              "balloonText": "<b>[[category]]: [[value]] ( Minutos ) </b>",
               "fillColorsField": "color",
               "fillAlphas": 0.9,
               "labelText": "[[value]]",
@@ -671,10 +668,56 @@ Alpine.data('app', function () {
             "categoryAxis": {
               "gridPosition": "start",
               "labelRotation": 45
-            }
+            },
+            "listeners": [{
+              "event": "clickGraphItem",
+              "method": function method(event) {
+                _this2.getDetalheParada(event.item.dataContext);
+              }
+            }]
           });
         } else {
           $("#chartdiv_tp_parada").html("<div style='text-align: center;'> <img style='padding-top: 40px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
+        }
+
+        /*EquipamentoParada*/
+        if (res.data.GraficoEquip_parada) {
+          var chart = AmCharts.makeChart("chartdiv_Equip_parada", {
+            "decimalSeparator": ",",
+            "thousandsSeparator": ".",
+            "type": "serial",
+            "theme": "none",
+            "rotate": true,
+            "dataProvider": res.data.GraficoEquip_parada,
+            "startDuration": 1,
+            "graphs": [{
+              "balloonText": "<b>[[category]]: [[value]] ( Minutos ) </b>",
+              "fillColorsField": "color",
+              "fillAlphas": 0.9,
+              "labelText": "[[value]]",
+              "lineAlpha": 0.2,
+              "type": "column",
+              "valueField": "qtde"
+            }],
+            "chartCursor": {
+              "categoryBalloonEnabled": false,
+              "cursorAlpha": 0,
+              "zoomable": false
+            },
+            "categoryField": "produto",
+            "categoryAxis": {
+              "gridPosition": "start",
+              "labelRotation": 45
+            },
+            "listeners": [{
+              "event": "clickGraphItem",
+              "method": function method(event) {
+                _this2.getDetalheParada(event.item.dataContext);
+              }
+            }]
+          });
+        } else {
+          $("#chartdiv_Equip_parada").html("<div style='text-align: center;'> <img style='padding-top: 40px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
         }
 
         /*Perda*/
@@ -708,7 +751,13 @@ Alpine.data('app', function () {
               "gridPosition": "start",
               "axisAlpha": 0,
               "gridAlpha": 0
-            }
+            },
+            "listeners": [{
+              "event": "clickGraphItem",
+              "method": function method(event) {
+                _this2.getDetalhePerda(event.item.dataContext);
+              }
+            }]
           }, 0);
         } else {
           $("#chartdiv_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-barra.png'><br>#Sem Informações </div>");
@@ -742,7 +791,13 @@ Alpine.data('app', function () {
             "categoryAxis": {
               "gridPosition": "start",
               "labelRotation": 45
-            }
+            },
+            "listeners": [{
+              "event": "clickGraphItem",
+              "method": function method(event) {
+                _this2.getDetalhePerda(event.item.dataContext);
+              }
+            }]
           });
         } else {
           $("#chartdiv_grupo_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
@@ -776,28 +831,14 @@ Alpine.data('app', function () {
             "categoryAxis": {
               "gridPosition": "start",
               "labelRotation": 45
-            }
-          });
-
-          /*
-          var chart = AmCharts.makeChart( "chartdiv_tp_perda", {
-            "decimalSeparator": ",",
-            "thousandsSeparator": ".",
-            "type": "pie",
-            "theme": "none",
-            "dataProvider": res.data.GraficoTpPerda,
-            "valueField": "litres",
-            "titleField": "country",
-             "balloon":{
-             "fixedPosition":true
             },
-            "labelRadius": 5, 
-            "marginTop": 0,
-            "marginBottom": 0,
-            "marginLeft": 0,
-            "marginRight": 0,
-          } );
-          */
+            "listeners": [{
+              "event": "clickGraphItem",
+              "method": function method(event) {
+                _this2.getDetalhePerda(event.item.dataContext);
+              }
+            }]
+          });
         } else {
           $("#chartdiv_tp_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
         }
@@ -812,77 +853,58 @@ Alpine.data('app', function () {
       location.href = '/colonial/prod_prev_real-xls/' + tipo + '?dtf=' + this.parametros.dtf + '&dti=' + this.parametros.dti;
       toastr['success']('XLS gerado com sucesso');
     },
-    getDataChartDetalhes: function getDataChartDetalhes(dados) {
+    getDetalheParada: function getDetalheParada(dados) {
       var _this3 = this;
-      $("#modalDetalhes").modal();
+      console.log(dados);
+      $("#modalDetalhesParada").modal();
       this.modalLoadingCharts = true;
-      $('#chartDetalhe').html();
+      dados.indicador = 'parada';
+      if (dados.sub_grupo == 'dt') {
+        this.tituloDetalhesModal = 'Data: ' + dados.dt;
+      }
+      if (dados.sub_grupo == 'tipo') {
+        this.tituloDetalhesModal = 'Tipos de Parada: ' + dados.produto;
+      }
+      if (dados.sub_grupo == 'equip') {
+        this.tituloDetalhesModal = 'Equipamento: ' + dados.produto;
+      }
       axios.post('/colonial/prod_prev_real-detalhes', dados).then(function (res) {
-        console.log(res);
-        _this3.relacaoDetelhes = res.data.relacao;
-        _this3.tituloDetalhes = res.data.titulo;
-        _this3.tabDetalhes = res.data.tab;
-        var chart = AmCharts.makeChart("chartDetalhe", {
-          "type": "serial",
-          "theme": "none",
-          "marginRight": 0,
-          "marginLeft": 0,
-          "dataProvider": res.data.dias,
-          "startDuration": 1,
-          "titles": [{
-            "text": res.data.grafico_titulo
-          }, {
-            "text": res.data.data_titulo,
-            "bold": false
-          }],
-          "graphs": [{
-            "balloonText": "<b>[[category]]: [[value]]</b>",
-            "fillColorsField": "color",
-            "fillAlphas": 0.9,
-            "lineAlpha": 0.2,
-            "labelText": "[[value]]",
-            "type": "column",
-            "valueField": "visits"
-          }, {
-            "balloonText": "Previsto : [[value]]",
-            "bullet": "round",
-            "bulletBorderAlpha": 1,
-            "bulletSize": 8,
-            "hideBulletsCount": 80,
-            "lineThickness": 3,
-            "useLineColorForBulletBorder": true,
-            "bulletColor": "#FFFFFF",
-            "bulletSizeField": "townSize",
-            "dashLengthField": "dashLength",
-            "lineColor": "#ed7d31",
-            "descriptionField": "townName",
-            "labelPosition": "right",
-            "labelText": "[[townName2]]",
-            "legendValueText": "[[value]]/[[description]]",
-            "title": "latitude/city",
-            "fillAlphas": 0,
-            "valueField": "latitude",
-            "valueAxis": "latitudeAxis"
-          }],
-          "chartCursor": {
-            "categoryBalloonEnabled": false,
-            "cursorAlpha": 0,
-            "zoomable": false
-          },
-          "categoryField": "country",
-          "categoryAxis": {
-            "gridPosition": "start",
-            "labelRotation": 25
-          }
-        });
+        console.log(res.data);
+        _this3.dadosParada = res.data.dadosParada;
       })["catch"](function (err) {
-        toastr.error("error", err);
+        console.log(err.response.data);
+        toastr.error(err.response.data.message, "Erro");
       })["finally"](function () {
         return _this3.modalLoadingCharts = false;
       });
     },
-    getDetalhesProducao: function getDetalhesProducao(dados) {
+    getDetalhePerda: function getDetalhePerda(dados) {
       var _this4 = this;
+      console.log(dados);
+      $("#modalDetalhesPerda").modal();
+      this.modalLoadingCharts = true;
+      dados.indicador = 'perda';
+      if (dados.sub_grupo == 'dt') {
+        this.tituloDetalhesModal = 'Data: ' + dados.dt;
+      }
+      if (dados.sub_grupo == 'tipo') {
+        this.tituloDetalhesModal = 'Tipos de Perda: ' + dados.produto;
+      }
+      if (dados.sub_grupo == 'grupo') {
+        this.tituloDetalhesModal = 'Grupo de Produto: ' + dados.produto;
+      }
+      axios.post('/colonial/prod_prev_real-detalhes', dados).then(function (res) {
+        console.log(res.data);
+        _this4.dadosPerda = res.data.dadosPerda;
+      })["catch"](function (err) {
+        console.log(err.response.data);
+        toastr.error(err.response.data.message, "Erro");
+      })["finally"](function () {
+        return _this4.modalLoadingCharts = false;
+      });
+    },
+    getDetalhesProducao: function getDetalhesProducao(dados) {
+      var _this5 = this;
       console.log(dados);
       this.modalLoadingCharts = true;
       $("#modalDetalhesProducao").modal();
@@ -895,31 +917,32 @@ Alpine.data('app', function () {
       this.produzido_cxDetalhes = this.tabCarregando;
       this.produzido_kgDetalhes = this.tabCarregando;
       this.produzido_toDetalhes = this.tabCarregando;
+      dados.indicador = 'producao';
       axios.post('/colonial/prod_prev_real-detalhes', dados).then(function (res) {
         console.log(res.data);
         if (dados.agrupamento == 'P') {
-          _this4.tituloDetalhesModal = 'PRODUTO: ' + res.data.data;
+          _this5.tituloDetalhesModal = 'PRODUTO: ' + res.data.data;
         } else {
-          _this4.tituloDetalhesModal = 'DATA: ' + res.data.data;
+          _this5.tituloDetalhesModal = 'DATA: ' + res.data.data;
         }
-        _this4.hidricoDetalhes = res.data.hidrico + '<span class="headerUnidade"> (m³/h)</span>';
-        _this4.energiaDetalhes = res.data.energia + '<span class="headerUnidade"> (kw)</span>';
-        _this4.lenhaDetalhes = res.data.lenha + '<span class="headerUnidade"> (m³)</span>';
-        _this4.perdaDetalhes = res.data.perda;
-        _this4.paradaDetalhes = res.data.parada + '<span class="headerUnidade"> (min)</span>';
-        _this4.polpaDetalhes = res.data.polpa + '<span class="headerUnidade"> (kg)</span>';
-        _this4.produzido_cxDetalhes = res.data.produzido_cx + '<span class="headerUnidade"> (Cx)</span>';
-        _this4.produzido_kgDetalhes = res.data.produzido_kg + '<span class="headerUnidade"> (Kg)</span>';
-        _this4.produzido_toDetalhes = res.data.produzido_to + '<span class="headerUnidade"> (To)</span>';
-        _this4.tabProdDetalhes = res.data.listaProducao;
-        _this4.tabPerdaDetalhes = res.data.dadosPerda;
-        _this4.tabParadaDetalhes = res.data.dadosParada;
-        _this4.totais_toDetalhes = res.data.totais;
+        _this5.hidricoDetalhes = res.data.hidrico + '<span class="headerUnidade"> (m³/h)</span>';
+        _this5.energiaDetalhes = res.data.energia + '<span class="headerUnidade"> (kw)</span>';
+        _this5.lenhaDetalhes = res.data.lenha + '<span class="headerUnidade"> (m³)</span>';
+        _this5.perdaDetalhes = res.data.perda;
+        _this5.paradaDetalhes = res.data.parada + '<span class="headerUnidade"> (min)</span>';
+        _this5.polpaDetalhes = res.data.polpa + '<span class="headerUnidade"> (kg)</span>';
+        _this5.produzido_cxDetalhes = res.data.produzido_cx + '<span class="headerUnidade"> (Cx)</span>';
+        _this5.produzido_kgDetalhes = res.data.produzido_kg + '<span class="headerUnidade"> (Kg)</span>';
+        _this5.produzido_toDetalhes = res.data.produzido_to + '<span class="headerUnidade"> (To)</span>';
+        _this5.tabProdDetalhes = res.data.listaProducao;
+        _this5.tabPerdaDetalhes = res.data.dadosPerda;
+        _this5.tabParadaDetalhes = res.data.dadosParada;
+        _this5.totais_toDetalhes = res.data.totais;
       })["catch"](function (err) {
         console.log(err.response.data);
         toastr.error(err.response.data.message, "Erro");
       })["finally"](function () {
-        return _this4.modalLoadingCharts = false;
+        return _this5.modalLoadingCharts = false;
       });
     },
     formatTextLabel: function formatTextLabel(value) {
