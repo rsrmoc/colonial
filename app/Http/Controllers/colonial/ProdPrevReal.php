@@ -810,7 +810,7 @@ class ProdPrevReal extends Controller
             } 
             foreach($MESES as $key => $mes){ 
                 $Ar['country']=$mes;
-                $Ar['visits']= (isset($ArrayAgua[$key])) ? round($ArrayAgua[$key],2) : null; 
+                $Ar['visits']= (isset($ArrayAgua[$key])) ? round($ArrayAgua[$key],2) : 0; 
                 $Ar['color']=$this->gerar_cor($key);
                 $Agua[]=$Ar;  
             }
@@ -828,7 +828,7 @@ class ProdPrevReal extends Controller
             } 
             foreach($MESES as $key => $mes){ 
                 $Ar['country']=$mes;
-                $Ar['visits']= (isset($ArrayEnergia[$key])) ? round($ArrayEnergia[$key],2) : null; 
+                $Ar['visits']= (isset($ArrayEnergia[$key])) ? round($ArrayEnergia[$key],2) : 0; 
                 $Ar['color']=$this->gerar_cor($key);
                 $Energia[]=$Ar;  
             }
@@ -845,7 +845,7 @@ class ProdPrevReal extends Controller
             } 
             foreach($MESES as $key => $mes){ 
                 $Ar['country']=$mes;
-                $Ar['visits']= (isset($ArrayLenha[$key])) ? round($ArrayLenha[$key],2) : null; 
+                $Ar['visits']= (isset($ArrayLenha[$key])) ? round($ArrayLenha[$key],2) : 0; 
                 $Ar['color']=$this->gerar_cor($key);
                 $Lenha[]=$Ar;  
             }
@@ -868,13 +868,13 @@ class ProdPrevReal extends Controller
             } 
             foreach($MESES as $key => $mes){ 
                 $Ar['country'] = $mes;
-                $Ar['visits'] = (isset($ArrayParada[$key])) ? round($ArrayParada[$key],2) : null; 
+                $Ar['visits'] = (isset($ArrayParada[$key])) ? round($ArrayParada[$key],2) : 0; 
                 $Ar['color'] = $this->gerar_cor($key+1);
                 $Ar['dti'] = $request['dti'];
                 $Ar['dtf'] = $request['dtf'];
                 $Ar['sub_grupo'] = 'dt';
-                $Ar['data'] = (isset($DataParada[$key])) ? $DataParada[$key] : null; 
-                $Ar['dt'] = (isset($DtParada[$key])) ? $DtParada[$key] : null; 
+                $Ar['data'] = (isset($DataParada[$key])) ? $DataParada[$key] : 0; 
+                $Ar['dt'] = (isset($DtParada[$key])) ? $DtParada[$key] : 0; 
                 $Ar['agrupamento']=$request['agrupamento']; 
                 $Parada[]=$Ar;  
             }
@@ -899,9 +899,9 @@ class ProdPrevReal extends Controller
                 $Ar['dti'] = $request['dti'];
                 $Ar['dtf'] = $request['dtf'];
                 $Ar['sub_grupo'] = 'dt'; 
-                $Ar['data'] = (isset($DataPerda[$key])) ? $DataPerda[$key] : null; 
-                $Ar['dt'] = (isset($DtPerda[$key])) ? $DtPerda[$key] : null; 
-                $Ar['visits']= (isset($ArrayPerda[$key])) ? round($ArrayPerda[$key]) : null;  
+                $Ar['data'] = (isset($DataPerda[$key])) ? $DataPerda[$key] : 0; 
+                $Ar['dt'] = (isset($DtPerda[$key])) ? $DtPerda[$key] : 0; 
+                $Ar['visits']= (isset($ArrayPerda[$key])) ? round($ArrayPerda[$key]) : 0;  
                 $Ar['color']=$this->gerar_cor($key+5);
                 $Perda[]=$Ar;
             }
@@ -918,7 +918,7 @@ class ProdPrevReal extends Controller
             } 
             foreach($MESES as $key => $mes){ 
                 $Ar['country']=$mes;
-                $Ar['visits']= (isset($ArrayPolpa[$key])) ? round($ArrayPolpa[$key]) : null; 
+                $Ar['visits']= (isset($ArrayPolpa[$key])) ? round($ArrayPolpa[$key]) : 0; 
                 $Ar['color']=$this->gerar_cor($key+2);
                 $Polpa[]=$Ar;
             }
@@ -1149,7 +1149,7 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Agua[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
-                    "visits"=>(isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "visits"=>(isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
                     "color"=> $this->gerar_cor($i)
                 );
             }
@@ -1168,7 +1168,7 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Energia[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
-                    "visits"=>(isset($Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "visits"=>(isset($Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
                     "color"=> $this->gerar_cor($i)
                 );
             }
@@ -1187,7 +1187,7 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Lenha[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
-                    "visits"=>(isset($Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "visits"=>(isset($Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
                     "color"=> $this->gerar_cor($i)
                 );
             }
@@ -1205,7 +1205,7 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Polpa[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
-                    "visits"=>(isset($Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "visits"=>(isset($Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
                     "color"=> $this->gerar_cor($i)
                 );
             }
@@ -1229,13 +1229,13 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Parada[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
-                    "visits"=>(isset($Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "visits"=>(isset($Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
                     "color"=> $this->gerar_cor($i),
                     "dti"=>$request['dti'],
                     "dtf"=>$request['dtf'],
                     "sub_grupo"=>'dt',
-                    "data"=>(isset($ParData[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $ParData[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
-                    "dt"=>(isset($ParDt[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $ParDt[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "data"=>(isset($ParData[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $ParData[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
+                    "dt"=>(isset($ParDt[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $ParDt[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
                     'agrupamento'=>$request['agrupamento'],
                 );
             }
@@ -1260,13 +1260,13 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Perda[]=array( 
                     "country"=>$i,
-                    "visits"=>(isset($Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
+                    "visits"=>(isset($Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
                     "color"=> $this->gerar_cor($i),
                     "dti"=> $request['dti'],
                     "dtf"=> $request['dtf'],
                     "sub_grupo"=> 'dt',
-                    "data"=> (isset($PerData[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $PerData[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
-                    "dt"=> (isset($Perdt[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Perdt[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null, 
+                    "data"=> (isset($PerData[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $PerData[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
+                    "dt"=> (isset($Perdt[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Perdt[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0, 
                 );
             }
  
