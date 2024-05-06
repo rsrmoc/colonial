@@ -1150,7 +1150,7 @@ class ProdPrevReal extends Controller
                 $Agua[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> $this->gerar_cor($i)
+                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                 );
             }
          
@@ -1169,7 +1169,7 @@ class ProdPrevReal extends Controller
                 $Energia[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> $this->gerar_cor($i)
+                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                 );
             }
         
@@ -1188,7 +1188,7 @@ class ProdPrevReal extends Controller
                 $Lenha[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> $this->gerar_cor($i)
+                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                 );
             }
 
@@ -1206,7 +1206,7 @@ class ProdPrevReal extends Controller
                 $Polpa[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> $this->gerar_cor($i)
+                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                 );
             }
 
@@ -1230,7 +1230,7 @@ class ProdPrevReal extends Controller
                 $Parada[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> $this->gerar_cor($i),
+                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                     "dti"=>$request['dti'],
                     "dtf"=>$request['dtf'],
                     "sub_grupo"=>'dt',
@@ -1261,7 +1261,7 @@ class ProdPrevReal extends Controller
                 $Perda[]=array( 
                     "country"=>$i,
                     "visits"=>(isset($Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> $this->gerar_cor($i),
+                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                     "dti"=> $request['dti'],
                     "dtf"=> $request['dtf'],
                     "sub_grupo"=> 'dt',
