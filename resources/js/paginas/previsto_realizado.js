@@ -93,7 +93,14 @@ Alpine.data('app', () => ({
       dtf: null,
       dti: null
     },
-
+    dadosCards:{
+      ano: '',
+      mes: '',
+      dia: '',
+      indicador: '',
+    },
+    listaCards:null,
+    
     init() {
 
       $('#indicadores-parametros #parametro-ano').on('select2:select', () => {
@@ -262,7 +269,17 @@ Alpine.data('app', () => ({
                       "dashLength": 2, 
                     }
                   ],
-                  
+                  "listeners": [{
+                    "event": "clickGraphItem",
+                    "method":(event) => {
+                      
+                      this.getDetalhesProducao(event.item.dataContext); 
+                      
+                      //console.log(event);
+                      //console.log(event.item.dataContext);
+                      //alert(event.item.category); 
+                    }
+                  }], 
                   "dataProvider": res.data.previsto
                 
                 });
@@ -1059,6 +1076,163 @@ Alpine.data('app', () => ({
       })
       .finally(() => this.modalLoadingCharts = false);
 
+
+    },
+
+    getDetalhecards(tipo){
+       
+      this.modalLoadingCharts = true;
+      $("#modalDetalhesCards").modal(); 
+      if(tipo=='producao_cards'){
+
+          this.dadosCards.dia = $('#parametro-dia').val();
+          this.dadosCards.mes = $('#parametro-mes').val();
+          this.dadosCards.ano = $('#parametro-ano').val(); 
+          this.dadosCards.indicador = 'producao_cards'; 
+          var dt = this.dadosCards.ano;
+          if(this.dadosCards.mes){
+            dt = this.dadosCards.mes+'/'+dt;
+            if(this.dadosCards.dia){
+              dt = this.dadosCards.dia+'/'+dt;
+            }
+          }
+          this.tituloDetalhesModal = 'PRODUÇÃO: '+dt;
+      }
+      if(tipo=='polpa_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'polpa_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'CONSUMO DE POLPAS: '+dt;
+      }
+      if(tipo=='agua_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'agua_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'CONSUMO DE AGUA: '+dt;
+      }
+      if(tipo=='energia_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'energia_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'CONSUMO DE ENERGIA: '+dt;
+      }
+      if(tipo=='lenha_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'lenha_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'CONSUMO DE LENHA: '+dt;
+      }
+      if(tipo=='parada_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'parada_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'PARADA DE LINHA: '+dt;
+      }
+      
+      if(tipo=='perdaE_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'perdaE_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'PERDAS DE EMBALAGEM: '+dt;
+      }
+
+      if(tipo=='perdaI_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'perdaI_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'PERDAS DE INSUMO: '+dt;
+      }
+
+      if(tipo=='perdaP_cards'){
+
+        this.dadosCards.dia = $('#parametro-dia').val();
+        this.dadosCards.mes = $('#parametro-mes').val();
+        this.dadosCards.ano = $('#parametro-ano').val(); 
+        this.dadosCards.indicador = 'perdaP_cards'; 
+        var dt = this.dadosCards.ano;
+        if(this.dadosCards.mes){
+          dt = this.dadosCards.mes+'/'+dt;
+          if(this.dadosCards.dia){
+            dt = this.dadosCards.dia+'/'+dt;
+          }
+        }
+        this.tituloDetalhesModal = 'PERDAS DE POLPA: '+dt;
+      }
+
+      console.log(this.dadosCards);
+      axios.post('/colonial/prod_prev_real-detalhes',this.dadosCards)
+      .then((res) => {
+          console.log(res);
+          this.listaCards =res.data.lista;
+      })
+      .catch((err) => { 
+        console.log(err.response.data); 
+        toastr.error(err.response.data.message,"Erro") 
+      })
+      .finally(() => this.modalLoadingCharts = false);
 
     },
     

@@ -47,10 +47,16 @@
   height: 500px;
 }
 
-#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha, #chartdiv_grupo_perda, #chartdiv_Equip_parada
+#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha,  #chartdiv_Equip_parada
 {
   width: 100%;
   height: 350px;
+}
+
+#chartdiv_grupo_perda 
+{
+  width: 100%;
+  height: 250px;
 }
 
 #chartdiv_tp_parada
@@ -540,7 +546,7 @@ ul {
         <div class="row">
          
             <div class="col-lg-4 col-md-8" style="padding-right: 5px;  ">
-                <div class="panel info-box panel-white" style="background: #22BAA0;margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #22BAA0;margin-bottom: 10px;"  x-on:click="getDetalhecards('producao_cards')"  >
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderProdKg"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -561,7 +567,7 @@ ul {
             </div>
 
             <div class="col-lg-4 col-md-8" style="padding-right: 5px; padding-left: 5px;">
-                <div class="panel info-box panel-white" style="background: #7a6fbe; margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #7a6fbe; margin-bottom: 10px;" x-on:click="getDetalhecards('producao_cards')">
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderProdCx"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -582,7 +588,7 @@ ul {
             </div>
             
             <div class="col-lg-4 col-md-8" style="  padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #e83e8c; margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #e83e8c; margin-bottom: 10px;" x-on:click="getDetalhecards('polpa_cards')">
                     <div class="panel-body">
                         <div class="info-box-stats">
 
@@ -591,7 +597,7 @@ ul {
                             <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Consumo de Polpa KG</span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="fa fa-apple" style="color: #f9fafa;"></i>
+                            <img class="fa" src="{{ asset('assets\images\tomate.svg') }}" height="35"> 
                         </div>
                         <div class="info-box-progress">
                             <div class="progress progress-xs progress-squared bs-n">
@@ -608,7 +614,7 @@ ul {
               
         <div class="row">
             <div class="col-lg-3 col-md-6" style="padding-right: 5px;  ">
-                <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" >
+                <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" x-on:click="getDetalhecards('agua_cards')" >
                     <div class="panel-body" style="border-bottom: 3px solid #399BFF;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderAgua" style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa; "></i></p>
@@ -624,7 +630,7 @@ ul {
             </div>
 
             <div class="col-lg-3 col-md-6" style="padding-right: 5px; padding-left: 5px;"> 
-                <div class="panel info-box panel-white" style="background: #c2a505; margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #c2a505; margin-bottom: 10px;" x-on:click="getDetalhecards('energia_cards')">
                     <div class="panel-body" style="border-bottom: 3px solid #c2a505;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderEnergia"  style="color: #f9fafa;margin-bottom: 0px; "><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -640,7 +646,7 @@ ul {
             </div>
 
             <div class="col-lg-3 col-md-6" style="padding-right: 5px; padding-left: 5px;">
-                <div class="panel info-box panel-white" style="background: #26A65B; margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #26A65B; margin-bottom: 10px;" x-on:click="getDetalhecards('lenha_cards')">
                     <div class="panel-body" style="border-bottom: 3px solid #26A65B;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderLenha" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -656,7 +662,7 @@ ul {
             </div>
              
             <div class="col-lg-3 col-md-6" style="  padding-left: 5px;">
-                <div class="panel info-box panel-white" style="background: #f1bb07; margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #f1bb07; margin-bottom: 10px;" x-on:click="getDetalhecards('parada_cards')" >
                     <div class="panel-body" style="border-bottom: 3px solid #f1bb07;">
                         <div class="info-box-stats">
                             <p class="counter" x-html="iconHeaderParadas" style="color: #f9fafa;margin-bottom: 0px;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -676,7 +682,7 @@ ul {
         <div class="row">
          
             <div class="col-lg-4 col-md-8" style="padding-right: 5px; ">
-                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;" x-on:click="getDetalhecards('perdaE_cards')" >
                     <div class="panel-body" style="    padding: 5px;">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;     margin-bottom: 2px;" x-html="iconHeaderPerdasEmb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -693,7 +699,7 @@ ul {
                 </div>
             </div>
             <div class="col-lg-4 col-md-8" style="padding-right: 5px; padding-left: 5px;">
-                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;" x-on:click="getDetalhecards('perdaI_cards')">
                     <div class="panel-body" style="    padding: 5px;">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;     margin-bottom: 2px;" x-html="iconHeaderPerdasIns"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -710,7 +716,7 @@ ul {
                 </div>
             </div>
             <div class="col-lg-4 col-md-8" style="  padding-left: 5px;">
-                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;">
+                <div class="panel info-box panel-white" style="background: #EF4836;margin-bottom: 10px;" x-on:click="getDetalhecards('perdaP_cards')">
                     <div class="panel-body" style="    padding: 5px;">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;     margin-bottom: 2px;" x-html="iconHeaderPerdasPol"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -984,14 +990,14 @@ ul {
                             <x-loader class="absolute-loader"/>
                         </template>
 
-                        <div class="col-md-12"><h3 class="panel-title text-center" style="color: #0e0e0e; margin-top: 60px;">Tipos de Parada</h3></div>
+                        <div class="col-md-12"><h3 class="panel-title text-center" style="color: #0e0e0e; margin-top: 60px;">Tipos de Parada [ Minutos ]</h3></div>
                         <!-- HTML -->
                         <div id="chartdiv_tp_parada"></div>
                         <template x-if="loadingCharts">
                             <x-loader class="absolute-loader"/>
                         </template>
 
-                        <div class="col-md-12"><h3 class="panel-title text-center" style="color: #0e0e0e; margin-top: 60px;">Paradas Por Equipamentos</h3></div>
+                        <div class="col-md-12"><h3 class="panel-title text-center" style="color: #0e0e0e; margin-top: 60px;">Paradas Por Equipamentos [ Minutos ]</h3></div>
                         <!-- HTML -->
                         <div id="chartdiv_Equip_parada"></div>
                         <template x-if="loadingCharts">
@@ -1171,7 +1177,7 @@ ul {
                                             <span class="info-box-title"  style="color: #f9fafa; font-weight: 900;margin-bottom: 0px;">Polpas</span>
                                         </div>
                                         <div class="info-box-icon"> 
-                                            <i class="fa fa-apple"  style="color: #f9fafa"></i>
+                                            <img class="fa" src="{{ asset('assets\images\tomate.svg') }}" height="25"> 
                                         </div>
                                         
                                     </div>
@@ -1437,7 +1443,7 @@ ul {
                                                 <td style="font-size: 16px;" x-text="query.cd_produto+' - '+query.nm_produto"></td> 
                                                 <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
                                                 <td style="font-size: 16px;" x-text="query.obs_perda"></td> 
-                                                <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})+' '+query.unidade"></td>
                                                  
                                             </tr>
                                         </template>
@@ -1454,6 +1460,254 @@ ul {
             </div>
         </div>
 
+        <div class="modal fade bs-example-modal-lg modal-fullscreen-xl" id="modalDetalhesCards" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhesModal">dsdsd</h4>
+                    </div>
+                    <div class="modal-body">
+    
+                        <style>
+                            .FixedHeightContainerOverflow
+                            {
+                                float:right;
+                                height: 550px;
+                                width:100%; 
+                                padding:3px; 
+                            }
+                            .ContentOverflow
+                            {
+                                height:548px;
+                                overflow:auto;  
+                            }
+
+                        </style>
+     
+                        <div role="tabpanel"> 
+                                <!-- Nav tabs -->
+
+                                <div class="FixedHeightContainerOverflow"> 
+                                    <div class="ContentOverflow">
+ 
+                                        <template x-if="modalLoadingCharts">
+                                            <div style="padding: 100px"> 
+                                                <x-loader class="absolute-loader"/>                           
+                                            </div>
+                                        </template>
+
+                                        <template x-if="dadosCards.indicador=='producao_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Codigo</th> 
+                                                        <th >Produto</th>
+                                                        <th class="text-right">Planejado[Cx]</th>
+                                                        <th class="text-right">Produzido[Cx]</th>
+                                                        <th class="text-right">Planejado[Kg]</th>
+                                                        <th class="text-right">Produzido[Kg]</th>
+                                                        <th class="text-right">Planejado[To]</th>
+                                                        <th class="text-right">Produzido[To]</th>
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.codigo"></td>
+                                                            <td style="font-size: 16px;" x-text="query.nome"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.pla_cx).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.prod_cx).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.pla_kg).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.prod_kg).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.pla_to).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.prod_to).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+
+                                        <template x-if="dadosCards.indicador=='polpa_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th class="text-right">Qtde Consumida [Kg]</th>
+                                                        <th class="text-right">Qtde Consumida [Tb]</th>
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde_tb).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+            
+                                        <template x-if="dadosCards.indicador=='agua_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th class="text-right">Qtde Consumida [M3]</th> 
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td> 
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+        
+                                        <template x-if="dadosCards.indicador=='energia_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th class="text-right">Qtde Consumida [KW]</th> 
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td> 
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+
+                                        <template x-if="dadosCards.indicador=='lenha_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th class="text-right">Qtde Consumida [M3]</th> 
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td> 
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+
+                                        <template x-if="dadosCards.indicador=='parada_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th >Tipo de Parada</th>  
+                                                        <th class="text-right">Tempo [Minutos]</th> 
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})"></td> 
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+
+                                        <template x-if="dadosCards.indicador=='perdaE_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th >Produto</th>  
+                                                        <th >Tipo de Perda</th>  
+                                                        <th class="text-right">Total</th> 
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" x-text="query.nm_produto"></td>  
+                                                            <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})+' '+query.unidade"></td> 
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+
+                                        <template x-if="dadosCards.indicador=='perdaI_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th >Produto</th> 
+                                                        <th >Tipo de Perda</th>  
+                                                        <th class="text-right">Qtde</th> 
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" x-text="query.nm_produto"></td> 
+                                                            <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})+' '+query.unidade"></td> 
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+
+                                        <template x-if="dadosCards.indicador=='perdaP_cards'">
+                                            <table class="table table-striped" style="margin-bottom: 0">
+                                                <thead>
+                                                    <tr class="active">
+                                                        <th >Data</th>   
+                                                        <th >Produto</th> 
+                                                        <th >Tipo de Perda</th>  
+                                                        <th class="text-right">Qtde</th> 
+                                                    </tr>
+                                                </thead> 
+                                                <tbody>
+                                                    <template x-for="query in listaCards">
+                                                        <tr style="font-size: 16px;">
+                                                            <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                            <td style="font-size: 16px;" x-text="query.nm_produto"></td> 
+                                                            <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                            <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})+' '+query.unidade"></td> 
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+
+                                    </div> 
+                                </div>
+                                
+                        </div>
+    
+       
+                    </div>
+                    <div class="modal-footer"> 
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
