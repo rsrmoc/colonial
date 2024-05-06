@@ -833,7 +833,7 @@ class ProdPrevReal extends Controller
             for ($i = 1; $i <= $request['ultimo_dia']; $i++) { 
                 $Agua[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
-                    "visits"=>(isset($Agu[$i])) ? $Agu[$i] : null,
+                    "visits"=>(isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : null,
                     "color"=> $this->gerar_cor($i)
                 );
             }
