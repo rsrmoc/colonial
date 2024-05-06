@@ -1629,7 +1629,7 @@ class ProdPrevReal extends Controller
                         when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
                         when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
                         when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
-                    else  CONVERT(decimal(10,5), SWeight1) end kg,ProdName nome 
+                    else  CONVERT(decimal(10,5), IWeight1) end kg,ProdName nome 
                     from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
                     inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
                     where CONVERT(CHAR(10),owor.duedate, 23) between '".$request['dti']."' and '".$request['dtf']."'
