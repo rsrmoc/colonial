@@ -1119,9 +1119,9 @@ class ProdPrevReal extends Controller
          
         $polpas=($polpa->valor) ? $polpa->valor : 0;
         if($polpas==0){ 
-            $PolpaTb= number_format('0',2,",",".");
+            $PolpaTb= number_format('0',0,",",".");
         }else{ 
-            $PolpaTb= number_format(($polpas/210),2,",",".");
+            $PolpaTb= number_format(($polpas/210),0,",",".");
         }
 
         if(($polpas==0) || ($ProdKg==0)){  

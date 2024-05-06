@@ -928,8 +928,6 @@ Alpine.data('app', () => ({
 
                   });
 
-                 
-
                 }else{
                   $("#chartdiv_tp_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
                 }
