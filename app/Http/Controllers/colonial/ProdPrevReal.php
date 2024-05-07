@@ -623,8 +623,8 @@ class ProdPrevReal extends Controller
             $planejado='sum(valor*kg) planejado'; 
             $prozuzido='sum(valor_prod*kg) prozuzido'; 
             $request['ds_unidade']='Kg';
-            $prozuzidoProd='sum(quantity*SWeight1)';
-            $produzidoComparativo='sum(quantity*SWeight1)';
+            $prozuzidoProd='sum(quantity*IWeight1)';
+            $produzidoComparativo='sum(quantity*IWeight1)';
             $request['ds_unid']=' [ Kilos ]';
         }
         if($request['unidade']=='CX'){
@@ -640,8 +640,8 @@ class ProdPrevReal extends Controller
             $planejado='sum((valor*kg)/1000) planejado'; 
             $prozuzido='sum((valor_prod*kg)/1000) prozuzido'; 
             $request['ds_unidade']='To';
-            $prozuzidoProd='sum((quantity*SWeight1)/1000)';
-            $produzidoComparativo='sum((quantity*SWeight1)/1000)';
+            $prozuzidoProd='sum((quantity*IWeight1)/1000)';
+            $produzidoComparativo='sum((quantity*IWeight1)/1000)';
             $request['ds_unid']=' [ Toneladas ]';
         }
  
@@ -735,7 +735,7 @@ class ProdPrevReal extends Controller
  
         /* Produto */ 
         $dadosProd = DB::select(" 
-        select ItemName nome, sum(quantity) produzido_cx,sum(quantity*SWeight1) produzido_kg,sum((quantity*SWeight1)/1000) produzido_to,".$prozuzidoProd." produzido
+        select ItemName nome, sum(quantity) produzido_cx,sum(quantity*IWeight1) produzido_kg,sum((quantity*IWeight1)/1000) produzido_to,".$prozuzidoProd." produzido
         from (
             select ItemName,quantity, 
             case 
@@ -743,7 +743,7 @@ class ProdPrevReal extends Controller
             when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
             when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
             when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
-            else  CONVERT(decimal(10,5), IWeight1) end SWeight1
+            else  CONVERT(decimal(10,5), IWeight1) end IWeight1
             from SBO_KARAMBI_PRD.dbo.ign1 
             inner join (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor on ign1.BaseRef=owor.DocEntry
             inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 

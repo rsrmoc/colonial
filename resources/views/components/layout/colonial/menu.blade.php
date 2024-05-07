@@ -45,15 +45,20 @@
                         </li>
                 </ul> 
             </li>
+
+            <li class="#"><a   class="waves-effect waves-button"><span class="menu-icon   fa fa-money"></span><p>Vendas</p></a></li>
+
+            <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-shopping-cart  "></span><p>Compras</p></a></li>
+
             <li class="#"><a   class="waves-effect waves-button"><span class="menu-icon   fa fa-truck"></span><p>Estoque</p></a></li>
          
+            <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-usd "></span><p>Financeiro</p></a></li>
+
             <li class="#"><a class="waves-effect waves-button"><span class="menu-icon   fa fa-certificate"></span><p>Qualidade</p></a></li>
  
             <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-wrench "></span><p>Manutenção</p></a></li>
 
-            <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-shopping-cart  "></span><p>Compras</p></a></li>
             
-            <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-usd "></span><p>Financeiro</p></a></li>
             
  
                
