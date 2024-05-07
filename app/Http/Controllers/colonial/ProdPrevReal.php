@@ -404,9 +404,12 @@ class ProdPrevReal extends Controller
        
                 $retorno['listaProducao'] = DB::select("select owor.DocEntry codigo,
                 CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
+                /*
                 (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
                     where ign1.BaseRef=owor.DocEntry
                 ) valor_prod, owor.ItemCode ,
+                */
+                isnull(CmpltQty,0) valor_prod,owor.ItemCode,
                 case 
                 when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
                 when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
