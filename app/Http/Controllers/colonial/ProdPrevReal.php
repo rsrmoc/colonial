@@ -626,7 +626,7 @@ class ProdPrevReal extends Controller
             $planejado='sum(valor*kg) planejado'; 
             $prozuzido='sum(valor_prod*kg) prozuzido'; 
             $request['ds_unidade']='Kg';
-            $prozuzidoProd='sum(quantity*IWeight1)';
+            $prozuzidoProd='sum(CmpltQty*IWeight1)';
             $produzidoComparativo='sum(quantity*IWeight1)';
             $request['ds_unid']=' [ Kilos ]';
         }
@@ -634,7 +634,7 @@ class ProdPrevReal extends Controller
             $planejado='sum(valor) planejado'; 
             $prozuzido='sum(valor_prod) prozuzido'; 
             $request['ds_unidade']='Cx';
-            $prozuzidoProd='sum(quantity)';
+            $prozuzidoProd='sum(CmpltQty)';
             $produzidoComparativo='sum(quantity)';
             $request['ds_unid']=' [ Caixas ]';
         }
@@ -643,10 +643,11 @@ class ProdPrevReal extends Controller
             $planejado='sum((valor*kg)/1000) planejado'; 
             $prozuzido='sum((valor_prod*kg)/1000) prozuzido'; 
             $request['ds_unidade']='To';
-            $prozuzidoProd='sum((quantity*IWeight1)/1000)';
+            $prozuzidoProd='sum((CmpltQty*IWeight1)/1000)';
             $produzidoComparativo='sum((quantity*IWeight1)/1000)';
             $request['ds_unid']=' [ Toneladas ]';
         }
+ 
  
         /* Previsto */
         $dados = DB::select("
@@ -656,9 +657,11 @@ class ProdPrevReal extends Controller
                 select owor.DocEntry codigo,
                 CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
                 CONVERT (varchar, owor.duedate, 23) dia, 
-                (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
+                /*(select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
                     where ign1.BaseRef=owor.DocEntry
-                ) valor_prod, owor.ItemCode ,
+                ) valor_prod, 
+				*/
+				isnull(CmpltQty,0) valor_prod,owor.ItemCode,
                 case 
                 when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
                 when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
@@ -737,6 +740,8 @@ class ProdPrevReal extends Controller
         if(($ProduzidoTo>0) && ($PlanejadoTo>0)){ $ProduzidoToPerc=round((($ProduzidoTo/$PlanejadoTo)*100),2); }
  
         /* Produto */ 
+ 
+        /*
         $dadosProd = DB::select(" 
         select ItemName nome, sum(quantity) produzido_cx,sum(quantity*IWeight1) produzido_kg,sum((quantity*IWeight1)/1000) produzido_to,".$prozuzidoProd." produzido
         from (
@@ -753,7 +758,24 @@ class ProdPrevReal extends Controller
             where CONVERT(CHAR(10),owor.duedate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
         ) query
         group by ItemName 
-        order by ".$prozuzidoProd." desc");
+        order by ".$prozuzidoProd." desc ");
+        */
+        $dadosProd = DB::select(" 
+        select ItemName nome, sum(CmpltQty) produzido_cx,sum(CmpltQty*IWeight1) produzido_kg,sum((CmpltQty*IWeight1)/1000) produzido_to,sum(CmpltQty*IWeight1) produzido
+        from (
+            select ItemName,CmpltQty, 
+            case 
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
+            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
+            else  CONVERT(decimal(10,5), IWeight1) end IWeight1
+            from  (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor  
+            inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+            where CONVERT(CHAR(10),owor.duedate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+        ) query
+        group by ItemName  
+        order by ".$prozuzidoProd." desc ");
         $Produtos=null;
         foreach($dadosProd as $key => $val){ 
            
@@ -1624,9 +1646,12 @@ class ProdPrevReal extends Controller
             from (
                 select owor.DocEntry codigo,
                     CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
+                    /*
                     (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
                         where ign1.BaseRef=owor.DocEntry
                     ) valor_prod, owor.ItemCode ,
+                    */
+                    isnull(CmpltQty,0) valor_prod,owor.ItemCode,
                     case 
                         when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
                         when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
