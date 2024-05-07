@@ -737,6 +737,10 @@ class ProdPrevReal extends Controller
                         $PlanejadoTo=round(($PlanejadoTo+$plaToneladas),2);
             
         }
+
+        
+     
+
         if(($ProduzidoCx>0) && ($PlanejadoCx>0)){ $ProduzidoCxPerc=round((($ProduzidoCx/$PlanejadoCx)*100),2); }
         if(($ProduzidoKg>0) && ($PlanejadoKg>0)){ $ProduzidoKgPerc=round((($ProduzidoKg/$PlanejadoKg)*100),2); }
         if(($ProduzidoTo>0) && ($PlanejadoTo>0)){ $ProduzidoToPerc=round((($ProduzidoTo/$PlanejadoTo)*100),2); }
@@ -1376,7 +1380,7 @@ class ProdPrevReal extends Controller
         ->selectRaw("count(qtde) valor")->first();
  
 
-        $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
+        $parada = Parada::whereRaw("CONVERT(varchar, dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("sum(tempo) valor")->first();
    
         $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
