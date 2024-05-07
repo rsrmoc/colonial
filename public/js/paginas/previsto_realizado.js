@@ -283,7 +283,7 @@ Alpine.data('app', function () {
           },
           "trendLines": [],
           "graphs": [{
-            "balloonText": "Produzido (%): <b>[[value]] (" + res.data.request.ds_unidade + ")  </b>",
+            "balloonText": "Produzido : <b>[[value]] (%)  </b>",
             "fillAlphas": 0.8,
             "id": "AmGraph-1",
             "lineAlpha": 0.2,
