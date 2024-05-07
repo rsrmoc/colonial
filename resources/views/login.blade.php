@@ -71,7 +71,7 @@
                             <form class="m-t-md" action="{{ route('login-action') }}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="email" class="form-control" name="email" placeholder="Email"
+                                    <input type="text" class="form-control" name="email" placeholder="Email"
                                         required>
                                 </div>
 
