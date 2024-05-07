@@ -781,10 +781,13 @@ class ProdPrevReal extends Controller
         order by ".$prozuzidoProd." desc ");
         $Produtos=null;
         foreach($dadosProd as $key => $val){ 
-           
+            $Produzido=0;
+            if($request['unidade']=='TO'){  $Produzido=round($val->produzido_to,2); }
+            if($request['unidade']=='KG'){  $Produzido=round($val->produzido_kg,2); }
+            if($request['unidade']=='CX'){  $Produzido=round($val->produzido,2); }
             $Produtos[]=array(
                 "produto"=>$val->nome,
-                "qtde"=>round($val->produzido,2),
+                "qtde"=>$Produzido,
                 "color"=> $this->gerar_cor($key)
             );
 
