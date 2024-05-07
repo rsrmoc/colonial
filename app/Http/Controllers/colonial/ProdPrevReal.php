@@ -651,7 +651,6 @@ class ProdPrevReal extends Controller
             $request['ds_unid']=' [ Toneladas ]';
         }
  
- 
         /* Previsto */
         $dados = DB::select("
         select ".$Agrupamento1.", ".$Agrupamento12.", sum(valor) planejado_cx, sum(valor*kg)  planejado_kg,
@@ -743,28 +742,7 @@ class ProdPrevReal extends Controller
         if(($ProduzidoTo>0) && ($PlanejadoTo>0)){ $ProduzidoToPerc=round((($ProduzidoTo/$PlanejadoTo)*100),2); }
  
         /* Produto */ 
- 
-        /*
-        $dadosProd = DB::select(" 
-        select ItemName nome, sum(quantity) produzido_cx,sum(quantity*IWeight1) produzido_kg,sum((quantity*IWeight1)/1000) produzido_to,".$prozuzidoProd." produzido
-        from (
-            select ItemName,quantity, 
-            case 
-            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
-            when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
-            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
-            when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
-            else  CONVERT(decimal(10,5), IWeight1) end IWeight1
-            from SBO_KARAMBI_PRD.dbo.ign1 
-            inner join (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor on ign1.BaseRef=owor.DocEntry
-            inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-            where CONVERT(CHAR(10),owor.duedate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
-        ) query
-        group by ItemName 
-        order by ".$prozuzidoProd." desc ");
-        */
-
-     
+  
         $dadosProd = DB::select(" 
         select ItemName nome, sum(CmpltQty) produzido_cx,sum(CmpltQty*IWeight1) produzido_kg,sum((CmpltQty*IWeight1)/1000) produzido_to,sum(CmpltQty) produzido
         from (
@@ -1142,13 +1120,11 @@ class ProdPrevReal extends Controller
             } 
             $request['ds_mes'] =($request['mes']) ? $MESES[$request['mes']] : null; 
  
-       
-
+        
             $dadosProd = DB::select(" 
             select  CAST(year(owor.duedate) AS NVARCHAR(4))+CAST( right(replicate('0',2) + convert(VARCHAR,MONTH(owor.duedate)),2) AS NVARCHAR(2)) data, 
             year(owor.duedate) ano,CAST( right(replicate('0',2) + convert(VARCHAR,MONTH(owor.duedate)),2) AS NVARCHAR(2)) mes,".$produzidoComparativo." qtde
-            from SBO_KARAMBI_PRD.dbo.ign1 
-            inner join (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor on ign1.BaseRef=owor.DocEntry
+            from  (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' )  owor
             inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
             where CONVERT(CHAR(10),owor.duedate, 23)  between '".$request['dt_comparativa_ano']."' and '".$request['dtf']."'
             group by CAST(year(owor.duedate) AS NVARCHAR(4))+CAST( right(replicate('0',2) + convert(VARCHAR,MONTH(owor.duedate)),2) AS NVARCHAR(2)) ,year(owor.duedate),
@@ -1157,6 +1133,8 @@ class ProdPrevReal extends Controller
             foreach($dadosProd as $val){  
                 $DadosAno[$val->mes][$val->ano] = $val->qtde;
             } 
+ 
+
             foreach($DadosAno as $keyMes => $val){  
                 $Array['label']= $MESES[$keyMes];
                 $Array['color01']= "#008000";
@@ -1169,6 +1147,7 @@ class ProdPrevReal extends Controller
                 }
                 $ComparativoAno[] = $Array; 
             }
+
 
             /* agua MESES */  
             $dadosAgua = DB::select("  
