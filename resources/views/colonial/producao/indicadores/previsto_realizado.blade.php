@@ -1429,6 +1429,7 @@ ul {
                                         <tr class="active">
                                             <th >Codigo</th>
                                             <th >Data</th> 
+                                            <th >Item de Produção</th>
                                             <th >Produto</th>
                                             <th >Tipo de Perda</th>
                                             <th >Observações</th>
@@ -1440,6 +1441,7 @@ ul {
                                             <tr style="font-size: 16px;">
                                                 <td style="font-size: 16px;" x-text="query.cd_perda"></td>
                                                 <td style="font-size: 16px;" x-text="query.dt_ordem"></td> 
+                                                <td style="font-size: 16px;" x-text="query.nm_item"></td> 
                                                 <td style="font-size: 16px;" x-text="query.cd_produto+' - '+query.nm_produto"></td> 
                                                 <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
                                                 <td style="font-size: 16px;" x-text="query.obs_perda"></td> 

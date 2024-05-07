@@ -475,12 +475,15 @@ class ProdPrevReal extends Controller
                         $grupo=" and grupo not in('109','105','103')  ";
                     }
                 }
-
+  
                 $retorno['dadosPerda'] = DB::select(" 
-                select nm_tipo, convert(decimal(12, 0), round(qtde, 2, 1)) qtde, CONVERT(CHAR(10),perda.dt_ordem, 103)  dt_ordem,nm_produto,obs_perda,cd_perda,nm_produto,cd_produto,InvntryUom unidade
+                select nm_tipo, convert(decimal(12, 0), round(qtde, 2, 1)) qtde, CONVERT(CHAR(10),perda.dt_ordem, 103)  dt_ordem,
+                nm_produto,obs_perda,cd_perda,cd_produto,oitm.InvntryUom unidade,oitmItem.ItemCode cd_item ,oitmItem.ItemName nm_item
                 from perda 
                 inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
                 left join SBO_KARAMBI_PRD.dbo.OITM on  convert(varchar, OITM.ItemCode,103) =   perda.cd_produto  COLLATE Latin1_General_CI_AS
+                left join (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor on owor.DocEntry = perda.cd_ordem
+                left join SBO_KARAMBI_PRD.dbo.oitm oitmItem on oitmItem.ItemCode=owor.ItemCode
                 where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and  '".$request['dtf']."'
                 $Tipo $grupo
                 order by perda.dt_ordem  ");  
@@ -1169,7 +1172,7 @@ class ProdPrevReal extends Controller
                 $Energia[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
+                    "color"=> (isset($Ene[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                 );
             }
         
@@ -1188,7 +1191,7 @@ class ProdPrevReal extends Controller
                 $Lenha[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
+                    "color"=> (isset($Len[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                 );
             }
 
@@ -1206,7 +1209,7 @@ class ProdPrevReal extends Controller
                 $Polpa[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
+                    "color"=> (isset($Pol[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                 );
             }
 
@@ -1230,7 +1233,7 @@ class ProdPrevReal extends Controller
                 $Parada[]=array( 
                     "country"=> str_pad($i , 2 , '0' , STR_PAD_LEFT),
                     "visits"=>(isset($Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
+                    "color"=> (isset($Par[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                     "dti"=>$request['dti'],
                     "dtf"=>$request['dtf'],
                     "sub_grupo"=>'dt',
@@ -1261,7 +1264,7 @@ class ProdPrevReal extends Controller
                 $Perda[]=array( 
                     "country"=>$i,
                     "visits"=>(isset($Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)] : 0,
-                    "color"=> (isset($Agu[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
+                    "color"=> (isset($Per[str_pad($i , 2 , '0' , STR_PAD_LEFT)])) ? $this->gerar_cor($i) : "#f1f4f9",
                     "dti"=> $request['dti'],
                     "dtf"=> $request['dtf'],
                     "sub_grupo"=> 'dt',
