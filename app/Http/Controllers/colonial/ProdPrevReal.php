@@ -630,7 +630,7 @@ class ProdPrevReal extends Controller
             $prozuzido='sum(valor_prod*kg) prozuzido'; 
             $request['ds_unidade']='Kg';
             $prozuzidoProd='sum(CmpltQty*IWeight1)';
-            $produzidoComparativo='sum(quantity*IWeight1)';
+            $produzidoComparativo='sum(CmpltQty*IWeight1)';
             $request['ds_unid']=' [ Kilos ]';
         }
         if($request['unidade']=='CX'){
@@ -638,7 +638,7 @@ class ProdPrevReal extends Controller
             $prozuzido='sum(valor_prod) prozuzido'; 
             $request['ds_unidade']='Cx';
             $prozuzidoProd='sum(CmpltQty)';
-            $produzidoComparativo='sum(quantity)';
+            $produzidoComparativo='sum(CmpltQty)';
             $request['ds_unid']=' [ Caixas ]';
         }
   
@@ -647,7 +647,7 @@ class ProdPrevReal extends Controller
             $prozuzido='sum((valor_prod*kg)/1000) prozuzido'; 
             $request['ds_unidade']='To';
             $prozuzidoProd='sum((CmpltQty*IWeight1)/1000)';
-            $produzidoComparativo='sum((quantity*IWeight1)/1000)';
+            $produzidoComparativo='sum((CmpltQty*IWeight1)/1000)';
             $request['ds_unid']=' [ Toneladas ]';
         }
  
@@ -763,8 +763,10 @@ class ProdPrevReal extends Controller
         group by ItemName 
         order by ".$prozuzidoProd." desc ");
         */
+
+     
         $dadosProd = DB::select(" 
-        select ItemName nome, sum(CmpltQty) produzido_cx,sum(CmpltQty*IWeight1) produzido_kg,sum((CmpltQty*IWeight1)/1000) produzido_to,sum(CmpltQty*IWeight1) produzido
+        select ItemName nome, sum(CmpltQty) produzido_cx,sum(CmpltQty*IWeight1) produzido_kg,sum((CmpltQty*IWeight1)/1000) produzido_to,sum(CmpltQty) produzido
         from (
             select ItemName,CmpltQty, 
             case 
@@ -1140,6 +1142,8 @@ class ProdPrevReal extends Controller
             } 
             $request['ds_mes'] =($request['mes']) ? $MESES[$request['mes']] : null; 
  
+       
+
             $dadosProd = DB::select(" 
             select  CAST(year(owor.duedate) AS NVARCHAR(4))+CAST( right(replicate('0',2) + convert(VARCHAR,MONTH(owor.duedate)),2) AS NVARCHAR(2)) data, 
             year(owor.duedate) ano,CAST( right(replicate('0',2) + convert(VARCHAR,MONTH(owor.duedate)),2) AS NVARCHAR(2)) mes,".$produzidoComparativo." qtde
