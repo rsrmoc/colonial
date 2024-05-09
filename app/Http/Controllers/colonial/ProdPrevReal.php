@@ -1399,6 +1399,7 @@ class ProdPrevReal extends Controller
                 "sub_grupo"=>'perc_perda',
                 "cd_produto"=>$val->cd_produto,
                 "total"=>$val->total, 
+                "perdas"=>$val->qtde, 
                 'agrupamento'=>$request['agrupamento'],
                 "color"=> $this->gerar_cor($key+6)
             );

@@ -49,7 +49,7 @@ Alpine.data('app', () => ({
     ProduzidoCxPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     ProduzidoKgPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
     ProduzidoToPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i>',
-    
+    tabPorPerdas:null,
     iconHeaderProdTo: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderProdKg: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderProdCx: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
@@ -946,6 +946,7 @@ Alpine.data('app', () => ({
 
                 /*PorcentagemPerda*/ 
                 if(res.data.GraficoPorcPerda){  
+                  this.tabPorPerdas = res.data.GraficoPorcPerda;
                   var chart = AmCharts.makeChart("chartdiv_porc_perda", {
                     "decimalSeparator": ",",
                     "thousandsSeparator": ".",

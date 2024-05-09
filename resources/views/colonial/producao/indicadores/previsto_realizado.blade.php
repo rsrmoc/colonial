@@ -1060,6 +1060,35 @@ ul {
                             <x-loader class="absolute-loader"/>
                         </template>
 
+                        <div class="row" style="margin-top: 50px;">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10">
+                                <table class="table table-striped" style="margin-bottom: 0">
+                                    <thead>
+                                        <tr class="active">
+                                            <th >Codigo</th> 
+                                            <th >Produto</th>
+                                            <th class="text-right">Qtde. Dispensado</th>
+                                            <th class="text-right">Qtde. Perdas</th>
+                                            <th class="text-right">% de Perdas</th> 
+                                        </tr>
+                                    </thead> 
+                                    <tbody>
+                                        <template x-for="query in tabPorPerdas">
+                                            <tr style="font-size: 16px;">
+                                                <td style="font-size: 16px;" x-text="query.cd_produto"></td>
+                                                <td style="font-size: 16px;" x-text="query.produto"></td> 
+                                                <td style="font-size: 16px;" class="text-right" x-text="(query.total) ? query.total : '0,00'"></td>  
+                                                <td style="font-size: 16px;" class="text-right" x-text="query.perdas"></td>  
+                                                <td style="font-size: 16px;" class="text-right" x-text="(query.qtde) ? query.qtde : '0,00'"></td>  
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div> 
+                        </div> 
+
+
                     </div>
                 </div>
             </div>
