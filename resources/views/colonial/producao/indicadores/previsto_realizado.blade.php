@@ -1096,6 +1096,21 @@ ul {
         
         </div>
  
+        <style>
+            .FixedHeightContainerOverflow
+            {
+                float:right;
+                height: 550px;
+                width:100%; 
+                padding:3px; 
+            }
+            .ContentOverflow
+            {
+                height:548px;
+                overflow:auto;  
+            }
+
+        </style>
 
         <div class="modal fade bs-example-modal-lg modal-fullscreen-xl" id="modalDetalhesProducao" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-lg">
@@ -1276,77 +1291,92 @@ ul {
                                             </div>
                                         </template>
 
-                                        <table class="table table-striped" style="margin-bottom: 0">
-                                            <thead>
-                                                <tr class="active">
-                                                    <th>Ordem de Produção</th>
-                                                    <th class="text-center">Data</th>
-                                                    <th >Produto</th>
-                                                    <th class="text-right">Kg/Cx</th>
-                                                    <th class="text-right">Planejado [CX]</th>
-                                                    <th class="text-right">Produzido [CX]</th>
-                                                    <th class="text-right">Planejado [KG]</th>   
-                                                    <th class="text-right">Produzido [KG]</th>   
-                                                    <th class="text-right">Paradas [Min]</th>  
-                                                </tr>
-                                            </thead> 
-                                            <tbody>
-                                                <template x-for="query in tabProdDetalhes">
-                                                    <tr style="font-size: 16px;">
-                                                        <td  style="font-size: 16px;" x-text="query.codigo"></td>
-                                                        <td class="text-center" style="font-size: 16px;" x-text="query.data"></td>
-                                                        <td style="font-size: 16px;" x-text="query.ItemCode+' - '+query.nome"></td>
-                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.kg*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                        <td style="font-size: 16px;" class="text-right" x-text="query.tempo" ></td>
-                                                    </tr>
-                                                </template>
-                                                <template x-if="tabProdDetalhes">
-                                                    <tr style="font-size: 16px;">
-                                                        <th  style="font-size: 16px;" colspan="4">TOTAIS </th>  
-                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.pCX*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
-                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prCX*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
-                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.pKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
-                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
-                                                        <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.Tempo).toLocaleString('pt-br', {minimumFractionDigits: 2})"  ></th>
-                                                    </tr>
-                                                </template>
-                                            </tbody>
-                                        </table>
-                                        
+                                        <div class="FixedHeightContainerOverflow"> 
+                                            <div class="ContentOverflow">
+
+                                                <table class="table table-striped" style="margin-bottom: 0">
+                                                    <thead>
+                                                        <tr class="active">
+                                                            <th>Ordem de Produção</th>
+                                                            <th class="text-center">Data</th>
+                                                            <th >Produto</th>
+                                                            <th class="text-right">Kg/Cx</th>
+                                                            <th class="text-right">Planejado [CX]</th>
+                                                            <th class="text-right">Produzido [CX]</th>
+                                                            <th class="text-right">Planejado [KG]</th>   
+                                                            <th class="text-right">Produzido [KG]</th>   
+                                                            <th class="text-right">Paradas [Min]</th>  
+                                                        </tr>
+                                                    </thead> 
+                                                    <tbody>
+                                                        <template x-for="query in tabProdDetalhes">
+                                                            <tr style="font-size: 16px;">
+                                                                <td  style="font-size: 16px;" x-text="query.codigo"></td>
+                                                                <td class="text-center" style="font-size: 16px;" x-text="query.data"></td>
+                                                                <td style="font-size: 16px;" x-text="query.ItemCode+' - '+query.nome"></td>
+                                                                <td style="font-size: 16px;" class="text-right" x-text="(query.kg*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                <td style="font-size: 16px;" class="text-right" x-text="(query.valor*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                <td style="font-size: 16px;" class="text-right" x-text="(query.valor*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                <td style="font-size: 16px;" class="text-right" x-text="(query.valor_prod*query.kg).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                <td style="font-size: 16px;" class="text-right" x-text="query.tempo" ></td>
+                                                            </tr>
+                                                        </template>
+                                                        <template x-if="tabProdDetalhes">
+                                                            <tr style="font-size: 16px;">
+                                                                <th  style="font-size: 16px;" colspan="4">TOTAIS </th>  
+                                                                <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.pCX*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                                <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prCX*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                                <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.pKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                                <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.prKG*1).toLocaleString('pt-br', {minimumFractionDigits: 2})"></th>
+                                                                <th style="font-size: 16px;" class="text-right" x-text="(totais_toDetalhes.Tempo).toLocaleString('pt-br', {minimumFractionDigits: 2})"  ></th>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+
                                     </div> 
     
                                     <div role="tabpanel" class="tab-pane fade"   id="tabPerdasModal">
                                          
+                                        
                                         <template x-if="modalLoadingCharts">
                                             <div style="padding: 200px"> 
                                                 <x-loader class="absolute-loader"/>                           
                                             </div>
                                         </template>
-                                        <table class="table table-striped" style="margin-bottom: 0">
-                                            <thead>
-                                                <tr class="active">
-                                                    <th>Produto</th>
-                                                    <th >Tipo de Perda</th>
-                                                    <th >Observações</th>
-                                                    <th class="text-right">Qtde.</th> 
-                                                </tr>
-                                            </thead> 
-                                            <tbody>
-                                                <template x-for="query in tabPerdaDetalhes">
-                                                    <tr style="font-size: 16px;">
-                                                        <td style="font-size: 16px;" x-text="query.nm_produto"></td>
-                                                        <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
-                                                        <td style="font-size: 16px;" x-text="query.obs_perda"></td> 
-                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                         
-                                                    </tr>
-                                                </template>
-                                            </tbody>
-                                        </table>
+
+                                        <div class="FixedHeightContainerOverflow"> 
+                                            <div class="ContentOverflow">
+
+                                                <table class="table table-striped" style="margin-bottom: 0">
+                                                    <thead>
+                                                        <tr class="active">
+                                                            <th>Produto</th>
+                                                            <th >Tipo de Perda</th>
+                                                            <th >Observações</th>
+                                                            <th class="text-right">Qtde.</th> 
+                                                        </tr>
+                                                    </thead> 
+                                                    <tbody>
+                                                        <template x-for="query in tabPerdaDetalhes">
+                                                            <tr style="font-size: 16px;">
+                                                                <td style="font-size: 16px;" x-text="query.nm_produto"></td>
+                                                                <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                                <td style="font-size: 16px;" x-text="query.obs_perda"></td> 
+                                                                <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+
                                     </div> 
     
                                     <div role="tabpanel" class="tab-pane fade"   id="tabParadasModal"> 
@@ -1355,27 +1385,36 @@ ul {
                                                 <x-loader class="absolute-loader"/>                           
                                             </div>
                                         </template>
-                                        <table class="table table-striped" style="margin-bottom: 0">
-                                            <thead>
-                                                <tr class="active">
-                                                    <th >Tipo de Parada</th>
-                                                    <th >Observações</th>
-                                                    <th class="text-right">Tempo(min)</th> 
-                                                </tr>
-                                            </thead> 
-                                            <tbody>
-                                                <template x-for="query in tabParadaDetalhes">
-                                                    <tr style="font-size: 16px;">
-                                                        <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
-                                                        <td style="font-size: 16px;" x-text="query.obs_parada"></td> 
-                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                         
-                                                    </tr>
-                                                </template>
-                                            </tbody>
-                                        </table>
+
+                                        <div class="FixedHeightContainerOverflow"> 
+                                            <div class="ContentOverflow">
+
+                                                <table class="table table-striped" style="margin-bottom: 0">
+                                                    <thead>
+                                                        <tr class="active">
+                                                            <th >Tipo de Parada</th>
+                                                            <th >Observações</th>
+                                                            <th class="text-right">Tempo(min)</th> 
+                                                        </tr>
+                                                    </thead> 
+                                                    <tbody>
+                                                        <template x-for="query in tabParadaDetalhes">
+                                                            <tr style="font-size: 16px;">
+                                                                <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                                <td style="font-size: 16px;" x-text="query.obs_parada"></td> 
+                                                                <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                                
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                        
                                     </div> 
                                 </div>
+                                
                         </div>
     
        
@@ -1394,49 +1433,51 @@ ul {
                         <h4 class="modal-title" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhesModal">dsdsd</h4>
                     </div>
                     <div class="modal-body">
-    
-                        
-                        <br>
      
-                        <div role="tabpanel"> 
-                                <!-- Nav tabs -->
-                                 
-                                    
-                                <template x-if="modalLoadingCharts">
-                                    <div style="padding: 100px"> 
-                                        <x-loader class="absolute-loader"/>                           
-                                    </div>
-                                </template>
-                                <table class="table table-striped" style="margin-bottom: 0">
-                                    <thead>
-                                        <tr class="active">
-                                            <th >Codigo</th>
-                                            <th >Data</th>
-                                            <th >Item de Produção</th>
-                                            <th >Equipamento</th>
-                                            <th >Tipo de Parada</th>
-                                            <th >Observações</th>
-                                            <th class="text-right">Tempo(min)</th> 
-                                        </tr>
-                                    </thead> 
-                                    <tbody>
-                                        <template x-for="query in dadosParada">
-                                            <tr style="font-size: 16px;">
-                                                <td style="font-size: 16px;" x-text="query.cd_producao_parada"></td>
-                                                <td style="font-size: 16px;" x-text="query.dt_ordem"></td>
-                                                <td style="font-size: 16px;" x-text="query.cd_item+' - '+query.nm_item"></td> 
-                                                <td style="font-size: 16px;" x-text="query.nm_equipamento"></td>
-                                                <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
-                                                <td style="font-size: 16px;" x-text="query.obs_parada"></td> 
-                                                <td style="font-size: 16px;" class="text-right" x-text="(query.tempo).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                 
-                                            </tr>
+                        <div class="FixedHeightContainerOverflow"> 
+                            <div class="ContentOverflow">
+     
+                                <div role="tabpanel"> 
+                                        <!-- Nav tabs -->
+                                        
+                                            
+                                        <template x-if="modalLoadingCharts">
+                                            <div style="padding: 100px"> 
+                                                <x-loader class="absolute-loader"/>                           
+                                            </div>
                                         </template>
-                                    </tbody>
-                                </table>
-     
+                                        <table class="table table-striped" style="margin-bottom: 0">
+                                            <thead>
+                                                <tr class="active">
+                                                    <th >Codigo</th>
+                                                    <th >Data</th>
+                                                    <th >Item de Produção</th>
+                                                    <th >Equipamento</th>
+                                                    <th >Tipo de Parada</th>
+                                                    <th >Observações</th>
+                                                    <th class="text-right">Tempo(min)</th> 
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                                                <template x-for="query in dadosParada">
+                                                    <tr style="font-size: 16px;">
+                                                        <td style="font-size: 16px;" x-text="query.cd_producao_parada"></td>
+                                                        <td style="font-size: 16px;" x-text="query.dt_ordem"></td>
+                                                        <td style="font-size: 16px;" x-text="query.cd_item+' - '+query.nm_item"></td> 
+                                                        <td style="font-size: 16px;" x-text="query.nm_equipamento"></td>
+                                                        <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                        <td style="font-size: 16px;" x-text="query.obs_parada"></td> 
+                                                        <td style="font-size: 16px;" class="text-right" x-text="(query.tempo).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                        
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+            
+                                </div>
+
+                            </div>
                         </div>
-    
        
                     </div>
                     <div class="modal-footer"> 
@@ -1460,39 +1501,44 @@ ul {
                         <div role="tabpanel"> 
                                 <!-- Nav tabs -->
                                  
+                            <div class="FixedHeightContainerOverflow"> 
+                                <div class="ContentOverflow">
                                     
-                                <template x-if="modalLoadingCharts">
-                                    <div style="padding: 100px"> 
-                                        <x-loader class="absolute-loader"/>                           
-                                    </div>
-                                </template>
-                                <table class="table table-striped" style="margin-bottom: 0">
-                                    <thead>
-                                        <tr class="active">
-                                            <th >Codigo</th>
-                                            <th >Data</th> 
-                                            <th >Item de Produção</th>
-                                            <th >Produto</th>
-                                            <th >Tipo de Perda</th>
-                                            <th >Observações</th>
-                                            <th class="text-right">Qtde.</th> 
-                                        </tr>
-                                    </thead> 
-                                    <tbody>
-                                        <template x-for="query in dadosPerda">
-                                            <tr style="font-size: 16px;">
-                                                <td style="font-size: 16px;" x-text="query.cd_perda"></td>
-                                                <td style="font-size: 16px;" x-text="query.dt_ordem"></td> 
-                                                <td style="font-size: 16px;" x-text="query.cd_item+' - '+query.nm_item"></td> 
-                                                <td style="font-size: 16px;" x-text="query.cd_produto+' - '+query.nm_produto"></td> 
-                                                <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
-                                                <td style="font-size: 16px;" x-text="query.obs_perda"></td> 
-                                                <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})+' '+query.unidade"></td>
-                                                 
+                                    <template x-if="modalLoadingCharts">
+                                        <div style="padding: 100px"> 
+                                            <x-loader class="absolute-loader"/>                           
+                                        </div>
+                                    </template>
+                                    <table class="table table-striped" style="margin-bottom: 0">
+                                        <thead>
+                                            <tr class="active">
+                                                <th >Codigo</th>
+                                                <th >Data</th> 
+                                                <th >Item de Produção</th>
+                                                <th >Produto</th>
+                                                <th >Tipo de Perda</th>
+                                                <th >Observações</th>
+                                                <th class="text-right">Qtde.</th> 
                                             </tr>
-                                        </template>
-                                    </tbody>
-                                </table>
+                                        </thead> 
+                                        <tbody>
+                                            <template x-for="query in dadosPerda">
+                                                <tr style="font-size: 16px;">
+                                                    <td style="font-size: 16px;" x-text="query.cd_perda"></td>
+                                                    <td style="font-size: 16px;" x-text="query.dt_ordem"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.cd_item+' - '+query.nm_item"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.cd_produto+' - '+query.nm_produto"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.obs_perda"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 0})+' '+query.unidade"></td>
+                                                    
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
      
                         </div>
     
@@ -1513,21 +1559,7 @@ ul {
                     </div>
                     <div class="modal-body">
     
-                        <style>
-                            .FixedHeightContainerOverflow
-                            {
-                                float:right;
-                                height: 550px;
-                                width:100%; 
-                                padding:3px; 
-                            }
-                            .ContentOverflow
-                            {
-                                height:548px;
-                                overflow:auto;  
-                            }
 
-                        </style>
      
                         <div role="tabpanel"> 
                                 <!-- Nav tabs -->
