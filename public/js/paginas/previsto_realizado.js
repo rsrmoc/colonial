@@ -895,7 +895,8 @@ Alpine.data('app', function () {
             "listeners": [{
               "event": "clickGraphItem",
               "method": function method(event) {
-                _this2.getDetalhePerda(event.item.dataContext);
+
+                // this.getDetalhePerda(event.item.dataContext);   
               }
             }]
           });

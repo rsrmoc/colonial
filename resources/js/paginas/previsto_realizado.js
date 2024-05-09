@@ -980,7 +980,7 @@ Alpine.data('app', () => ({
                       "event": "clickGraphItem",
                       "method":(event) => {
                         
-                        this.getDetalhePerda(event.item.dataContext);   
+                       // this.getDetalhePerda(event.item.dataContext);   
                          
                       }
                     }],
