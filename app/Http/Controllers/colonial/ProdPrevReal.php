@@ -1393,7 +1393,7 @@ class ProdPrevReal extends Controller
                           
             $porcPerda[]=array( 
                 "produto"=>$val->nm_produto,
-                "qtde"=>$val->perc,  
+                "qtde"=>round($val->perc,2),  
                 "dti"=>$request['dti'],
                 "dtf"=>$request['dtf'],
                 "sub_grupo"=>'perc_perda',
