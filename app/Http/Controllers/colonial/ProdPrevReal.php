@@ -374,7 +374,7 @@ class ProdPrevReal extends Controller
                 ->selectRaw("count(qtde) valor")->first();
         
         
-                $parada = Parada::whereRaw("CONVERT(varchar, dt_cadastro, 103) like '%".$request['label']."%' ")
+                $parada = Parada::whereRaw("CONVERT(varchar, dt_ordem, 103) like '%".$request['label']."%' ")
                 ->selectRaw("sum(tempo) valor")->first();
             
                 $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) like '%".$request['label']."%' ")
@@ -434,11 +434,11 @@ class ProdPrevReal extends Controller
 
                 /* tipo parada */  
                 $retorno['dadosParada'] = DB::select(" 
-                select nm_tipo , producao_parada.dt_cadastro, tempo qtde,obs_parada
+                select nm_tipo , producao_parada.dt_ordem dt_cadastro, tempo qtde,obs_parada
                 from producao_parada 
                 inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
                 ".$ParametroParada."
-                order by producao_parada.dt_cadastro "); 
+                order by producao_parada.dt_ordem "); 
             
                 $retorno['dadosPerda'] = DB::select(" 
                 select nm_tipo,qtde, perda.dt_ordem,nm_produto,obs_perda
@@ -485,7 +485,7 @@ class ProdPrevReal extends Controller
                 from perda 
                 inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
                 left join SBO_KARAMBI_PRD.dbo.OITM on  convert(varchar, OITM.ItemCode,103) =   perda.cd_produto  COLLATE Latin1_General_CI_AS
-                left join (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor on owor.DocEntry = perda.cd_ordem
+                left join  SBO_KARAMBI_PRD.dbo.owor  on owor.DocEntry = perda.cd_ordem
                 left join SBO_KARAMBI_PRD.dbo.oitm oitmItem on oitmItem.ItemCode=owor.ItemCode
                 where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and  '".$request['dtf']."'
                 $Tipo $grupo
@@ -508,13 +508,15 @@ class ProdPrevReal extends Controller
                 }
                 $retorno['dadosParada'] = DB::select(" 
                 select cd_producao_parada,CONVERT(CHAR(10),producao_parada.dt_ordem, 103)  dt_ordem,nm_tipo,
-                nm_equipamento,tempo,obs_parada
+                nm_equipamento,tempo,obs_parada,oitm.ItemCode cd_item ,oitm.ItemName nm_item,producao_parada.cd_ordem
                 from producao_parada 
                 inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
                 left join equipamento on equipamento.cd_equipamento = producao_parada.cd_equipamento
+                left join  SBO_KARAMBI_PRD.dbo.owor  on owor.DocEntry = producao_parada.cd_ordem
+                left join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode
                 where CONVERT(CHAR(10),producao_parada.dt_ordem, 23)  between '".$request['dti']."' and  '".$request['dtf']."'
                  $Tipo $Equip
-                order by producao_parada.dt_cadastro "); 
+                order by producao_parada.dt_ordem "); 
                 return $retorno;
             }
 
@@ -681,8 +683,10 @@ class ProdPrevReal extends Controller
         $ProduzidoKg=0; $PlanejadoKg=0;
         $ProduzidoTo=0; $PlanejadoTo=0;     
         $data=null; $ProduzidoCxPerc=0;
+   
         $ProduzidoKgPerc=0;$ProduzidoToPerc=0;
         $prod_per=null;
+        
         foreach($dados as $key => $val){
            if($key % 2 == 0) { $townName2=round($val->planejado_kg); }else{ $townName2=''; }
              
@@ -745,8 +749,7 @@ class ProdPrevReal extends Controller
         if(($ProduzidoKg>0) && ($PlanejadoKg>0)){ $ProduzidoKgPerc=round((($ProduzidoKg/$PlanejadoKg)*100),2); }
         if(($ProduzidoTo>0) && ($PlanejadoTo>0)){ $ProduzidoToPerc=round((($ProduzidoTo/$PlanejadoTo)*100),2); }
  
-        /* Produto */ 
-  
+        /* Produto */  
         $dadosProd = DB::select(" 
         select ItemName nome, sum(CmpltQty) produzido_cx,sum(CmpltQty*IWeight1) produzido_kg,sum((CmpltQty*IWeight1)/1000) produzido_to,sum(CmpltQty) produzido
         from (
@@ -1366,6 +1369,41 @@ class ProdPrevReal extends Controller
             );
     
         }
+
+        /* % de Perda Por Produto */
+
+      
+        /* tipo perda */ 
+        $porcPerda=null; 
+        $dadosParada = DB::select("  
+        select top(15) cd_produto,nm_produto,Quantity total,sum(qtde) qtde , 
+        ((sum(qtde)/Quantity)*100) perc 
+        from perda
+        left join (
+          select IGE1.ItemCode, sum(Quantity) Quantity
+          from SBO_KARAMBI_PRD.dbo.IGE1 
+          where  CONVERT(CHAR(10),DocDate, 23)  
+                between '".$request['dti']."' and '".$request['dtf']."'
+          group by IGE1.ItemCode											
+        ) IGE1 on IGE1.ItemCode=perda.cd_produto COLLATE Latin1_General_CI_AS
+        where CONVERT(CHAR(10),perda.dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."'
+        group by cd_produto,nm_produto,Quantity 
+        order by ((sum(qtde)/Quantity)*100) desc "); 
+        foreach($dadosParada as $key => $val){  
+                          
+            $porcPerda[]=array( 
+                "produto"=>$val->nm_produto,
+                "qtde"=>$val->perc,  
+                "dti"=>$request['dti'],
+                "dtf"=>$request['dtf'],
+                "sub_grupo"=>'perc_perda',
+                "cd_produto"=>$val->cd_produto,
+                "total"=>$val->total, 
+                'agrupamento'=>$request['agrupamento'],
+                "color"=> $this->gerar_cor($key+6)
+            );
+    
+        }
  
         $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 23) between '".$request['dti']."' and '".$request['dtf']."' ")
         ->selectRaw("sum(saldo) valor")->first();
@@ -1505,6 +1543,7 @@ class ProdPrevReal extends Controller
         $retorno['GraficoEquip_parada']=$Equipamento; 
         $retorno['GraficoPerda']=$Perda;
         $retorno['GraficoTpPerda']=$tipoPerda;
+        $retorno['GraficoPorcPerda']=$porcPerda;  
         $retorno['GraficoGrupoPerda']=$grupoPerdas;
 
         return $retorno;

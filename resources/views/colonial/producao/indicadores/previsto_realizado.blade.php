@@ -41,7 +41,7 @@
 }
   
 #chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, 
-#chartdiv_tp_perda
+#chartdiv_tp_perda, #chartdiv_porc_perda
 {
   width: 100%;
   height: 500px;
@@ -62,7 +62,7 @@
 #chartdiv_tp_parada
 {
   width: 100%;
-  height: 400px;
+  height: 450px;
 }
 
 #chartdiv_perda
@@ -1049,6 +1049,17 @@ ul {
                             <x-loader class="absolute-loader"/>
                         </template>
 
+                        <div class="row" style="margin-top: 50px;">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;">Índice de perdas Por Produto</h3></div> 
+                        </div> 
+                       
+                        <!-- HTML -->
+                        <div id="chartdiv_porc_perda"></div>
+                        <template x-if="loadingCharts">
+                            <x-loader class="absolute-loader"/>
+                        </template>
+
                     </div>
                 </div>
             </div>
@@ -1372,6 +1383,7 @@ ul {
                                         <tr class="active">
                                             <th >Codigo</th>
                                             <th >Data</th>
+                                            <th >Item de Produção</th>
                                             <th >Equipamento</th>
                                             <th >Tipo de Parada</th>
                                             <th >Observações</th>
@@ -1383,6 +1395,7 @@ ul {
                                             <tr style="font-size: 16px;">
                                                 <td style="font-size: 16px;" x-text="query.cd_producao_parada"></td>
                                                 <td style="font-size: 16px;" x-text="query.dt_ordem"></td>
+                                                <td style="font-size: 16px;" x-text="query.cd_item+' - '+query.nm_item"></td> 
                                                 <td style="font-size: 16px;" x-text="query.nm_equipamento"></td>
                                                 <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
                                                 <td style="font-size: 16px;" x-text="query.obs_parada"></td> 
@@ -1441,7 +1454,7 @@ ul {
                                             <tr style="font-size: 16px;">
                                                 <td style="font-size: 16px;" x-text="query.cd_perda"></td>
                                                 <td style="font-size: 16px;" x-text="query.dt_ordem"></td> 
-                                                <td style="font-size: 16px;" x-text="query.nm_item"></td> 
+                                                <td style="font-size: 16px;" x-text="query.cd_item+' - '+query.nm_item"></td> 
                                                 <td style="font-size: 16px;" x-text="query.cd_produto+' - '+query.nm_produto"></td> 
                                                 <td style="font-size: 16px;" x-text="query.nm_tipo"></td> 
                                                 <td style="font-size: 16px;" x-text="query.obs_perda"></td> 

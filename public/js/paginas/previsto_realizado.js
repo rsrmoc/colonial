@@ -860,6 +860,46 @@ Alpine.data('app', function () {
         } else {
           $("#chartdiv_tp_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
         }
+
+        /*PorcentagemPerda*/
+        if (res.data.GraficoPorcPerda) {
+          var chart = AmCharts.makeChart("chartdiv_porc_perda", {
+            "decimalSeparator": ",",
+            "thousandsSeparator": ".",
+            "type": "serial",
+            "theme": "none",
+            "rotate": true,
+            "dataProvider": res.data.GraficoPorcPerda,
+            "startDuration": 1,
+            "graphs": [{
+              "balloonText": "<b>[[category]]: [[value]]   </b>",
+              "fillColorsField": "color",
+              "fillAlphas": 0.9,
+              "labelText": "[[value]]",
+              "lineAlpha": 0.2,
+              "type": "column",
+              "valueField": "qtde"
+            }],
+            "chartCursor": {
+              "categoryBalloonEnabled": false,
+              "cursorAlpha": 0,
+              "zoomable": false
+            },
+            "categoryField": "produto",
+            "categoryAxis": {
+              "gridPosition": "start",
+              "labelRotation": 45
+            },
+            "listeners": [{
+              "event": "clickGraphItem",
+              "method": function method(event) {
+                _this2.getDetalhePerda(event.item.dataContext);
+              }
+            }]
+          });
+        } else {
+          $("#chartdiv_porc_perda").html("<div style='text-align: center;'> <img style='padding-top: 150px;' src='/assets/images/grafico-pizza.png'><br>#Sem Informações </div>");
+        }
       })["catch"](function (err) {
         console.log(err.response.data);
         toastr.error(err.response.data.message, "Erro");
