@@ -1376,7 +1376,7 @@ class ProdPrevReal extends Controller
         /* tipo perda */ 
         $porcPerda=null; 
         $dadosParada = DB::select("  
-        select top(15) cd_produto,nm_produto,Quantity total,sum(qtde) qtde , 
+        select top(15) cd_produto,nm_produto,(Quantity-sum(qtde)) total,sum(qtde) qtde , 
         ((sum(qtde)/Quantity)*100) perc 
         from perda
         left join (
