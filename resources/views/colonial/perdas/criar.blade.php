@@ -53,7 +53,7 @@
                     </div>
 
            
-                    <div class="row">
+                    <div class="row" >
                         <div class="col-md-12 col-sm-12 col-xs-12 " >
                             <div class="form-group @if($errors->has('obs')) has-error @endif ">
                                 <label for="fname">Observações Adicionais: <span class="red normal"> </span></label>
