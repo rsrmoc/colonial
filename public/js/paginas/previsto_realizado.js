@@ -214,7 +214,6 @@ Alpine.data('app', function () {
             "valueText": "[[value]] ([[percents]]%)",
             "valueWidth": 100
           },
-          "trendLines": [],
           "graphs": [{
             "balloonText": "Planejado: <b>[[value]] (" + res.data.request.ds_unidade + ") </b>",
             "fillAlphas": 0.8,
@@ -253,6 +252,11 @@ Alpine.data('app', function () {
             }
           }],
 
+          "valueAxes": [{
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0
+          }],
           "dataProvider": res.data.previsto
         });
         if (!res.data.previsto) {
@@ -282,7 +286,6 @@ Alpine.data('app', function () {
             "valueText": "[[value]] ([[percents]]%)",
             "valueWidth": 100
           },
-          "trendLines": [],
           "graphs": [{
             "balloonText": "Produzido : <b>[[value]] (%)  </b>",
             "fillAlphas": 0.8,
@@ -295,11 +298,10 @@ Alpine.data('app', function () {
             "fillColorsField": "color_producao",
             "lineColor": "#2A0CD0"
           }],
-          "guides": [],
           "valueAxes": [{
-            "id": "ValueAxis-1",
-            "position": "top",
-            "axisAlpha": 0
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0
           }],
           "listeners": [{
             "event": "clickGraphItem",
@@ -668,6 +670,11 @@ Alpine.data('app', function () {
             "theme": "none",
             "rotate": true,
             "dataProvider": res.data.GraficoTp_parada,
+            "valueAxes": [{
+              "axisAlpha": 0.2,
+              "id": "v1",
+              "minimum": 0
+            }],
             "startDuration": 1,
             "graphs": [{
               "balloonText": "<b>[[category]]: [[value]] ( Minutos ) </b>",
@@ -708,6 +715,11 @@ Alpine.data('app', function () {
             "theme": "none",
             "rotate": true,
             "dataProvider": res.data.GraficoEquip_parada,
+            "valueAxes": [{
+              "axisAlpha": 0.2,
+              "id": "v1",
+              "minimum": 0
+            }],
             "startDuration": 1,
             "graphs": [{
               "balloonText": "<b>[[category]]: [[value]] ( Minutos ) </b>",
@@ -791,6 +803,11 @@ Alpine.data('app', function () {
             "theme": "none",
             "rotate": true,
             "dataProvider": res.data.GraficoGrupoPerda,
+            "valueAxes": [{
+              "axisAlpha": 0.2,
+              "id": "v1",
+              "minimum": 0
+            }],
             "startDuration": 1,
             "graphs": [{
               "balloonText": "<b>[[category]]: [[value]]   </b>",
@@ -831,6 +848,11 @@ Alpine.data('app', function () {
             "theme": "none",
             "rotate": true,
             "dataProvider": res.data.GraficoTpPerda,
+            "valueAxes": [{
+              "axisAlpha": 0.2,
+              "id": "v1",
+              "minimum": 0
+            }],
             "startDuration": 1,
             "graphs": [{
               "balloonText": "<b>[[category]]: [[value]]   </b>",
@@ -872,6 +894,11 @@ Alpine.data('app', function () {
             "theme": "none",
             "rotate": true,
             "dataProvider": res.data.GraficoPorcPerda,
+            "valueAxes": [{
+              "axisAlpha": 0.2,
+              "id": "v1",
+              "minimum": 0
+            }],
             "startDuration": 1,
             "graphs": [{
               "balloonText": "<b>[[category]]: [[value]]   </b>",
