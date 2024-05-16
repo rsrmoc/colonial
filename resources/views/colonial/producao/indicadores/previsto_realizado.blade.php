@@ -1795,4 +1795,5 @@ ul {
         <script src="{{ asset('js/paginas/previsto_realizado.js') }}"></script>
 
     </x-slot>
+    
 </x-layout.colonial.layout>

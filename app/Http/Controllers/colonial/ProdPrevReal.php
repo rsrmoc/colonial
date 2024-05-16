@@ -41,9 +41,7 @@ class ProdPrevReal extends Controller
  
     public function modalJson(Request $request) { 
         try{
-            
-            
-
+             
             if($request['indicador']=='perdaE_cards'){
 
                 $validator = Validator::make($request->all(), [

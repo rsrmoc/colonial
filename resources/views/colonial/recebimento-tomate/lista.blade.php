@@ -44,34 +44,42 @@
                             <tr class="active">
                                 <th>Codigo</th>
                                 <th class="text-center">Data</th> 
-                                <th >Ordem de Produção</th>  
-                                <th >Produto </th>  
-                                <th >Tipo de Perda</th>  
-                                <th class="text-center">Qtde.</th>  
+                                <th class="text-center">Hr.Inicial</th>
+                                <th class="text-center">Hr.Final</th>
+                                <th >Nr.Controle</th>  
+                                <th >Fornecedor </th>  
+                                <th >Placa</th>  
+                                <th class="text-right">BRIX</th>  
+                                <th class="text-right">Acidez</th> 
+                                <th class="text-center">Cadastro</th> 
                                 <th class="text-center">Ação</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @foreach ($perda as $linha) 
-                                    <tr id="tr-perda-{{  $linha->cd_perda }}">
-                                        <th>{{ $linha->cd_perda }}</th> 
-                                        <td class="text-center">{{  date( 'd/m/Y' , strtotime( $linha->dt_ordem ) ) }}</td> 
-                                        <td>{{ $linha->cd_ordem }}</td> 
-                                        <td>{{ $linha['nm_produto'] }}</td> 
-                                        <td  >{{ $linha['tab_tipo']['nm_tipo'] }}</td> 
-                                        <td class="text-center">{{ $linha['qtde'] }}</td> 
+                                    <tr id="tr-recebimentotomate-{{  $linha->cd_recebimento }}">
+                                        <th>{{ $linha->cd_recebimento }}</th> 
+                                        <td class="text-center">{{  date( 'd/m/Y' , strtotime( $linha->dt_recebimento ) ) }}</td> 
+                                        <td class="text-center">{{  date( 'H:i' , strtotime( $linha->hr_inicial ) ) }}</td> 
+                                        <td class="text-center">{{  date( 'H:i' , strtotime( $linha->hr_final ) ) }}</td> 
+                                        <td>{{ $linha->nr_controle }}</td> 
+                                        <td>{{ $linha['nm_fornecedor'] }}</td> 
+                                        <td  >{{ $linha['placa']  }}</td> 
+                                        <td class="text-right">{{ $linha['brix'] }}</td> 
+                                        <td class="text-right">{{ $linha['acidez'] }}</td> 
+                                        <td class="text-center">{{  date( 'd/m/Y H:i' , strtotime( $linha->created_at ) ) }}</td> 
                                         <td class="text-center"> 
                                                 <div class="btn-group">
-                                                    @if (auth()->user()->isPermissao('perda', 'criar'))
-                                                        <a href="{{ route('perda-editar', $linha) }}"
+                                                    @if (auth()->user()->isPermissao('recebimentotomate', 'criar'))
+                                                        <a href="{{ route('recebimentotomate-editar', $linha) }}"
                                                             class="btn btn-success btn-xs">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
                                                     @endif
 
-                                                    @if (auth()->user()->isPermissao('perda', 'excluir'))
-                                                        <button class="btn btn-danger btn-xs" onclick="excluirCad('#tr-perda-{{ $linha->cd_perda }}', {{ $linha->cd_perda }})">
+                                                    @if (auth()->user()->isPermissao('recebimentotomate', 'excluir'))
+                                                        <button class="btn btn-danger btn-xs" onclick="excluirCad('#tr-recebimentotomate-{{ $linha->cd_perda }}', {{ $linha->cd_perda }})">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     @endif
@@ -106,12 +114,12 @@
                     confirmButtonText: 'Sim'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        axios.get(`/colonial/perda-delete/${id}`)
+                        axios.get(`/colonial/recebimentotomate-delete/${id}`)
                             .then((res) => {
                                 document.querySelector(el).remove();
-                                toastr["success"]('Perda excluida com sucesso!');
+                                toastr["success"]('Recebimento de tomate excluida com sucesso!');
                             })
-                            .catch((err) => toastr["error"]('Não foi possivel excluir o Usuário!'));
+                            .catch((err) => toastr["error"]('Não foi possivel excluir o Recebimento de Tomate!'));
                     }
                 });
             }

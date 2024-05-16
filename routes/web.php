@@ -122,8 +122,7 @@ Route::group([
      Route::post('/recebimentotomate-store', [RecebimentoTomates::class, 'store'])->name('recebimentotomate-store');
      Route::get('/recebimentotomate-editar/{tomate}', [RecebimentoTomates::class, 'edit'])->name('recebimentotomate-editar');
      Route::post('/recebimentotomate-update/{tomate}', [RecebimentoTomates::class, 'update'])->name('recebimentotomate-update');
-     Route::get('/recebimentotomate-delete/{tomate}', [RecebimentoTomates::class, 'destroy'])->name('recebimentotomate-destroy');
-     Route::get('/recebimentotomate-combo/{tomate}', [RecebimentoTomates::class, 'combo'])->name('recebimentotomate-combo');
+     Route::get('/recebimentotomate-delete/{tomate}', [RecebimentoTomates::class, 'destroy'])->name('recebimentotomate-destroy'); 
      
      
     /* Previsto x Realizado */

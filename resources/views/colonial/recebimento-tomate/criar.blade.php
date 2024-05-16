@@ -84,7 +84,7 @@
                         <div class="col-md-2 col-md-offset-1 ">
                             <div class="form-group @if($errors->has('verde')) has-error @endif ">
                                 <label for="fname">Verdes(%):  <span class="red normal"> * [ Padrão 5 ]</span></label>
-                                <input type="text" class="form-control" value="{{old('verde')}}" placeholder="Verdes" name="verde"> 
+                                <input type="text" class="form-control" value="{{old('verde')}}" x-model="verde"  placeholder="Verdes" name="verde"> 
                                 @if($errors->has('verde'))
                                     <div class="error">{{ $errors->first('verde') }}</div>
                                 @endif
@@ -93,7 +93,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('praga')) has-error @endif ">
                                 <label for="fname">Pragas Lesões(%): <span class="red normal">* [ Padrão 2 ]</span></label>
-                                <input type="text" class="form-control" value="{{old('praga')}}" placeholder="Pragas" name="praga"> 
+                                <input type="text" class="form-control" value="{{old('praga')}}"  placeholder="Pragas" name="praga"> 
                                 @if($errors->has('praga'))
                                     <div class="error">{{ $errors->first('praga') }}</div>
                                 @endif
@@ -159,7 +159,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('total')) has-error @endif ">
                                 <label for="fname">Total(%): <span class="red normal">*</span></label>
-                                <input type="text" class="form-control" value="{{old('total')}}"   placeholder="Total" name="total"> 
+                                <input type="text" class="form-control" value="{{old('total')}}"   x-model="total"  placeholder="Total" name="total"> 
                                 @if($errors->has('total'))
                                     <div class="error">{{ $errors->first('total') }}</div>
                                 @endif
@@ -246,37 +246,11 @@
         </div>
     </div>  
  
+ 
+    <x-slot name="scripts"> 
+     
+  
 
- <x-slot name="scripts"> 
-    <script>
-    
-        carregar = function (cod) { 
-            $("#div_combo").empty().html('<div class="form-control" style="text-align: center;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i> Carregando Produtos </div>');  
-            $.ajax({ 
-                type: "GET",
-                data: null,
-                url: '/colonial/perda-combo/'+cod, 
-                success: function(pegar_dados) {  
-                    complete:$("#div_combo").empty().html(pegar_dados);
-                }
-            }) 
-        }
-
-        carregar_ordem = function () { 
-                var cod = $("#dataPesq").val();  
-                if(!cod) return false;
-                $("#div_combo_ordem").empty().html('<div class="form-control" style="text-align: center;"><i class="fa fa-spinner  fa-spin" aria-hidden="true" ></i> Carregando Ordens de Produção </div>');  
-                $.ajax({ 
-                    type: "GET",
-                    data: null,
-                    url: '/colonial/parada-combo/'+cod+"?perda=true", 
-                    success: function(pegar_dados) {  
-                        complete:$("#div_combo_ordem").empty().html(pegar_dados);
-                    }
-                })
-                 
-            }
-
-    </script>
- </x-slot>
+    </x-slot>
+ 
 </x-layout.colonial.layout>
