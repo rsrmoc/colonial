@@ -246,7 +246,7 @@ Alpine.data('app', () => ({
                       "lineAlpha": 0.2,
                       "title": "Planejado",
                       "labelText": "[[value]]",
-                      "type": "column",
+                      "type": "column", 
                       "valueField": "planejado",
                       "fillColorsField": "color_planejado", 
                       "lineColor": "#008000",

@@ -17,6 +17,7 @@ use App\Http\Controllers\colonial\Paradas;
 use App\Http\Controllers\colonial\Perdas;
 use App\Http\Controllers\colonial\Perfis;
 use App\Http\Controllers\colonial\ProdPrevReal;
+use App\Http\Controllers\colonial\RecebimentoTomates;
 use App\Http\Controllers\colonial\TipoParada;
 use App\Http\Controllers\colonial\TipoPerda;
 use App\Http\Controllers\colonial\Usuarios;
@@ -115,6 +116,14 @@ Route::group([
      Route::get('/perda-delete/{perda}', [Perdas::class, 'destroy'])->name('perda-destroy');
      Route::get('/perda-combo/{ordem}', [Perdas::class, 'combo'])->name('perda-combo');
 
+     /* Recebimento de Tomate */
+     Route::get('/recebimentotomate', [RecebimentoTomates::class, 'lista'])->name('recebimentotomate-listar');
+     Route::get('/recebimentotomate-criar', [RecebimentoTomates::class, 'create'])->name('recebimentotomate-criar');
+     Route::post('/recebimentotomate-store', [RecebimentoTomates::class, 'store'])->name('recebimentotomate-store');
+     Route::get('/recebimentotomate-editar/{tomate}', [RecebimentoTomates::class, 'edit'])->name('recebimentotomate-editar');
+     Route::post('/recebimentotomate-update/{tomate}', [RecebimentoTomates::class, 'update'])->name('recebimentotomate-update');
+     Route::get('/recebimentotomate-delete/{tomate}', [RecebimentoTomates::class, 'destroy'])->name('recebimentotomate-destroy');
+     Route::get('/recebimentotomate-combo/{tomate}', [RecebimentoTomates::class, 'combo'])->name('recebimentotomate-combo');
      
      
     /* Previsto x Realizado */

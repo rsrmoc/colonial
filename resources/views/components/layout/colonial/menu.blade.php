@@ -45,17 +45,28 @@
                         </li>
                 </ul> 
             </li>
+ 
 
             <li class="#"><a   class="waves-effect waves-button"><span class="menu-icon   fa fa-money"></span><p>Vendas</p></a></li>
 
+            <li class="droplink "><a href="#" class="waves-effect waves-button"><span class="menu-icon   fa fa-certificate"></span><p>Qualidade</p><span class="arrow"></span></a>
+                <ul class="sub-menu"> 
+                        <li class=""><a href="#"  ><p>Safra Moagem</p> </a>  </li> 
+                        <li class="droplink"><a href="#"><p>Controles</p><span class="arrow"></span></a>
+                            <ul class="sub-menu"> 
+                                <li><a href="{{route('recebimentotomate-listar')}}">Recebimento de Tomate</a></li> 
+                            </ul>
+                        </li>
+                        
+                </ul> 
+            </li>
+             
             <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-shopping-cart  "></span><p>Compras</p></a></li>
 
             <li class="#"><a   class="waves-effect waves-button"><span class="menu-icon   fa fa-truck"></span><p>Estoque</p></a></li>
          
             <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-usd "></span><p>Financeiro</p></a></li>
-
-            <li class="#"><a class="waves-effect waves-button"><span class="menu-icon   fa fa-certificate"></span><p>Qualidade</p></a></li>
- 
+  
             <li class="#"><a  class="waves-effect waves-button"><span class="menu-icon   glyphicon glyphicon-wrench "></span><p>Manutenção</p></a></li>
 
             
