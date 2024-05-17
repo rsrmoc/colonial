@@ -12,6 +12,7 @@ use App\Models\Perda;
 use App\Models\Produto;
 use App\Models\RecebimentoTomate;
 use App\Models\Sap\Estoque;
+use App\Models\Sap\Fornecedor;
 use App\Models\Sap\ordemProducao;
 use App\Models\Sap\Produto as SapProduto;
 use App\Models\TipoParada;
@@ -47,10 +48,9 @@ class RecebimentoTomates extends Controller
     }
 
     public function create() {
-        $ordem = ordemProducao::whereRaw("DueDate > (GETDATE()-60)")->orderByRaw("DueDate desc")->whereNotIn("DocEntry",[207])->get(); 
-        $tipo = TipoPerda::whereRaw("sn_ativo='S'")->orderBy("nm_tipo")->get(); 
-  
-        return view('colonial.recebimento-tomate.criar', compact('ordem','tipo'));
+        
+        $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get();   
+        return view('colonial.recebimento-tomate.criar', compact('fornecedor'));
     }
  
     public function store(Request $request) {
@@ -102,7 +102,10 @@ class RecebimentoTomates extends Controller
             $dados['acidez']=  str_replace(".","",str_replace(",",".",$dados['acidez']));
             $dados['liquido']=  str_replace(".","",str_replace(",",".",$dados['liquido']));
             $dados['desconto']=  str_replace(".","",str_replace(",",".",$dados['desconto'])); 
-
+           
+            $forn=Fornecedor::selectRaw("CardCode codigo,CardName nome")->find($dados['fornecedor']); 
+            $dados['cd_fornecedor']=$forn->codigo;
+            $dados['nm_fornecedor']=$forn->nome; 
             return RecebimentoTomate::create($dados); 
  
             }); 
@@ -115,7 +118,10 @@ class RecebimentoTomates extends Controller
     }
 
     public function edit(RecebimentoTomate $tomate) {  
-        return view('colonial.recebimento-tomate.editar', compact('tomate'));
+
+        $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
+        return view('colonial.recebimento-tomate.editar', compact('tomate','fornecedor'));
+        
     }
 
     public function update(Request $request,RecebimentoTomate $tomate) {
@@ -168,6 +174,10 @@ class RecebimentoTomates extends Controller
                 $dados['acidez']=  str_replace(".","",str_replace(",",".",$dados['acidez']));
                 $dados['liquido']=  str_replace(".","",str_replace(",",".",$dados['liquido']));
                 $dados['desconto']=  str_replace(".","",str_replace(",",".",$dados['desconto'])); 
+            
+                $forn=Fornecedor::selectRaw("CardCode codigo,CardName nome")->find($dados['fornecedor']); 
+                $dados['cd_fornecedor']=$forn->codigo;
+                $dados['nm_fornecedor']=$forn->nome; 
                 
                 return $tomate->update($dados);
 
@@ -181,6 +191,7 @@ class RecebimentoTomates extends Controller
         }
 
     }
+
     public function destroy(RecebimentoTomate $tomate) { 
         try { $tomate->delete(); }
         catch(\Exception $e) { abort(500); }

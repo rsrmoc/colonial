@@ -65,9 +65,10 @@
                                 <label for="fname" >Fornecedor: <span class="red normal"> </span></label>
                                 <div id="div_combo_ordem"> 
                                     <select class="form-control"  name="fornecedor"  >
-                                        <option value="">SELECIONE</option> 
-                                        <option value="1">SELECIONE XX</option> 
-                                        <option value="2">SELECIONE ZZ</option> 
+                                        <option value="">...</option> 
+                                        @foreach ($fornecedor as $forn)
+                                            <option value="{{ $forn->codigo }}" @if(old('fornecedor',$tomate->cd_fornecedor)==$forn->codigo) selected @endif >{{ $forn->nome }}</option> 
+                                        @endforeach  
                                       
                                     </select>
                                 </div>
