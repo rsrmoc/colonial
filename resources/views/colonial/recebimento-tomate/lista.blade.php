@@ -79,7 +79,7 @@
                                                     @endif
 
                                                     @if (auth()->user()->isPermissao('recebimentotomate', 'excluir'))
-                                                        <button class="btn btn-danger btn-xs" onclick="excluirCad('#tr-recebimentotomate-{{ $linha->cd_perda }}', {{ $linha->cd_perda }})">
+                                                        <button class="btn btn-danger btn-xs" onclick="excluirCad('#tr-recebimentotomate-{{ $linha->cd_recebimento }}', {{ $linha->cd_recebimento }})">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     @endif
