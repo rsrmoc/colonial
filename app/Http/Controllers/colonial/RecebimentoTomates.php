@@ -88,6 +88,21 @@ class RecebimentoTomates extends Controller
         try {
            $retorno= DB::transaction(function () use($dados) {
             
+            $dados['verde']=  str_replace(".","",str_replace(",",".",$dados['verde']));
+            $dados['praga']=  str_replace(".","",str_replace(",",".",$dados['praga']));
+            $dados['fungo']=  str_replace(".","",str_replace(",",".",$dados['fungo']));
+            $dados['desintegrado']=  str_replace(".","",str_replace(",",".",$dados['desintegrado']));
+            $dados['defeito']=  str_replace(".","",str_replace(",",".",$dados['defeito']));
+            $dados['impureza']=  str_replace(".","",str_replace(",",".",$dados['impureza']));
+            $dados['terra']=  str_replace(".","",str_replace(",",".",$dados['terra']));
+            $dados['fruto']=  str_replace(".","",str_replace(",",".",$dados['fruto']));
+            $dados['total']=  str_replace(".","",str_replace(",",".",$dados['total']));
+            $dados['brix']=  str_replace(".","",str_replace(",",".",$dados['brix']));
+            $dados['ph']=  str_replace(".","",str_replace(",",".",$dados['ph']));
+            $dados['acidez']=  str_replace(".","",str_replace(",",".",$dados['acidez']));
+            $dados['liquido']=  str_replace(".","",str_replace(",",".",$dados['liquido']));
+            $dados['desconto']=  str_replace(".","",str_replace(",",".",$dados['desconto'])); 
+
             return RecebimentoTomate::create($dados); 
  
             }); 
@@ -138,6 +153,21 @@ class RecebimentoTomates extends Controller
         try {
            $dados =$validator->validate(); 
            $retorno = DB::transaction(function () use($dados,$tomate) {
+
+                $dados['verde']=  str_replace(".","",str_replace(",",".",$dados['verde']));
+                $dados['praga']=  str_replace(".","",str_replace(",",".",$dados['praga']));
+                $dados['fungo']=  str_replace(".","",str_replace(",",".",$dados['fungo']));
+                $dados['desintegrado']=  str_replace(".","",str_replace(",",".",$dados['desintegrado']));
+                $dados['defeito']=  str_replace(".","",str_replace(",",".",$dados['defeito']));
+                $dados['impureza']=  str_replace(".","",str_replace(",",".",$dados['impureza']));
+                $dados['terra']=  str_replace(".","",str_replace(",",".",$dados['terra']));
+                $dados['fruto']=  str_replace(".","",str_replace(",",".",$dados['fruto']));
+                $dados['total']=  str_replace(".","",str_replace(",",".",$dados['total']));
+                $dados['brix']=  str_replace(".","",str_replace(",",".",$dados['brix']));
+                $dados['ph']=  str_replace(".","",str_replace(",",".",$dados['ph']));
+                $dados['acidez']=  str_replace(".","",str_replace(",",".",$dados['acidez']));
+                $dados['liquido']=  str_replace(".","",str_replace(",",".",$dados['liquido']));
+                $dados['desconto']=  str_replace(".","",str_replace(",",".",$dados['desconto'])); 
                 
                 return $tomate->update($dados);
 
