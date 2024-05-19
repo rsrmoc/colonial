@@ -40,7 +40,7 @@
                                 <tbody>
                                    
                                     @foreach ($permissoes as $tela)
-                                        {!! $tela->opcao.'<br>' !!}
+                                        
                                         <tr>
                                             <td>{{ $tela->cd_permissao }}</td>
 
