@@ -46,8 +46,19 @@
                 </ul> 
             </li>
  
+ 
 
-            <li class="#"><a   class="waves-effect waves-button"><span class="menu-icon   fa fa-money"></span><p>Vendas</p></a></li>
+            <li class="droplink "><a href="#" class="waves-effect waves-button"><span class="menu-icon   fa fa-money"></span><p>Vendas</p><span class="arrow"></span></a>
+                <ul class="sub-menu"> 
+                        <li class=""><a href="#" ><p>Pedidos de vendas</p> </a>  </li> 
+                        <li class="droplink"><a href="#"><p>Controles</p><span class="arrow"></span></a>
+                            <ul class="sub-menu"> 
+                                <li><a href="{{route('frete-listar')}}">Controle de Frete</a></li> 
+                            </ul>
+                        </li>
+                        
+                </ul> 
+            </li>
 
             <li class="droplink "><a href="#" class="waves-effect waves-button"><span class="menu-icon   fa fa-certificate"></span><p>Qualidade</p><span class="arrow"></span></a>
                 <ul class="sub-menu"> 

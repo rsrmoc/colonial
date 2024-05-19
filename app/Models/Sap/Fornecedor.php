@@ -9,7 +9,8 @@ class Fornecedor extends Model
 {
     protected $table = 'SBO_KARAMBI_PRD.dbo.ocrd';
     protected $primaryKey = 'CardCode';
-
+    public $incrementing = false; 
+    protected $keyType = 'string';
     protected $fillable = [
         'CardCode',
         'CardName', 

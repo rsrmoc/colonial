@@ -8,6 +8,7 @@ use App\Http\Controllers\colonial\Condominios;
 use App\Http\Controllers\colonial\Controle;
 use App\Http\Controllers\colonial\Energia;
 use App\Http\Controllers\colonial\Equipamentos;
+use App\Http\Controllers\colonial\Fretes;
 use App\Http\Controllers\colonial\Hidrico; 
 use App\Http\Controllers\colonial\Inicio;
 use App\Http\Controllers\colonial\Integracoes;
@@ -124,6 +125,17 @@ Route::group([
      Route::post('/recebimentotomate-update/{tomate}', [RecebimentoTomates::class, 'update'])->name('recebimentotomate-update');
      Route::get('/recebimentotomate-delete/{tomate}', [RecebimentoTomates::class, 'destroy'])->name('recebimentotomate-destroy'); 
      
+
+     /* Fretes */
+     Route::get('/frete', [Fretes::class, 'lista'])->name('frete-listar');
+     Route::get('/frete-criar', [Fretes::class, 'create'])->name('frete-criar');
+     Route::post('/frete-store', [Fretes::class, 'store'])->name('frete-store');
+     Route::get('/frete-editar/{frete}', [Fretes::class, 'edit'])->name('frete-editar');
+     Route::post('/frete-update/{frete}', [Fretes::class, 'update'])->name('frete-update');
+     Route::get('/frete-delete/{frete}', [Fretes::class, 'destroy'])->name('frete-destroy'); 
+
+     /* ################################### indicadores ####################################################### */
+
      
     /* Previsto x Realizado */
      Route::get('/prod_prev_real', [ProdPrevReal::class, 'listar'])->name('prod_prev_real-listar');  
