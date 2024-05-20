@@ -84,8 +84,8 @@
                     <div class="row">
                         <div class="col-md-2 col-md-offset-1 ">
                             <div class="form-group @if($errors->has('verde')) has-error @endif ">
-                                <label for="fname">Verdes(%):  <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('verde',$tomate->verde)}}" x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()"    placeholder="Verdes" name="verde"> 
+                                <label for="fname">Verdes(%):  <span class="red normal"> * </span></label>  
+                                <input type="text" class="form-control" value="{{old('verde',str_replace('.', ',', $tomate->verde) )}}" x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()"    placeholder="Verdes" name="verde"> 
                                 @if($errors->has('verde'))
                                     <div class="error">{{ $errors->first('verde') }}</div>
                                 @endif
@@ -94,7 +94,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('praga')) has-error @endif ">
                                 <label for="fname">Pragas Lesões(%): <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('praga',$tomate->praga)}}" x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Pragas" name="praga"> 
+                                <input type="text" class="form-control" value="{{old('praga', str_replace('.', ',', $tomate->praga) )}}" x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Pragas" name="praga"> 
                                 @if($errors->has('praga'))
                                     <div class="error">{{ $errors->first('praga') }}</div>
                                 @endif
@@ -103,7 +103,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('fungo')) has-error @endif ">
                                 <label for="fname">Fungos, Poderes(%): <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('fungo',$tomate->fungo)}}"  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Fungos" name="fungo"> 
+                                <input type="text" class="form-control" value="{{old('fungo', str_replace('.', ',', $tomate->fungo) ) }} "  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Fungos" name="fungo"> 
                                 @if($errors->has('fungo'))
                                     <div class="error">{{ $errors->first('fungo') }}</div>
                                 @endif
@@ -112,7 +112,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('desintegrado')) has-error @endif ">
                                 <label for="fname">Desintegrados(%): <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('desintegrado',$tomate->desintegrado)}}" x-mask:dynamic="$money($input, ',')"  x-on:input.change="caluculosAnalises()" placeholder="Desintegrados" name="desintegrado"> 
+                                <input type="text" class="form-control" value="{{old('desintegrado', str_replace('.', ',', $tomate->desintegrado)   )}}" x-mask:dynamic="$money($input, ',')"  x-on:input.change="caluculosAnalises()" placeholder="Desintegrados" name="desintegrado"> 
                                 @if($errors->has('desintegrado'))
                                     <div class="error">{{ $errors->first('desintegrado') }}</div>
                                 @endif
@@ -124,7 +124,7 @@
                         <div class="col-md-2 col-md-offset-1 ">
                             <div class="form-group @if($errors->has('defeito')) has-error @endif ">
                                 <label for="fname">Def. Gerais(%): <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('defeito',$tomate->defeito)}}" x-mask:dynamic="$money($input, ',')"  x-on:input.change="caluculosAnalises()" placeholder="Def. Gerais" name="defeito"> 
+                                <input type="text" class="form-control" value="{{old('defeito', str_replace('.', ',', $tomate->defeito) )}}" x-mask:dynamic="$money($input, ',')"  x-on:input.change="caluculosAnalises()" placeholder="Def. Gerais" name="defeito"> 
                                 @if($errors->has('defeito'))
                                     <div class="error">{{ $errors->first('defeito') }}</div>
                                 @endif
@@ -133,7 +133,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('impureza')) has-error @endif ">
                                 <label for="fname">Impurezas(%): <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('impureza',$tomate->impureza)}}"  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Impurezas" name="impureza"> 
+                                <input type="text" class="form-control" value="{{old('impureza', str_replace('.', ',', $tomate->impureza) )}}"  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Impurezas" name="impureza"> 
                                 @if($errors->has('impureza'))
                                     <div class="error">{{ $errors->first('impureza') }}</div>
                                 @endif
@@ -142,7 +142,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('terra')) has-error @endif ">
                                 <label for="fname">Terra(%): <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('terra',$tomate->terra)}}"  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Terra" name="terra"> 
+                                <input type="text" class="form-control" value="{{old('terra', str_replace('.', ',', $tomate->terra) )}}"  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Terra" name="terra"> 
                                 @if($errors->has('terra'))
                                     <div class="error">{{ $errors->first('terra') }}</div>
                                 @endif
@@ -151,7 +151,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('fruto')) has-error @endif ">
                                 <label for="fname">Frutos Bons(%): <span class="red normal"> * </span></label>
-                                <input type="text" class="form-control" value="{{old('fruto',$tomate->fruto)}}"  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Frutos" name="fruto"> 
+                                <input type="text" class="form-control" value="{{old('fruto',str_replace('.', ',',$tomate->fruto) )}}"  x-mask:dynamic="$money($input, ',')" x-on:input.change="caluculosAnalises()" placeholder="Frutos" name="fruto"> 
                                 @if($errors->has('fruto'))
                                     <div class="error">{{ $errors->first('fruto') }}</div>
                                 @endif
@@ -159,7 +159,7 @@
                         </div>
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('total')) has-error @endif ">
-                                <label for="fname">Total(%): <span class="red normal">*</span></label>
+                                <label for="fname">Total(%): <span class="red normal">*</span></label> {{ $tomate->total }}
                                 <input type="text"  value="{{old('total',$tomate->total)}}"  x-bind:class="(TotalInvalido == true) ?  ' form-control red '  : 'form-control' " style=" text-align: center; font-weight: 700; font-size: 1.1em;" readonly      name="total"> 
                                 @if($errors->has('total'))
                                     <div class="error">{{ $errors->first('total') }}</div>
@@ -174,7 +174,7 @@
                         <div class="col-md-2 col-md-offset-1 ">
                             <div class="form-group @if($errors->has('brix')) has-error @endif ">
                                 <label for="fname">Brix: <span class="red normal">*</span></label>
-                                <input type="text" class="form-control" value="{{old('brix',$tomate->brix)}}" x-mask:dynamic="$money($input, ',')" placeholder="Brix" name="brix"> 
+                                <input type="text" class="form-control" value="{{old('brix',str_replace('.', ',',$tomate->brix) )}}" x-mask:dynamic="$money($input, ',')" placeholder="Brix" name="brix"> 
                                 @if($errors->has('brix'))
                                     <div class="error">{{ $errors->first('brix') }}</div>
                                 @endif
@@ -183,7 +183,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('ph')) has-error @endif ">
                                 <label for="fname">PH: <span class="red normal">*</span></label>
-                                <input type="text" class="form-control" value="{{old('ph',$tomate->ph)}}" x-mask:dynamic="$money($input, ',')" placeholder="PH" name="ph"> 
+                                <input type="text" class="form-control" value="{{old('ph',str_replace('.', ',',$tomate->ph) )}}" x-mask:dynamic="$money($input, ',')" placeholder="PH" name="ph"> 
                                 @if($errors->has('ph'))
                                     <div class="error">{{ $errors->first('ph') }}</div>
                                 @endif
@@ -192,7 +192,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('acidez')) has-error @endif ">
                                 <label for="fname">Acidez: <span class="red normal">*</span></label>
-                                <input type="text" class="form-control" value="{{old('acidez',$tomate->acidez)}}" x-mask:dynamic="$money($input, ',')" placeholder="Acidez" name="acidez"> 
+                                <input type="text" class="form-control" value="{{old('acidez',str_replace('.', ',',$tomate->acidez) )}}" x-mask:dynamic="$money($input, ',')" placeholder="Acidez" name="acidez"> 
                                 @if($errors->has('acidez'))
                                     <div class="error">{{ $errors->first('acidez') }}</div>
                                 @endif
@@ -206,7 +206,7 @@
                         <div class="col-md-2 col-md-offset-1 ">
                             <div class="form-group @if($errors->has('liquido')) has-error @endif ">
                                 <label for="fname">Líquido Balança(KG): <span class="red normal">*</span></label>
-                                <input type="text" class="form-control" value="{{old('liquido',$tomate->liquido)}}" x-mask:dynamic="$money($input, ',')" placeholder="Líquido Balança" name="liquido"> 
+                                <input type="text" class="form-control" value="{{old('liquido',str_replace('.', ',',$tomate->liquido) )}}" x-mask:dynamic="$money($input, ',')" placeholder="Líquido Balança" name="liquido"> 
                                 @if($errors->has('liquido'))
                                     <div class="error">{{ $errors->first('liquido') }}</div>
                                 @endif
@@ -215,7 +215,7 @@
                         <div class="col-md-2 ">
                             <div class="form-group @if($errors->has('desconto')) has-error @endif ">
                                 <label for="fname">Desconto(KG): <span class="red normal">*</span></label>
-                                <input type="text" class="form-control" value="{{old('desconto',$tomate->desconto)}}" x-mask:dynamic="$money($input, ',')" placeholder="Desconto" name="desconto"> 
+                                <input type="text" class="form-control" value="{{old('desconto',str_replace('.', ',',$tomate->desconto) )}}" x-mask:dynamic="$money($input, ',')" placeholder="Desconto" name="desconto"> 
                                 @if($errors->has('desconto'))
                                     <div class="error">{{ $errors->first('desconto') }}</div>
                                 @endif
