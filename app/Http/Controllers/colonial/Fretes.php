@@ -29,6 +29,7 @@ class Fretes extends Controller
 {
     public function lista(Request $request) {
   
+      
         $query = Romaneio::SearchRelacao($request)  
         ->orderByRaw('PickDate desc')
         ->paginate(50)->appends($request->query());
@@ -45,14 +46,15 @@ class Fretes extends Controller
         $dados['query'] = Romaneio::SearchRelacao($request)->find($request['cod']);
 
         $pedidos = RomaneioItens::whereRaw(" AbsEntry= ".$request['cod'])->selectRaw("distinct(OrderEntry) codigo")->get(); 
-        $dados['pedidos'] = PedidoVenda::whereIn('DocEntry',$pedidos->toArray())
-        ->selectRaw("DocEntry codigo, DocDate data, CardName nome, Address endereco, Comments comentario, VatSum imposto, DocTotal total")
-        ->get();
+        $dados['pedidos'] = PedidoVenda::whereIn('DocEntry',$pedidos->toArray())->with('tab_cliente')
+        ->selectRaw("DocEntry codigo, DocDate data, CardName nome, Address endereco, Comments comentario, VatSum imposto, DocTotal total,CardCode")
+        ->get();  
         //dd($dados['pedidos']->toArray());
         return view('colonial.fretes.modal', compact('dados','request'));
 
     }
  
+
     public function store(Request $request) {
  
         
@@ -202,16 +204,12 @@ class Fretes extends Controller
         }
 
     }
+
     public function destroy(Perda $perda) { 
         try { $perda->delete(); }
         catch(\Exception $e) { abort(500); }
     }
 
-    public function combo(Request $request, $ordem) { 
-        
-        $dados = Estoque::whereRaw("BaseRef = ".$ordem)->selectRaw("itemcode,dscription")->Get(); 
-        $tipo = TipoPerda::whereRaw("sn_ativo='S'")->orderBy("nm_tipo")->get(); 
-        return view('colonial.perdas.combo', compact('dados','tipo'));
-    }
+
     
 }

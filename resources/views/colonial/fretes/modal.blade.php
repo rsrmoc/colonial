@@ -209,7 +209,29 @@
            </div>
    
            <div class="tab-pane " id="tab_frete">
-            --
+           
+            @foreach ($dados['pedidos'] as $ID => $pedido) 
+                <div class="row" style="margin-bottom: 15px;" >
+                  <div class="col-md-2 col-sm-2" >
+                    @if($ID==0) <label for="fname">Pedido:  <span class="red normal"> </span></label> @endif
+                    
+                    <span class="form-control" style="font-weight: 900; text-align: center; background: #f0efef">{{ $pedido['codigo'] }}</span>
+                  </div>
+                  <div class="col-md-4 col-sm-4" > 
+                    @if($ID==0) <label for="fname">Cliente:  <span class="red normal"> </span></label> @endif
+                    <span class="form-control" >{{ $pedido['tab_cliente']['CardName'] }} </span>
+                  </div>
+                  <div class="col-md-4 col-sm-4" > 
+                    @if($ID==0) <label for="fname">Cidade:  <span class="red normal"> </span></label> @endif
+                    <span class="form-control" >{{ $pedido['tab_cliente']['City'] }}</span>
+                  </div>
+                  <div class="col-md-2 col-sm-2" > 
+                    @if($ID==0) <label for="fname">Valor:  <span class="red normal"> </span></label> @endif
+                    <input type="text" class="form-control" style="text-align: right;"  x-mask:dynamic="$money($input, ',')"  name="valor[]"> 
+                  </div>
+              </div>
+            @endforeach
+
            </div>
    
            <div class="tab-pane " id="tab_cidade">

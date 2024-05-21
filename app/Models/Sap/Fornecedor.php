@@ -14,7 +14,9 @@ class Fornecedor extends Model
     protected $fillable = [
         'CardCode',
         'CardName', 
-        'CardType',    
+        'CardType',  
+        'City',
+        'County'  
     ];
 
  

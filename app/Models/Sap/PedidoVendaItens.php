@@ -9,5 +9,5 @@ class PedidoVendaItens extends Model
 {
     protected $table = 'SBO_KARAMBI_PRD.dbo.RDR1';
     protected $primaryKey = 'DocEntry';
-  
+ 
 }
