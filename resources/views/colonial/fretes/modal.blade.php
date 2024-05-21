@@ -210,6 +210,12 @@
    
            <div class="tab-pane " id="tab_frete">
            
+            --
+
+           </div>
+   
+           <div class="tab-pane " id="tab_cidade">
+
             @foreach ($dados['pedidos'] as $ID => $pedido) 
                 <div class="row" style="margin-bottom: 15px;" >
                   <div class="col-md-2 col-sm-2" >
@@ -231,11 +237,7 @@
                   </div>
               </div>
             @endforeach
-
-           </div>
-   
-           <div class="tab-pane " id="tab_cidade">
-            --
+            
            </div>
          <!-- /.tab-content -->
        </div>
