@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Boleto;
 use App\Models\Condominio;
 use App\Models\Energia as ModelsEnergia;
+use App\Models\Frete;
+use App\Models\FretePedido;
 use App\Models\Hospital;
 use App\Models\Parada;
 use App\Models\Perda;
@@ -43,12 +45,96 @@ class Fretes extends Controller
 
     public function create(Request $request) {
         
-        $dados['query'] = Romaneio::SearchRelacao($request)->find($request['cod']);
 
+        $dados['tabRomaneio']='active';
+        $dados['tabFrete']='';
+        $dados['tabCidade']='';
+        $dados['tabRPA']='';
+
+        if($request['acao']=='RPA'){
+            $dados['tabRomaneio']='';
+            $dados['tabRPA']='active';
+            $request['cd_romaneio']=$request['cod'];
+
+            $insert['vl_inss'] = ($request['vl_inss']) ? str_replace(",",".",str_replace(".","",$request['vl_inss'])) : 0;
+            $insert['vl_senat'] = ($request['vl_senat']) ? str_replace(",",".",str_replace(".","",$request['vl_senat'])) : 0;
+            $insert['vl_irrf'] = ($request['vl_irrf']) ? str_replace(",",".",str_replace(".","",$request['vl_irrf'])) : 0;
+
+            if($request['id']){
+                Frete::find($request['id'])->update($insert);
+            }else{
+                Frete::create($insert);
+            }
+        }
+
+        if($request['acao']=='CIDADE'){
+            $dados['tabRomaneio']='';
+            $dados['tabCidade']='active';
+            $Pedidos= $request['valor'];
+            $request['cd_romaneio']=$request['cod'];
+            foreach ($Pedidos as $pedido => $valor) {
+                $insert['cd_romaneio']=$request['cod'];
+                $insert['cd_pedido']=$pedido;
+                $insert['vl_pedido_frete']= ($valor) ? str_replace(",",".",str_replace(".","",$valor)) : 0;
+                FretePedido::create($insert);
+            }
+        }
+
+        if($request['acao']=='FRETE'){
+            $dados['tabRomaneio']='';
+            $dados['tabFrete']='active';
+            $request['cd_romaneio']=$request['cod'];
+            
+            $insert['cd_romaneio']=$request['cod'];
+            $insert['distancia'] = ($request['distancia']) ? str_replace(",",".",str_replace(".","",$request['distancia'])) : 0;
+            $insert['vl_km'] = ($request['vl_km']) ? str_replace(",",".",str_replace(".","",$request['vl_km'])) : 0;
+            $insert['vl_frete'] = ($request['vl_frete']) ? str_replace(",",".",str_replace(".","",$request['vl_frete'])) : 0;
+            $insert['vl_frete_add'] = ($request['vl_frete_add']) ? str_replace(",",".",str_replace(".","",$request['vl_frete_add'])) : 0;
+            $insert['vl_frete_total'] = ($request['vl_frete_total']) ? str_replace(",",".",str_replace(".","",$request['vl_frete_total'])) : 0;
+            $insert['vl_pedagio'] = ($request['vl_pedagio']) ? str_replace(",",".",str_replace(".","",$request['vl_pedagio'])) : 0;
+            $insert['nr_caixa'] = ($request['nr_caixa']) ? str_replace(",",".",str_replace(".","",$request['nr_caixa'])) : 0;
+            $insert['vl_unidade'] = ($request['vl_unidade']) ? str_replace(",",".",str_replace(".","",$request['vl_unidade'])) : 0;
+            $insert['pal_ton'] = ($request['pal_ton']) ? str_replace(",",".",str_replace(".","",$request['pal_ton'])) : 0;
+            $insert['vl_descarga'] = ($request['vl_descarga']) ? str_replace(",",".",str_replace(".","",$request['vl_descarga'])) : 0;
+            $insert['qtde_entrega'] = ($request['qtde_entrega']) ? str_replace(",",".",str_replace(".","",$request['qtde_entrega'])) : 0;
+            $insert['vl_entrega'] = ($request['vl_entrega']) ? str_replace(",",".",str_replace(".","",$request['vl_entrega'])) : 0;
+            $insert['vl_entrega_total'] = ($request['vl_entrega_total']) ? str_replace(",",".",str_replace(".","",$request['vl_entrega_total'])) : 0;
+            $insert['vl_outros'] = ($request['vl_outros']) ? str_replace(",",".",str_replace(".","",$request['vl_outros'])) : 0;
+            $insert['vl_descarga_total'] = ($request['vl_descarga_total']) ? str_replace(",",".",str_replace(".","",$request['vl_descarga_total'])) : 0; 
+            $insert['nf']=$request['nf'];
+            $insert['vl_carga'] = ($request['vl_carga']) ? str_replace(",",".",str_replace(".","",$request['vl_carga'])) : 0; 
+            $insert['peso'] = ($request['peso']) ? str_replace(",",".",str_replace(".","",$request['peso'])) : 0; 
+            
+            if($request['id']){
+                 Frete::find($request['id'])->update($insert);
+            }else{
+                 Frete::create($insert);
+            }
+            
+
+        }
+        
+        $dados['query'] = Romaneio::SearchRelacao($request)->find($request['cod']);
+        $dados['query']->load('tab_motorista');
         $pedidos = RomaneioItens::whereRaw(" AbsEntry= ".$request['cod'])->selectRaw("distinct(OrderEntry) codigo")->get(); 
         $dados['pedidos'] = PedidoVenda::whereIn('DocEntry',$pedidos->toArray())->with('tab_cliente')
         ->selectRaw("DocEntry codigo, DocDate data, CardName nome, Address endereco, Comments comentario, VatSum imposto, DocTotal total,CardCode")
         ->get();  
+          
+        $dados['valor_total']=0;
+        foreach($dados['pedidos'] as $valor){ 
+            $dados['valor_total']=($valor['total']+$dados['valor_total']);
+        }
+
+
+        $dados['frete']=Frete::where('cd_romaneio',$request['cod'])->first();
+        $dados['frete_cidade']=FretePedido::where('cd_romaneio',$request['cod'])->get();
+         
+        $dados['PedidosValor']=null;
+        foreach($dados['frete_cidade'] as $Ped){
+            $dados['PedidosValor'][$Ped['cd_pedido']]=$Ped['vl_pedido_frete'];
+        }
+
         //dd($dados['pedidos']->toArray());
         return view('colonial.fretes.modal', compact('dados','request'));
 

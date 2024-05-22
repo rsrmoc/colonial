@@ -128,7 +128,7 @@ Route::group([
 
      /* Fretes */
      Route::get('/frete', [Fretes::class, 'lista'])->name('frete-listar');
-     Route::get('/frete-criar', [Fretes::class, 'create'])->name('frete-criar');
+     Route::any('/frete-criar', [Fretes::class, 'create'])->name('frete-criar');
      Route::post('/frete-store', [Fretes::class, 'store'])->name('frete-store');
      Route::get('/frete-editar/{frete}', [Fretes::class, 'edit'])->name('frete-editar');
      Route::post('/frete-update/{frete}', [Fretes::class, 'update'])->name('frete-update');

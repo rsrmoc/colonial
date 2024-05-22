@@ -34,7 +34,14 @@ class Frete extends Model
         'vl_descarga_total',
         'cd_usuario', 
         'created_at',
-        'updated_at', 
+        'updated_at',
+        'vl_carga',
+        'nf',
+        'peso',
+        'obs',
+        'vl_inss',
+        'vl_senat',
+        'vl_irrf'
     ];
   
     public function tab_romaneio()
