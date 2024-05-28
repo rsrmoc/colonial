@@ -7,27 +7,11 @@
         <ul class="menu accordion-menu">
                         
             <li class=""><a href="{{ route('home') }}" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span> <p>Inicial</p></a></li>
- 
-            @can('habilidade_apoio_menu', ',6,')
-            <li class="droplink "><a href="#" class="waves-effect waves-button"><span class="menu-icon   fa fa-cogs"></span><p>Produção</p><span class="arrow"></span></a>
-                <ul class="sub-menu"> 
-                        <li class=""><a  ><p>Condomínios</p> </a>  </li> 
-                        <li class="droplink"><a href="#"><p>Level 1.1</p><span class="arrow"></span></a>
-                            <ul class="sub-menu">
-                                <li class="droplink"><a href="#"><p>Level 2.1</p><span class="arrow"></span></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="#">Level 3.1</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Level 2.2</a></li>
-                            </ul>
-                        </li>
-                </ul> 
-            </li>
-            @endcan 
+  
             <li class="droplink "><a href="#" class="waves-effect waves-button"><span class="menu-icon   fa fa-cogs"></span><p>Produção</p><span class="arrow"></span></a>
                 <ul class="sub-menu"> 
                         <li class=""><a href="{{route('prod_prev_real-listar')}}"  ><p>Ordem de Produção</p> </a>  </li> 
+                        <li class=""><a href="{{route('safra-listar')}}"  ><p>Produção Safra</p> </a>  </li> 
                         <li class="droplink"><a href="#"><p>Controles</p><span class="arrow"></span></a>
                             <ul class="sub-menu"> 
                                 <li><a href="{{route('hidrico-listar')}}">Consumo Hidrico</a></li>

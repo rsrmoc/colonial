@@ -8,5 +8,6 @@
     "/js/paginas/home.js": "/js/paginas/home.js",
     "/js/paginas/previsto_realizado.js": "/js/paginas/previsto_realizado.js",
     "/js/paginas/receb_tomate.js": "/js/paginas/receb_tomate.js",
+    "/js/paginas/safra.js": "/js/paginas/safra.js",
     "/css/app.css": "/css/app.css"
 }

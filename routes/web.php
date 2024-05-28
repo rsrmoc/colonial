@@ -19,6 +19,7 @@ use App\Http\Controllers\colonial\Perdas;
 use App\Http\Controllers\colonial\Perfis;
 use App\Http\Controllers\colonial\ProdPrevReal;
 use App\Http\Controllers\colonial\RecebimentoTomates;
+use App\Http\Controllers\colonial\Safra;
 use App\Http\Controllers\colonial\TipoParada;
 use App\Http\Controllers\colonial\TipoPerda;
 use App\Http\Controllers\colonial\Usuarios;
@@ -143,6 +144,11 @@ Route::group([
      Route::post('/prod_prev_real-detalhes', [ProdPrevReal::class, 'modalJson'])->name('prod_prev_real-detalhes');
      Route::get('/prod_prev_real-xls/{tipo}', [ProdPrevReal::class, 'xls'])->name('prod_prev_real-xls');  
  
- 
+     
+    /* Safra de Polpa */
+    Route::get('/safra', [Safra::class, 'listar'])->name('safra-listar');  
+    Route::post('/safra-json', [Safra::class, 'listarJson'])->name('safra-json');
+    Route::post('/safra-detalhes', [Safra::class, 'modalJson'])->name('safra-detalhes');
+    Route::get('/safra-xls/{tipo}', [Safra::class, 'xls'])->name('safra-xls');  
     
 });

@@ -22,4 +22,5 @@ mix.js('resources/js/paginas/contas/receber.js', 'public/js/paginas/contas');
 mix.js('resources/js/paginas/home.js', 'public/js/paginas');
 mix.js('resources/js/paginas/previsto_realizado.js', 'public/js/paginas');
 mix.js('resources/js/paginas/receb_tomate.js', 'public/js/paginas');
+mix.js('resources/js/paginas/safra.js', 'public/js/paginas');
 
