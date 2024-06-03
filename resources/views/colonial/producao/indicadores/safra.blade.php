@@ -536,7 +536,7 @@ ul {
                                 </div>
                             </div> 
                             <div class="col-md-2 " style="  padding-left: 5px;">
-                                <button type="button" x-on:click="getDataChart1"  class="  btn btn-default"  style="width: 100%; font-weight: 700;" ><i class="fa fa-search"></i> Pesquisar</button>
+                                <button type="button" x-on:click="getDataChartPrincipal"  class="btn btn-default"  style="width: 100%; font-weight: 700;" ><i class="fa fa-search"></i> Pesquisar</button>
                             </div>
                             
                 </div>
