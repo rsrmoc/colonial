@@ -1,9 +1,10 @@
 <x-layout.colonial.layout>
 <style>
-.info-box .info-box-stats span.info-box-title {
+.info-box-title {
     display: block;
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px;
     color: #B0B0B0;
 }
 #chartDetalhe {
@@ -40,8 +41,7 @@
     padding: 12px 0;
 }
   
-#chartdiv_comparativo, #chartdiv_agua,#chartdivProdutos, #chartdivPrevProd, 
-#chartdiv_tp_perda, #chartdiv_porc_perda
+#chartdivMoagemEstoque, #chartdivMoagemConsumida,#chartdivMoagemTotal,#chartdivFornecedor
 {
   width: 100%;
   height: 500px;
@@ -530,8 +530,7 @@ ul {
                                 <div class="form-group" style="margin-bottom: 0px;"> 
                                     <select class="form-control" name="parametro-visao" id="parametro-visao" style="width: 100%;" > 
                                         <option value="KG">KILOS</option> 
-                                        <option value="TO">TONELADAS</option> 
-                                        <option value="CX">CAIXAS</option>
+                                        <option value="TB">TAMBO</option>  
                                     </select> 
                                 </div>
                             </div> 
@@ -551,12 +550,12 @@ ul {
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemTotal"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                             <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemTotalTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Moagem Total </span>
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa  fa-check-circle-o" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900; margin-top: 5px;">Moagem Total </span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-primary" style="color: #f9fafa;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -573,12 +572,12 @@ ul {
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstoque"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                             <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemEstoqueTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Moagem Estoque</span>
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa fa-truck" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Moagem Estoque</span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-primary" style="color: #f9fafa;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -595,12 +594,12 @@ ul {
 
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemConsumida"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                             <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemConsumidaTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Moagem Consumida</span>
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa fa-download" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Moagem Consumida</span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -618,12 +617,12 @@ ul {
 
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderTomateInNatura"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                             <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" >&nbsp;</p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Tomate in Natura</span>
                         </div>
                         <div class="info-box-icon">
                             <img class="fa" src="{{ asset('assets\images\tomate.svg') }}" height="35"> 
                         </div>
                         <div class="info-box-progress">
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Tomate in Natura</span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -639,13 +638,14 @@ ul {
                         <div class="info-box-stats">
 
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderBrix"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderBrixMedio"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Brix do Tomate</span>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;"  >&nbsp;</p>
+                            
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa fa-eye-slash" style="color: #f9fafa;"></i> 
                         </div>
                         <div class="info-box-progress">
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Brix do Tomate</span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -661,13 +661,14 @@ ul {
                         <div class="info-box-stats">
 
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderPerdas"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" >&nbsp;</p>
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Total de Perdas</span>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;"  x-html="iconHeaderPerdasPerc"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa fa-close " style="color: #f9fafa;"></i> 
                         </div>
                         <div class="info-box-progress">
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Total de Perdas</span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -687,36 +688,41 @@ ul {
                     <div class="col-md-2" style="text-align: right">
                         <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
                     </div>  
-                </div>
-            </div>
-        </div>
-
-        <div class="panel">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleMoagemDiariaEstoque"></h3></div>
-                    <div class="col-md-2" style="text-align: right">
-                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
-                    </div>  
-                </div>
-            </div>
-        </div>
-     
-
-        <div class="panel">
-            <div class="panel-body">
+                </div> 
+                <!-- HTML -->
+                <div id="chartdivMoagemTotal"></div>
+                <template x-if="loadingCharts">
+                    <x-loader class="absolute-loader"/>
+                </template>
+                
+                <br><br>
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleMoagemDiariaConsumida"></h3></div>
-                    <div class="col-md-2" style="text-align: right">
-                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
-                    </div>  
-                </div>
+                 
+                </div> 
+                <!-- HTML -->
+                <div id="chartdivMoagemConsumida"></div>
+                <template x-if="loadingCharts">
+                    <x-loader class="absolute-loader"/>
+                </template>
+
+                <br><br>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleMoagemDiariaEstoque"></h3></div>
+                 
+                </div> 
+                <!-- HTML -->
+                <div id="chartdivMoagemEstoque"></div>
+                <template x-if="loadingCharts">
+                    <x-loader class="absolute-loader"/>
+                </template>
+
             </div>
         </div>
 
-
+          
         <div class="panel">
             <div class="panel-body">
                 <div class="row">
@@ -726,6 +732,12 @@ ul {
                         <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
                     </div>  
                 </div>
+                <br><br>
+                <!-- HTML -->
+                <div id="chartdivFornecedor"></div>
+                <template x-if="loadingCharts">
+                    <x-loader class="absolute-loader"/>
+                </template>
             </div>
         </div>
         

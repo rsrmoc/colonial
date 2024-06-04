@@ -600,8 +600,7 @@ class ProdPrevReal extends Controller
             $Agrupamento1='data';
             $Agrupamento2='data';
             $Agrupamento22='duedate';
-            $Agrupamento12='duedate'; 
-           
+            $Agrupamento12='duedate';  
         }
 
         if($request['agrupamento']=='P'){
@@ -633,6 +632,7 @@ class ProdPrevReal extends Controller
             $produzidoComparativo='sum(CmpltQty*IWeight1)';
             $request['ds_unid']=' [ Kilos ]';
         }
+
         if($request['unidade']=='CX'){
             $planejado='sum(valor) planejado'; 
             $prozuzido='sum(valor_prod) prozuzido'; 

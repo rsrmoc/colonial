@@ -8,6 +8,12 @@ const chartPrevReal = document.querySelector('#chart-prev_realizado');
 
 Alpine.data('app', () => ({
 
+    graficoBarra: "<div style='text-align: center;margin-top: 110px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoBarraTipo: "<div style='text-align: center;margin-top: 40px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoBarra2: "<div style='text-align: center;margin-top: 25px;'> <img src='/assets/images/grafico-barra.png'> </div>",
+    graficoPizza: "<div style='text-align: center;margin-top: 110px;'> <img src='/assets/images/grafico-pizza.png'> </div>",
+
+    iconCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderMoagemTotal: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderMoagemTotalTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderMoagemEstoque: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
@@ -18,7 +24,8 @@ Alpine.data('app', () => ({
     iconHeaderBrix: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderBrixMedio: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-
+    iconHeaderPerdasPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+ 
     titleMoagemDiaria: 'Moagem Diária ',
     titleMoagemDiariaEstoque: 'Entrada de Polpas Diária para o Estoque ',
     titleMoagemDiariaConsumida: 'Entrada de Polpas Diária Consumida ',
@@ -34,12 +41,18 @@ Alpine.data('app', () => ({
       mes: '',
       dia: '', 
     },
-    
+    TotDias: 0,
+    TotMeses: null,
+    loadingCharts: false,
+
+  
     init() {
+  
 
       $('#indicadores-parametros #parametro-ano').on('select2:select', () => {
         var Ano =$('#indicadores-parametros #parametro-ano').val();
         var Mes =$('#indicadores-parametros #parametro-mes').val();
+        console.log(Ano+' - M'+Mes);
         if(Ano){
           if(Mes){
             this.TotDias = this.TotMeses[Ano][Number(Mes)];
@@ -50,13 +63,14 @@ Alpine.data('app', () => ({
       $('#indicadores-parametros #parametro-mes').on('select2:select', () => { 
         var Ano =$('#indicadores-parametros #parametro-ano').val();
         var Mes =$('#indicadores-parametros #parametro-mes').val(); 
+        console.log(Ano+' - M'+Mes);
         if(Ano){
           if(Mes){
             this.TotDias = this.TotMeses[Ano][Number(Mes)]; 
           }
         }  
       });
- 
+      
       this.getDataChartPrincipal();
  
     },
@@ -69,10 +83,225 @@ Alpine.data('app', () => ({
       this.parametros.ano = $('#parametro-ano').val();
       this.parametros.unidade = $('#parametro-visao').val();
 
-      console.log(this.parametros);
+      this.iconHeaderMoagemTotal = this.iconCarregando;
+      this.iconHeaderMoagemTotalTb = this.iconCarregando;
+      this.iconHeaderMoagemEstoque = this.iconCarregando;
+      this.iconHeaderMoagemEstoqueTb = this.iconCarregando;
+      this.iconHeaderMoagemConsumida = this.iconCarregando;
+      this.iconHeaderMoagemConsumidaTb = this.iconCarregando;
+      this.iconHeaderTomateInNatura = this.iconCarregando;
+      this.iconHeaderBrix = this.iconCarregando;
+      this.iconHeaderPerdas = this.iconCarregando;
+      this.iconHeaderPerdasPerc  = this.iconCarregando;
+
       axios.post('/colonial/safra-json',this.parametros)
       .then((res) => {
-        console.log(res);
+        console.log(res); 
+
+        this.iconHeaderMoagemTotal = res.data.request.MoagemTotalKg+'<span class="headerUnidade"> (Kg) </span>';
+        this.iconHeaderMoagemTotalTb = res.data.request.MoagemTotalTb+'<span class="headerUnidade"> (Tb) </span>';
+        this.iconHeaderMoagemEstoque = res.data.request.MoagemEstoqueKg+'<span class="headerUnidade"> (Kg) </span>';
+        this.iconHeaderMoagemEstoqueTb = res.data.request.MoagemEstoqueTb+'<span class="headerUnidade"> (Tb) </span>';
+        this.iconHeaderMoagemConsumida = res.data.request.MoagemConsumidaKg+'<span class="headerUnidade"> (Kg) </span>';
+        this.iconHeaderMoagemConsumidaTb = res.data.request.MoagemConsumidaTb+'<span class="headerUnidade"> (Tb) </span>';
+        this.iconHeaderTomateInNatura = res.data.request.TomateInNatura+'<span class="headerUnidade"> (Kg) </span>';
+        this.iconHeaderBrix = res.data.request.Brix+'<span class="headerUnidade">   </span>';
+        this.iconHeaderPerdas = res.data.request.PerdasTotal+'<span class="headerUnidade"> (Kg) </span>';
+        this.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc+'<span class="headerUnidade"> (%) </span>';
+
+      
+
+        /* Grafico Moagem Diaria */ 
+        this.titleMoagemDiaria = 'Moagem Diária ' +res.data.request.ds_unid  ;
+        var chart = AmCharts.makeChart("chartdivMoagemTotal", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "type": "serial",
+          "fontSize": 12,
+          "theme": "none",
+          "categoryField": "label",
+          "rotate": false,
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left",
+            "labelRotation": 20
+          },
+      
+          "graphs": [
+            {
+              "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+              "fillAlphas": 1,
+              "id": "AmGraph-1",
+              "lineAlpha": 0.2,
+              "title": "% de Produção",
+              "labelText": "[[value]]",
+              "type": "column",
+              "valueField": "producao",
+              "fillColorsField": "color_producao", 
+              "lineColor": "#ff3f33",   
+
+            }
+          ],
+          "valueAxes": [{
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0 
+          }],
+          "listeners": [{
+            "event": "clickGraphItem",
+            "method":(event) => {
+                   
+              //this.getDetalhesProducao(event.item.dataContext); 
+                      
+            }
+          }], 
+          "dataProvider": res.data.MoagemTotal 
+        });
+
+        /* Grafico Moagem Consumida */ 
+        this.titleMoagemDiariaConsumida = 'Entrada de Polpas Diária Consumida ' +res.data.request.ds_unid  ;
+        var chart = AmCharts.makeChart("chartdivMoagemConsumida", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "type": "serial",
+          "fontSize": 12,
+          "theme": "none",
+          "categoryField": "label",
+          "rotate": false,
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left",
+            "labelRotation": 20
+          },
+      
+          "graphs": [
+            {
+              "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+              "fillAlphas": 1,
+              "id": "AmGraph-1",
+              "lineAlpha": 0.2,
+              "title": "% de Produção",
+              "labelText": "[[value]]",
+              "type": "column",
+              "valueField": "producao",
+              "fillColorsField": "color_producao", 
+              "lineColor": "#ff7519",   
+
+            }
+          ],
+          "valueAxes": [{
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0 
+          }],
+          "listeners": [{
+            "event": "clickGraphItem",
+            "method":(event) => {
+                   
+              //this.getDetalhesProducao(event.item.dataContext); 
+                      
+            }
+          }], 
+          "dataProvider": res.data.MoagemConsumida 
+        });
+
+        /* Grafico Moagem Estoque */ 
+        this.titleMoagemDiariaEstoque = 'Entrada de Polpas Diária para o Estoque ' +res.data.request.ds_unid  ;
+        var chart = AmCharts.makeChart("chartdivMoagemEstoque", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "type": "serial",
+          "fontSize": 12,
+          "theme": "none",
+          "categoryField": "label",
+          "rotate": false,
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left",
+            "labelRotation": 20
+          },
+      
+          "graphs": [
+            {
+              "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+              "fillAlphas": 1,
+              "id": "AmGraph-1",
+              "lineAlpha": 0.2,
+              "title": "% de Produção",
+              "labelText": "[[value]]",
+              "type": "column",
+              "valueField": "producao",
+              "fillColorsField": "color_producao", 
+              "lineColor": "#ff7519",   
+
+            }
+          ],
+          "valueAxes": [{
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0 
+          }],
+          "listeners": [{
+            "event": "clickGraphItem",
+            "method":(event) => {
+                   
+              //this.getDetalhesProducao(event.item.dataContext); 
+                      
+            }
+          }], 
+          "dataProvider": res.data.MoagemEstoque 
+        });
+
+
+        /* Grafico Fornecedores */ 
+        var chart = AmCharts.makeChart("chartdivFornecedor", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "fontSize": 11,
+          "type": "serial",
+          "theme": "none",
+          "rotate": true, 
+          "dataProvider": res.data.Fornecedores,
+                 
+          "startDuration": 1,
+          "graphs": [{
+            "balloonText": "<b>[[category]]: [[value]] ( Kg ) </b>",
+            "fillColorsField": "color",
+            "fillAlphas": 0.9,
+            "labelText": "[[value]]",
+            "lineAlpha": 0.2,
+            "type": "column",
+            "valueField": "qtde",
+            "fixedColumnWidth": 50,
+          }],
+          "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+          },
+          "categoryField": "produto",
+          "categoryAxis": {
+            "gridPosition": "start",
+            "labelRotation": 45
+          } 
+                
+        });
+        if(!res.data.Fornecedores){
+           $("#chartdivProdutos").html(this.graficoBarra);
+        } 
+ 
+        this.TotMeses = res.data.request.Meses;
+        this.parametros.valida = true;
+        $('#indicadores-parametros #parametro-ano').val(res.data.request.ano).trigger('change');
+        $('#indicadores-parametros #parametro-mes').val(res.data.request.mes).trigger('change');
+        if(res.data.request.ano){
+          if(res.data.request.mes){
+            this.TotDias = this.TotMeses[res.data.request.ano][Number(res.data.request.mes)];
+          }
+        } 
       })
       .catch((err) => { 
         console.log(err.response.data); 
@@ -80,294 +309,8 @@ Alpine.data('app', () => ({
       })
       .finally(() => this.loadingCharts = false);
 
-    },
+    } 
 
-    xls(tipo){ 
-      
-      location.href = '/colonial/prod_prev_real-xls/'+tipo+'?dtf='+this.parametros.dtf+'&dti='+this.parametros.dti;
-      toastr['success']('XLS gerado com sucesso');
-    },
-
-    getDetalheParada(dados){
-
-      console.log(dados);  
-      $("#modalDetalhesParada").modal(); 
-      this.modalLoadingCharts = true; 
-      dados.indicador='parada';
-
-      if(dados.sub_grupo=='dt'){
-        this.tituloDetalhesModal = 'Data: '+dados.dt;
-      } 
-      if(dados.sub_grupo=='tipo'){
-        this.tituloDetalhesModal = 'Tipos de Parada: '+dados.produto;
-      } 
-      if(dados.sub_grupo=='equip'){
-        this.tituloDetalhesModal = 'Equipamento: '+dados.produto;
-      } 
-      
-      axios.post('/colonial/prod_prev_real-detalhes',dados)
-      .then((res) => {
-        console.log(res.data);
-        this.dadosParada = res.data.dadosParada;
-      })
-      .catch((err) => { 
-        console.log(err.response.data); 
-        toastr.error(err.response.data.message,"Erro") 
-      })
-      .finally(() => this.modalLoadingCharts = false);
-      
-    },
-
-    getDetalhePerda(dados){
-
-      console.log(dados);  
-      $("#modalDetalhesPerda").modal(); 
-      this.modalLoadingCharts = true; 
-      dados.indicador='perda';
-
-      if(dados.sub_grupo=='dt'){
-        this.tituloDetalhesModal = 'Data: '+dados.dt;
-      } 
-      if(dados.sub_grupo=='tipo'){
-        this.tituloDetalhesModal = 'Tipos de Perda: '+dados.produto;
-      } 
-      if(dados.sub_grupo=='grupo'){
-        this.tituloDetalhesModal = 'Grupo de Produto: '+dados.produto;
-      } 
-
-      axios.post('/colonial/prod_prev_real-detalhes',dados)
-      .then((res) => {
-        console.log(res.data);
-        this.dadosPerda = res.data.dadosPerda;
-      })
-      .catch((err) => { 
-        console.log(err.response.data); 
-        toastr.error(err.response.data.message,"Erro") 
-      })
-      .finally(() => this.modalLoadingCharts = false);
-      
-    },
-
-    getDetalhesProducao(dados){
-     
-      console.log(dados);
-      this.modalLoadingCharts = true;
-      $("#modalDetalhesProducao").modal(); 
-      this.hidricoDetalhes =  this.tabCarregando;
-      this.energiaDetalhes =  this.tabCarregando;
-      this.lenhaDetalhes = this.tabCarregando;
-      this.perdaDetalhes =  this.tabCarregando;
-      this.paradaDetalhes =  this.tabCarregando;
-      this.polpaDetalhes =  this.tabCarregando; 
-      this.produzido_cxDetalhes =  this.tabCarregando;
-      this.produzido_kgDetalhes  =  this.tabCarregando;
-      this.produzido_toDetalhes =  this.tabCarregando;
-      
-      dados.indicador='producao';
- 
-      axios.post('/colonial/prod_prev_real-detalhes',dados)
-      .then((res) => {
-        console.log(res.data);
- 
-
-        if(dados.agrupamento=='P'){
-          this.tituloDetalhesModal = 'PRODUTO: '+res.data.data;
-        }else{
-          this.tituloDetalhesModal = 'DATA: '+res.data.data;
-        }
-
-        this.hidricoDetalhes =  res.data.hidrico+'<span class="headerUnidade"> (m³/h)</span>';
-        this.energiaDetalhes =  res.data.energia+'<span class="headerUnidade"> (kw)</span>';
-        this.lenhaDetalhes = res.data.lenha+'<span class="headerUnidade"> (m³)</span>';
-        this.perdaDetalhes =  res.data.perda;
-        this.paradaDetalhes =  res.data.parada+'<span class="headerUnidade"> (min)</span>';
-        this.polpaDetalhes =  res.data.polpa+'<span class="headerUnidade"> (kg)</span>';
-
-        this.produzido_cxDetalhes =  res.data.produzido_cx+'<span class="headerUnidade"> (Cx)</span>';
-        this.produzido_kgDetalhes  =  res.data.produzido_kg+'<span class="headerUnidade"> (Kg)</span>';
-        this.produzido_toDetalhes =  res.data.produzido_to+'<span class="headerUnidade"> (To)</span>';
-        this.tabProdDetalhes = res.data.listaProducao;
-        this.tabPerdaDetalhes = res.data.dadosPerda;
-        this.tabParadaDetalhes = res.data.dadosParada;
-
-        this.totais_toDetalhes = res.data.totais;
-
-      })
-      .catch((err) => { 
-        console.log(err.response.data); 
-        toastr.error(err.response.data.message,"Erro") 
-      })
-      .finally(() => this.modalLoadingCharts = false);
-
-
-    },
-
-    getDetalhecards(tipo){
-       
-      this.modalLoadingCharts = true;
-      $("#modalDetalhesCards").modal(); 
-      if(tipo=='producao_cards'){
-
-          this.dadosCards.dia = $('#parametro-dia').val();
-          this.dadosCards.mes = $('#parametro-mes').val();
-          this.dadosCards.ano = $('#parametro-ano').val(); 
-          this.dadosCards.indicador = 'producao_cards'; 
-          var dt = this.dadosCards.ano;
-          if(this.dadosCards.mes){
-            dt = this.dadosCards.mes+'/'+dt;
-            if(this.dadosCards.dia){
-              dt = this.dadosCards.dia+'/'+dt;
-            }
-          }
-          this.tituloDetalhesModal = 'PRODUÇÃO: '+dt;
-      }
-      if(tipo=='polpa_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'polpa_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'CONSUMO DE POLPAS: '+dt;
-      }
-      if(tipo=='agua_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'agua_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'CONSUMO DE AGUA: '+dt;
-      }
-      if(tipo=='energia_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'energia_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'CONSUMO DE ENERGIA: '+dt;
-      }
-      if(tipo=='lenha_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'lenha_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'CONSUMO DE LENHA: '+dt;
-      }
-      if(tipo=='parada_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'parada_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'PARADA DE LINHA: '+dt;
-      }
-      
-      if(tipo=='perdaE_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'perdaE_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'PERDAS DE EMBALAGEM: '+dt;
-      }
-
-      if(tipo=='perdaI_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'perdaI_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'PERDAS DE INSUMO: '+dt;
-      }
-
-      if(tipo=='perdaP_cards'){
-
-        this.dadosCards.dia = $('#parametro-dia').val();
-        this.dadosCards.mes = $('#parametro-mes').val();
-        this.dadosCards.ano = $('#parametro-ano').val(); 
-        this.dadosCards.indicador = 'perdaP_cards'; 
-        var dt = this.dadosCards.ano;
-        if(this.dadosCards.mes){
-          dt = this.dadosCards.mes+'/'+dt;
-          if(this.dadosCards.dia){
-            dt = this.dadosCards.dia+'/'+dt;
-          }
-        }
-        this.tituloDetalhesModal = 'PERDAS DE POLPA: '+dt;
-      }
-
-      console.log(this.dadosCards);
-      axios.post('/colonial/prod_prev_real-detalhes',this.dadosCards)
-      .then((res) => {
-          console.log(res);
-          this.listaCards =res.data.lista;
-      })
-      .catch((err) => { 
-        console.log(err.response.data); 
-        toastr.error(err.response.data.message,"Erro") 
-      })
-      .finally(() => this.modalLoadingCharts = false);
-
-    },
-    
-    formatTextLabel(value){
-      const formatNumber = new Intl.NumberFormat()
-      value = value.toString(); 
-      return formatNumber.format(value);
-      return value.toLocaleString('pt-br', {minimumFractionDigits: 2});
-      var pattern = /(-?\d+)(\d{3})/;
-      while (pattern.test(value))
-          value = value.replace(pattern, "$1,$2");
-      return value;
-    }
+  
 
 }));
