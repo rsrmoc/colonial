@@ -46,7 +46,7 @@
 
             <li class="droplink "><a href="#" class="waves-effect waves-button"><span class="menu-icon   fa fa-certificate"></span><p>Qualidade</p><span class="arrow"></span></a>
                 <ul class="sub-menu"> 
-                        <li class=""><a href="#"  ><p>Safra Moagem</p> </a>  </li> 
+                      
                         <li class="droplink"><a href="#"><p>Controles</p><span class="arrow"></span></a>
                             <ul class="sub-menu"> 
                                 <li><a href="{{route('recebimentotomate-listar')}}">Recebimento de Tomate</a></li> 
