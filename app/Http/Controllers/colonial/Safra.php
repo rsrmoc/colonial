@@ -645,7 +645,7 @@ class Safra extends Controller
         ". $DATAmoagemTotal ."
         from  SBO_KARAMBI_PRD.dbo.owor 
         inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-        where Warehouse='MPP'
+        where Warehouse='MPP' and owor.ItemCode <> '001208'
         and CONVERT(CHAR(10),DueDate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
         group by ". $AGRMoagemTotal . "
         order by ". $ORDmoagemTotal ." ");
