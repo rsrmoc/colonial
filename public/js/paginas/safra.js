@@ -26,10 +26,11 @@ Alpine.data('app', function () {
     iconHeaderBrixMedio: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-    titleMoagemDiaria: 'Moagem Diária ',
+    titleMoagemDiaria: 'Produção de Polpas Diária ',
     titleMoagemDiariaEstoque: 'Entrada de Polpas Diária para o Estoque ',
     titleMoagemDiariaConsumida: 'Entrada de Polpas Diária Consumida ',
     titleComparacaoFornec: 'Comparação entre Fornecedores ',
+    titleMoagem: 'Moagem Diária ',
     parametros: {
       valida: false,
       dti: null,
@@ -98,7 +99,50 @@ Alpine.data('app', function () {
         _this2.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc + '<span class="headerUnidade"> (%) </span>';
 
         /* Grafico Moagem Diaria */
-        _this2.titleMoagemDiaria = 'Moagem Diária ' + res.data.request.ds_unid;
+        _this2.titleMoagem = 'Moagem Diária ' + res.data.request.ds_unid;
+        var chart = AmCharts.makeChart("chartdivMoagemDiaria", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "type": "serial",
+          "fontSize": 12,
+          "theme": "none",
+          "categoryField": "label",
+          "rotate": false,
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left",
+            "labelRotation": 20
+          },
+          "graphs": [{
+            "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+            "fillAlphas": 1,
+            "id": "AmGraph-1",
+            "lineAlpha": 0.2,
+            "title": "% de Produção",
+            "labelText": "[[value]]",
+            "type": "column",
+            "valueField": "producao",
+            "fillColorsField": "color_producao",
+            "lineColor": "#ff3f33"
+          }],
+          "valueAxes": [{
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0
+          }],
+          "listeners": [{
+            "event": "clickGraphItem",
+            "method": function method(event) {
+
+              //this.getDetalhesProducao(event.item.dataContext); 
+            }
+          }],
+          "dataProvider": res.data.MoagemDiaria
+        });
+
+        /* Grafico Moagem Diaria */
+        _this2.titleMoagemDiaria = 'Produção de Polpa Diária ' + res.data.request.ds_unid;
         var chart = AmCharts.makeChart("chartdivMoagemTotal", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -141,7 +185,7 @@ Alpine.data('app', function () {
         });
 
         /* Grafico Moagem Consumida */
-        _this2.titleMoagemDiariaConsumida = 'Entrada de Polpas Diária Consumida ' + res.data.request.ds_unid;
+        _this2.titleMoagemDiariaConsumida = 'Polpas Consumida Diária ' + res.data.request.ds_unid;
         var chart = AmCharts.makeChart("chartdivMoagemConsumida", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -184,7 +228,7 @@ Alpine.data('app', function () {
         });
 
         /* Grafico Moagem Estoque */
-        _this2.titleMoagemDiariaEstoque = 'Entrada de Polpas Diária para o Estoque ' + res.data.request.ds_unid;
+        _this2.titleMoagemDiariaEstoque = 'Entrada de Polpas para oEstoque Diária ' + res.data.request.ds_unid;
         var chart = AmCharts.makeChart("chartdivMoagemEstoque", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",

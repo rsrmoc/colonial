@@ -41,7 +41,7 @@
     padding: 12px 0;
 }
   
-#chartdivMoagemEstoque, #chartdivMoagemConsumida,#chartdivMoagemTotal,#chartdivFornecedor
+#chartdivMoagemEstoque, #chartdivMoagemConsumida,#chartdivMoagemTotal,#chartdivFornecedor, #chartdivMoagemDiaria
 {
   width: 100%;
   height: 500px;
@@ -679,6 +679,26 @@ ul {
             </div>
 
         </div><!-- Row -->
+
+
+        <div class="panel">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleMoagem"></h3></div>
+                    <div class="col-md-2" style="text-align: right">
+                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
+                    </div>  
+                </div> 
+                <!-- HTML -->
+                <div id="chartdivMoagemDiaria"></div>
+                <template x-if="loadingCharts">
+                    <x-loader class="absolute-loader"/>
+                </template>
+                
+                <br><br>
+            </div>
+        </div>
  
         <div class="panel">
             <div class="panel-body">

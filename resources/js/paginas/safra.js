@@ -26,11 +26,13 @@ Alpine.data('app', () => ({
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
  
-    titleMoagemDiaria: 'Moagem Diária ',
+    titleMoagemDiaria: 'Produção de Polpas Diária ',
     titleMoagemDiariaEstoque: 'Entrada de Polpas Diária para o Estoque ',
     titleMoagemDiariaConsumida: 'Entrada de Polpas Diária Consumida ',
     titleComparacaoFornec: 'Comparação entre Fornecedores ',
+    titleMoagem: 'Moagem Diária ',
  
+    
     parametros: {
       valida: false,
       dti: null,
@@ -109,10 +111,56 @@ Alpine.data('app', () => ({
         this.iconHeaderPerdas = res.data.request.PerdasTotal+'<span class="headerUnidade"> (Kg) </span>';
         this.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc+'<span class="headerUnidade"> (%) </span>';
 
+              /* Grafico Moagem Diaria */ 
+        this.titleMoagem = 'Moagem Diária ' +res.data.request.ds_unid  ;
+        var chart = AmCharts.makeChart("chartdivMoagemDiaria", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "type": "serial",
+          "fontSize": 12,
+          "theme": "none",
+          "categoryField": "label",
+          "rotate": false,
+          "startDuration": 1,
+          "categoryAxis": {
+            "gridPosition": "start",
+            "position": "left",
+            "labelRotation": 20
+          },
       
+          "graphs": [
+            {
+              "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+              "fillAlphas": 1,
+              "id": "AmGraph-1",
+              "lineAlpha": 0.2,
+              "title": "% de Produção",
+              "labelText": "[[value]]",
+              "type": "column",
+              "valueField": "producao",
+              "fillColorsField": "color_producao", 
+              "lineColor": "#ff3f33",   
+
+            }
+          ],
+          "valueAxes": [{
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0 
+          }],
+          "listeners": [{
+            "event": "clickGraphItem",
+            "method":(event) => {
+                   
+              //this.getDetalhesProducao(event.item.dataContext); 
+                      
+            }
+          }], 
+          "dataProvider": res.data.MoagemDiaria 
+        });
 
         /* Grafico Moagem Diaria */ 
-        this.titleMoagemDiaria = 'Moagem Diária ' +res.data.request.ds_unid  ;
+        this.titleMoagemDiaria = 'Produção de Polpa Diária ' +res.data.request.ds_unid  ;
         var chart = AmCharts.makeChart("chartdivMoagemTotal", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -160,7 +208,7 @@ Alpine.data('app', () => ({
         });
 
         /* Grafico Moagem Consumida */ 
-        this.titleMoagemDiariaConsumida = 'Entrada de Polpas Diária Consumida ' +res.data.request.ds_unid  ;
+        this.titleMoagemDiariaConsumida = 'Polpas Consumida Diária ' +res.data.request.ds_unid  ;
         var chart = AmCharts.makeChart("chartdivMoagemConsumida", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -208,7 +256,7 @@ Alpine.data('app', () => ({
         });
 
         /* Grafico Moagem Estoque */ 
-        this.titleMoagemDiariaEstoque = 'Entrada de Polpas Diária para o Estoque ' +res.data.request.ds_unid  ;
+        this.titleMoagemDiariaEstoque = 'Entrada de Polpas para oEstoque Diária ' +res.data.request.ds_unid  ;
         var chart = AmCharts.makeChart("chartdivMoagemEstoque", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -254,8 +302,7 @@ Alpine.data('app', () => ({
           }], 
           "dataProvider": res.data.MoagemEstoque 
         });
-
-
+ 
         /* Grafico Fornecedores */ 
         var chart = AmCharts.makeChart("chartdivFornecedor", {
           "decimalSeparator": ",",
@@ -289,6 +336,7 @@ Alpine.data('app', () => ({
           } 
                 
         });
+
         if(!res.data.Fornecedores){
            $("#chartdivProdutos").html(this.graficoBarra);
         } 

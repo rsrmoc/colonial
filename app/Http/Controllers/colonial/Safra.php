@@ -628,6 +628,35 @@ class Safra extends Controller
         and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' ");
         $TomateInNatura= (isset($dadosTomateInNatura[0]->qtde)) ? $dadosTomateInNatura[0]->qtde : 0;
 
+        /* Tomate in Natura GRAFICO */
+        $dadosTomateInNaturaGrafico = DB::select(" 
+        select 
+        CONVERT (varchar, OPCH.DocDate, 103) data,
+        CONVERT(CHAR(10),OPCH.DocDate, 23) dt,
+        sum(PCH1.Quantity) qtde 
+        from SBO_KARAMBI_PRD.dbo.OPCH
+        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
+        where PCH1.ItemCode='001208'
+        and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+        group by CONVERT (varchar, OPCH.DocDate, 103),CONVERT(CHAR(10),OPCH.DocDate, 23)
+        order by CONVERT(CHAR(10),OPCH.DocDate, 23)
+        ");
+        $MoagemDiaria=null;
+        foreach($dadosTomateInNaturaGrafico as  $val){
+      
+            $MoagemDiaria[]=array( 
+                "label"=>$val->data,
+                "producao"=>$val->qtde,    
+                'dt'=>$val->dt,
+                'dti'=>$request['dti'],
+                'dtf'=>$request['dtf'],
+                'agrupamento'=>$request['agrupamento'], 
+                "color_producao"=> "#ef4836"
+            ); 
+
+        }
+       
+
         /* Moagem Total  [CARD] */
         $dadosMoagemTotal = DB::select(" 
         select top(1) 
@@ -785,11 +814,12 @@ class Safra extends Controller
         $request['Brix'] =  ($Brix) ?  number_format($Brix,2,",",".") : '0,00';
         $request['PerdasTotal'] = ($PerdasTotal) ?  number_format($PerdasTotal,0,",",".") : '000';
         $request['PerdasTotalPerc'] = ($PerdasTotalPerc) ?  number_format($PerdasTotalPerc,2,",",".") : '0,00'; 
+        $retorno['MoagemDiaria'] = $MoagemDiaria;
         $retorno['MoagemTotal'] = $MoagemTotal;
         $retorno['MoagemConsumida'] = $MoagemConsumida;
         $retorno['MoagemEstoque'] = $MoagemEstoque;
         $retorno['Fornecedores'] = $Fornecedores;
-         
+  
         $retorno['request'] = $request->toArray();
         return $retorno;
 
