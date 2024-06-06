@@ -724,7 +724,7 @@ class Safra extends Controller
                 'dti'=>$request['dti'],
                 'dtf'=>$request['dtf'],
                 'agrupamento'=>$request['agrupamento'], 
-                "color_producao"=> "#ef4836"
+                "color_producao"=> "#2563d5"
             ); 
 
             $MoagemConsumida[]=array( 

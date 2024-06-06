@@ -112,7 +112,7 @@ Alpine.data('app', () => ({
         this.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc+'<span class="headerUnidade"> (%) </span>';
 
               /* Grafico Moagem Diaria */ 
-        this.titleMoagem = 'Moagem Diária ' +res.data.request.ds_unid  ;
+        this.titleMoagem = 'Moagem Diária em Kilos '  ;
         var chart = AmCharts.makeChart("chartdivMoagemDiaria", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
