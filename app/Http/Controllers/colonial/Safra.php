@@ -657,7 +657,7 @@ class Safra extends Controller
         sum(isnull(CmpltQty,0)) tb, 
         sum(Quantity) quant_estoque,
         sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg_estoque, 
-        sum(isnull(Quantity,0)) tb_estoque
+        sum(isnull(Quantity,0)) tb_estoque,
         ". $QtdeDadosMoagemTotal .",
         ". $QtdeDadosMoagemEstoque .",
         ". $DATAmoagemTotal ."
