@@ -670,6 +670,9 @@ class Safra extends Controller
         group by ". $AGRMoagemTotal . "
         order by ". $ORDmoagemTotal ." ");
         $MoagemTotal=null; $Key=0;
+        $MoagemConsumida=null;
+        $MoagemTotal=null;
+        $MoagemEstoque=null;
         foreach($retorno['moagem_total'] as $KeyId => $val){
     
             $QtdeTotal=($val->qtde) ? $val->qtde : 0;
