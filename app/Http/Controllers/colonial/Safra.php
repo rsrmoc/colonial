@@ -583,7 +583,8 @@ class Safra extends Controller
         
         if($request['unidade']=='KG'){
             $QtdeDadosMoagemTotal='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) qtde';   
-            $QtdeDadosMoagemConsumida='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde';   
+            $QtdeDadosMoagemConsumida='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde';  
+            $QtdeDadosMoagemEstoque='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde_estoque';   
             $request['ds_unidade']='Kg'; 
             $request['ds_unid']=' [ Kilos ]';
         }
@@ -591,6 +592,7 @@ class Safra extends Controller
         if($request['unidade']=='TB'){
             $QtdeDadosMoagemTotal='sum(isnull(CmpltQty,0)) qtde';  
             $QtdeDadosMoagemConsumida='sum(isnull(Quantity,0)) qtde';  
+            $QtdeDadosMoagemEstoque='sum(isnull(Quantity,0)) qtde_estoque';  
             $request['ds_unidade']='Tb'; 
             $request['ds_unid']=' [ Tambo ]';
         }
@@ -628,29 +630,59 @@ class Safra extends Controller
 
         /* Moagem Total  [CARD] */
         $dadosMoagemTotal = DB::select(" 
-        select top(1) sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) kg,
-        sum(isnull(CmpltQty,0)) tb
+        select top(1) 
+        sum(CmpltQty) quant_producao,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) kg,
+        sum(isnull(CmpltQty,0)) tb,
+        sum(Quantity) quant_estoque,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg_estoque, 
+        sum(isnull(Quantity,0)) tb_estoque
         from  SBO_KARAMBI_PRD.dbo.owor 
         inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+        left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
         where Warehouse='MPP' and owor.ItemCode <> '001208'
         and CONVERT(CHAR(10),DueDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ");
         $MoagemTotalTb= (isset($dadosMoagemTotal[0]->tb)) ? $dadosMoagemTotal[0]->tb : 0;
         $MoagemTotalKg= (isset($dadosMoagemTotal[0]->kg)) ? $dadosMoagemTotal[0]->kg : 0;
-
+        $MoagemEstoqueTb= (isset($dadosMoagemTotal[0]->tb_estoque)) ? $dadosMoagemTotal[0]->tb_estoque : 0;
+        $MoagemEstoqueKg= (isset($dadosMoagemTotal[0]->kg_estoque)) ? $dadosMoagemTotal[0]->kg_estoque : 0;
+        $MoagemConsumidaTb=($MoagemTotalTb-$MoagemEstoqueTb);
+        $MoagemConsumidaKg=($MoagemTotalKg-$MoagemEstoqueKg);
 
         /* Moagem Total [GRAFICO] */
         $retorno['moagem_total'] = DB::select(" 
-        select sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) kg,
-        sum(isnull(CmpltQty,0)) tb, ". $QtdeDadosMoagemTotal .",
+        select 
+        sum(CmpltQty) quant_producao,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) kg,
+        sum(isnull(CmpltQty,0)) tb, 
+        sum(Quantity) quant_estoque,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg_estoque, 
+        sum(isnull(Quantity,0)) tb_estoque
+        ". $QtdeDadosMoagemTotal .",
+        ". $QtdeDadosMoagemEstoque .",
         ". $DATAmoagemTotal ."
         from  SBO_KARAMBI_PRD.dbo.owor 
         inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-        where Warehouse='MPP' and owor.ItemCode <> '001208'
+        left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+        where Warehouse='MPP' 
+        and owor.ItemCode <> '001208'
         and CONVERT(CHAR(10),DueDate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
         group by ". $AGRMoagemTotal . "
         order by ". $ORDmoagemTotal ." ");
         $MoagemTotal=null; $Key=0;
         foreach($retorno['moagem_total'] as $KeyId => $val){
+    
+            $QtdeTotal=($val->qtde) ? $val->qtde : 0;
+            $QtdeEstoque=($val->qtde) ? $val->qtde_estoque : 0;
+            $QTdeConsumida=($QtdeTotal-$QtdeEstoque);
+
+            $kg_estoque= ($val->kg_estoque) ? $val->kg_estoque : 0;
+            $kg = ($val->kg) ? $val->kg : 0;
+            $tb_estoque = ($val->tb_estoque) ? $val->tb_estoque : 0;
+            $tb = ($val->tb) ? $val->tb : 0;
+            $kgConsumida = ($kg-$kg_estoque);
+            $TbConsumida = ($tb-$tb_estoque);
+
             $MoagemTotal[]=array( 
                 "label"=>$val->data,
                 "producao"=>$val->qtde,  
@@ -662,68 +694,35 @@ class Safra extends Controller
                 'agrupamento'=>$request['agrupamento'], 
                 "color_producao"=> "#ef4836"
             ); 
-            $Key = $KeyId;
-        }
-
-    
-   
-        /* Moagem Consumida [CARD] */
-        $dadosMoagemConsumida = DB::select(" 
-        select top(1) sum(Quantity) tb ,
-        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg
-        from SBO_KARAMBI_PRD.dbo.IGE1    
-        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=IGE1.ItemCode
-        where WhsCode='MPP' and IGE1.ItemCode <> '001208'
-        and CONVERT(CHAR(10),DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ");
-        $MoagemConsumidaTb= (isset($dadosMoagemConsumida[0]->tb)) ? $dadosMoagemConsumida[0]->tb : 0;
-        $MoagemConsumidaKg= (isset($dadosMoagemConsumida[0]->kg)) ? $dadosMoagemConsumida[0]->kg : 0;
-
-        /* Moagem Consumida  [GRAFICO] */
-        $retorno['moagem_consumida'] = DB::select(" 
-        select sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg,
-        sum(isnull(Quantity,0)) tb, ". $QtdeDadosMoagemConsumida ." ,
-        ". $DATAmoagemTConsumida ."
-        from SBO_KARAMBI_PRD.dbo.IGE1    
-        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=IGE1.ItemCode
-        where WhsCode='MPP'
-        and CONVERT(CHAR(10),DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."'
-        group by ". $AGRMoagemConsumida ."
-        order by ". $ORDmoagemConsumida ." ");
-        $MoagemConsumida=null;
-        foreach($retorno['moagem_consumida'] as $val){
-            $consumida[$val->data] = $val->qtde;
 
             $MoagemConsumida[]=array( 
                 "label"=>$val->data,
-                "producao"=>$val->qtde,  
-                'kg'=>$val->kg,
-                'tb'=>$val->tb,
+                "producao"=>$QTdeConsumida,  
+                'kg'=>$kgConsumida,
+                'tb'=>$TbConsumida,
                 'dt'=>$val->dt,
                 'dti'=>$request['dti'],
                 'dtf'=>$request['dtf'],
                 'agrupamento'=>$request['agrupamento'], 
                 "color_producao"=> "#ff7519"
+            );
+
+            $MoagemEstoque[]=array( 
+                "label"=>$val->data,
+                "producao"=>$QtdeEstoque,   
+                'kg'=>$val->kg_estoque,
+                'tb'=>$val->tb_estoque,
+                'dt'=>$val->dt,
+                'dti'=>$request['dti'],
+                'dtf'=>$request['dtf'],
+                'agrupamento'=>$request['agrupamento'], 
+                "color_producao"=> "#339933"
             ); 
-        } 
-        
-        foreach($retorno['moagem_total'] as $val){
-            $VlConsumida=(isset($consumida[$val->data])) ? $consumida[$val->data] : 0;
-            $retorno['moagem_estoque'][] =array('data'=> $val->data ,'qtde'=> ($val->qtde - $VlConsumida) );
-        }
-        $MoagemEstoque=null;
-        if(isset($retorno['moagem_estoque'])){
-            foreach($retorno['moagem_estoque'] as $val){
-                $MoagemEstoque[]=array( 
-                    "label"=>$val['data'],
-                    "producao"=>$val['qtde'],   
-                    'dti'=>$request['dti'],
-                    'dtf'=>$request['dtf'],
-                    'agrupamento'=>$request['agrupamento'], 
-                    "color_producao"=> "#339933"
-                ); 
-            }
+
+            $Key = $KeyId;
         }
 
+     
  
         /* Brix */
         $dadosBrix = DB::select(" 
@@ -778,8 +777,8 @@ class Safra extends Controller
         $request['MoagemTotalKg'] = ($MoagemTotalKg) ?  number_format($MoagemTotalKg,0,",",".") : '000'; 
         $request['MoagemConsumidaTb'] = ($MoagemConsumidaTb) ?  number_format($MoagemConsumidaTb,0,",",".") : '000';
         $request['MoagemConsumidaKg'] = ($MoagemConsumidaKg) ?  number_format($MoagemConsumidaKg,0,",",".") : '000'; 
-        $request['MoagemEstoqueTb'] = number_format( ($MoagemTotalTb - $MoagemConsumidaTb) ,0,",",".");
-        $request['MoagemEstoqueKg'] = number_format( ($MoagemTotalKg - $MoagemConsumidaKg) ,0,",",".");
+        $request['MoagemEstoqueTb'] = number_format( $MoagemEstoqueTb ,0,",",".");
+        $request['MoagemEstoqueKg'] = number_format( $MoagemEstoqueKg ,0,",",".");
         $request['Brix'] =  ($Brix) ?  number_format($Brix,2,",",".") : '0,00';
         $request['PerdasTotal'] = ($PerdasTotal) ?  number_format($PerdasTotal,0,",",".") : '000';
         $request['PerdasTotalPerc'] = ($PerdasTotalPerc) ?  number_format($PerdasTotalPerc,2,",",".") : '0,00'; 
