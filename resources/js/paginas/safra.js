@@ -31,8 +31,13 @@ Alpine.data('app', () => ({
     titleMoagemDiariaConsumida: 'Entrada de Polpas Diária Consumida ',
     titleComparacaoFornec: 'Comparação entre Fornecedores ',
     titleMoagem: 'Moagem Diária ',
- 
-    
+    tableFornecedores: null,
+    tituloDetalhesModal:null,
+    modalLoadingCharts: false,
+
+    dadosModalMoagemDiaria: null,
+
+
     parametros: {
       valida: false,
       dti: null,
@@ -77,6 +82,27 @@ Alpine.data('app', () => ({
  
     },
 
+    getDetalhesMoagemDiaria(dados){
+      this.tituloDetalhesModal = "Moagem Diaria - "+dados.label
+      $("#modalMoagemDiaria").modal(); 
+      this.modalLoadingCharts = true; 
+      console.log(dados);
+      
+      axios.post('/colonial/safra-detalhes',dados)
+      .then((res) => {
+        console.log(res);
+        this.dadosModalMoagemDiaria = res.data.lista;
+      })
+      .catch((err) => { 
+        console.log(err.response.data); 
+        toastr.error(err.response.data.message,"Erro") 
+      })
+      .finally(() => this.modalLoadingCharts = false);
+      
+    },
+
+ 
+
     getDataChartPrincipal(){
  
       this.loadingCharts = true;
@@ -109,9 +135,10 @@ Alpine.data('app', () => ({
         this.iconHeaderTomateInNatura = res.data.request.TomateInNatura+'<span class="headerUnidade"> (Kg) </span>';
         this.iconHeaderBrix = res.data.request.Brix+'<span class="headerUnidade">   </span>';
         this.iconHeaderPerdas = res.data.request.PerdasTotal+'<span class="headerUnidade"> (Kg) </span>';
-        this.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc+'<span class="headerUnidade"> (%) </span>';
+        this.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc+'<span class="headerUnidade"> (%) </span>'; 
+        this.tableFornecedores = res.data.table_fornecedor;
 
-              /* Grafico Moagem Diaria */ 
+        /* Grafico Moagem Diaria */ 
         this.titleMoagem = 'Moagem Diária em Kilos '  ;
         var chart = AmCharts.makeChart("chartdivMoagemDiaria", {
           "decimalSeparator": ",",
@@ -152,12 +179,16 @@ Alpine.data('app', () => ({
             "event": "clickGraphItem",
             "method":(event) => {
                    
-              //this.getDetalhesProducao(event.item.dataContext); 
+              this.getDetalhesMoagemDiaria(event.item.dataContext); 
                       
             }
           }], 
           "dataProvider": res.data.MoagemDiaria 
         });
+
+        if(!res.data.MoagemDiaria){
+          $("#chartdivMoagemDiaria").html(this.graficoBarra);
+        }
 
         /* Grafico Moagem Diaria */ 
         this.titleMoagemDiaria = 'Produção de Polpa Diária ' +res.data.request.ds_unid  ;
@@ -200,12 +231,16 @@ Alpine.data('app', () => ({
             "event": "clickGraphItem",
             "method":(event) => {
                    
-              //this.getDetalhesProducao(event.item.dataContext); 
+             // this.getDetalhesPolpaTotal(event.item.dataContext); 
                       
             }
           }], 
           "dataProvider": res.data.MoagemTotal 
         });
+
+        if(!res.data.MoagemTotal){
+          $("#chartdivMoagemTotal").html(this.graficoBarra);
+        }
 
         /* Grafico Moagem Consumida */ 
         this.titleMoagemDiariaConsumida = 'Polpas Consumida Diária ' +res.data.request.ds_unid  ;
@@ -255,8 +290,13 @@ Alpine.data('app', () => ({
           "dataProvider": res.data.MoagemConsumida 
         });
 
+        if(!res.data.MoagemConsumida){
+          $("#chartdivMoagemConsumida").html(this.graficoBarra);
+        }
+
+
         /* Grafico Moagem Estoque */ 
-        this.titleMoagemDiariaEstoque = 'Entrada de Polpas para oEstoque Diária ' +res.data.request.ds_unid  ;
+        this.titleMoagemDiariaEstoque = 'Entrada de Polpas para o Estoque Diária ' +res.data.request.ds_unid  ;
         var chart = AmCharts.makeChart("chartdivMoagemEstoque", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -302,7 +342,11 @@ Alpine.data('app', () => ({
           }], 
           "dataProvider": res.data.MoagemEstoque 
         });
- 
+        
+        if(!res.data.MoagemEstoque){
+          $("#chartdivMoagemEstoque").html(this.graficoBarra);
+        }
+
         /* Grafico Fornecedores */ 
         var chart = AmCharts.makeChart("chartdivFornecedor", {
           "decimalSeparator": ",",
@@ -336,9 +380,10 @@ Alpine.data('app', () => ({
           } 
                 
         });
+ 
 
         if(!res.data.Fornecedores){
-           $("#chartdivProdutos").html(this.graficoBarra);
+           $("#chartdivFornecedor").html(this.graficoBarra);
         } 
  
         this.TotMeses = res.data.request.Meses;

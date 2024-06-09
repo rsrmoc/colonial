@@ -29,482 +29,64 @@ class Safra extends Controller
  
     public function modalJson(Request $request) { 
         try{
-             
-            if($request['indicador']=='perdaE_cards'){
-
+           
+            if($request['tipo']=="MoagemTotal"){
                 $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
+                    'dti' => 'required|date',
+                    'dtf' => 'required|date' 
                 ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
+                    'dti.required' => 'O campo Data Inicial é obrigatorio',
+                    'dtf.required' => 'O campo Data Final é obrigatorio',
                 ]);
                 
                 if ($validator->fails()) {
                     return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
                 }
 
                 $retorno['lista'] = DB::select(" 
-                select CONVERT(CHAR(10),perda.dt_ordem, 103) data, nm_produto, nm_tipo,InvntryUom unidade,  Convert(decimal(12, 0), round(sum(qtde), 2, 1))  qtde
-                from perda 
-                inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda 
-                inner join SBO_KARAMBI_PRD.dbo.OITM on  convert(varchar, OITM.ItemCode,103) =   perda.cd_produto  COLLATE Latin1_General_CI_AS
-                where  CONVERT(CHAR(10),perda.dt_ordem, 23) like '%$data%' and grupo = '105'
-                group by CONVERT(CHAR(10),perda.dt_ordem, 103),
-                CONVERT(CHAR(10),perda.dt_ordem, 23), CONVERT(CHAR(10),perda.dt_ordem, 103),nm_produto, nm_tipo,InvntryUom
-                order by 1 ");     
+                select OPCH.DocEntry movimento, CardCode codigo,CardName nome,CONVERT(varchar,OPCH.DocDate, 103) data,
+                replace( replace( replace(   convert(varchar, convert(money, DocTotal), 1)  ,',',' ')  ,'.',',') ,' ','.') valor,
+                JrnlMemo ds_nf,
+                replace( replace( replace(   convert(varchar, convert(money, PCH1.Quantity), 1)  ,',',' ')  ,'.',',') ,' ','.') qtde
+                from SBO_KARAMBI_PRD.dbo.OPCH
+                inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
+                where PCH1.ItemCode='001208'
+                and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '2023-06-01' and '2023-06-30' 
+                order by CONVERT(CHAR(10),OPCH.DocDate, 23)  ");     
  
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='perdaP_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = DB::select(" 
-                select CONVERT(CHAR(10),perda.dt_ordem, 103) data, nm_produto, nm_tipo,InvntryUom unidade, Convert(decimal(12, 0), round(sum(qtde), 2, 1))  qtde 
-                
-                from perda 
-                inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda 
-                left join SBO_KARAMBI_PRD.dbo.OITM on  convert(varchar, OITM.ItemCode,103) =   perda.cd_produto  COLLATE Latin1_General_CI_AS
-                where  CONVERT(CHAR(10),perda.dt_ordem, 23) like '%$data%' and grupo = '103'
-                group by CONVERT(CHAR(10),perda.dt_ordem, 103),
-                CONVERT(CHAR(10),perda.dt_ordem, 23), CONVERT(CHAR(10),perda.dt_ordem, 103),nm_produto, nm_tipo,InvntryUom
-                order by 1 ");     
- 
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='perdaI_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = DB::select(" 
-                select CONVERT(CHAR(10),perda.dt_ordem, 103) data, nm_produto, nm_tipo,InvntryUom unidade, Convert(decimal(12, 0), round(sum(qtde), 2, 1))  qtde
-                from perda 
-                inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda 
-                left join SBO_KARAMBI_PRD.dbo.OITM on  convert(varchar, OITM.ItemCode,103) =   perda.cd_produto  COLLATE Latin1_General_CI_AS
-                where  CONVERT(CHAR(10),perda.dt_ordem, 23) like '%$data%' and grupo = '109'
-                group by CONVERT(CHAR(10),perda.dt_ordem, 103),
-                CONVERT(CHAR(10),perda.dt_ordem, 23), CONVERT(CHAR(10),perda.dt_ordem, 103),nm_produto, nm_tipo,InvntryUom
-                order by 1 ");     
- 
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='parada_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = DB::select(" 
-                select CONVERT(CHAR(10),producao_parada.dt_ordem, 103) data, nm_tipo,
-                Convert(decimal(12, 0), round(sum(tempo), 2, 1)) qtde
-                from producao_parada 
-                inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-                where  CONVERT(CHAR(10),producao_parada.dt_ordem, 23) like '%$data%'
-                group by CONVERT(CHAR(10),producao_parada.dt_ordem, 103), nm_tipo
-                order by 1");     
- 
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='lenha_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = Estoque::whereRaw("CONVERT(CHAR(10),DocDate, 23) like '%$data%' ")
-                ->whereRaw("WhsCode='MPV'")
-                ->selectRaw("cONVERT(CHAR(10),DocDate, 103) data,  Convert(decimal(12, 0), round(sum(Quantity), 2, 1)) qtde")->groupByRaw("cONVERT(CHAR(10),DocDate, 103)")
-                ->orderByRaw("1 ")
-                ->get();    
- 
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='energia_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = DB::select(" 
-                select  cONVERT(CHAR(10),dt_consumo, 103) data, Convert(decimal(12, 0), round(sum(qtde), 2, 1))  qtde
-                from energias 
-                where CONVERT(CHAR(10),dt_consumo, 23) like '%$data%'
-                group by cONVERT(CHAR(10),dt_consumo, 103)
-                order by 1 ");   
- 
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='agua_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = DB::select("  
-                select cONVERT(CHAR(10),dt_consumo, 103) data , Convert(decimal(12, 0), round(sum(saldo), 2, 1)) qtde
-                from hidricos 
-                where CONVERT(CHAR(10),dt_consumo, 23) like '%$data%'  
-                group by cONVERT(CHAR(10),dt_consumo, 103)
-                order by 1 ");   
- 
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='polpa_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = Estoque::whereRaw("CONVERT(CHAR(10),DocDate, 23) like '%$data%'  ")
-                ->whereRaw("ItemCode='013906'")
-                ->selectRaw("CONVERT(CHAR(10),DocDate, 103) data,
-                convert(decimal(12, 0), round(sum(Quantity), 2, 1)) qtde, 
-                convert(decimal(12, 0), round(sum(Quantity)/210, 2, 1)) qtde_tb")
-                ->groupByRaw("CONVERT(CHAR(10),DocDate, 103)")
-                ->orderByRaw("1 ") 
-                ->get();  
- 
-                return $retorno;
-  
-            }
-
-            if($request['indicador']=='producao_cards'){
-
-                $validator = Validator::make($request->all(), [
-                    'ano' => 'required|integer' 
-                ],[
-                    'ano.required' => 'O campo Ano é obrigatorio' 
-                ]);
-                
-                if ($validator->fails()) {
-                    return response()->json(['errors' => $validator->errors()->first()], 400);
-                }
-
-                $data=$request['ano'];
-                if($request['mes']){
-                    $data=$data.'-'.$request['mes'];
-                    if($request['dia']){
-                        $data=$data.'-'.$request['dia'];
-                    }
-                }
-
-                $retorno['lista'] = DB::select(" 
-                select ItemCode codigo,nome, 
-                convert(decimal(12, 0), round(sum(valor_prod), 2, 1)) prod_cx,
-                convert(decimal(12, 0), round(sum(valor_prod*kg), 2, 1)) prod_kg,
-                convert(decimal(12, 0), round(sum((valor_prod*kg)/1000), 2, 1)) prod_to,
-                convert(decimal(12, 0), round(sum(valor), 2, 1)) pla_cx,
-                convert(decimal(12, 0), round(sum(valor*kg), 2, 1)) pla_kg,
-                convert(decimal(12, 0), round(sum((valor*kg)/1000) , 2, 1)) pla_to 
-                from (	
-                    select ProdName nome,  owor.plannedqty valor,
-                    (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
-                        where ign1.BaseRef=owor.DocEntry
-                    ) valor_prod, owor.ItemCode , 
-                    case 
-                    when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
-                    when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
-                    when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
-                    when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
-                    else  CONVERT(decimal(10,5), IWeight1)  end  kg  
-                                    
-                    from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
-                    inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-                    where CONVERT(CHAR(10),owor.duedate, 23) like '%$data%' 
-                    and oitm.ItmsGrpCod not in (103) 
-                ) query_principal
-                group by ItemCode,nome
-                order by 2  
-                ");
-
-                
-                return $retorno;
-
-            }
-
-            if($request['indicador']=='producao'){
-
-                $hidrico = Hidrico::whereRaw("CONVERT(varchar, dt_consumo, 103) like '%".$request['label']."%' ")
-                ->selectRaw("sum(saldo) valor")->first();
-                
-                $energia = Energia::whereRaw("CONVERT(varchar, dt_consumo, 103) like '%".$request['label']."%' ")
-                ->selectRaw("sum(qtde) valor")->first();
-        
-                $lenha = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) like '%".$request['label']."%' ")
-                ->whereRaw("WhsCode='MPV'")->selectRaw("sum(Quantity) valor")->first();
-        
-                $perda = Perda::whereRaw("CONVERT(varchar, dt_ordem, 103)  like '%".$request['label']."%' ")
-                ->selectRaw("count(qtde) valor")->first();
-        
-        
-                $parada = Parada::whereRaw("CONVERT(varchar, dt_ordem, 103) like '%".$request['label']."%' ")
-                ->selectRaw("sum(tempo) valor")->first();
-            
-                $polpa = Estoque::whereRaw("CONVERT(varchar, DocDate, 103) like '%".$request['label']."%' ")
-                ->whereRaw("ItemCode='013906'")->selectRaw("sum(Quantity) valor")->first();
-
-                $retorno['data'] = $request['label'];
-                $retorno['hidrico'] = ($hidrico->valor) ?  number_format(($hidrico->valor),2,",",".") : '0,00';
-                $retorno['energia'] = ($energia->valor) ?  number_format($energia->valor,2,",",".") : '0,00';
-                $retorno['lenha'] = ($lenha->valor) ?  number_format($lenha->valor,2,",",".") : '0,00';
-                $retorno['perda'] = ($perda->valor) ?  number_format($perda->valor,0,",",".") : '00';
-                $retorno['parada'] = ($parada->valor) ?  number_format($parada->valor,0,",",".") : '00';
-                $retorno['polpa'] = ($polpa->valor) ?  number_format($polpa->valor,0,",",".") : '00';
-                $retorno['produzido_cx'] = ($request['produzido_cx']) ?  number_format($request['produzido_cx'],0,",",".") : '00';
-                $retorno['produzido_kg'] = ($request['produzido_kg']) ?  number_format($request['produzido_kg'],0,",",".") : '00';
-                $retorno['produzido_to'] = ($request['produzido_to']) ?  number_format($request['produzido_to'],0,",",".") : '00';
-    
-                if($request['agrupamento']=='P'){
-                    $ParametroProducao="where CONVERT(CHAR(10),owor.duedate, 23) like '%".$request['dti']."%' and upper(ProdName) = upper('".$request['label']."') ";
-                    $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_ordem, 23) like '%".$request['dti']."%'";
-                    $ParametroPerda="where CONVERT(CHAR(10),perda.dt_ordem, 23) like '%".$request['dti']."%' ";
-                }else{
-                    $ParametroProducao="where CONVERT(CHAR(10),owor.duedate, 103) like '%".$request['label']."%'"; 
-                    $ParametroParada="where CONVERT(CHAR(10),producao_parada.dt_ordem, 103) like '%".$request['label']."%'";
-                    $ParametroPerda="where CONVERT(CHAR(10),perda.dt_ordem, 103) like '%".$request['label']."%' ";
-                }
-
-       
-                $retorno['listaProducao'] = DB::select("select owor.DocEntry codigo,
-                CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
-                /*
-                (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
-                    where ign1.BaseRef=owor.DocEntry
-                ) valor_prod, owor.ItemCode ,
-                */
-                isnull(CmpltQty,0) valor_prod,owor.ItemCode,
-                case 
-                when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
-                when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
-                when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
-                when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
-                else  CONVERT(decimal(10,5), IWeight1)  end  kg,
-                ProdName nome, isnull(producao_parada.tempo,0) tempo 
-                from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor
-                left join ( select sum(tempo) tempo, cd_ordem from producao_parada group by cd_ordem ) producao_parada on producao_parada.cd_ordem = owor.DocEntry 
-                inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-                ".$ParametroProducao."
-                and oitm.ItmsGrpCod not in (103)");
-                $totais['pCX']=0; $totais['pKG']=0; $totais['prCX']=0; $totais['prKG']=0; $totais['Tempo']=0;
-                foreach($retorno['listaProducao'] as $valores){
-                    $totais['pCX']=($totais['pCX']+$valores->valor);
-                    $totais['pKG']=($totais['pKG']+($valores->valor*$valores->kg));
-                    $totais['prCX']=($totais['prCX']+$valores->valor_prod);
-                    $totais['prKG']=($totais['prKG']+($valores->valor_prod*$valores->kg));
-                    $totais['Tempo']=($totais['Tempo']+$valores->tempo);
-                }
-                $retorno['totais'] = $totais;
-
-                /* tipo parada */  
-                $retorno['dadosParada'] = DB::select(" 
-                select nm_tipo , producao_parada.dt_ordem dt_cadastro, tempo qtde,obs_parada
-                from producao_parada 
-                inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-                ".$ParametroParada."
-                order by producao_parada.dt_ordem "); 
-            
-                $retorno['dadosPerda'] = DB::select(" 
-                select nm_tipo,qtde, perda.dt_ordem,nm_produto,obs_perda
-                from perda 
-                inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-                ".$ParametroPerda."
-                order by perda.dt_ordem  "); 
-
-                return $retorno;
-
-            }
-
-            if($request['indicador']=='perda'){ 
-
-                $Tipo=null;
-                if($request['sub_grupo']=='tipo'){
-                    $Tipo=" and upper(nm_tipo) = upper('".$request['produto']."') ";
-                } 
-                if($request['sub_grupo']=='dt'){
-                    $request['dti']=$request['data'];
-                    $request['dtf']=$request['data'];
-                }
-                $grupo=null;
-                if($request['sub_grupo']=='grupo'){
- 
-
-                    if($request['produto']=="EMBALAGEM"){
-                        $grupo=" and grupo = '105' ";
-                    }
-                    if($request['produto']=="POLPA"){
-                        $grupo=" and grupo = '103' ";
-                    }
-                    if($request['produto']=="INSUMO"){
-                        $grupo=" and grupo = '109' ";
-                    }
-                    if($request['produto']=="OUTROS"){
-                        $grupo=" and grupo not in('109','105','103')  ";
-                    }
-                }
-  
-                $retorno['dadosPerda'] = DB::select(" 
-                select nm_tipo, convert(decimal(12, 0), round(qtde, 2, 1)) qtde, CONVERT(CHAR(10),perda.dt_ordem, 103)  dt_ordem,
-                nm_produto,obs_perda,cd_perda,cd_produto,oitm.InvntryUom unidade,oitmItem.ItemCode cd_item ,oitmItem.ItemName nm_item
-                from perda 
-                inner join  perda_tipo on perda_tipo.cd_tipo =perda.cd_tipo_perda
-                left join SBO_KARAMBI_PRD.dbo.OITM on  convert(varchar, OITM.ItemCode,103) =   perda.cd_produto  COLLATE Latin1_General_CI_AS
-                left join  SBO_KARAMBI_PRD.dbo.owor  on owor.DocEntry = perda.cd_ordem
-                left join SBO_KARAMBI_PRD.dbo.oitm oitmItem on oitmItem.ItemCode=owor.ItemCode
-                where CONVERT(CHAR(10),perda.dt_ordem, 23)  between '".$request['dti']."' and  '".$request['dtf']."'
-                $Tipo $grupo
-                order by perda.dt_ordem  ");  
                 return $retorno;
             }
             
-            if($request['indicador']=='parada'){ 
-                $Tipo=null;
-                if($request['sub_grupo']=='tipo'){
-                    $Tipo=" and upper(nm_tipo) = upper('".$request['produto']."') ";
+            if($request['tipo']=="MoagemDiaria"){
+
+                $validator = Validator::make($request->all(), [
+                    'dti' => 'required|date',
+                    'dtf' => 'required|date' 
+                ],[
+                    'dti.required' => 'O campo Data Inicial é obrigatorio',
+                    'dtf.required' => 'O campo Data Final é obrigatorio',
+                ]);
+                
+                if ($validator->fails()) {
+                    return response()->json(['errors' => $validator->errors()->first()], 400);
                 }
-                $Equip=null;
-                if($request['sub_grupo']=='equip'){
-                    $Equip=" and upper(nm_equipamento) = upper('".$request['produto']."') ";
-                }
-                if($request['sub_grupo']=='dt'){
-                    $request['dti']=$request['data'];
-                    $request['dtf']=$request['data'];
-                }
-                $retorno['dadosParada'] = DB::select(" 
-                select cd_producao_parada,CONVERT(CHAR(10),producao_parada.dt_ordem, 103)  dt_ordem,nm_tipo,
-                nm_equipamento,tempo,obs_parada,oitm.ItemCode cd_item ,oitm.ItemName nm_item,producao_parada.cd_ordem
-                from producao_parada 
-                inner join  producao_tipo on producao_tipo.cd_tipo=producao_parada.cd_parada
-                left join equipamento on equipamento.cd_equipamento = producao_parada.cd_equipamento
-                left join  SBO_KARAMBI_PRD.dbo.owor  on owor.DocEntry = producao_parada.cd_ordem
-                left join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode
-                where CONVERT(CHAR(10),producao_parada.dt_ordem, 23)  between '".$request['dti']."' and  '".$request['dtf']."'
-                 $Tipo $Equip
-                order by producao_parada.dt_ordem "); 
+
+                $retorno['lista'] = DB::select(" 
+                select OPCH.DocEntry movimento, CardCode codigo,CardName nome,CONVERT(varchar,OPCH.DocDate, 103) data,
+                replace( replace( replace(   convert(varchar, convert(money, DocTotal), 1)  ,',',' ')  ,'.',',') ,' ','.') valor,
+                JrnlMemo ds_nf,
+                replace( replace( replace(   convert(varchar, convert(money, PCH1.Quantity), 1)  ,',',' ')  ,'.',',') ,' ','.') qtde
+                from SBO_KARAMBI_PRD.dbo.OPCH
+                inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
+                where PCH1.ItemCode='001208'
+                and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '2023-06-01' and '2023-06-30' 
+                order by CONVERT(CHAR(10),OPCH.DocDate, 23)  ");     
+ 
                 return $retorno;
+  
             }
+ 
+            return response()->json(['errors' => 'Inidicador Não Configurado'], 400);
 
       }catch (Throwablee $error) {
         return response()->json(['errors' => [$error->getMessage()]], 500);
@@ -628,7 +210,7 @@ class Safra extends Controller
         and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' ");
         $TomateInNatura= (isset($dadosTomateInNatura[0]->qtde)) ? $dadosTomateInNatura[0]->qtde : 0;
 
-        /* Tomate in Natura GRAFICO */
+        /* Moagem Diaria GRAFICO */
         $dadosTomateInNaturaGrafico = DB::select(" 
         select 
         CONVERT (varchar, OPCH.DocDate, 103) data,
@@ -648,6 +230,7 @@ class Safra extends Controller
                 "label"=>$val->data,
                 "producao"=>$val->qtde,    
                 'dt'=>$val->dt,
+                'tipo'=>'MoagemDiaria',
                 'dti'=>$request['dti'],
                 'dtf'=>$request['dtf'],
                 'agrupamento'=>$request['agrupamento'], 
@@ -721,6 +304,7 @@ class Safra extends Controller
                 'kg'=>$val->kg,
                 'tb'=>$val->tb,
                 'dt'=>$val->dt,
+                'tipo'=>'MoagemTotal',
                 'dti'=>$request['dti'],
                 'dtf'=>$request['dtf'],
                 'agrupamento'=>$request['agrupamento'], 
@@ -733,6 +317,7 @@ class Safra extends Controller
                 'kg'=>$kgConsumida,
                 'tb'=>$TbConsumida,
                 'dt'=>$val->dt,
+                'tipo'=>'MoagemConsumida',
                 'dti'=>$request['dti'],
                 'dtf'=>$request['dtf'],
                 'agrupamento'=>$request['agrupamento'], 
@@ -745,6 +330,7 @@ class Safra extends Controller
                 'kg'=>$val->kg_estoque,
                 'tb'=>$val->tb_estoque,
                 'dt'=>$val->dt,
+                'tipo'=>'MoagemEstoque',
                 'dti'=>$request['dti'],
                 'dtf'=>$request['dtf'],
                 'agrupamento'=>$request['agrupamento'], 
@@ -792,6 +378,28 @@ class Safra extends Controller
             );
         }
        
+        /* table Fornecedor */
+        $retorno['table_fornecedor'] = DB::select("
+        select cd_fornecedor,nm_fornecedor,count(*) qtde,  
+        convert(varchar, convert(money, sum(liquido) ) , 1  ) as total,  
+        convert(varchar, convert(money,  sum(desconto) ) , 1  ) desconto,
+        replace( cast( (sum(verde)/count(*)) as decimal(18,2)) ,'.',',') verde, 
+        replace( cast( (sum(praga)/count(*)) as decimal(18,2)) ,'.',',') praga, 
+        replace( cast( (sum(fungo)/count(*)) as decimal(18,2)) ,'.',',') fungo,
+        replace( cast( (sum(desintegrado)/count(*)) as decimal(18,2)) ,'.',',') desintegrado, 
+        replace( cast( (sum(defeito)/count(*)) as decimal(18,2)) ,'.',',') defeito, 
+        replace( cast( (sum(impureza)/count(*)) as decimal(18,2)) ,'.',',') impureza,
+        replace( cast( (sum(terra)/count(*)) as decimal(18,2)) ,'.',',') terra, 
+        replace( cast( (sum(fruto)/count(*)) as decimal(18,2)) ,'.',',') fruto, 
+        replace( cast( (sum(brix)/count(*)) as decimal(18,2)) ,'.',',') brix, 
+        replace( cast( (sum(ph)/count(*)) as decimal(18,2)) ,'.',',') ph, 
+        replace( cast( (sum(acidez)/count(*)) as decimal(18,2)) ,'.',',') acidez
+        from recebimento_tomate
+        where CONVERT(CHAR(10),dt_recebimento, 23) between '".$request['dti']."' and '".$request['dtf']."'
+        group by cd_fornecedor,nm_fornecedor
+        order by nm_fornecedor
+        ");
+    
 
         $MESES = array(1 => "JANEIRO", 2 => "FEVEREIRO", 3 => "MARÇO", 4 => "ABRIL", 5 => "MAIO", 6 => "JUNHO", 7 => "JULHO", 8 => "AGOSTO", 9 => "SETEMBRO", 10 => "OUTUBRO", 11 => "NOVEMBRO", 12 => "DEZEMBRO");
         for ($x = 0; $x <= 10; $x++) {

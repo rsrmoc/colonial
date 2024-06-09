@@ -31,6 +31,10 @@ Alpine.data('app', function () {
     titleMoagemDiariaConsumida: 'Entrada de Polpas Diária Consumida ',
     titleComparacaoFornec: 'Comparação entre Fornecedores ',
     titleMoagem: 'Moagem Diária ',
+    tableFornecedores: null,
+    tituloDetalhesModal: null,
+    modalLoadingCharts: false,
+    dadosModalMoagemDiaria: null,
     parametros: {
       valida: false,
       dti: null,
@@ -68,8 +72,24 @@ Alpine.data('app', function () {
       });
       this.getDataChartPrincipal();
     },
-    getDataChartPrincipal: function getDataChartPrincipal() {
+    getDetalhesMoagemDiaria: function getDetalhesMoagemDiaria(dados) {
       var _this2 = this;
+      this.tituloDetalhesModal = "Moagem Diaria - " + dados.label;
+      $("#modalMoagemDiaria").modal();
+      this.modalLoadingCharts = true;
+      console.log(dados);
+      axios.post('/colonial/safra-detalhes', dados).then(function (res) {
+        console.log(res);
+        _this2.dadosModalMoagemDiaria = res.data.lista;
+      })["catch"](function (err) {
+        console.log(err.response.data);
+        toastr.error(err.response.data.message, "Erro");
+      })["finally"](function () {
+        return _this2.modalLoadingCharts = false;
+      });
+    },
+    getDataChartPrincipal: function getDataChartPrincipal() {
+      var _this3 = this;
       this.loadingCharts = true;
       this.parametros.dia = $('#parametro-dia').val();
       this.parametros.mes = $('#parametro-mes').val();
@@ -87,19 +107,20 @@ Alpine.data('app', function () {
       this.iconHeaderPerdasPerc = this.iconCarregando;
       axios.post('/colonial/safra-json', this.parametros).then(function (res) {
         console.log(res);
-        _this2.iconHeaderMoagemTotal = res.data.request.MoagemTotalKg + '<span class="headerUnidade"> (Kg) </span>';
-        _this2.iconHeaderMoagemTotalTb = res.data.request.MoagemTotalTb + '<span class="headerUnidade"> (Tb) </span>';
-        _this2.iconHeaderMoagemEstoque = res.data.request.MoagemEstoqueKg + '<span class="headerUnidade"> (Kg) </span>';
-        _this2.iconHeaderMoagemEstoqueTb = res.data.request.MoagemEstoqueTb + '<span class="headerUnidade"> (Tb) </span>';
-        _this2.iconHeaderMoagemConsumida = res.data.request.MoagemConsumidaKg + '<span class="headerUnidade"> (Kg) </span>';
-        _this2.iconHeaderMoagemConsumidaTb = res.data.request.MoagemConsumidaTb + '<span class="headerUnidade"> (Tb) </span>';
-        _this2.iconHeaderTomateInNatura = res.data.request.TomateInNatura + '<span class="headerUnidade"> (Kg) </span>';
-        _this2.iconHeaderBrix = res.data.request.Brix + '<span class="headerUnidade">   </span>';
-        _this2.iconHeaderPerdas = res.data.request.PerdasTotal + '<span class="headerUnidade"> (Kg) </span>';
-        _this2.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc + '<span class="headerUnidade"> (%) </span>';
+        _this3.iconHeaderMoagemTotal = res.data.request.MoagemTotalKg + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderMoagemTotalTb = res.data.request.MoagemTotalTb + '<span class="headerUnidade"> (Tb) </span>';
+        _this3.iconHeaderMoagemEstoque = res.data.request.MoagemEstoqueKg + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderMoagemEstoqueTb = res.data.request.MoagemEstoqueTb + '<span class="headerUnidade"> (Tb) </span>';
+        _this3.iconHeaderMoagemConsumida = res.data.request.MoagemConsumidaKg + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderMoagemConsumidaTb = res.data.request.MoagemConsumidaTb + '<span class="headerUnidade"> (Tb) </span>';
+        _this3.iconHeaderTomateInNatura = res.data.request.TomateInNatura + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderBrix = res.data.request.Brix + '<span class="headerUnidade">   </span>';
+        _this3.iconHeaderPerdas = res.data.request.PerdasTotal + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc + '<span class="headerUnidade"> (%) </span>';
+        _this3.tableFornecedores = res.data.table_fornecedor;
 
         /* Grafico Moagem Diaria */
-        _this2.titleMoagem = 'Moagem Diária em Kilos ';
+        _this3.titleMoagem = 'Moagem Diária em Kilos ';
         var chart = AmCharts.makeChart("chartdivMoagemDiaria", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -134,15 +155,17 @@ Alpine.data('app', function () {
           "listeners": [{
             "event": "clickGraphItem",
             "method": function method(event) {
-
-              //this.getDetalhesProducao(event.item.dataContext); 
+              _this3.getDetalhesMoagemDiaria(event.item.dataContext);
             }
           }],
           "dataProvider": res.data.MoagemDiaria
         });
+        if (!res.data.MoagemDiaria) {
+          $("#chartdivMoagemDiaria").html(_this3.graficoBarra);
+        }
 
         /* Grafico Moagem Diaria */
-        _this2.titleMoagemDiaria = 'Produção de Polpa Diária ' + res.data.request.ds_unid;
+        _this3.titleMoagemDiaria = 'Produção de Polpa Diária ' + res.data.request.ds_unid;
         var chart = AmCharts.makeChart("chartdivMoagemTotal", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -178,14 +201,17 @@ Alpine.data('app', function () {
             "event": "clickGraphItem",
             "method": function method(event) {
 
-              //this.getDetalhesProducao(event.item.dataContext); 
+              // this.getDetalhesPolpaTotal(event.item.dataContext); 
             }
           }],
           "dataProvider": res.data.MoagemTotal
         });
+        if (!res.data.MoagemTotal) {
+          $("#chartdivMoagemTotal").html(_this3.graficoBarra);
+        }
 
         /* Grafico Moagem Consumida */
-        _this2.titleMoagemDiariaConsumida = 'Polpas Consumida Diária ' + res.data.request.ds_unid;
+        _this3.titleMoagemDiariaConsumida = 'Polpas Consumida Diária ' + res.data.request.ds_unid;
         var chart = AmCharts.makeChart("chartdivMoagemConsumida", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -226,9 +252,12 @@ Alpine.data('app', function () {
           }],
           "dataProvider": res.data.MoagemConsumida
         });
+        if (!res.data.MoagemConsumida) {
+          $("#chartdivMoagemConsumida").html(_this3.graficoBarra);
+        }
 
         /* Grafico Moagem Estoque */
-        _this2.titleMoagemDiariaEstoque = 'Entrada de Polpas para oEstoque Diária ' + res.data.request.ds_unid;
+        _this3.titleMoagemDiariaEstoque = 'Entrada de Polpas para o Estoque Diária ' + res.data.request.ds_unid;
         var chart = AmCharts.makeChart("chartdivMoagemEstoque", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -269,6 +298,9 @@ Alpine.data('app', function () {
           }],
           "dataProvider": res.data.MoagemEstoque
         });
+        if (!res.data.MoagemEstoque) {
+          $("#chartdivMoagemEstoque").html(_this3.graficoBarra);
+        }
 
         /* Grafico Fornecedores */
         var chart = AmCharts.makeChart("chartdivFornecedor", {
@@ -302,22 +334,22 @@ Alpine.data('app', function () {
           }
         });
         if (!res.data.Fornecedores) {
-          $("#chartdivProdutos").html(_this2.graficoBarra);
+          $("#chartdivFornecedor").html(_this3.graficoBarra);
         }
-        _this2.TotMeses = res.data.request.Meses;
-        _this2.parametros.valida = true;
+        _this3.TotMeses = res.data.request.Meses;
+        _this3.parametros.valida = true;
         $('#indicadores-parametros #parametro-ano').val(res.data.request.ano).trigger('change');
         $('#indicadores-parametros #parametro-mes').val(res.data.request.mes).trigger('change');
         if (res.data.request.ano) {
           if (res.data.request.mes) {
-            _this2.TotDias = _this2.TotMeses[res.data.request.ano][Number(res.data.request.mes)];
+            _this3.TotDias = _this3.TotMeses[res.data.request.ano][Number(res.data.request.mes)];
           }
         }
       })["catch"](function (err) {
         console.log(err.response.data);
         toastr.error(err.response.data.message, "Erro");
       })["finally"](function () {
-        return _this2.loadingCharts = false;
+        return _this3.loadingCharts = false;
       });
     }
   };

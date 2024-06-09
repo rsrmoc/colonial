@@ -758,6 +758,55 @@ ul {
                 <template x-if="loadingCharts">
                     <x-loader class="absolute-loader"/>
                 </template>
+
+                <div class="row" style="margin-top: 50px;">
+                     
+                    <div class="col-md-12">
+                        <table class="table table-striped" style="margin-bottom: 0">
+                            <thead  >
+                                
+                                <tr class="active">
+                                    <th >Codigo</th> 
+                                    <th   >Fornecedor</th>
+                                    <th class="text-right">Verdes(%)</th>
+                                    <th class="text-right">Pragas Lesões(%)</th>
+                                    <th class="text-right">Fungos, Podres(%)</th> 
+                                    <th class="text-right">Desintegrados (%)</th> 
+                                    <th class="text-right">Impurezas(%)</th> 
+                                    <th class="text-right">Terra(%)</th> 
+                                    <th   class="text-right">Frutos Bons(%)</th> 
+                                    <th class="text-right">Brix</th> 
+                                    <th class="text-right">PH</th> 
+                                    <th   class="text-right">Acidez</th> 
+                                    <th  class="text-right">Desconto (Kg)</th> 
+                                    <th class="text-right">Total (Kg)</th> 
+                                </tr>
+                            </thead> 
+                            <tbody>
+                                <template x-for="query in tableFornecedores">
+                                    <tr style="font-size: 14px;">
+                                        <td style="font-size: 14px;" x-text="query.cd_fornecedor"></td>
+                                        <td style="font-size: 14px;" x-text="query.nm_fornecedor"></td>  
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.verde) ? query.verde : '0,00'"></td>  
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.praga) ? query.praga : '0,00'"></td> 
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.fungo) ? query.fungo : '0,00'"></td> 
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.desintegrado) ? query.desintegrado : '0,00'"></td> 
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.impureza) ? query.impureza : '0,00'"></td> 
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.terra) ? query.terra : '0,00'"></td> 
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.fruto) ? query.fruto : '0,00'"></td> 
+                                    
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.brix) ? query.brix : '0,00'"></td>  
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.ph) ? query.ph : '0,00'"></td>  
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.acidez) ? query.acidez : '0,00'"></td>  
+                                        
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.desconto) ? query.desconto : '0,00'"></td>  
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.total) ? query.total : '0,00'"></td>  
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div> 
+                </div> 
             </div>
         </div>
         
@@ -780,7 +829,71 @@ ul {
         </style>
 
  
+        <div class="modal fade bs-example-modal-lg modal-fullscreen-xl" id="modalMoagemDiaria" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhesModal"></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        
+                        <br>
+
+                        <div role="tabpanel"> 
+                                <!-- Nav tabs -->
+                                
+                            <div class="FixedHeightContainerOverflow"> 
+                                <div class="ContentOverflow">
+                                    
+                                    <template x-if="modalLoadingCharts">
+                                        <div style="padding: 100px"> 
+                                            <x-loader class="absolute-loader"/>                           
+                                        </div>
+                                    </template>
+                                    <table class="table table-striped" style="margin-bottom: 0">
+                                        <thead>
+                                            <tr class="active">
+                                                <th >Codigo</th>
+                                                <th >Fornecedor</th> 
+                                                <th >Nome</th> 
+                                                <th >Data</th>
+                                                <th >Dados Nota Fiscal</th>
+                                                <th class="text-right">Qtde [T]</th>
+                                                <th class="text-right">Valor</th> 
+                                            </tr>
+                                        </thead> 
+                                        <tbody>
+                                            <template x-for="query in dadosModalMoagemDiaria">
+                                                <tr style="font-size: 16px;">
+                                                    <td style="font-size: 16px;" x-text="query.movimento"></td>
+                                                    <td style="font-size: 16px;" x-text="query.codigo"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.nome"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.ds_nf"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                    <td style="font-size: 16px;" class="text-right" x-text="(query.valor).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                    
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer"> 
+                    </div>
+                </div>
+            </div>
+        </div>
    
+    
 
     </div>
 
