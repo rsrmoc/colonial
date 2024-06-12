@@ -184,9 +184,9 @@ class Safra extends Controller
             $AGRMoagemTotal='CONVERT (varchar, owor.DueDate, 103),owor.DueDate';
             $ORDmoagemTotal='owor.DueDate';
 
-            $DATAmoagemTConsumida='CONVERT (varchar, IGE1.DocDate, 103) data,IGE1.DocDate dt';
-            $AGRMoagemConsumida='CONVERT (varchar, IGE1.DocDate, 103),IGE1.DocDate';
-            $ORDmoagemConsumida='IGE1.DocDate';
+            $DATAmoagemDiaria='CONVERT (varchar, OPCH.DocDate, 103) data,OPCH.DocDate dt,';
+            $AGRMoagemDiaria='CONVERT (varchar, OPCH.DocDate, 103),OPCH.DocDate';
+            $ORDmoagemDiaria='OPCH.DocDate';
    
         }
 
@@ -194,11 +194,10 @@ class Safra extends Controller
             $DATAmoagemTotal='SUBSTRING(CONVERT (varchar, owor.DueDate, 103), 4, 7) data, SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8) dt';
             $AGRMoagemTotal='SUBSTRING(CONVERT (varchar, owor.DueDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)';
             $ORDmoagemTotal='SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)';
-
-            $DATAmoagemTConsumida='SUBSTRING(CONVERT (varchar, IGE1.DocDate, 103), 4, 7) data, SUBSTRING(CONVERT (varchar, IGE1.DocDate, 23), 0, 8) dt';
-            $AGRMoagemConsumida='SUBSTRING(CONVERT (varchar, IGE1.DocDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, IGE1.DocDate, 23), 0, 8)';
-            $ORDmoagemConsumida='SUBSTRING(CONVERT (varchar, IGE1.DocDate, 23), 0, 8)';
-   
+  
+            $DATAmoagemDiaria='SUBSTRING(CONVERT (varchar, OPCH.DocDate, 103), 4, 7) data, SUBSTRING(CONVERT (varchar, OPCH.DocDate, 23), 0, 8) dt,';
+            $AGRMoagemDiaria='SUBSTRING(CONVERT (varchar, OPCH.DocDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, OPCH.DocDate, 23), 0, 8)';
+            $ORDmoagemDiaria='SUBSTRING(CONVERT (varchar, OPCH.DocDate, 23), 0, 8)'; 
         }
   
 
@@ -211,20 +210,18 @@ class Safra extends Controller
         $TomateInNatura= (isset($dadosTomateInNatura[0]->qtde)) ? $dadosTomateInNatura[0]->qtde : 0;
 
         /* Moagem Diaria GRAFICO */
-        $dadosTomateInNaturaGrafico = DB::select(" 
-        select 
-        CONVERT (varchar, OPCH.DocDate, 103) data,
-        CONVERT(CHAR(10),OPCH.DocDate, 23) dt,
-        sum(PCH1.Quantity) qtde 
-        from SBO_KARAMBI_PRD.dbo.OPCH
-        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-        where PCH1.ItemCode='001208'
-        and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-        group by CONVERT (varchar, OPCH.DocDate, 103),CONVERT(CHAR(10),OPCH.DocDate, 23)
-        order by CONVERT(CHAR(10),OPCH.DocDate, 23)
+        $dadosMoagemGrafico = DB::select(" 
+            select ". $DATAmoagemDiaria ."
+            sum(PCH1.Quantity) qtde 
+            from SBO_KARAMBI_PRD.dbo.OPCH
+            inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
+            where PCH1.ItemCode='001208'
+            and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            group by " . $AGRMoagemDiaria . "
+            order by " . $ORDmoagemDiaria . "
         ");
         $MoagemDiaria=null;
-        foreach($dadosTomateInNaturaGrafico as  $val){
+        foreach($dadosMoagemGrafico as  $val){
       
             $MoagemDiaria[]=array( 
                 "label"=>$val->data,

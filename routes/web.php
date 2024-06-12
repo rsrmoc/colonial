@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\colonial\BoletoHistorico;
 use App\Http\Controllers\colonial\Bot;
+use App\Http\Controllers\colonial\ClassificacaoTomate;
 use App\Http\Controllers\colonial\Clientes;
 use App\Http\Controllers\colonial\Condominios;
 use App\Http\Controllers\colonial\Controle;
@@ -126,6 +127,13 @@ Route::group([
      Route::post('/recebimentotomate-update/{tomate}', [RecebimentoTomates::class, 'update'])->name('recebimentotomate-update');
      Route::get('/recebimentotomate-delete/{tomate}', [RecebimentoTomates::class, 'destroy'])->name('recebimentotomate-destroy'); 
      
+     /* Classificação de Tomate */
+     Route::get('/classificacaotomate', [ClassificacaoTomate::class, 'lista'])->name('classificacaotomate-listar');
+     Route::get('/classificacaotomate-criar', [ClassificacaoTomate::class, 'create'])->name('classificacaotomate-criar');
+     Route::post('/classificacaotomate-store', [ClassificacaoTomate::class, 'store'])->name('classificacaotomate-store');
+     Route::get('/classificacaotomate-editar/{tomate}', [ClassificacaoTomate::class, 'edit'])->name('classificacaotomate-editar');
+     Route::post('/classificacaotomate-update/{tomate}', [ClassificacaoTomate::class, 'update'])->name('classificacaotomate-update');
+     Route::get('/classificacaotomate-delete/{tomate}', [ClassificacaoTomate::class, 'destroy'])->name('classificacaotomate-destroy'); 
 
      /* Fretes */
      Route::get('/frete', [Fretes::class, 'lista'])->name('frete-listar');

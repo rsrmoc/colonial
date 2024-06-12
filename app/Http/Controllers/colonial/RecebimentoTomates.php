@@ -163,8 +163,7 @@ class RecebimentoTomates extends Controller
         try {
            $dados =$validator->validate(); 
            $retorno = DB::transaction(function () use($dados,$tomate) {
- 
-
+   
                 $dados['verde']=  str_replace(",",".",str_replace(".","",$dados['verde']));
                 $dados['praga']=  str_replace(",",".",str_replace(".","",$dados['praga']));
                 $dados['fungo']=  str_replace(",",".",str_replace(".","",$dados['fungo']));
