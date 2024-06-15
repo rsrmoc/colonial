@@ -529,8 +529,8 @@ ul {
                             <div class="col-md-2 " style=" padding-right:5px; padding-left: 5px;">
                                 <div class="form-group" style="margin-bottom: 0px;"> 
                                     <select class="form-control" name="parametro-visao" id="parametro-visao" style="width: 100%;" > 
-                                        <option value="KG">KILOS</option> 
-                                        <option value="TB">TAMBO</option>  
+                                        <option value="T">Toneladas</option> 
+                                        <option value="TB">Tambor</option>  
                                     </select> 
                                 </div>
                             </div> 

@@ -51,7 +51,7 @@ class Safra extends Controller
                 from SBO_KARAMBI_PRD.dbo.OPCH
                 inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
                 where PCH1.ItemCode='001208'
-                and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '2023-06-01' and '2023-06-30' 
+                and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '". $request['dti'] ."' and '". $request['dtf'] ."' 
                 order by CONVERT(CHAR(10),OPCH.DocDate, 23)  ");     
  
                 return $retorno;
@@ -79,7 +79,7 @@ class Safra extends Controller
                 from SBO_KARAMBI_PRD.dbo.OPCH
                 inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
                 where PCH1.ItemCode='001208'
-                and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '2023-06-01' and '2023-06-30' 
+                and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '". $request['dti'] ."' and '". $request['dtf'] ."' 
                 order by CONVERT(CHAR(10),OPCH.DocDate, 23)  ");     
  
                 return $retorno;
@@ -158,17 +158,17 @@ class Safra extends Controller
         if($request['dia']){$request['agrupamento']='P';}
  
         if(empty($request['unidade'])){
-            $request['unidade']='KG';
-            $request['ds_unidade']='Kg';
-            $request['ds_unid']=' [ Kilos ]'; 
+            $request['unidade']='T';
+            $request['ds_unidade']='T';
+            $request['ds_unid']=' [ T ]'; 
         }
         
-        if($request['unidade']=='KG'){
+        if($request['unidade']=='T'){
             $QtdeDadosMoagemTotal='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) qtde';   
             $QtdeDadosMoagemConsumida='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde';  
             $QtdeDadosMoagemEstoque='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde_estoque';   
-            $request['ds_unidade']='Kg'; 
-            $request['ds_unid']=' [ Kilos ]';
+            $request['ds_unidade']='T'; 
+            $request['ds_unid']=' [ T ]';
         }
 
         if($request['unidade']=='TB'){

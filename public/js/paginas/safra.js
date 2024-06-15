@@ -120,7 +120,7 @@ Alpine.data('app', function () {
         _this3.tableFornecedores = res.data.table_fornecedor;
 
         /* Grafico Moagem Diaria */
-        _this3.titleMoagem = 'Moagem Diária em Kilos ';
+        _this3.titleMoagem = 'Moagem Diária [ T ]  ';
         var chart = AmCharts.makeChart("chartdivMoagemDiaria", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
@@ -165,7 +165,7 @@ Alpine.data('app', function () {
         }
 
         /* Grafico Moagem Diaria */
-        _this3.titleMoagemDiaria = 'Produção de Polpa Diária ' + res.data.request.ds_unid;
+        _this3.titleMoagemDiaria = 'Produção de Polpa Diária  [ T ] ';
         var chart = AmCharts.makeChart("chartdivMoagemTotal", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",
