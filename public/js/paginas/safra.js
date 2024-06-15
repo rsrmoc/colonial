@@ -26,6 +26,11 @@ Alpine.data('app', function () {
     iconHeaderBrixMedio: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderMoagemDiaria: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderMoagemDiariaTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderMoagemEstDiaria: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderMoagemEstDiariaTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderDataDiaria: null,
     titleMoagemDiaria: 'Produção de Polpas Diária ',
     titleMoagemDiariaEstoque: 'Entrada de Polpas Diária para o Estoque ',
     titleMoagemDiariaConsumida: 'Entrada de Polpas Diária Consumida ',
@@ -105,18 +110,28 @@ Alpine.data('app', function () {
       this.iconHeaderBrix = this.iconCarregando;
       this.iconHeaderPerdas = this.iconCarregando;
       this.iconHeaderPerdasPerc = this.iconCarregando;
+      this.iconHeaderMoagemDiaria = this.iconCarregando;
+      this.iconHeaderMoagemDiariaTb = this.iconCarregando;
+      this.iconHeaderMoagemEstDiaria = this.iconCarregando;
+      this.iconHeaderMoagemEstDiariaTb = this.iconCarregando;
+      this.iconHeaderDataDiaria = null;
       axios.post('/colonial/safra-json', this.parametros).then(function (res) {
         console.log(res);
-        _this3.iconHeaderMoagemTotal = res.data.request.MoagemTotalKg + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderMoagemTotal = res.data.request.MoagemTotalKg + '<span class="headerUnidade"> (T) </span>';
         _this3.iconHeaderMoagemTotalTb = res.data.request.MoagemTotalTb + '<span class="headerUnidade"> (Tb) </span>';
-        _this3.iconHeaderMoagemEstoque = res.data.request.MoagemEstoqueKg + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderMoagemEstoque = res.data.request.MoagemEstoqueKg + '<span class="headerUnidade"> (T) </span>';
         _this3.iconHeaderMoagemEstoqueTb = res.data.request.MoagemEstoqueTb + '<span class="headerUnidade"> (Tb) </span>';
-        _this3.iconHeaderMoagemConsumida = res.data.request.MoagemConsumidaKg + '<span class="headerUnidade"> (Kg) </span>';
+        _this3.iconHeaderMoagemConsumida = res.data.request.MoagemConsumidaKg + '<span class="headerUnidade"> (T) </span>';
         _this3.iconHeaderMoagemConsumidaTb = res.data.request.MoagemConsumidaTb + '<span class="headerUnidade"> (Tb) </span>';
         _this3.iconHeaderTomateInNatura = res.data.request.TomateInNatura + '<span class="headerUnidade"> (Kg) </span>';
         _this3.iconHeaderBrix = res.data.request.Brix + '<span class="headerUnidade">   </span>';
         _this3.iconHeaderPerdas = res.data.request.PerdasTotal + '<span class="headerUnidade"> (Kg) </span>';
         _this3.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc + '<span class="headerUnidade"> (%) </span>';
+        _this3.iconHeaderMoagemDiaria = res.data.request.MoagemDiariaKg + '<span class="headerUnidade"> (T) </span>';
+        _this3.iconHeaderMoagemDiariaTb = res.data.request.MoagemDiariaTb + '<span class="headerUnidade"> (Tb) </span>';
+        _this3.iconHeaderMoagemEstDiaria = res.data.request.MoagemEstDiariaKg + '<span class="headerUnidade"> (T) </span>';
+        _this3.iconHeaderMoagemEstDiariaTb = res.data.request.MoagemEstDiariaTb + '<span class="headerUnidade"> (Tb) </span>';
+        _this3.iconHeaderDataDiaria = res.data.request.Datadiaria;
         _this3.tableFornecedores = res.data.table_fornecedor;
 
         /* Grafico Moagem Diaria */
@@ -335,6 +350,74 @@ Alpine.data('app', function () {
         });
         if (!res.data.Fornecedores) {
           $("#chartdivFornecedor").html(_this3.graficoBarra);
+        }
+
+        /* Grafico Qualidade */
+        var chart = AmCharts.makeChart("chartdivQualidade", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "fontSize": 11,
+          "type": "serial",
+          "theme": "none",
+          "rotate": true,
+          "dataProvider": res.data.Qualidade,
+          "startDuration": 1,
+          "graphs": [{
+            "balloonText": "<b>[[category]]: [[value]] (%) </b>",
+            "fillColorsField": "color",
+            "fillAlphas": 0.9,
+            "labelText": "[[value]]",
+            "lineAlpha": 0.2,
+            "type": "column",
+            "valueField": "qtde"
+          }],
+          "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+          },
+          "categoryField": "produto",
+          "categoryAxis": {
+            "gridPosition": "start",
+            "labelRotation": 45
+          }
+        });
+        if (!res.data.Qualidade) {
+          $("#chartdivQualidade").html(_this3.graficoBarra);
+        }
+
+        /* Grafico Qualidade Prod. */
+        var chart = AmCharts.makeChart("chartdivQualidadeProd", {
+          "decimalSeparator": ",",
+          "thousandsSeparator": ".",
+          "fontSize": 11,
+          "type": "serial",
+          "theme": "none",
+          "rotate": true,
+          "dataProvider": res.data.QualidadeProd,
+          "startDuration": 1,
+          "graphs": [{
+            "balloonText": "<b>[[category]]: [[value]] (%) </b>",
+            "fillColorsField": "color",
+            "fillAlphas": 0.9,
+            "labelText": "[[value]]",
+            "lineAlpha": 0.2,
+            "type": "column",
+            "valueField": "qtde"
+          }],
+          "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+          },
+          "categoryField": "produto",
+          "categoryAxis": {
+            "gridPosition": "start",
+            "labelRotation": 45
+          }
+        });
+        if (!res.data.QualidadeProd) {
+          $("#chartdivQualidadeProd").html(_this3.graficoBarra);
         }
         _this3.TotMeses = res.data.request.Meses;
         _this3.parametros.valida = true;

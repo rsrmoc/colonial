@@ -42,15 +42,22 @@
 }
   
 #chartdivMoagemEstoque, #chartdivMoagemConsumida,#chartdivMoagemTotal,#chartdivFornecedor, #chartdivMoagemDiaria
+
 {
   width: 100%;
   height: 500px;
 }
 
-#chartdiv_parada, #chartdiv_polpa, #chartdivPercProd, #chartdiv_agua, #chartdiv_energia, #chartdiv_lenha,  #chartdiv_Equip_parada
+#chartdivQualidade
 {
   width: 100%;
   height: 350px;
+}
+
+#chartdivQualidadeProd
+{
+  width: 100%;
+  height: 250px;
 }
 
 #chartdiv_grupo_perda 
@@ -545,7 +552,7 @@ ul {
         <div class="row">
   
             <div class="col-lg-2 col-md-4" style="padding-right: 5px; ">
-                <div class="panel info-box panel-white" style="background: #7a6fbe; margin-bottom: 10px;" x-on:click="getDetalhecards('producao_cards')">
+                <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" x-on:click="getDetalhecards('producao_cards')">
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemTotal"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -565,41 +572,19 @@ ul {
                 </div>
             </div>
             
-
-            <div class="col-lg-2 col-md-4" style="padding-right: 5px; padding-left: 5px;">
-                <div class="panel info-box panel-white" style="background: #c2a505; margin-bottom: 10px;" x-on:click="getDetalhecards('producao_cards')">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstoque"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemEstoqueTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                        </div>
-                        <div class="info-box-icon"> 
-                            <i class="fa fa-truck" style="color: #f9fafa;"></i>
-                        </div>
-                        <div class="info-box-progress">
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Moagem Estoque</span>
-                            <div class="progress progress-xs progress-squared bs-n">
-                                <div class="progress-bar progress-bar-primary" style="color: #f9fafa;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
             <div class="col-lg-2 col-md-4" style="  padding-right: 5px; padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #26A65B; margin-bottom: 10px;" x-on:click="getDetalhecards('polpa_cards')">
+                <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" x-on:click="getDetalhecards('polpa_cards')">
                     <div class="panel-body">
                         <div class="info-box-stats">
 
-                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemConsumida"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemConsumidaTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemDiaria"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemDiariaTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                         </div>
                         <div class="info-box-icon"> 
-                            <i class="fa fa-download" style="color: #f9fafa;"></i>
+                            <i class="fa fa-asterisk" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Moagem Consumida</span>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Moagem Diária  <span style="font-size: 13px; " x-html="iconHeaderDataDiaria"></span> </span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -609,20 +594,40 @@ ul {
                 </div>
             </div>
 
-                   
+            <div class="col-lg-2 col-md-4" style="padding-right: 5px; padding-left: 5px;">
+                <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 10px;" x-on:click="getDetalhecards('producao_cards')">
+                    <div class="panel-body">
+                        <div class="info-box-stats">
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstoque"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemEstoqueTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                        </div>
+                        <div class="info-box-icon"> 
+                            <i class="fa fa-cubes" style="color: #f9fafa;"></i>
+                        </div>
+                        <div class="info-box-progress">
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 900;">Estoque de Polpa Total</span>
+                            <div class="progress progress-xs progress-squared bs-n">
+                                <div class="progress-bar progress-bar-primary" style="color: #f9fafa;" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             
             <div class="col-lg-2 col-md-4" style="  padding-right: 5px; padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #e83e8c; margin-bottom: 10px;" x-on:click="getDetalhecards('polpa_cards')">
+                <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 8px;" x-on:click="getDetalhecards('polpa_cards')">
                     <div class="panel-body">
                         <div class="info-box-stats">
 
-                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderTomateInNatura"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" >&nbsp;</p>
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstDiaria"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstDiariaTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                         </div>
-                        <div class="info-box-icon">
-                            <img class="fa" src="{{ asset('assets\images\tomate.svg') }}" height="35"> 
+                        <div class="info-box-icon">  
+                            <i class="fa fa-cubes" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Tomate in Natura</span>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Estoque Polpa Diária  <span style="font-size: 13px; " x-html="iconHeaderDataDiaria"></span>    </span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -810,6 +815,45 @@ ul {
             </div>
         </div>
         
+
+        <div class="panel">
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;"  >Controle de Qualidade</h3></div>
+                     
+                </div> 
+                <div role="tabpanel" style="margin-top: 40px;">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-justified" role="tablist">
+                        <li role="presentation" class="active"><a href="#IndProd" role="tab" style="font-size: 15px;" data-toggle="tab">Indicadores de Produção</a></li>
+                        <li role="presentation"><a href="#IndQua" role="tab" style="font-size: 15px;" data-toggle="tab">Indicadores de Qualidade</a></li> 
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+                        <div role="tabpanel" class="tab-pane active fade in" id="IndProd">
+                            <!-- HTML -->
+                            <div id="chartdivQualidadeProd"></div>
+                            <template x-if="loadingCharts">
+                                <x-loader class="absolute-loader"/>
+                            </template>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="IndQua">
+                          
+                            <!-- HTML -->
+                            <div id="chartdivQualidade"></div>
+                            <template x-if="loadingCharts">
+                                <x-loader class="absolute-loader"/>
+                            </template>
+                        </div>
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
 
                
         <style>

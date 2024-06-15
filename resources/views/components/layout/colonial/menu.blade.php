@@ -18,6 +18,7 @@
                                 <li><a href="{{route('energia-listar')}}">Consumo De Energia</a></li>
                                 <li><a href="{{route('parada-listar')}}">Paradas de Linha</a></li> 
                                 <li><a href="{{route('perda-listar')}}">Perdas Por Produção</a></li> 
+                                <li><a href="{{route('classificacaotomate-listar')}}">Classificação de Tomate</a></li> 
                             </ul>
                         </li>
                         <li class="droplink"><a href="#"><p>Tabelas</p><span class="arrow"></span></a>
@@ -25,7 +26,6 @@
                                 <li><a href="{{route('tipoparada-listar')}}">Tipo de Paradas</a></li> 
                                 <li><a href="{{route('tipoperda-listar')}}">Tipo de Perdas</a></li> 
                                 <li><a href="{{route('equipamento-listar')}}">Equipamentos</a></li> 
-                                <li><a href="{{route('classificacaotomate-listar')}}">Classificação de Tomate</a></li> 
                             </ul>
                         </li>
                 </ul> 

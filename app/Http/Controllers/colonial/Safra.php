@@ -252,11 +252,35 @@ class Safra extends Controller
         where Warehouse='MPP' and owor.ItemCode <> '001208'
         and CONVERT(CHAR(10),DueDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ");
         $MoagemTotalTb= (isset($dadosMoagemTotal[0]->tb)) ? $dadosMoagemTotal[0]->tb : 0;
-        $MoagemTotalKg= (isset($dadosMoagemTotal[0]->kg)) ? $dadosMoagemTotal[0]->kg : 0;
+        $MoagemTotalKg= (isset($dadosMoagemTotal[0]->kg)) ? ($dadosMoagemTotal[0]->kg/1000) : 0;
         $MoagemEstoqueTb= (isset($dadosMoagemTotal[0]->tb_estoque)) ? $dadosMoagemTotal[0]->tb_estoque : 0;
-        $MoagemEstoqueKg= (isset($dadosMoagemTotal[0]->kg_estoque)) ? $dadosMoagemTotal[0]->kg_estoque : 0;
+        $MoagemEstoqueKg= (isset($dadosMoagemTotal[0]->kg_estoque)) ? ($dadosMoagemTotal[0]->kg_estoque/1000) : 0;
+
         $MoagemConsumidaTb=($MoagemTotalTb-$MoagemEstoqueTb);
         $MoagemConsumidaKg=($MoagemTotalKg-$MoagemEstoqueKg);
+
+
+        /* Moagem Diaria  [CARD] */
+        $dadosMoagemDiaria = DB::select("  
+        select top(1)  CONVERT(CHAR(10),DueDate, 23)  , CONVERT (varchar, DueDate, 103) data,
+	    sum(CmpltQty) quant_producao,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) kg,
+        sum(isnull(CmpltQty,0)) tb,
+        sum(Quantity) quant_estoque,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg_estoque, 
+        sum(isnull(Quantity,0)) tb_estoque
+        from  SBO_KARAMBI_PRD.dbo.owor 
+        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+        left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+        where Warehouse='MPP' and owor.ItemCode <> '001208'
+		group by CONVERT(CHAR(10),DueDate, 23),CONVERT (varchar, DueDate, 103)
+		order by 1 desc");
+        $MoagemDiariaTb= (isset($dadosMoagemDiaria[0]->tb)) ? $dadosMoagemDiaria[0]->tb : 0;
+        $MoagemDiariaKg= (isset($dadosMoagemDiaria[0]->kg)) ? ($dadosMoagemDiaria[0]->kg/1000) : 0;
+        $MoagemEstDiariaTb= (isset($dadosMoagemDiaria[0]->tb_estoque)) ? $dadosMoagemDiaria[0]->tb_estoque : 0;
+        $MoagemEstDiariaKg= (isset($dadosMoagemDiaria[0]->kg_estoque)) ? ($dadosMoagemDiaria[0]->kg_estoque/1000) : 0;
+        $Datadiaria = (isset($dadosMoagemDiaria[0]->data)) ? $dadosMoagemDiaria[0]->data : ' -- ';
+
 
         /* Moagem Total [GRAFICO] */
         $retorno['moagem_total'] = DB::select(" 
@@ -358,6 +382,7 @@ class Safra extends Controller
         $PerdasTotalPerc= (isset($dadosPerdas[0]->total_perc)) ? $dadosPerdas[0]->total_perc : 0;
        
         /* Fornecedor */
+        /*
         $retorno['fornecedor'] = DB::select(" 
         select OPCH.CardCode,OPCH.CardName nome,sum(Quantity) total
         from SBO_KARAMBI_PRD.dbo.OPCH
@@ -374,10 +399,11 @@ class Safra extends Controller
                 "color"=> ($val->total>0) ? $this->gerar_cor($key) : "#FAFAFA"
             );
         }
+        */
        
         /* table Fornecedor */
         $retorno['table_fornecedor'] = DB::select("
-        select cd_fornecedor,nm_fornecedor,count(*) qtde,  
+        select cd_fornecedor,nm_fornecedor,count(*) qtde,  sum(liquido) liquido,
         convert(varchar, convert(money, sum(liquido) ) , 1  ) as total,  
         convert(varchar, convert(money,  sum(desconto) ) , 1  ) desconto,
         replace( cast( (sum(verde)/count(*)) as decimal(18,2)) ,'.',',') verde, 
@@ -396,7 +422,64 @@ class Safra extends Controller
         group by cd_fornecedor,nm_fornecedor
         order by nm_fornecedor
         ");
-    
+ 
+        $Fornecedores=null;
+        foreach($retorno['table_fornecedor'] as $key => $val){
+            $Fornecedores[]=array(
+                "produto"=>$val->nm_fornecedor,
+                "qtde"=>$val->liquido,
+                "color"=> ($val->total>0) ? $this->gerar_cor($key) : "#FAFAFA"
+            );
+        }
+
+        
+        /* controle de qualidade */
+        $retorno['qualidade'] = DB::select("
+        select (sum(liquido)/count(*)) as total,  
+        (sum(desconto)/count(*)) desconto,
+        (sum(verde)/count(*)) verde,   
+        (sum(praga)/count(*)) praga, 
+        (sum(fungo)/count(*)) fungo,
+        (sum(desintegrado)/count(*)) desintegrado, 
+        (sum(defeito)/count(*)) defeito, 
+        (sum(impureza)/count(*)) impureza,
+        (sum(terra)/count(*)) terra, 
+        (sum(fruto)/count(*)) fruto, 
+        (sum(brix)/count(*)) brix, 
+        (sum(ph)/count(*)) ph, 
+        (sum(acidez)/count(*)) acidez
+        from recebimento_tomate
+        where CONVERT(CHAR(10),dt_recebimento, 23) between '".$request['dti']."' and '".$request['dtf']."' ");
+        $Qualidade=null;
+        foreach($retorno['qualidade'] as $key => $val){
+            $Qualidade[]=array( "produto"=>'Verdes', "qtde"=>round($val->verde,2), "color"=> "#2c8b57");
+            $Qualidade[]=array( "produto"=>'Pragas Lesões', "qtde"=>round($val->praga,2), "color"=> "#808080");
+            $Qualidade[]=array( "produto"=>'Fungos, Podres', "qtde"=>round($val->fungo,2), "color"=> "#41e0cf");
+            $Qualidade[]=array( "produto"=>'Desintegrados', "qtde"=>round($val->desintegrado,2), "color"=> "#d3691d");
+            $Qualidade[]=array( "produto"=>'Impurezas', "qtde"=>round($val->impureza,2), "color"=>"#7f8000");
+            $Qualidade[]=array( "produto"=>'Terra', "qtde"=>round($val->terra,2), "color"=>"#a52a2b"); 
+            $Qualidade[]=array( "produto"=>'Defeitos Gerais', "qtde"=>round($val->defeito,2), "color"=> "#f08180"); 
+            $Qualidade[]=array( "produto"=>'Brix', "qtde"=>round($val->brix,2), "color"=> "#ff4400");
+            $Qualidade[]=array( "produto"=>'PH', "qtde"=>round($val->ph,2), "color"=>"#00018b");
+            $Qualidade[]=array( "produto"=>'Acidez', "qtde"=>round($val->acidez,2), "color"=>"#48d1cc");
+        }
+
+        /* controle de qualidade Produção */
+        $retorno['qualidade'] = DB::select("
+        select (sum(residuo)/count(*)) as residuo,  
+        (sum(terra)/count(*)) terra,
+        (sum(sujeira)/count(*)) sujeira, 
+        (sum(verde)/count(*)) verde 
+        from classificacao_tomate
+        where CONVERT(CHAR(10),dt_recebimento, 23) between '".$request['dti']."' and '".$request['dtf']."' ");
+        $QualidadeProd=null;
+        foreach($retorno['qualidade'] as $key => $val){
+            $QualidadeProd[]=array( "produto"=>'Resíduos', "qtde"=>$val->residuo, "color"=>"#ff7e4f");
+            $QualidadeProd[]=array( "produto"=>'Terra', "qtde"=>$val->terra, "color"=> "#a52a2b");
+            $QualidadeProd[]=array( "produto"=>'Sujeira', "qtde"=>$val->sujeira, "color"=> "#7f8000");
+            $QualidadeProd[]=array( "produto"=>'Verdes', "qtde"=>$val->verde, "color"=> "#018001"); 
+        }
+
 
         $MESES = array(1 => "JANEIRO", 2 => "FEVEREIRO", 3 => "MARÇO", 4 => "ABRIL", 5 => "MAIO", 6 => "JUNHO", 7 => "JULHO", 8 => "AGOSTO", 9 => "SETEMBRO", 10 => "OUTUBRO", 11 => "NOVEMBRO", 12 => "DEZEMBRO");
         for ($x = 0; $x <= 10; $x++) {
@@ -409,6 +492,13 @@ class Safra extends Controller
         } 
         $request['Meses'] =$MES;
 
+
+
+        $request['MoagemDiariaTb'] =  ($MoagemDiariaTb) ?  number_format($MoagemDiariaTb,0,",",".") : '000';
+        $request['MoagemDiariaKg'] =  ($MoagemDiariaKg) ?  number_format($MoagemDiariaKg,0,",",".") : '000';
+        $request['MoagemEstDiariaTb'] =  ($MoagemEstDiariaTb) ?  number_format($MoagemEstDiariaTb,0,",",".") : '000';
+        $request['MoagemEstDiariaKg'] = ($MoagemEstDiariaKg) ?  number_format($MoagemEstDiariaKg,0,",",".") : '000';
+        $request['Datadiaria'] = ' [ '. $Datadiaria .' ] ';
         $request['TomateInNatura'] =  ($TomateInNatura) ?  number_format($TomateInNatura,0,",",".") : '000';
         $request['MoagemTotalTb'] = ($MoagemTotalTb) ?  number_format($MoagemTotalTb,0,",",".") : '000';
         $request['MoagemTotalKg'] = ($MoagemTotalKg) ?  number_format($MoagemTotalKg,0,",",".") : '000'; 
@@ -424,7 +514,9 @@ class Safra extends Controller
         $retorno['MoagemConsumida'] = $MoagemConsumida;
         $retorno['MoagemEstoque'] = $MoagemEstoque;
         $retorno['Fornecedores'] = $Fornecedores;
-  
+        $retorno['Qualidade'] = $Qualidade;
+        $retorno['QualidadeProd'] = $QualidadeProd;
+
         $retorno['request'] = $request->toArray();
         return $retorno;
 
