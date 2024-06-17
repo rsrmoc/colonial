@@ -163,7 +163,8 @@ class Safra extends Controller
             $request['ds_unid']=' [ T ]'; 
         }
         
-        if($request['unidade']=='T'){
+        if($request['unidade']=='T'){ 
+            $QtdeDadosMoagemDiaria='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) qtde,';  
             $QtdeDadosMoagemTotal='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) qtde';   
             $QtdeDadosMoagemConsumida='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde';  
             $QtdeDadosMoagemEstoque='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde_estoque';   
@@ -172,11 +173,12 @@ class Safra extends Controller
         }
 
         if($request['unidade']=='TB'){
+            $QtdeDadosMoagemDiaria='sum(isnull(CmpltQty,0)) qtde,';  
             $QtdeDadosMoagemTotal='sum(isnull(CmpltQty,0)) qtde';  
             $QtdeDadosMoagemConsumida='sum(isnull(Quantity,0)) qtde';  
             $QtdeDadosMoagemEstoque='sum(isnull(Quantity,0)) qtde_estoque';  
             $request['ds_unidade']='Tb'; 
-            $request['ds_unid']=' [ Tambo ]';
+            $request['ds_unid']=' [ Tambor ]';
         }
 
         if(($request['agrupamento']=='D') || ($request['agrupamento']=='P')){
@@ -184,9 +186,9 @@ class Safra extends Controller
             $AGRMoagemTotal='CONVERT (varchar, owor.DueDate, 103),owor.DueDate';
             $ORDmoagemTotal='owor.DueDate';
 
-            $DATAmoagemDiaria='CONVERT (varchar, OPCH.DocDate, 103) data,OPCH.DocDate dt,';
-            $AGRMoagemDiaria='CONVERT (varchar, OPCH.DocDate, 103),OPCH.DocDate';
-            $ORDmoagemDiaria='OPCH.DocDate';
+            $DATAmoagemDiaria='CONVERT (varchar, DueDate, 103) data,DueDate dt,';
+            $AGRMoagemDiaria='CONVERT (varchar, DueDate, 103),DueDate';
+            $ORDmoagemDiaria='DueDate';
    
         }
 
@@ -195,30 +197,41 @@ class Safra extends Controller
             $AGRMoagemTotal='SUBSTRING(CONVERT (varchar, owor.DueDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)';
             $ORDmoagemTotal='SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)';
   
-            $DATAmoagemDiaria='SUBSTRING(CONVERT (varchar, OPCH.DocDate, 103), 4, 7) data, SUBSTRING(CONVERT (varchar, OPCH.DocDate, 23), 0, 8) dt,';
-            $AGRMoagemDiaria='SUBSTRING(CONVERT (varchar, OPCH.DocDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, OPCH.DocDate, 23), 0, 8)';
-            $ORDmoagemDiaria='SUBSTRING(CONVERT (varchar, OPCH.DocDate, 23), 0, 8)'; 
+            $DATAmoagemDiaria='SUBSTRING(CONVERT (varchar, DueDate, 103), 4, 7) data, SUBSTRING(CONVERT (varchar, DueDate, 23), 0, 8) dt,';
+            $AGRMoagemDiaria='SUBSTRING(CONVERT (varchar, DueDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, DueDate, 23), 0, 8)';
+            $ORDmoagemDiaria='SUBSTRING(CONVERT (varchar, DueDate, 23), 0, 8)'; 
         }
   
 
         /* Tomate in Natura */
+        /*
         $dadosTomateInNatura = DB::select(" 
         select top(1) sum(PCH1.Quantity) qtde from SBO_KARAMBI_PRD.dbo.OPCH
         inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
         where PCH1.ItemCode='001208'
         and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' ");
         $TomateInNatura= (isset($dadosTomateInNatura[0]->qtde)) ? $dadosTomateInNatura[0]->qtde : 0;
-
+        */
+        $TomateInNatura=null;
+        
         /* Moagem Diaria GRAFICO */
         $dadosMoagemGrafico = DB::select(" 
-            select ". $DATAmoagemDiaria ."
-            sum(PCH1.Quantity) qtde 
-            from SBO_KARAMBI_PRD.dbo.OPCH
-            inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-            where PCH1.ItemCode='001208'
-            and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
-            group by " . $AGRMoagemDiaria . "
-            order by " . $ORDmoagemDiaria . "
+
+        select  ". $DATAmoagemDiaria ."
+        ".$QtdeDadosMoagemDiaria."
+        sum(CmpltQty) quant_producao,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) kg,
+        sum(isnull(CmpltQty,0)) tb,
+        sum(Quantity) quant_estoque,
+        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg_estoque, 
+        sum(isnull(Quantity,0)) tb_estoque
+        from  SBO_KARAMBI_PRD.dbo.owor 
+        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+        left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+        where Warehouse='MPP' and owor.ItemCode <> '001208'
+        and CONVERT(CHAR(10),DueDate, 23) between '2023-06-01' and '2023-06-30'
+        group by ".$AGRMoagemDiaria."
+        order by ".$ORDmoagemDiaria." 
         ");
         $MoagemDiaria=null;
         foreach($dadosMoagemGrafico as  $val){
