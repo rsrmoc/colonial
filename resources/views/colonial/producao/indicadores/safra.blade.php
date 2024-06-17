@@ -777,6 +777,7 @@ ul {
                                     <th class="text-right">Pragas Lesões(%)</th>
                                     <th class="text-right">Fungos, Podres(%)</th> 
                                     <th class="text-right">Desintegrados (%)</th> 
+                                    <th class="text-right">Defeitos Gerais (%)</th> 
                                     <th class="text-right">Impurezas(%)</th> 
                                     <th class="text-right">Terra(%)</th> 
                                     <th   class="text-right">Frutos Bons(%)</th> 
@@ -796,6 +797,7 @@ ul {
                                         <td style="font-size: 14px;" class="text-right" x-text="(query.praga) ? query.praga : '0,00'"></td> 
                                         <td style="font-size: 14px;" class="text-right" x-text="(query.fungo) ? query.fungo : '0,00'"></td> 
                                         <td style="font-size: 14px;" class="text-right" x-text="(query.desintegrado) ? query.desintegrado : '0,00'"></td> 
+                                        <td style="font-size: 14px;" class="text-right" x-text="(query.defeito) ? query.defeito : '0,00'"></td> 
                                         <td style="font-size: 14px;" class="text-right" x-text="(query.impureza) ? query.impureza : '0,00'"></td> 
                                         <td style="font-size: 14px;" class="text-right" x-text="(query.terra) ? query.terra : '0,00'"></td> 
                                         <td style="font-size: 14px;" class="text-right" x-text="(query.fruto) ? query.fruto : '0,00'"></td> 
