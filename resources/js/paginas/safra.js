@@ -39,7 +39,8 @@ Alpine.data('app', () => ({
     tableFornecedores: null,
     tituloDetalhesModal:null,
     modalLoadingCharts: false,
-
+    
+    dadosRecTomate: null,
     dadosModalMoagemDiaria: null,
 
 
@@ -52,6 +53,7 @@ Alpine.data('app', () => ({
       ano: '',
       mes: '',
       dia: '', 
+      tipo: ''
     },
     TotDias: 0,
     TotMeses: null,
@@ -501,6 +503,32 @@ Alpine.data('app', () => ({
     xls(tipo){  
       location.href = '/colonial/safra-xls/'+tipo+'?dtf='+this.parametros.dtf+'&dti='+this.parametros.dti;
       toastr['success']('XLS gerado com sucesso');
+    },
+
+    cards(tipo){  
+      this.tituloDetalhesModal = "";
+      if(tipo=='rec_tomate'){
+        this.tituloDetalhesModal = "Recebimento de Tomate ";
+      }
+      
+      $("#modalRecTomate").modal(); 
+      this.modalLoadingCharts = true; 
+
+      this.parametros.tipo = tipo;          
+      console.log(this.parametros);
+       
+      axios.post('/colonial/safra-detalhes',this.parametros)
+      .then((res) => {
+        console.log(res);
+        this.dadosRecTomate = res.data.lista;
+      })
+      .catch((err) => { 
+        console.log(err.response.data); 
+        toastr.error(err.response.data.message,"Erro") 
+      })
+      .finally(() => this.modalLoadingCharts = false);
+      
+
     },
 
 }));

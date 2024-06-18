@@ -84,6 +84,33 @@ class Safra extends Controller
                 return $retorno;
   
             }
+
+            if($request['tipo']=="rec_tomate"){
+
+                $retorno['lista'] = DB::select("  
+                select cd_recebimento,cd_fornecedor,nm_fornecedor, liquido , CONVERT(CHAR(10),dt_recebimento, 103) data,
+				replace( cast(   liquido   as decimal(18,2)) ,'.',',') liquido,
+				replace( cast(   desconto   as decimal(18,2)) ,'.',',') desconto, 
+                replace( cast(   verde   as decimal(18,2)) ,'.',',') verde, 
+                replace( cast(   praga   as decimal(18,2)) ,'.',',') praga, 
+                replace( cast(   fungo  as decimal(18,2)) ,'.',',') fungo,
+                replace( cast(   desintegrado as decimal(18,2)) ,'.',',') desintegrado, 
+                replace( cast(   defeito   as decimal(18,2)) ,'.',',') defeito, 
+                replace( cast(   impureza   as decimal(18,2)) ,'.',',') impureza,
+                replace( cast(   terra   as decimal(18,2)) ,'.',',') terra, 
+                replace( cast(   fruto   as decimal(18,2)) ,'.',',') fruto, 
+                replace( cast(   brix   as decimal(18,2)) ,'.',',') brix, 
+                replace( cast(   ph   as decimal(18,2)) ,'.',',') ph, 
+                replace( cast(   acidez   as decimal(18,2)) ,'.',',') acidez,
+                replace( cast(   ( liquido - (liquido*(fruto/100)))   as decimal(18,2)) ,'.',',') perda
+                from recebimento_tomate
+                where CONVERT(CHAR(10),dt_recebimento, 23) between '". $request['dti'] ."' and '". $request['dtf'] ."' 
+                order by nm_fornecedor");     
+ 
+                return $retorno;
+
+            }
+
  
             return response()->json(['errors' => 'Inidicador Não Configurado'], 400);
 
@@ -185,9 +212,9 @@ class Safra extends Controller
             $AGRMoagemTotal='CONVERT (varchar, owor.DueDate, 103),owor.DueDate';
             $ORDmoagemTotal='owor.DueDate';
 
-            $DATAmoagemDiaria='CONVERT (varchar, DueDate, 103) data,DueDate dt,';
-            $AGRMoagemDiaria='CONVERT (varchar, DueDate, 103),DueDate';
-            $ORDmoagemDiaria='DueDate';
+            $DATAmoagemDiaria='CONVERT (varchar, owor.DueDate, 103) data, owor.DueDate dt,';
+            $AGRMoagemDiaria='CONVERT (varchar, owor.DueDate, 103),DueDate';
+            $ORDmoagemDiaria='owor.DueDate';
    
         }
 
@@ -196,9 +223,9 @@ class Safra extends Controller
             $AGRMoagemTotal='SUBSTRING(CONVERT (varchar, owor.DueDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)';
             $ORDmoagemTotal='SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)';
   
-            $DATAmoagemDiaria='SUBSTRING(CONVERT (varchar, DueDate, 103), 4, 7) data, SUBSTRING(CONVERT (varchar, DueDate, 23), 0, 8) dt,';
-            $AGRMoagemDiaria='SUBSTRING(CONVERT (varchar, DueDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, DueDate, 23), 0, 8)';
-            $ORDmoagemDiaria='SUBSTRING(CONVERT (varchar, DueDate, 23), 0, 8)'; 
+            $DATAmoagemDiaria='SUBSTRING(CONVERT (varchar, owor.DueDate, 103), 4, 7) data, SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8) dt,';
+            $AGRMoagemDiaria='SUBSTRING(CONVERT (varchar, owor.DueDate, 103), 4, 7), SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)';
+            $ORDmoagemDiaria='SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)'; 
         }
   
 
@@ -213,38 +240,18 @@ class Safra extends Controller
         */
         $TomateInNatura=null;
         
-        /* Moagem Diaria GRAFICO */
-        /*
-        $dadosMoagemGrafico = DB::select(" 
-
-        select  ". $DATAmoagemDiaria ."
-        ".$QtdeDadosMoagemDiaria."
-        sum(CmpltQty) quant_producao,
-        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )) kg,
-        sum(isnull(CmpltQty,0)) tb,
-        sum(Quantity) quant_estoque,
-        sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) kg_estoque, 
-        sum(isnull(Quantity,0)) tb_estoque
-        from  SBO_KARAMBI_PRD.dbo.owor 
-        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-        left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
-        where Warehouse='MPP' and owor.ItemCode <> '001208'
-        and CONVERT(CHAR(10),DueDate, 23) between '2023-06-01' and '2023-06-30'
-        group by ".$AGRMoagemDiaria."
-        order by ".$ORDmoagemDiaria." 
-        ");
-        */
-        $dadosMoagemGrafico = DB::select(" 
+        /* Moagem Diaria GRAFICO */ 
+        $dadosMoagemGrafico = DB::select("  
         select 
-        sum(CmpltQty) qtde, 
-		CONVERT (varchar, owor.DueDate, 103) data,owor.DueDate dt
+        ".$DATAmoagemDiaria."
+        sum(ige1_bag.Quantity) qtde   
         from  SBO_KARAMBI_PRD.dbo.owor 
         inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
         inner join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='001208' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
         where Warehouse='MPP' 
         and CONVERT(CHAR(10),DueDate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
-        group by CONVERT (varchar, owor.DueDate, 103) ,owor.DueDate
-        order by owor.DueDate
+        group by ".$AGRMoagemDiaria."
+        order by ".$ORDmoagemDiaria."
         ");
         $MoagemDiaria=null;
         foreach($dadosMoagemGrafico as  $val){

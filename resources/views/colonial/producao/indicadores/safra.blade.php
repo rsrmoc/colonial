@@ -552,7 +552,7 @@ ul {
         <div class="row">
   
             <div class="col-lg-2 col-md-4" style="padding-right: 5px; ">
-                <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" x-on:click="getDetalhecards('producao_cards')">
+                <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" >
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemTotal"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -573,7 +573,7 @@ ul {
             </div>
             
             <div class="col-lg-2 col-md-4" style="  padding-right: 5px; padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" x-on:click="getDetalhecards('polpa_cards')">
+                <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" >
                     <div class="panel-body">
                         <div class="info-box-stats">
 
@@ -595,7 +595,7 @@ ul {
             </div>
 
             <div class="col-lg-2 col-md-4" style="padding-right: 5px; padding-left: 5px;">
-                <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 10px;" x-on:click="getDetalhecards('producao_cards')">
+                <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 10px;"  >
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstoque"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
@@ -616,7 +616,7 @@ ul {
             </div>
              
             <div class="col-lg-2 col-md-4" style="  padding-right: 5px; padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 8px;" x-on:click="getDetalhecards('polpa_cards')">
+                <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 8px;" >
                     <div class="panel-body">
                         <div class="info-box-stats">
 
@@ -638,7 +638,7 @@ ul {
             </div>
 
             <div class="col-lg-2 col-md-4" style=" padding-right: 5px; padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" x-on:click="getDetalhecards('polpa_cards')">
+                <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" x-on:click="cards('rec_tomate')">
                     <div class="panel-body">
                         <div class="info-box-stats">
 
@@ -661,7 +661,7 @@ ul {
             </div>
 
             <div class="col-lg-2 col-md-4" style="  padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #EF4836; margin-bottom: 10px;" x-on:click="getDetalhecards('polpa_cards')">
+                <div class="panel info-box panel-white" style="background: #EF4836; margin-bottom: 10px;" x-on:click="cards('rec_tomate')">
                     <div class="panel-body">
                         <div class="info-box-stats">
 
@@ -936,7 +936,85 @@ ul {
             </div>
         </div>
    
-    
+        <div class="modal fade bs-example-modal-lg modal-fullscreen-xl" id="modalRecTomate" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title" style="line-height: 1.02857143; font-size: 1.5em;font-weight: 300;" x-html="tituloDetalhesModal"></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        
+                        <br>
+
+                        <div role="tabpanel"> 
+                                <!-- Nav tabs -->
+                                
+                            <div class="FixedHeightContainerOverflow"> 
+                                <div class="ContentOverflow">
+                                    
+                                    <template x-if="modalLoadingCharts">
+                                        <div style="padding: 100px"> 
+                                            <x-loader class="absolute-loader"/>                           
+                                        </div>
+                                    </template>
+                                    <table class="table table-striped" style="margin-bottom: 0">
+                                        <thead>
+                                            <tr class="active">
+                                                <th >Codigo</th>
+                                                <th >Data </th> 
+                                                <th >Fonecedor</th>  
+                                                <th class="text-right" >Verdes</th>  
+                                                <th class="text-right" >Pragas </th>  
+                                                <th  class="text-right">Fungos</th>  
+                                                <th class="text-right">Desintegrados</th>  
+                                                <th class="text-right">Def. Gerais</th>  
+                                                <th class="text-right">Impurezas</th> 
+                                                <th class="text-right" >Terra</th> 
+                                                <th class="text-right" >Frutos Bons</th>  
+                                                <th class="text-right" >Líquido </th>  
+                                                <th class="text-right">Desconto</th>  
+                                                <th class="text-right">Brix</th> 
+                                                <th class="text-right" >Perdas</th>  
+                                            </tr>
+                                        </thead> 
+                                        <tbody>
+                                            <template x-for="query in dadosRecTomate">
+                                                <tr style="font-size: 16px;">
+                                                    <td style="font-size: 16px;" x-text="query.cd_recebimento"></td>
+                                                    <td style="font-size: 16px;" x-text="query.data"></td> 
+                                                    <td style="font-size: 16px;" x-text="query.nm_fornecedor"></td>  
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.verde"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.praga"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.fungo"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.desintegrado"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.defeito"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.impureza"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.terra"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.fruto"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.liquido"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.desconto"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.brix"></td> 
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.perda"></td> 
+                                                    
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer"> 
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 

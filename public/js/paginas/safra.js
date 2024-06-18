@@ -39,6 +39,7 @@ Alpine.data('app', function () {
     tableFornecedores: null,
     tituloDetalhesModal: null,
     modalLoadingCharts: false,
+    dadosRecTomate: null,
     dadosModalMoagemDiaria: null,
     parametros: {
       valida: false,
@@ -48,7 +49,8 @@ Alpine.data('app', function () {
       unidade: '',
       ano: '',
       mes: '',
-      dia: ''
+      dia: '',
+      tipo: ''
     },
     TotDias: 0,
     TotMeses: null,
@@ -440,6 +442,26 @@ Alpine.data('app', function () {
     xls: function xls(tipo) {
       location.href = '/colonial/safra-xls/' + tipo + '?dtf=' + this.parametros.dtf + '&dti=' + this.parametros.dti;
       toastr['success']('XLS gerado com sucesso');
+    },
+    cards: function cards(tipo) {
+      var _this4 = this;
+      this.tituloDetalhesModal = "";
+      if (tipo == 'rec_tomate') {
+        this.tituloDetalhesModal = "Recebimento de Tomate ";
+      }
+      $("#modalRecTomate").modal();
+      this.modalLoadingCharts = true;
+      this.parametros.tipo = tipo;
+      console.log(this.parametros);
+      axios.post('/colonial/safra-detalhes', this.parametros).then(function (res) {
+        console.log(res);
+        _this4.dadosRecTomate = res.data.lista;
+      })["catch"](function (err) {
+        console.log(err.response.data);
+        toastr.error(err.response.data.message, "Erro");
+      })["finally"](function () {
+        return _this4.modalLoadingCharts = false;
+      });
     }
   };
 });

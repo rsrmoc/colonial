@@ -50,7 +50,7 @@
                                 <th >Fornecedor </th>  
                                 <th >Placa</th>  
                                 <th class="text-right">BRIX</th>  
-                                <th class="text-right">Acidez</th> 
+                                <th class="text-right">Frutos Bons</th> 
                                 <th class="text-right">Desconto</th> 
                                 <th class="text-right">Liquido</th> 
                                 <th class="text-center">Cadastro</th> 
@@ -69,7 +69,7 @@
                                         <td>{{ $linha['nm_fornecedor'] }}</td> 
                                         <td  >{{ $linha['placa']  }}</td> 
                                         <td class="text-right">  {{ number_format($linha['brix'], 2, ',', '.') }}  </td> 
-                                        <td class="text-right"> {{ number_format($linha['acidez'], 2, ',', '.') }}</td> 
+                                        <td class="text-right"> {{ number_format($linha['fruto'], 2, ',', '.') }}</td> 
                                         <td class="text-right"> {{ number_format($linha['desconto'], 2, ',', '.') }}</td> 
                                         <td class="text-right"> {{ number_format($linha['liquido'], 2, ',', '.') }}</td> 
                                         <td class="text-center">{{  date( 'd/m/Y H:i' , strtotime( $linha->created_at ) ) }}</td> 
