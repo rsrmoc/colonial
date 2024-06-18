@@ -71,16 +71,15 @@ class Safra extends Controller
                     return response()->json(['errors' => $validator->errors()->first()], 400);
                 }
 
-                $retorno['lista'] = DB::select(" 
-                select OPCH.DocEntry movimento, CardCode codigo,CardName nome,CONVERT(varchar,OPCH.DocDate, 103) data,
-                replace( replace( replace(   convert(varchar, convert(money, DocTotal), 1)  ,',',' ')  ,'.',',') ,' ','.') valor,
-                JrnlMemo ds_nf,
-                replace( replace( replace(   convert(varchar, convert(money, PCH1.Quantity), 1)  ,',',' ')  ,'.',',') ,' ','.') qtde
-                from SBO_KARAMBI_PRD.dbo.OPCH
-                inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-                where PCH1.ItemCode='001208'
-                and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '". $request['dti'] ."' and '". $request['dtf'] ."' 
-                order by CONVERT(CHAR(10),OPCH.DocDate, 23)  ");     
+                $retorno['lista'] = DB::select("  
+                select owor.docentry movimento,DueDate, CONVERT(varchar,DueDate, 103) data, jrnlMemo descricao, 
+                replace( replace( replace(   convert(varchar, convert(money,ige1_bag.Quantity), 1)  ,',',' ')  ,'.',',') ,' ','.')   qtde
+                from  SBO_KARAMBI_PRD.dbo.owor 
+                inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+                inner join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='001208' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+                where Warehouse='MPP' 
+                and CONVERT(CHAR(10),DueDate, 23)  between '". $request['dti'] ."' and '". $request['dtf'] ."' 
+                order by DueDate ");     
  
                 return $retorno;
   
@@ -215,6 +214,7 @@ class Safra extends Controller
         $TomateInNatura=null;
         
         /* Moagem Diaria GRAFICO */
+        /*
         $dadosMoagemGrafico = DB::select(" 
 
         select  ". $DATAmoagemDiaria ."
@@ -232,6 +232,19 @@ class Safra extends Controller
         and CONVERT(CHAR(10),DueDate, 23) between '2023-06-01' and '2023-06-30'
         group by ".$AGRMoagemDiaria."
         order by ".$ORDmoagemDiaria." 
+        ");
+        */
+        $dadosMoagemGrafico = DB::select(" 
+        select 
+        sum(CmpltQty) qtde, 
+		CONVERT (varchar, owor.DueDate, 103) data,owor.DueDate dt
+        from  SBO_KARAMBI_PRD.dbo.owor 
+        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+        inner join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='001208' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+        where Warehouse='MPP' 
+        and CONVERT(CHAR(10),DueDate, 23)  between '".$request['dti']."' and '".$request['dtf']."'
+        group by CONVERT (varchar, owor.DueDate, 103) ,owor.DueDate
+        order by owor.DueDate
         ");
         $MoagemDiaria=null;
         foreach($dadosMoagemGrafico as  $val){
@@ -287,7 +300,7 @@ class Safra extends Controller
         left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
         where Warehouse='MPP' and owor.ItemCode <> '001208'
 		group by CONVERT(CHAR(10),DueDate, 23),CONVERT (varchar, DueDate, 103)
-		order by 1 desc");
+		order by 1 desc ");
         $MoagemDiariaTb= (isset($dadosMoagemDiaria[0]->tb)) ? $dadosMoagemDiaria[0]->tb : 0;
         $MoagemDiariaKg= (isset($dadosMoagemDiaria[0]->kg)) ? ($dadosMoagemDiaria[0]->kg/1000) : 0;
         $MoagemEstDiariaTb= (isset($dadosMoagemDiaria[0]->tb_estoque)) ? $dadosMoagemDiaria[0]->tb_estoque : 0;
@@ -395,7 +408,7 @@ class Safra extends Controller
         $PerdasTotalPerc= (isset($dadosPerdas[0]->total_perc)) ? $dadosPerdas[0]->total_perc : 0;
        
         /* Fornecedor */
-        /*
+         
         $retorno['fornecedor'] = DB::select(" 
         select OPCH.CardCode,OPCH.CardName nome,sum(Quantity) total
         from SBO_KARAMBI_PRD.dbo.OPCH
@@ -412,9 +425,10 @@ class Safra extends Controller
                 "color"=> ($val->total>0) ? $this->gerar_cor($key) : "#FAFAFA"
             );
         }
-        */
+       
        
         /* table Fornecedor */
+        
         $retorno['table_fornecedor'] = DB::select("
         select cd_fornecedor,nm_fornecedor,count(*) qtde,  sum(liquido) liquido,
         convert(varchar, convert(money, sum(liquido) ) , 1  ) as total,  
@@ -435,7 +449,7 @@ class Safra extends Controller
         group by cd_fornecedor,nm_fornecedor
         order by nm_fornecedor
         ");
- 
+        /*
         $Fornecedores=null;
         foreach($retorno['table_fornecedor'] as $key => $val){
             $Fornecedores[]=array(
@@ -444,7 +458,7 @@ class Safra extends Controller
                 "color"=> ($val->total>0) ? $this->gerar_cor($key) : "#FAFAFA"
             );
         }
-
+        */
         
         /* controle de qualidade */
         $retorno['qualidade'] = DB::select("
@@ -651,48 +665,45 @@ class Safra extends Controller
     }
     
     public function xls(Request $request,$tipo) {
-        if($tipo=='M'){
-            $DADOS = DB::select("
-            select codigo,nome, data, kg,
-            valor planejado_cx, 
-            valor*kg planejado_kg,
-            ((valor*kg)/1000) planejado_to, 
-            valor_prod produzido_cx, 
-            valor_prod*kg produzido_kg,
-            ((valor_prod*kg)/1000) produzido_to 
-            from (
-                select owor.DocEntry codigo,
-                    CONVERT (varchar, owor.duedate, 103) data,owor.plannedqty valor, CONVERT (varchar, owor.duedate, 112) duedate,
-                    /*
-                    (select sum(quantity) from SBO_KARAMBI_PRD.dbo.ign1 
-                        where ign1.BaseRef=owor.DocEntry
-                    ) valor_prod, owor.ItemCode ,
-                    */
-                    isnull(CmpltQty,0) valor_prod,owor.ItemCode,
-                    case 
-                        when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-18' and owor.ItemCode = '006283' then CONVERT(decimal(10,5), 7.2)
-                        when CONVERT(CHAR(10),owor.duedate, 23)<= '2024-03-19' and owor.ItemCode = '006277' then CONVERT(decimal(10,5), 7.2)
-                        when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-22' and owor.ItemCode = '006280' then CONVERT(decimal(10,5), 7.2)
-                        when CONVERT(CHAR(10),owor.duedate, 23) <= '2024-03-25' and owor.ItemCode = '006274' then CONVERT(decimal(10,5), 7.2)
-                    else  CONVERT(decimal(10,5), IWeight1) end kg,ProdName nome 
-                    from (select * from  SBO_KARAMBI_PRD.dbo.owor where Uom='CX' ) owor 
-                    inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-                    where CONVERT(CHAR(10),owor.duedate, 23) between '".$request['dti']."' and '".$request['dtf']."'
-                    and oitm.ItmsGrpCod not in (103)
-            ) xx
-            order by 1
+
+        if($tipo=='D'){
+            $DADOS = DB::select(" 
+                select owor.docentry movimento,DueDate, CONVERT(varchar,DueDate, 103) data, jrnlMemo descricao, 
+                replace( replace( replace(   convert(varchar, convert(money,ige1_bag.Quantity), 1)  ,',',' ')  ,'.',',') ,' ','.')   qtde
+                from  SBO_KARAMBI_PRD.dbo.owor 
+                inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+                inner join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='001208' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+                where Warehouse='MPP' 
+                and CONVERT(CHAR(10),DueDate, 23)  between '". $request['dti'] ."' and '". $request['dtf'] ."' 
+                order by DueDate  
             ");
-            return view('colonial.producao.indicadores/xls_movimento',compact('request','DADOS'));
+           // dd($DADOS);
+            return view('colonial.producao.indicadores/xls_safra_diario',compact('request','DADOS'));
         }
-        if($tipo=='A'){
+
+        if($tipo=='T'){
             $DADOS = DB::select("
-            select *
-            from hidricos 
-            where CONVERT(CHAR(10),dt_consumo, 23)  between '".$request['dti']."' and '".$request['dtf']."'
-            order by dt_consumo
+            select 
+            owor.docentry movimento,
+            CONVERT(CHAR(10),DueDate, 103) data,
+            jrnlMemo descricao, 
+            CmpltQty quant_producao,
+            (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(CmpltQty,0) )  kg,
+            isnull(CmpltQty,0) tb, 
+            Quantity quant_estoque,
+            (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) ) kg_estoque, 
+            isnull(Quantity,0) tb_estoque 
+            from  SBO_KARAMBI_PRD.dbo.owor 
+            inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+            left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+            where Warehouse='MPP' 
+            and owor.ItemCode <> '001208'
+            and CONVERT(CHAR(10),DueDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+            order by DueDate
             ");
-            return view('colonial.producao.indicadores/xls_agua',compact('request','DADOS'));
+            return view('colonial.producao.indicadores/xls_safra_total',compact('request','DADOS'));
         }
+
         if($tipo=='E'){
             $DADOS = DB::select("
             select *
@@ -702,6 +713,7 @@ class Safra extends Controller
             ");
             return view('colonial.producao.indicadores/xls_energia',compact('request','DADOS'));
         }
+
         if($tipo=='L'){
             $DADOS = DB::select("
             select DocEntry codigo,ItemCode cod,Dscription descricao,Quantity qtde,DocDate data
@@ -711,6 +723,7 @@ class Safra extends Controller
             ");
             return view('colonial.producao.indicadores/xls_lenha_polpa',compact('request','DADOS'));
         }
+
         if($tipo=='O'){
             $DADOS = DB::select("
             select DocEntry codigo,ItemCode cod,Dscription descricao,Quantity qtde,DocDate data

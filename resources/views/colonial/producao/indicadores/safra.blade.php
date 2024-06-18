@@ -692,7 +692,7 @@ ul {
                     <div class="col-md-2"></div>
                     <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleMoagem"></h3></div>
                     <div class="col-md-2" style="text-align: right">
-                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
+                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('D')" style="cursor: pointer;" height="24"> 
                     </div>  
                 </div> 
                 <!-- HTML -->
@@ -711,7 +711,7 @@ ul {
                     <div class="col-md-2"></div>
                     <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleMoagemDiaria"></h3></div>
                     <div class="col-md-2" style="text-align: right">
-                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
+                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('T')" style="cursor: pointer;" height="24"> 
                     </div>  
                 </div> 
                 <!-- HTML -->
@@ -754,7 +754,7 @@ ul {
                     <div class="col-md-2"></div>
                     <div class="col-md-8"><h3 class="panel-title text-center" style="color: #0e0e0e;" x-html="titleComparacaoFornec"></h3></div>
                     <div class="col-md-2" style="text-align: right">
-                        <img src="{{ asset('assets/images/xlsx.png') }}" x-on:click="xls('M')" style="cursor: pointer;" height="24"> 
+                        
                     </div>  
                 </div>
                 <br><br>
@@ -764,56 +764,6 @@ ul {
                     <x-loader class="absolute-loader"/>
                 </template>
 
-                <div class="row" style="margin-top: 50px;">
-                     
-                    <div class="col-md-12">
-                        <table class="table table-striped" style="margin-bottom: 0">
-                            <thead  >
-                                
-                                <tr class="active">
-                                    <th >Codigo</th> 
-                                    <th   >Fornecedor</th>
-                                    <th class="text-right">Verdes(%)</th>
-                                    <th class="text-right">Pragas Lesões(%)</th>
-                                    <th class="text-right">Fungos, Podres(%)</th> 
-                                    <th class="text-right">Desintegrados (%)</th> 
-                                    <th class="text-right">Defeitos Gerais (%)</th> 
-                                    <th class="text-right">Impurezas(%)</th> 
-                                    <th class="text-right">Terra(%)</th> 
-                                    <th   class="text-right">Frutos Bons(%)</th> 
-                                    <th class="text-right">Brix</th> 
-                                    <th class="text-right">PH</th> 
-                                    <th   class="text-right">Acidez</th> 
-                                    <th  class="text-right">Desconto (Kg)</th> 
-                                    <th class="text-right">Total (Kg)</th> 
-                                </tr>
-                            </thead> 
-                            <tbody>
-                                <template x-for="query in tableFornecedores">
-                                    <tr style="font-size: 14px;">
-                                        <td style="font-size: 14px;" x-text="query.cd_fornecedor"></td>
-                                        <td style="font-size: 14px;" x-text="query.nm_fornecedor"></td>  
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.verde) ? query.verde : '0,00'"></td>  
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.praga) ? query.praga : '0,00'"></td> 
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.fungo) ? query.fungo : '0,00'"></td> 
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.desintegrado) ? query.desintegrado : '0,00'"></td> 
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.defeito) ? query.defeito : '0,00'"></td> 
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.impureza) ? query.impureza : '0,00'"></td> 
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.terra) ? query.terra : '0,00'"></td> 
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.fruto) ? query.fruto : '0,00'"></td> 
-                                    
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.brix) ? query.brix : '0,00'"></td>  
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.ph) ? query.ph : '0,00'"></td>  
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.acidez) ? query.acidez : '0,00'"></td>  
-                                        
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.desconto) ? query.desconto : '0,00'"></td>  
-                                        <td style="font-size: 14px;" class="text-right" x-text="(query.total) ? query.total : '0,00'"></td>  
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-                    </div> 
-                </div> 
             </div>
         </div>
         
@@ -850,6 +800,59 @@ ul {
                             <template x-if="loadingCharts">
                                 <x-loader class="absolute-loader"/>
                             </template>
+
+
+                            <div class="row" style="margin-top: 50px;">
+                     
+                                <div class="col-md-12">
+                                    <table class="table table-striped" style="margin-bottom: 0">
+                                        <thead  >
+                                            
+                                            <tr class="active">
+                                                <th >Codigo</th> 
+                                                <th   >Fornecedor</th>
+                                                <th class="text-right">Verdes(%)</th>
+                                                <th class="text-right">Pragas Lesões(%)</th>
+                                                <th class="text-right">Fungos, Podres(%)</th> 
+                                                <th class="text-right">Desintegrados (%)</th> 
+                                                <th class="text-right">Defeitos Gerais (%)</th> 
+                                                <th class="text-right">Impurezas(%)</th> 
+                                                <th class="text-right">Terra(%)</th> 
+                                                <th   class="text-right">Frutos Bons(%)</th> 
+                                                <th class="text-right">Brix</th> 
+                                                <th class="text-right">PH</th> 
+                                                <th   class="text-right">Acidez</th> 
+                                                <th  class="text-right">Desconto (Kg)</th> 
+                                                <th class="text-right">Total (Kg)</th> 
+                                            </tr>
+                                        </thead> 
+                                        <tbody>
+                                            <template x-for="query in tableFornecedores">
+                                                <tr style="font-size: 14px;">
+                                                    <td style="font-size: 14px;" x-text="query.cd_fornecedor"></td>
+                                                    <td style="font-size: 14px;" x-text="query.nm_fornecedor"></td>  
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.verde) ? query.verde : '0,00'"></td>  
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.praga) ? query.praga : '0,00'"></td> 
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.fungo) ? query.fungo : '0,00'"></td> 
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.desintegrado) ? query.desintegrado : '0,00'"></td> 
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.defeito) ? query.defeito : '0,00'"></td> 
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.impureza) ? query.impureza : '0,00'"></td> 
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.terra) ? query.terra : '0,00'"></td> 
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.fruto) ? query.fruto : '0,00'"></td> 
+                                                
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.brix) ? query.brix : '0,00'"></td>  
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.ph) ? query.ph : '0,00'"></td>  
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.acidez) ? query.acidez : '0,00'"></td>  
+                                                    
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.desconto) ? query.desconto : '0,00'"></td>  
+                                                    <td style="font-size: 14px;" class="text-right" x-text="(query.total) ? query.total : '0,00'"></td>  
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div> 
+
                         </div>
                          
                     </div>
@@ -901,25 +904,19 @@ ul {
                                     <table class="table table-striped" style="margin-bottom: 0">
                                         <thead>
                                             <tr class="active">
-                                                <th >Codigo</th>
-                                                <th >Fornecedor</th> 
-                                                <th >Nome</th> 
-                                                <th >Data</th>
-                                                <th >Dados Nota Fiscal</th>
-                                                <th class="text-right">Qtde [T]</th>
-                                                <th class="text-right">Valor</th> 
+                                                <th >Ordem de Produção</th>
+                                                <th >Data </th> 
+                                                <th >Descrição</th>  
+                                                <th class="text-right">Qtde [T]</th>  
                                             </tr>
                                         </thead> 
                                         <tbody>
                                             <template x-for="query in dadosModalMoagemDiaria">
                                                 <tr style="font-size: 16px;">
                                                     <td style="font-size: 16px;" x-text="query.movimento"></td>
-                                                    <td style="font-size: 16px;" x-text="query.codigo"></td> 
-                                                    <td style="font-size: 16px;" x-text="query.nome"></td> 
                                                     <td style="font-size: 16px;" x-text="query.data"></td> 
-                                                    <td style="font-size: 16px;" x-text="query.ds_nf"></td> 
-                                                    <td style="font-size: 16px;" class="text-right" x-text="(query.qtde).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
-                                                    <td style="font-size: 16px;" class="text-right" x-text="(query.valor).toLocaleString('pt-br', {minimumFractionDigits: 2})"></td>
+                                                    <td style="font-size: 16px;" x-text="query.descricao"></td>  
+                                                    <td style="font-size: 16px;" class="text-right" x-text="query.qtde"></td> 
                                                     
                                                 </tr>
                                             </template>

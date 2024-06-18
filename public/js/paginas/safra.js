@@ -132,6 +132,8 @@ Alpine.data('app', function () {
         _this3.iconHeaderMoagemEstDiaria = res.data.request.MoagemEstDiariaKg + '<span class="headerUnidade"> (T) </span>';
         _this3.iconHeaderMoagemEstDiariaTb = res.data.request.MoagemEstDiariaTb + '<span class="headerUnidade"> (Tb) </span>';
         _this3.iconHeaderDataDiaria = res.data.request.Datadiaria;
+        _this3.parametros.dti = res.data.request.dti;
+        _this3.parametros.dtf = res.data.request.dtf;
         _this3.tableFornecedores = res.data.table_fornecedor;
 
         /* Grafico Moagem Diaria */
@@ -434,6 +436,10 @@ Alpine.data('app', function () {
       })["finally"](function () {
         return _this3.loadingCharts = false;
       });
+    },
+    xls: function xls(tipo) {
+      location.href = '/colonial/safra-xls/' + tipo + '?dtf=' + this.parametros.dtf + '&dti=' + this.parametros.dti;
+      toastr['success']('XLS gerado com sucesso');
     }
   };
 });
