@@ -14,20 +14,16 @@ Alpine.data('app', () => ({
     graficoPizza: "<div style='text-align: center;margin-top: 110px;'> <img src='/assets/images/grafico-pizza.png'> </div>",
 
     iconCarregando: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-    iconHeaderMoagemTotal: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-    iconHeaderMoagemTotalTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-    iconHeaderMoagemEstoque: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
-    iconHeaderMoagemEstoqueTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
-    iconHeaderMoagemConsumida: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-    iconHeaderMoagemConsumidaTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
-    iconHeaderTomateInNatura : '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    iconHeaderMoagemTotal: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
+    iconHeaderPolpaEstoque: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
+    iconHeaderPolpaEstoqueTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
     iconHeaderBrix: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderBrixMedio: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>', 
     iconHeaderPerdas: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderPerdasPerc: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
 
     iconHeaderMoagemDiaria: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
-    iconHeaderMoagemDiariaTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
+    MoagemDiariaData: null,
     iconHeaderMoagemEstDiaria: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderMoagemEstDiariaTb: '<i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i>',
     iconHeaderDataDiaria: null,
@@ -118,40 +114,33 @@ Alpine.data('app', () => ({
       this.parametros.ano = $('#parametro-ano').val();
       this.parametros.unidade = $('#parametro-visao').val();
 
-      this.iconHeaderMoagemTotal = this.iconCarregando;
-      this.iconHeaderMoagemTotalTb = this.iconCarregando;
-      this.iconHeaderMoagemEstoque = this.iconCarregando;
-      this.iconHeaderMoagemEstoqueTb = this.iconCarregando;
-      this.iconHeaderMoagemConsumida = this.iconCarregando;
-      this.iconHeaderMoagemConsumidaTb = this.iconCarregando;
-      this.iconHeaderTomateInNatura = this.iconCarregando;
+      this.iconHeaderMoagemTotal = this.iconCarregando; 
+      this.iconHeaderPolpaEstoque = this.iconCarregando;
+      this.iconHeaderPolpaEstoqueTb = this.iconCarregando;
       this.iconHeaderBrix = this.iconCarregando;
       this.iconHeaderPerdas = this.iconCarregando;
       this.iconHeaderPerdasPerc  = this.iconCarregando;
       
-      this.iconHeaderMoagemDiaria = this.iconCarregando;
-      this.iconHeaderMoagemDiariaTb = this.iconCarregando;
+      this.iconHeaderMoagemDiaria = this.iconCarregando; 
       this.iconHeaderMoagemEstDiaria = this.iconCarregando;
       this.iconHeaderMoagemEstDiariaTb = this.iconCarregando;
       this.iconHeaderDataDiaria = null;
+      this.MoagemDiariaData = null;
 
       axios.post('/colonial/safra-json',this.parametros)
       .then((res) => {
         console.log(res); 
 
-        this.iconHeaderMoagemTotal = res.data.request.MoagemTotalKg+'<span class="headerUnidade"> (T) </span>';
-        this.iconHeaderMoagemTotalTb = res.data.request.MoagemTotalTb+'<span class="headerUnidade"> (Tb) </span>';
-        this.iconHeaderMoagemEstoque = res.data.request.MoagemEstoqueKg+'<span class="headerUnidade"> (T) </span>';
-        this.iconHeaderMoagemEstoqueTb = res.data.request.MoagemEstoqueTb+'<span class="headerUnidade"> (Tb) </span>';
-        this.iconHeaderMoagemConsumida = res.data.request.MoagemConsumidaKg+'<span class="headerUnidade"> (T) </span>';
-        this.iconHeaderMoagemConsumidaTb = res.data.request.MoagemConsumidaTb+'<span class="headerUnidade"> (Tb) </span>';
-        this.iconHeaderTomateInNatura = res.data.request.TomateInNatura+'<span class="headerUnidade"> (Kg) </span>';
+        this.iconHeaderMoagemTotal = res.data.request.MoagemTotalTo+'<span class="headerUnidade"> (T) </span>';
+       
+        this.iconHeaderPolpaEstoque = res.data.request.PolpaEstoqueKg+'<span class="headerUnidade"> (T) </span>';
+        this.iconHeaderPolpaEstoqueTb = res.data.request.PolpaEstoqueTb+'<span class="headerUnidade"> (Tb) </span>';
         this.iconHeaderBrix = res.data.request.Brix+'<span class="headerUnidade">   </span>';
         this.iconHeaderPerdas = res.data.request.PerdasTotal+'<span class="headerUnidade"> (Kg) </span>';
         this.iconHeaderPerdasPerc = res.data.request.PerdasTotalPerc+'<span class="headerUnidade"> (%) </span>'; 
         
-        this.iconHeaderMoagemDiaria = res.data.request.MoagemDiariaKg+'<span class="headerUnidade"> (T) </span>';
-        this.iconHeaderMoagemDiariaTb = res.data.request.MoagemDiariaTb+'<span class="headerUnidade"> (Tb) </span>';
+        this.iconHeaderMoagemDiaria = res.data.request.MoagemDiariaTo+'<span class="headerUnidade"> (T) </span>';
+        this.MoagemDiariaData = res.data.request.MoagemDiariaData;
         this.iconHeaderMoagemEstDiaria = res.data.request.MoagemEstDiariaKg+'<span class="headerUnidade"> (T) </span>';
         this.iconHeaderMoagemEstDiariaTb = res.data.request.MoagemEstDiariaTb+'<span class="headerUnidade"> (Tb) </span>';
         this.iconHeaderDataDiaria = res.data.request.Datadiaria;

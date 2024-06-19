@@ -228,17 +228,20 @@ class Safra extends Controller
             $ORDmoagemDiaria='SUBSTRING(CONVERT (varchar, owor.DueDate, 23), 0, 8)'; 
         }
   
-
-        /* Tomate in Natura */
-        /*
-        $dadosTomateInNatura = DB::select(" 
-        select top(1) sum(PCH1.Quantity) qtde from SBO_KARAMBI_PRD.dbo.OPCH
-        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-        where PCH1.ItemCode='001208'
-        and CONVERT(CHAR(10),OPCH.DocDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' ");
-        $TomateInNatura= (isset($dadosTomateInNatura[0]->qtde)) ? $dadosTomateInNatura[0]->qtde : 0;
-        */
-        $TomateInNatura=null;
+        /* Moagem Diaria CARD */ 
+        $dadosMoagemDiariaCARD  = DB::select("  
+        select  top(1) CONVERT(CHAR(10),DueDate, 103) data,DueDate,
+        ige1_bag.Quantity qtde   
+        from  SBO_KARAMBI_PRD.dbo.owor 
+        inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+        inner join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='001208' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
+        where Warehouse='MPP' 
+        and CONVERT(CHAR(10),DueDate, 23)  between '".$request['dti']."' and '".$request['dtf']."' 
+        order by DueDate desc
+        ");
+        $MoagemDiariaTo= (isset($dadosMoagemDiariaCARD[0]->qtde)) ? $dadosMoagemDiariaCARD[0]->qtde : 0; 
+        $MoagemDiariaData= (isset($dadosMoagemDiariaCARD[0]->data)) ? $dadosMoagemDiariaCARD[0]->data : '--';
+ 
         
         /* Moagem Diaria GRAFICO */ 
         $dadosMoagemGrafico = DB::select("  
@@ -253,9 +256,9 @@ class Safra extends Controller
         group by ".$AGRMoagemDiaria."
         order by ".$ORDmoagemDiaria."
         ");
-        $MoagemDiaria=null;
-        foreach($dadosMoagemGrafico as  $val){
-      
+        $MoagemDiaria=null;   $MoagemTotalTo=0;
+        foreach($dadosMoagemGrafico as  $val){ 
+            $MoagemTotalTo=($MoagemTotalTo+$val->qtde);
             $MoagemDiaria[]=array( 
                 "label"=>$val->data,
                 "producao"=>$val->qtde,    
@@ -268,9 +271,8 @@ class Safra extends Controller
             ); 
 
         }
-       
-
-        /* Moagem Total  [CARD] */
+        
+        /* Estoque de Polpa Total [CARD] */
         $dadosMoagemTotal = DB::select(" 
         select top(1) 
         sum(CmpltQty) quant_producao,
@@ -283,17 +285,11 @@ class Safra extends Controller
         inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
         left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
         where Warehouse='MPP' and owor.ItemCode <> '001208'
-        and CONVERT(CHAR(10),DueDate, 23) between '".$request['dti']."' and '".$request['dtf']."' ");
-        $MoagemTotalTb= (isset($dadosMoagemTotal[0]->tb)) ? $dadosMoagemTotal[0]->tb : 0;
-        $MoagemTotalKg= (isset($dadosMoagemTotal[0]->kg)) ? ($dadosMoagemTotal[0]->kg/1000) : 0;
-        $MoagemEstoqueTb= (isset($dadosMoagemTotal[0]->tb_estoque)) ? $dadosMoagemTotal[0]->tb_estoque : 0;
-        $MoagemEstoqueKg= (isset($dadosMoagemTotal[0]->kg_estoque)) ? ($dadosMoagemTotal[0]->kg_estoque/1000) : 0;
-
-        $MoagemConsumidaTb=($MoagemTotalTb-$MoagemEstoqueTb);
-        $MoagemConsumidaKg=($MoagemTotalKg-$MoagemEstoqueKg);
-
-
-        /* Moagem Diaria  [CARD] */
+        and CONVERT(CHAR(10),DueDate, 23) between '".$request['dti']."' and '".$request['dtf']."' "); 
+        $PolpaEstoqueTb= (isset($dadosMoagemTotal[0]->tb_estoque)) ? $dadosMoagemTotal[0]->tb_estoque : 0;
+        $PolpaEstoqueKg= (isset($dadosMoagemTotal[0]->kg_estoque)) ? ($dadosMoagemTotal[0]->kg_estoque/1000) : 0;
+  
+        /* Polpa Diaria  [CARD] */
         $dadosMoagemDiaria = DB::select("  
         select top(1)  CONVERT(CHAR(10),DueDate, 23)  , CONVERT (varchar, DueDate, 103) data,
 	    sum(CmpltQty) quant_producao,
@@ -306,15 +302,13 @@ class Safra extends Controller
         inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
         left join (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag on ige1_bag.BaseRef=owor.DocEntry
         where Warehouse='MPP' and owor.ItemCode <> '001208'
+        and CONVERT(CHAR(10),DueDate, 23) between '".$request['dti']."' and '".$request['dtf']."'
 		group by CONVERT(CHAR(10),DueDate, 23),CONVERT (varchar, DueDate, 103)
-		order by 1 desc ");
-        $MoagemDiariaTb= (isset($dadosMoagemDiaria[0]->tb)) ? $dadosMoagemDiaria[0]->tb : 0;
-        $MoagemDiariaKg= (isset($dadosMoagemDiaria[0]->kg)) ? ($dadosMoagemDiaria[0]->kg/1000) : 0;
+		order by 1 desc "); 
         $MoagemEstDiariaTb= (isset($dadosMoagemDiaria[0]->tb_estoque)) ? $dadosMoagemDiaria[0]->tb_estoque : 0;
         $MoagemEstDiariaKg= (isset($dadosMoagemDiaria[0]->kg_estoque)) ? ($dadosMoagemDiaria[0]->kg_estoque/1000) : 0;
         $Datadiaria = (isset($dadosMoagemDiaria[0]->data)) ? $dadosMoagemDiaria[0]->data : ' -- ';
-
-
+ 
         /* Moagem Total [GRAFICO] */
         $retorno['moagem_total'] = DB::select(" 
         select 
@@ -414,8 +408,7 @@ class Safra extends Controller
         $PerdasTotal= (isset($dadosPerdas[0]->total)) ? $dadosPerdas[0]->total : 0;
         $PerdasTotalPerc= (isset($dadosPerdas[0]->total_perc)) ? $dadosPerdas[0]->total_perc : 0;
        
-        /* Fornecedor */
-         
+        /* Fornecedor */ 
         $retorno['fornecedor'] = DB::select(" 
         select OPCH.CardCode,OPCH.CardName nome,sum(Quantity) total
         from SBO_KARAMBI_PRD.dbo.OPCH
@@ -456,16 +449,7 @@ class Safra extends Controller
         group by cd_fornecedor,nm_fornecedor
         order by nm_fornecedor
         ");
-        /*
-        $Fornecedores=null;
-        foreach($retorno['table_fornecedor'] as $key => $val){
-            $Fornecedores[]=array(
-                "produto"=>$val->nm_fornecedor,
-                "qtde"=>$val->liquido,
-                "color"=> ($val->total>0) ? $this->gerar_cor($key) : "#FAFAFA"
-            );
-        }
-        */
+    
         
         /* controle de qualidade */
         $retorno['qualidade'] = DB::select("
@@ -508,10 +492,10 @@ class Safra extends Controller
         where CONVERT(CHAR(10),dt_recebimento, 23) between '".$request['dti']."' and '".$request['dtf']."' ");
         $QualidadeProd=null;
         foreach($retorno['qualidade'] as $key => $val){
-            $QualidadeProd[]=array( "produto"=>'Resíduos', "qtde"=>$val->residuo, "color"=>"#ff7e4f");
-            $QualidadeProd[]=array( "produto"=>'Terra', "qtde"=>$val->terra, "color"=> "#a52a2b");
-            $QualidadeProd[]=array( "produto"=>'Sujeira', "qtde"=>$val->sujeira, "color"=> "#7f8000");
-            $QualidadeProd[]=array( "produto"=>'Verdes', "qtde"=>$val->verde, "color"=> "#018001"); 
+            $QualidadeProd[]=array( "produto"=>'Resíduos', "qtde"=>round($val->residuo,2), "color"=>"#ff7e4f");
+            $QualidadeProd[]=array( "produto"=>'Terra', "qtde"=>round($val->terra,2), "color"=> "#a52a2b");
+            $QualidadeProd[]=array( "produto"=>'Sujeira', "qtde"=>round($val->sujeira,2), "color"=> "#7f8000");
+            $QualidadeProd[]=array( "produto"=>'Verdes', "qtde"=>round($val->verde,2), "color"=> "#018001"); 
         }
 
 
@@ -528,18 +512,14 @@ class Safra extends Controller
 
 
 
-        $request['MoagemDiariaTb'] =  ($MoagemDiariaTb) ?  number_format($MoagemDiariaTb,0,",",".") : '000';
-        $request['MoagemDiariaKg'] =  ($MoagemDiariaKg) ?  number_format($MoagemDiariaKg,0,",",".") : '000';
+        $request['MoagemDiariaTo'] =  ($MoagemDiariaTo) ?  number_format($MoagemDiariaTo,2,",",".") : '000';
+        $request['MoagemDiariaData'] =  '[ '. $MoagemDiariaData .' ] '; 
         $request['MoagemEstDiariaTb'] =  ($MoagemEstDiariaTb) ?  number_format($MoagemEstDiariaTb,0,",",".") : '000';
         $request['MoagemEstDiariaKg'] = ($MoagemEstDiariaKg) ?  number_format($MoagemEstDiariaKg,0,",",".") : '000';
-        $request['Datadiaria'] = ' [ '. $Datadiaria .' ] ';
-        $request['TomateInNatura'] =  ($TomateInNatura) ?  number_format($TomateInNatura,0,",",".") : '000';
-        $request['MoagemTotalTb'] = ($MoagemTotalTb) ?  number_format($MoagemTotalTb,0,",",".") : '000';
-        $request['MoagemTotalKg'] = ($MoagemTotalKg) ?  number_format($MoagemTotalKg,0,",",".") : '000'; 
-        $request['MoagemConsumidaTb'] = ($MoagemConsumidaTb) ?  number_format($MoagemConsumidaTb,0,",",".") : '000';
-        $request['MoagemConsumidaKg'] = ($MoagemConsumidaKg) ?  number_format($MoagemConsumidaKg,0,",",".") : '000'; 
-        $request['MoagemEstoqueTb'] = number_format( $MoagemEstoqueTb ,0,",",".");
-        $request['MoagemEstoqueKg'] = number_format( $MoagemEstoqueKg ,0,",",".");
+        $request['Datadiaria'] = ' [ '. $Datadiaria .' ] '; 
+        $request['MoagemTotalTo'] = ($MoagemTotalTo) ?  number_format($MoagemTotalTo,2,",",".") : '000';  
+        $request['PolpaEstoqueTb'] = number_format( $PolpaEstoqueTb ,0,",",".");
+        $request['PolpaEstoqueKg'] = number_format( $PolpaEstoqueKg ,0,",",".");
         $request['Brix'] =  ($Brix) ?  number_format($Brix,2,",",".") : '0,00';
         $request['PerdasTotal'] = ($PerdasTotal) ?  number_format($PerdasTotal,0,",",".") : '000';
         $request['PerdasTotalPerc'] = ($PerdasTotalPerc) ?  number_format($PerdasTotalPerc,2,",",".") : '0,00'; 
