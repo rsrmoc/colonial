@@ -556,7 +556,7 @@ ul {
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemTotal"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemTotalTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" > &nbsp;</p>
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa  fa-check-circle-o" style="color: #f9fafa;"></i>
@@ -579,13 +579,13 @@ ul {
                         <div class="info-box-stats">
 
                             <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemDiaria"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemDiariaTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;"  >&nbsp;</p>
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa fa-asterisk" style="color: #f9fafa;"></i>
                         </div>
                         <div class="info-box-progress">
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Moagem Diária  <span style="font-size: 13px; " x-html="iconHeaderDataDiaria"></span> </span>
+                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Moagem Diária  <span style="font-size: 13px; " x-html="MoagemDiariaData"></span> </span>
                             <div class="progress progress-xs progress-squared bs-n">
                                 <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                 </div>
@@ -600,8 +600,8 @@ ul {
                 <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 10px;"  >
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstoque"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderMoagemEstoqueTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderPolpaEstoque"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderPolpaEstoqueTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa fa-cubes" style="color: #f9fafa;"></i>
