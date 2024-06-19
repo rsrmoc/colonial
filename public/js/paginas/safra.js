@@ -155,7 +155,7 @@ Alpine.data('app', function () {
             "labelRotation": 20
           },
           "graphs": [{
-            "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+            "balloonText": "Produzido : <b>[[value]]    </b>",
             "fillAlphas": 1,
             "id": "AmGraph-1",
             "lineAlpha": 0.2,
@@ -200,7 +200,7 @@ Alpine.data('app', function () {
             "labelRotation": 20
           },
           "graphs": [{
-            "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+            "balloonText": "Produzido : <b>[[value]]   </b>",
             "fillAlphas": 1,
             "id": "AmGraph-1",
             "lineAlpha": 0.2,
@@ -246,7 +246,7 @@ Alpine.data('app', function () {
             "labelRotation": 20
           },
           "graphs": [{
-            "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+            "balloonText": "Produzido : <b>[[value]]   </b>",
             "fillAlphas": 1,
             "id": "AmGraph-1",
             "lineAlpha": 0.2,
@@ -292,7 +292,7 @@ Alpine.data('app', function () {
             "labelRotation": 20
           },
           "graphs": [{
-            "balloonText": "Produzido : <b>[[value]] (%)  </b>",
+            "balloonText": "Produzido : <b>[[value]]   </b>",
             "fillAlphas": 1,
             "id": "AmGraph-1",
             "lineAlpha": 0.2,
@@ -332,7 +332,7 @@ Alpine.data('app', function () {
           "dataProvider": res.data.Fornecedores,
           "startDuration": 1,
           "graphs": [{
-            "balloonText": "<b>[[category]]: [[value]] ( Kg ) </b>",
+            "balloonText": "<b>[[category]]: [[value]]   </b>",
             "fillColorsField": "color",
             "fillAlphas": 0.9,
             "labelText": "[[value]]",
@@ -367,7 +367,7 @@ Alpine.data('app', function () {
           "dataProvider": res.data.Qualidade,
           "startDuration": 1,
           "graphs": [{
-            "balloonText": "<b>[[category]]: [[value]] (%) </b>",
+            "balloonText": "<b>[[category]]: [[value]]  </b>",
             "fillColorsField": "color",
             "fillAlphas": 0.9,
             "labelText": "[[value]]",
@@ -401,7 +401,7 @@ Alpine.data('app', function () {
           "dataProvider": res.data.QualidadeProd,
           "startDuration": 1,
           "graphs": [{
-            "balloonText": "<b>[[category]]: [[value]] (%) </b>",
+            "balloonText": "<b>[[category]]: [[value]]  </b>",
             "fillColorsField": "color",
             "fillAlphas": 0.9,
             "labelText": "[[value]]",

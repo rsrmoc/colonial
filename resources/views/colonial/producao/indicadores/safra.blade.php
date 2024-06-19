@@ -551,7 +551,7 @@ ul {
  
         <div class="row">
   
-            <div class="col-lg-2 col-md-4" style="padding-right: 5px; ">
+            <div class="col-lg-3 col-md-6" style="padding-right: 5px; ">
                 <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" >
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -572,6 +572,7 @@ ul {
                 </div>
             </div>
             
+            <!--
             <div class="col-lg-2 col-md-4" style="  padding-right: 5px; padding-left: 5px;" >
                 <div class="panel info-box panel-white" style="background: #6353c7; margin-bottom: 10px;" >
                     <div class="panel-body">
@@ -593,8 +594,9 @@ ul {
                     </div>
                 </div>
             </div>
+            -->
 
-            <div class="col-lg-2 col-md-4" style="padding-right: 5px; padding-left: 5px;">
+            <div class="col-lg-3 col-md-6" style="padding-right: 5px; padding-left: 5px;">
                 <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 10px;"  >
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -614,7 +616,8 @@ ul {
                     </div>
                 </div>
             </div>
-             
+
+            <!--
             <div class="col-lg-2 col-md-4" style="  padding-right: 5px; padding-left: 5px;" >
                 <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 8px;" >
                     <div class="panel-body">
@@ -636,8 +639,9 @@ ul {
                     </div>
                 </div>
             </div>
+            -->
 
-            <div class="col-lg-2 col-md-4" style=" padding-right: 5px; padding-left: 5px;" >
+            <div class="col-lg-3 col-md-6" style=" padding-right: 5px; padding-left: 5px;" >
                 <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" x-on:click="cards('rec_tomate')">
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -660,7 +664,7 @@ ul {
                 </div>
             </div>
 
-            <div class="col-lg-2 col-md-4" style="  padding-left: 5px;" >
+            <div class="col-lg-3 col-md-6" style="  padding-left: 5px;" >
                 <div class="panel info-box panel-white" style="background: #EF4836; margin-bottom: 10px;" x-on:click="cards('rec_tomate')">
                     <div class="panel-body">
                         <div class="info-box-stats">
