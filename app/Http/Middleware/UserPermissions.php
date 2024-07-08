@@ -24,11 +24,11 @@ class UserPermissions
         if ($usuario->admin) return $next($request);
         
          
-        $NaoverificarRotas = ['home',null]; 
+        $NaoverificarRotas = ['home',null,'imprimir']; 
         $verificarRotas = ['home', 'perfis','energia','hidrico','prod_prev_real','usuarios','parada','tipoparada','tipoperda','perda','equipamento','recebimentotomate','frete','safra','classificacaotomate'];
         $verificarAcao = ['ver','listar','criar','store','editar','update','excluir','destroy','json','detalhes',null,'combo','xls'];
 
-        $rotaAtual = Route::currentRouteName(); 
+        $rotaAtual = Route::currentRouteName();  
         $permissaoRota = substr(Route::currentRouteName(), 0, strpos(Route::currentRouteName(), "-") === false ? null : strpos(Route::currentRouteName(), "-"));
        
         if(in_array($permissaoRota, $NaoverificarRotas)) return $next($request);

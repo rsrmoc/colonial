@@ -295,7 +295,38 @@ class Fretes extends Controller
         try { $perda->delete(); }
         catch(\Exception $e) { abort(500); }
     }
+    
+    public function imprimir_autorizacao(Request $request, Romaneio $romaneio) {
 
+        $romaneio->load('tab_frete','tab_motorista'); 
+        $request['user'] = Auth::user()->email;
+
+        $pedidos = RomaneioItens::whereRaw(" AbsEntry= ".$romaneio->AbsEntry)->selectRaw("distinct(OrderEntry) codigo")->get(); 
+        $dadosPedidos = PedidoVenda::whereIn('ORDR.DocEntry',$pedidos->toArray())
+        ->join('SBO_KARAMBI_PRD.dbo.ocrd','ocrd.CardCode','ORDR.CardCode')
+        ->selectRaw("distinct(City) city")->get();
+        
+        $request['rota'] = null;
+        foreach($dadosPedidos as $valor){
+            $request['rota'] = $request['rota'] .' / '.$valor->city;
+        }
+
+       //dd($pedidos->toArray());
+        return view('colonial.fretes.autorizacao_fretes', compact('romaneio','request')); 
+    }
+
+    
+    public function imprimir_rpa(Request $request, Romaneio $romaneio) {
+
+        $romaneio->load('tab_frete','tab_motorista'); 
+        $request['user'] = Auth::user()->email;
+        
+        //dd($romaneio->toArray());
+        return view('colonial.fretes.rpa', compact('romaneio','request')); 
+    }
+
+
+    
 
     
 }

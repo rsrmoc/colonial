@@ -2,6 +2,7 @@
 
 namespace App\Models\Sap;
 
+use App\Models\Frete;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder; 
@@ -21,6 +22,16 @@ class Romaneio extends Model
         return $this->belongsTo(Fornecedor::class, 'U_motorista','CardCode');
     }
   
+    public function tab_frete()
+    { 
+        return $this->belongsTo(Frete::class, 'AbsEntry','cd_romaneio');
+    }
+
+    public function tab_pedido()
+    { 
+        return $this->belongsTo(PedidoVenda::class, 'AbsEntry','cd_romaneio');
+    }
+
     public function scopeSearchRelacao(Builder $dados, $request): Builder
     { 
         $dados = $dados->with(['tab_romaneio_itens','tab_motorista']);

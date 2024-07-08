@@ -142,6 +142,8 @@ Route::group([
      Route::get('/frete-editar/{frete}', [Fretes::class, 'edit'])->name('frete-editar');
      Route::post('/frete-update/{frete}', [Fretes::class, 'update'])->name('frete-update');
      Route::get('/frete-delete/{frete}', [Fretes::class, 'destroy'])->name('frete-destroy'); 
+     Route::get('/imprimir-autorizacao-frete/{romaneio}', [Fretes::class, 'imprimir_autorizacao'])->name('imprimir-autorizacao-frete');
+     Route::get('/imprimir-rpa/{romaneio}', [Fretes::class, 'imprimir_rpa'])->name('imprimir-rpa');
 
      /* ################################### indicadores ####################################################### */
 

@@ -77,8 +77,8 @@
                   <b>Impressão </b> <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                  <li><a href="#tab32" role="tab" data-toggle="tab">Autorização de Frete</a></li>
-                  <li><a href="#tab33" role="tab" data-toggle="tab">Adiantamento de Autônomo - RPA</a></li>
+                  <li><a href="{{ route('imprimir-autorizacao-frete',['romaneio'=>$request['cod']]) }}" target="blank_"  >Autorização de Frete</a></li>
+                  <li><a href="{{ route('imprimir-rpa',['romaneio'=>$request['cod']]) }}" target="blank_"  >Adiantamento de Autônomo - RPA</a></li>
               </ul>
            </li>
          
@@ -369,8 +369,8 @@
               </div>
  
               <div class="row">
-                <div class="col-md-11 col-sm-11 col-xs-11 "  style="margin-left: 15px; "  >
-                  <div class="form-group" >
+                <div class="col-md-12 col-sm-12 col-xs-12 "  style="margin-left: 15px;  padding-right: 15px;"  >
+                  <div class="form-group" style="padding-left: 2px; padding-right: 15px;  " >
                       <label for="fname" style=" " >Observações: </label>
                       <textarea  class="form-control " name="obs" style="  height: 80px; " >{{ $dados['frete']['obs'] }}</textarea> 
                   </div>
