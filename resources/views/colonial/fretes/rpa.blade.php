@@ -49,7 +49,7 @@
 
             <tr style="border-bottom: 1px solid rgb(77, 74, 74);">
                 <td   style="padding-top: 5px; padding-left: 5px; padding-bottom: 5px;" width="200" ><b> NOME DO AUTÕNOMO:</b></td>
-                <td  style="padding-top: 5px; padding-left: 5px;">{{ $romaneio->tab_frete->distancia }} KM</td> 
+                <td  style="padding-top: 5px; padding-left: 5px;">{{ $romaneio->tab_frete['distancia'] }} KM</td> 
             </tr> 
         </table>
         <table   style="font-size:13px; width:100%;   border: 2px solid rgb(77, 74, 74);" cellspacing="5" cellpadding="5">  
