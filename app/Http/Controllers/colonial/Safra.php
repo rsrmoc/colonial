@@ -400,10 +400,10 @@ class Safra extends Controller
 
         /* Perdas */
         $dadosPerdas = DB::select(" 
-        select  sum(isnull(liquido,0)) liquido, 
-        sum(( ( (100-isnull(fruto,0)) * isnull(liquido,0) ) /100 )) total,
-        sum(( ( (100-isnull(fruto,0)) * isnull(liquido,0) ) /100 )) / sum(isnull(liquido,0)) * 100 total_perc
-        from recebimento_tomate 
+        select  sum(total) liquido, sum((residuo+terra+sujeira+verde)) total_perda,
+		(sum(total) - sum((residuo+terra+sujeira+verde)) ) total,
+		( ( sum((residuo+terra+sujeira+verde)) / sum(total) ) * 100 ) total_perc
+        from classificacao_tomate 
         where CONVERT(CHAR(10),dt_recebimento, 23)  between '".$request['dti']."' and '".$request['dtf']."' ");
         $PerdasTotal= (isset($dadosPerdas[0]->total)) ? $dadosPerdas[0]->total : 0;
         $PerdasTotalPerc= (isset($dadosPerdas[0]->total_perc)) ? $dadosPerdas[0]->total_perc : 0;
@@ -414,6 +414,7 @@ class Safra extends Controller
         from SBO_KARAMBI_PRD.dbo.OPCH
         inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
         where PCH1.ItemCode='001208'
+        and OPCH.DocStatus = 'O'
         and CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."'
         group by OPCH.CardCode,OPCH.CardName
         order by sum(Quantity) desc ");
@@ -428,7 +429,6 @@ class Safra extends Controller
        
        
         /* table Fornecedor */
-        
         $retorno['table_fornecedor'] = DB::select("
         select cd_fornecedor,nm_fornecedor,count(*) qtde,  sum(liquido) liquido,
         convert(varchar, convert(money, sum(liquido) ) , 1  ) as total,  
