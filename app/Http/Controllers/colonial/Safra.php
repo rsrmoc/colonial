@@ -405,7 +405,7 @@ class Safra extends Controller
 		( ( sum((residuo+terra+sujeira+verde)) / sum(total) ) * 100 ) total_perc
         from classificacao_tomate 
         where CONVERT(CHAR(10),dt_recebimento, 23)  between '".$request['dti']."' and '".$request['dtf']."' ");
-        $PerdasTotal= (isset($dadosPerdas[0]->total)) ? $dadosPerdas[0]->total : 0;
+        $PerdasTotal= (isset($dadosPerdas[0]->total_perda)) ? $dadosPerdas[0]->total_perda : 0;
         $PerdasTotalPerc= (isset($dadosPerdas[0]->total_perc)) ? $dadosPerdas[0]->total_perc : 0;
        
         /* Fornecedor */ 
