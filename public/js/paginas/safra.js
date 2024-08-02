@@ -80,12 +80,9 @@ Alpine.data('app', function () {
       this.tituloDetalhesModal = "Moagem Diaria - " + dados.label;
       $("#modalMoagemDiaria").modal();
       this.modalLoadingCharts = true;
-      console.log(dados);
       axios.post('/colonial/safra-detalhes', dados).then(function (res) {
-        console.log(res);
         _this2.dadosModalMoagemDiaria = res.data.lista;
       })["catch"](function (err) {
-        console.log(err.response.data);
         toastr.error(err.response.data.message, "Erro");
       })["finally"](function () {
         return _this2.modalLoadingCharts = false;
@@ -110,7 +107,6 @@ Alpine.data('app', function () {
       this.iconHeaderDataDiaria = null;
       this.MoagemDiariaData = null;
       axios.post('/colonial/safra-json', this.parametros).then(function (res) {
-        console.log(res);
         _this3.iconHeaderMoagemTotal = res.data.request.MoagemTotalTo + '<span class="headerUnidade"> (T) </span>';
         _this3.iconHeaderPolpaEstoque = res.data.request.PolpaEstoqueKg + '<span class="headerUnidade"> (T) </span>';
         _this3.iconHeaderPolpaEstoqueTb = res.data.request.PolpaEstoqueTb + '<span class="headerUnidade"> (Tb) </span>';
@@ -172,7 +168,7 @@ Alpine.data('app', function () {
         }
 
         /* Grafico Moagem Diaria */
-        _this3.titleMoagemDiaria = 'Produção de Polpa Diária  [ T ] ';
+        _this3.titleMoagemDiaria = 'Produção de Polpa Diária   ' + res.data.request.ds_unid;
         var chart = AmCharts.makeChart("chartdivMoagemTotal", {
           "decimalSeparator": ",",
           "thousandsSeparator": ".",

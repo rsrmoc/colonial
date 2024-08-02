@@ -195,7 +195,7 @@ class Safra extends Controller
             $QtdeDadosMoagemConsumida='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde';  
             $QtdeDadosMoagemEstoque='sum( (CONVERT(decimal(10,5), isnull(IWeight1,0)) * isnull(Quantity,0) )) qtde_estoque';   
             $request['ds_unidade']='T'; 
-            $request['ds_unid']=' [ T ]';
+            $request['ds_unid']=' [ Kg ]';
         }
 
         if($request['unidade']=='TB'){
@@ -426,8 +426,7 @@ class Safra extends Controller
                 "color"=> ($val->total>0) ? $this->gerar_cor($key) : "#FAFAFA"
             );
         }
-       
-       
+ 
         /* table Fornecedor */
         $retorno['table_fornecedor'] = DB::select("
         select cd_fornecedor,nm_fornecedor,count(*) qtde,  sum(liquido) liquido,

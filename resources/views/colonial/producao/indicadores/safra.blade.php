@@ -576,8 +576,8 @@ ul {
                 <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 10px;"  >
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderPolpaEstoque"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html="iconHeaderPolpaEstoqueTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderPolpaEstoqueTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
+                            <p class="counter" style="color: #f9fafa;font-weight: 900; margin-bottom: 0px;" x-html=""> &nbsp;</p>
                         </div>
                         <div class="info-box-icon"> 
                             <i class="fa fa-cubes" style="color: #f9fafa;"></i>
@@ -592,31 +592,7 @@ ul {
                     </div>
                 </div>
             </div>
-
-            <!--
-            <div class="col-lg-2 col-md-4" style="  padding-right: 5px; padding-left: 5px;" >
-                <div class="panel info-box panel-white" style="background: #df15bb; margin-bottom: 8px;" >
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-
-                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstDiaria"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                            <p class="counter" style="color: #f9fafa; font-weight: 900;margin-bottom: 3px;" x-html="iconHeaderMoagemEstDiariaTb"><i class="fa fa-spinner  fa-spin" aria-hidden="true" style="color: #f9fafa;"></i></p>
-                        </div>
-                        <div class="info-box-icon">  
-                            <i class="fa fa-cubes" style="color: #f9fafa;"></i>
-                        </div>
-                        <div class="info-box-progress">
-                            <span class="info-box-title" style="color: #f9fafa; font-weight: 700;">Estoque Polpa Diária  <span style="font-size: 13px; " x-html="iconHeaderDataDiaria"></span>    </span>
-                            <div class="progress progress-xs progress-squared bs-n">
-                                <div class="progress-bar progress-bar-info" style="color: #f9fafa;"  role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            -->
-
+ 
             <div class="col-lg-3 col-md-6" style=" padding-right: 5px; padding-left: 5px;" >
                 <div class="panel info-box panel-white" style="background: #399BFF; margin-bottom: 10px;" x-on:click="cards('rec_tomate')">
                     <div class="panel-body">
