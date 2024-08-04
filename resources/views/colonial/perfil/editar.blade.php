@@ -38,12 +38,12 @@
                                 </thead>
 
                                 <tbody>
-                                   
+                                    
                                     @foreach ($permissoes as $tela)
                                         
                                         <tr>
                                             <td>{{ $tela->cd_permissao }}</td>
-
+                                             
                                             <td>
                                                 <div style="display: flex">
                                                     @if(strpos($tela->opcao, 'ver') !== false)
@@ -52,7 +52,7 @@
                                                                 <div class="checker">
                                                                     <span>
                                                                         <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="ver"
-                                                                        @if(strpos($tela->user_permissao['permissoes'], 'ver') !== false) checked @endif />
+                                                                        @if(strpos((isset($tela['user_permissao']['permissoes']) ? $tela['user_permissao']['permissoes'] : null), 'ver') !== false) checked @endif />
                                                                     </span>
                                                                 </div> Ver
                                                             </label>
@@ -66,7 +66,7 @@
                                                                 <div class="checker">
                                                                     <span>
                                                                         <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="criar"
-                                                                        @if(strpos($tela->user_permissao['permissoes'], 'criar') !== false) checked @endif />
+                                                                        @if(strpos((isset($tela['user_permissao']['permissoes']) ? $tela['user_permissao']['permissoes'] : null), 'criar') !== false) checked @endif />
                                                                     </span>
                                                                 </div> Criar/Editar
                                                             </label>
@@ -80,7 +80,7 @@
                                                                 <div class="checker">
                                                                     <span>
                                                                         <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="excluir"
-                                                                        @if(strpos($tela->user_permissao['permissoes'], 'excluir') !== false) checked @endif />
+                                                                        @if(strpos((isset($tela['user_permissao']['permissoes']) ? $tela['user_permissao']['permissoes'] : null), 'excluir') !== false) checked @endif />
                                                                     </span>
                                                                 </div> Excluir
                                                             </label>
@@ -93,7 +93,7 @@
                                                                 <div class="checker">
                                                                     <span>
                                                                         <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="detalhes"
-                                                                        @if(strpos($tela->user_permissao['permissoes'], 'detalhes')  !== false) checked @endif />
+                                                                        @if(strpos((isset($tela['user_permissao']['permissoes']) ? $tela['user_permissao']['permissoes'] : null), 'detalhes')  !== false) checked @endif />
                                                                     </span>
                                                                 </div> Detalhes
                                                             </label>
@@ -106,7 +106,7 @@
                                                                 <div class="checker">
                                                                     <span>
                                                                         <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="json"
-                                                                        @if(strpos($tela->user_permissao['permissoes'], 'json')  !== false) checked @endif />
+                                                                        @if(strpos((isset($tela['user_permissao']['permissoes']) ? $tela['user_permissao']['permissoes'] : null), 'json')  !== false) checked @endif />
                                                                     </span>
                                                                 </div> Json
                                                             </label>
@@ -119,7 +119,7 @@
                                                                 <div class="checker">
                                                                     <span>
                                                                         <input type="checkbox" name="permissoes[{{ $tela->cd_permissao }}][]" value="xls"
-                                                                        @if(strpos($tela->user_permissao['permissoes'], 'xls')  !== false) checked @endif />
+                                                                        @if(strpos((isset($tela['user_permissao']['permissoes']) ? $tela['user_permissao']['permissoes'] : null), 'xls')  !== false) checked @endif />
                                                                     </span>
                                                                 </div> Xls
                                                             </label>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\colonial\BalancoMassa;
 use App\Http\Controllers\colonial\BoletoHistorico;
 use App\Http\Controllers\colonial\Bot;
 use App\Http\Controllers\colonial\ClassificacaoTomate;
@@ -134,6 +135,14 @@ Route::group([
      Route::get('/classificacaotomate-editar/{tomate}', [ClassificacaoTomate::class, 'edit'])->name('classificacaotomate-editar');
      Route::post('/classificacaotomate-update/{tomate}', [ClassificacaoTomate::class, 'update'])->name('classificacaotomate-update');
      Route::get('/classificacaotomate-delete/{tomate}', [ClassificacaoTomate::class, 'destroy'])->name('classificacaotomate-destroy'); 
+
+     /* Balanço de Massa */
+     Route::get('/balancomassa', [BalancoMassa::class, 'lista'])->name('balancomassa-listar');
+     Route::get('/balancomassa-criar', [BalancoMassa::class, 'create'])->name('balancomassa-criar');
+     Route::post('/balancomassa-store', [BalancoMassa::class, 'store'])->name('balancomassa-store');
+     Route::get('/balancomassa-editar/{balanco}', [BalancoMassa::class, 'edit'])->name('balancomassa-editar');
+     Route::post('/balancomassa-update/{balanco}', [BalancoMassa::class, 'update'])->name('balancomassa-update');
+     Route::get('/balancomassa-delete/{balanco}', [BalancoMassa::class, 'destroy'])->name('balancomassa-destroy'); 
 
      /* Fretes */
      Route::get('/frete', [Fretes::class, 'lista'])->name('frete-listar');
