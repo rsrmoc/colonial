@@ -26,19 +26,21 @@ class UserPermissions
          
         $NaoverificarRotas = ['home',null,'imprimir']; 
         $verificarRotas = ['home', 'perfis','energia','hidrico','prod_prev_real','usuarios','parada','tipoparada','tipoperda','perda','equipamento','recebimentotomate','frete','safra','classificacaotomate','balancomassa'];
-        $verificarAcao = ['ver','listar','criar','store','editar','update','excluir','destroy','json','detalhes',null,'combo','xls'];
+        $verificarAcao = ['ver','listar','criar','store','editar','update','excluir','destroy','json','detalhes',null,'combo','xls','entrada'];
 
         $rotaAtual = Route::currentRouteName();  
         $permissaoRota = substr(Route::currentRouteName(), 0, strpos(Route::currentRouteName(), "-") === false ? null : strpos(Route::currentRouteName(), "-"));
        
         if(in_array($permissaoRota, $NaoverificarRotas)) return $next($request);
-          
+      
 
         if(!in_array($permissaoRota, $verificarRotas)) return redirect()->route('home')->withErrors(['error' => 'Rotina não cadastrada!']);
 
+    
+
         if(!in_array(str_replace($permissaoRota.'-', '', $rotaAtual), $verificarAcao)) return redirect()->route('home')->withErrors(['error' => 'Ação não cadastrada no sistema!']);
          
-       
+        
         if (in_array($permissaoRota, $verificarRotas) || $usuario->existPermissaoPerfis($permissaoRota)) {
               
             if (str_ends_with($rotaAtual, "listar") && !$usuario->isPermissaoPerfis($permissaoRota, 'ver')) {

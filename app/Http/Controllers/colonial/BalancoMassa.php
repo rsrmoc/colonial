@@ -4,6 +4,7 @@ namespace App\Http\Controllers\colonial;
 
 use App\Http\Controllers\Controller;
 use App\Models\BalancoMassa as ModelsBalancoMassa;
+use App\Models\BalancoMassaEntrada;
 use App\Models\Boleto;
 use App\Models\ClassificacaoTomate as ModelsClassificacaoTomate;
 use App\Models\Condominio;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Validator;
 
 class BalancoMassa extends Controller
 {
+
     public function lista(Request $request) {
 
         if ($request->has('b')) {
@@ -46,6 +48,7 @@ class BalancoMassa extends Controller
         
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
         return view('colonial.balanco-massa.criar', compact('fornecedor'));
+        
     }
  
     public function store(Request $request) {
@@ -74,6 +77,7 @@ class BalancoMassa extends Controller
                 $forn=Fornecedor::selectRaw("CardCode codigo,CardName nome")->find($dados['cd_fornecedor']); 
                 $dados['cd_fornecedor']=$forn->codigo;
                 $dados['nm_fornecedor']=$forn->nome; 
+                $dados['cd_usuario'] = Auth::user()->id;
                 return ModelsBalancoMassa::create($dados); 
  
             }); 
@@ -85,25 +89,49 @@ class BalancoMassa extends Controller
         }
     }
 
-    public function edit(ModelsBalancoMassa $balanco) {  
+    public function edit(Request $request, ModelsBalancoMassa $balanco) {  
+
+        $balanco['brix_ponderado']=  str_replace(".",",",$balanco['brix_ponderado']); 
  
+        $balanco->load('balanco_entradas');
+        $retorno['tab']='upd';
+        if($request['tab']=='ent'){
+            $retorno['tab']='ent';
+        }
+        if($request['tab']=='cla'){
+            $retorno['tab']='cla';
+        }
+        $retorno['entrada'] = DB::select(" 
+        select  TOP (20) OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
+		OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,balanco_massa_entrada.cd_entrada
+        from SBO_KARAMBI_PRD.dbo.OPCH
+        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
+        left join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
+         where PCH1.ItemCode='001208'
+        and   CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$balanco['dt_inicial']."' and '".$balanco['dt_final']."'
+        and OPCH.DocStatus = 'O'  
+        order by OPCH.DocDate ");
+
+        $retorno['classificacao'] = ModelsClassificacaoTomate::whereBetween('dt_recebimento',[$balanco['dt_inicial'],$balanco['dt_final']])
+        ->where('cd_fornecedor',$balanco['cd_fornecedor'])
+        ->orderBy('dt_recebimento')->get();
+     
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
-        return view('colonial.balanco-massa.editar', compact('balanco','fornecedor'));
+        return view('colonial.balanco-massa.editar', compact('balanco','fornecedor','retorno'));
         
     }
 
-    public function update(Request $request,ModelsClassificacaoTomate $tomate) {
+
+
+    public function update(Request $request,ModelsBalancoMassa $balanco) {
         
         $validator = Validator::make($request->all(), [
-            'dt_recebimento' => 'required|date',  
-            'verde' => 'required', 
-            'residuo' => 'required',
-            'sujeira' => 'required', 
-            'terra' => 'required', 
-            'total' => 'required',    
-            'obs' => 'nullable|max:1024' 
-        ],[
-            'dt_recebimento.required' => 'O campo Data de recebimento é obrigatorio' 
+            'nm_balanco' => 'required',  
+            'dt_inicial' => 'required|date', 
+            'dt_final' => 'required|date',
+            'cd_fornecedor' => 'required', 
+            'brix_ponderado' => 'required',  
+            'obs' => 'nullable|max:512' 
         ]);
         
         if ($validator->fails()) {  
@@ -112,20 +140,19 @@ class BalancoMassa extends Controller
  
         try {
            $dados =$validator->validate(); 
-           $retorno = DB::transaction(function () use($dados,$tomate) {
+           $retorno = DB::transaction(function () use($dados,$balanco) {
   
-                $dados['total']=  str_replace(",",".",str_replace(".","",$dados['total']));
-                $dados['verde']=  str_replace(",",".",str_replace(".","",$dados['verde']));
-                $dados['residuo']=  str_replace(",",".",str_replace(".","",$dados['residuo']));
-                $dados['sujeira']=  str_replace(",",".",str_replace(".","",$dados['sujeira']));   
-                $dados['terra']=  str_replace(",",".",str_replace(".","",$dados['terra'])); 
-                $dados['total']=  str_replace(",",".",str_replace("","",$dados['total']));  
+                $dados['brix_ponderado']=  str_replace(",",".",str_replace(".","",$dados['brix_ponderado']));     
+                $forn=Fornecedor::selectRaw("CardCode codigo,CardName nome")->find($dados['cd_fornecedor']); 
+                $dados['cd_fornecedor']=$forn->codigo;
+                $dados['nm_fornecedor']=$forn->nome;  
+                $dados['cd_usuario'] = Auth::user()->id;
                 
-                return $tomate->update($dados);
+                return $balanco->update($dados);
 
             }); 
         
-            return redirect()->route('classificacaotomate-listar')->with('success', 'Classificação de Tomate atualizada com sucesso!');
+            return redirect()->route('balancomassa-listar')->with('success', 'Balanço de Massa atualizada com sucesso!');
              
         }
         catch(\Exception $e) {
@@ -133,6 +160,25 @@ class BalancoMassa extends Controller
         }
 
     }
+
+    public function entrada(Request $request,ModelsBalancoMassa $balanco) {
+
+        $validator = Validator::make($request->all(), [
+            'codigo' => 'required|array',   
+        ]);
+        
+        if ($validator->fails()) {  
+            return back()->withErrors($validator)->withInput();
+        }
+
+        BalancoMassaEntrada::where('cd_balanco',$balanco->cd_balanco)->delete();
+        foreach($request['codigo'] as $linha){
+            BalancoMassaEntrada::create(['cd_balanco'=>$balanco->cd_balanco,'cd_entrada'=>$linha,'cd_usuario'=> Auth::user()->id]);
+        }
+         
+        return redirect()->route('balancomassa-editar',$balanco)->with('success', 'Entradas cadastradas com sucesso!');
+    }
+
 
     public function destroy(ModelsClassificacaoTomate $tomate) { 
         try { $tomate->delete(); }

@@ -11,8 +11,8 @@ class ClassificacaoTomate extends Model
 
     protected $fillable = [
         'cd_classificacao',
-        'dt_recebimento',
-        'dt_recebimento',
+        'dt_recebimento', 
+        'cd_fornecedor',
         'residuo',
         'terra',
         'sujeira',

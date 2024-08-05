@@ -19,6 +19,7 @@
                                 <li><a href="{{route('parada-listar')}}">Paradas de Linha</a></li> 
                                 <li><a href="{{route('perda-listar')}}">Perdas Por Produção</a></li> 
                                 <li><a href="{{route('classificacaotomate-listar')}}">Classificação de Tomate</a></li> 
+                                <li><a href="{{route('balancomassa-listar')}}">Balanço de Massa</a></li> 
                             </ul>
                         </li>
                         <li class="droplink"><a href="#"><p>Tabelas</p><span class="arrow"></span></a>

@@ -143,6 +143,8 @@ Route::group([
      Route::get('/balancomassa-editar/{balanco}', [BalancoMassa::class, 'edit'])->name('balancomassa-editar');
      Route::post('/balancomassa-update/{balanco}', [BalancoMassa::class, 'update'])->name('balancomassa-update');
      Route::get('/balancomassa-delete/{balanco}', [BalancoMassa::class, 'destroy'])->name('balancomassa-destroy'); 
+     Route::post('/balancomassa-entrada/{balanco}', [BalancoMassa::class, 'entrada'])->name('balancomassa-entrada');
+   
 
      /* Fretes */
      Route::get('/frete', [Fretes::class, 'lista'])->name('frete-listar');

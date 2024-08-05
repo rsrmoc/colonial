@@ -34,6 +34,22 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="col-md-4  ">
+                            <div class="form-group @if($errors->has('cd_fornecedor')) has-error @endif ">
+                                <label for="fname" >Fornecedor: <span class="red normal">*</span></label>
+                                <div id="div_combo_ordem"> 
+                                    <select class="form-control" style="width: 100%;"  name="cd_fornecedor"  >
+                                        <option value="">...</option> 
+                                        @foreach ($fornecedor as $forn)
+                                            <option value="{{ $forn->codigo }}" @if(old('cd_fornecedor',$tomate->cd_fornecedor)==$forn->codigo) selected @endif >{{ $forn->nome }}</option> 
+                                        @endforeach  
+                                    </select>
+                                </div>
+                                @if($errors->has('cd_fornecedor'))
+                                    <div class="error">{{ $errors->first('cd_fornecedor') }}</div>
+                                @endif
+                            </div>
+                        </div>
                             
                     </div>
  

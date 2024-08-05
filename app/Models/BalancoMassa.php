@@ -21,5 +21,9 @@ class BalancoMassa extends Model
         'created_at',
         'updated_at', 
     ];
+
+    public function balanco_entradas() {
+        return $this->hasMany(BalancoMassaEntrada::class, 'cd_balanco', 'cd_balanco');
+    }
  
 }

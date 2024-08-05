@@ -44,8 +44,8 @@ class ClassificacaoTomate extends Controller
 
     public function create() {
         
- 
-        return view('colonial.classificacao-tomate.criar');
+        $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
+        return view('colonial.classificacao-tomate.criar', compact('fornecedor'));
     }
  
     public function store(Request $request) {
@@ -53,6 +53,7 @@ class ClassificacaoTomate extends Controller
         
         $validator = Validator::make($request->all(), [
             'dt_recebimento' => 'required|date',  
+            'cd_fornecedor' => 'require',
             'verde' => 'required', 
             'residuo' => 'required',
             'sujeira' => 'required', 
@@ -88,15 +89,17 @@ class ClassificacaoTomate extends Controller
     }
 
     public function edit(ModelsClassificacaoTomate $tomate) {  
- 
-        return view('colonial.classificacao-tomate.editar', compact('tomate'));
+         
+        $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
+        return view('colonial.classificacao-tomate.editar', compact('tomate','fornecedor'));
         
     }
 
     public function update(Request $request,ModelsClassificacaoTomate $tomate) {
         
         $validator = Validator::make($request->all(), [
-            'dt_recebimento' => 'required|date',  
+            'dt_recebimento' => 'required|date', 
+            'cd_fornecedor' => 'required',  
             'verde' => 'required', 
             'residuo' => 'required',
             'sujeira' => 'required', 
