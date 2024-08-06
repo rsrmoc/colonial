@@ -493,9 +493,7 @@
                                         <th class="text-right">{{ $verde }}</th>
                                         <th class="text-right">{{ $total }}</th>
                                     </tr>
-                                    <tr class="active"> 
-                                        <th class="text-center" colspan="8">Percentual : {{ ($total>0) ? ( (($residuo+$terra+$sujeira+$verde)/$total) / 100 ) : 0  }}</th>    
-                                    </tr>
+                                 
                                 </tbody>
                             </table>
                             <div class="panel-footer">
