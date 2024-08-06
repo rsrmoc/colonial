@@ -377,7 +377,7 @@
                                                 <td>
                                                     <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">
                                                         <label>
-                                                            <input type="checkbox" name="codigo[]" @if($linha->DocEntry) checked @endif value="{{ $linha->DocEntry }}">  
+                                                            <input type="checkbox" name="codigo[]"   value="{{ $linha->DocEntry }}">  
                                                         </label>
                                                     </div>
                                                 </td>
@@ -463,13 +463,13 @@
                                             $residuo=$residuo+$linha->residuo;
                                             $sujeira=$sujeira+$linha->sujeira;
                                             $verde=$verde+$linha->verde;
-                                            $total=$total+$total->total;
+                                            $total=$total+$linha->total;
                                         @endphp
                                         <tr  >
                                             <td>
                                                 <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">
                                                     <label>
-                                                        <input type="checkbox" name="codigo[]" @if($linha->cd_classificacao) checked @endif value="{{ $linha->cd_classificacao }}">  
+                                                        <input type="checkbox" name="codigo[]"   value="{{ $linha->cd_classificacao }}">  
                                                     </label>
                                                 </div>
                                             </td>
