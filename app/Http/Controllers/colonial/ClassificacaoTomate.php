@@ -53,7 +53,7 @@ class ClassificacaoTomate extends Controller
         
         $validator = Validator::make($request->all(), [
             'dt_recebimento' => 'required|date',  
-            'cd_fornecedor' => 'require',
+            'cd_fornecedor' => 'required',
             'verde' => 'required', 
             'residuo' => 'required',
             'sujeira' => 'required', 
