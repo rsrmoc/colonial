@@ -96,28 +96,46 @@ class BalancoMassa extends Controller
         $balanco->load('balanco_entradas');
         $retorno['tab']='upd';
         if($request['tab']=='ent'){
+            
             $retorno['tab']='ent';
+
+            $retorno['entrada'] = DB::select(" 
+            select  TOP (20) OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
+            OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,balanco_massa_entrada.cd_entrada
+            from SBO_KARAMBI_PRD.dbo.OPCH
+            inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
+            left join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
+             where PCH1.ItemCode='001208'
+            and   CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
+            and OPCH.DocStatus = 'O'  
+            order by OPCH.DocDate ");
         }
         if($request['tab']=='cla'){
             $retorno['tab']='cla';
+            $retorno['classificacao'] = ModelsClassificacaoTomate::whereBetween('dt_recebimento',[$request['dt_inicial'],$request['dt_final']])
+            ->where('cd_fornecedor',$balanco['cd_fornecedor'])
+            ->orderBy('dt_recebimento')->get();
         }
-        $retorno['entrada'] = DB::select(" 
-        select  TOP (20) OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
-		OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,balanco_massa_entrada.cd_entrada
-        from SBO_KARAMBI_PRD.dbo.OPCH
-        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-        left join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
-         where PCH1.ItemCode='001208'
-        and   CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$balanco['dt_inicial']."' and '".$balanco['dt_final']."'
-        and OPCH.DocStatus = 'O'  
-        order by OPCH.DocDate ");
+        if($request['tab']=='ent_polpa'){
+            $retorno['tab']='ent_polpa';
+            $retorno['entrada_polpa'] = DB::select(" select owor.DocEntry,  DueDate, owor.itemCode,oitm.itemName, 
+            CmpltQty quant_producao ,Quantity quant_estoque 
+            from  SBO_KARAMBI_PRD.dbo.owor 
+            inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+            left join 
+                (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag 
+                on ige1_bag.BaseRef=owor.DocEntry
+            where Warehouse='MPP' and owor.ItemCode <> '001208'
+            and CONVERT(CHAR(10),DueDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
+            order by DueDate");
+        }
 
-        $retorno['classificacao'] = ModelsClassificacaoTomate::whereBetween('dt_recebimento',[$balanco['dt_inicial'],$balanco['dt_final']])
-        ->where('cd_fornecedor',$balanco['cd_fornecedor'])
-        ->orderBy('dt_recebimento')->get();
+
+
+
      
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
-        return view('colonial.balanco-massa.editar', compact('balanco','fornecedor','retorno'));
+        return view('colonial.balanco-massa.editar', compact('balanco','fornecedor','retorno','request'));
         
     }
 

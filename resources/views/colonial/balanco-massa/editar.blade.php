@@ -15,8 +15,10 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs nav-justified" role="tablist">
                     <li role="presentation" class="{{ ($retorno['tab']=='upd') ? 'active' : null }}"><a href="#tabBalanco" role="tab" data-toggle="tab">Balanço de Massa</a></li>
-                    <li role="presentation" class="{{ ($retorno['tab']=='ent') ? 'active' : null }}"><a href="#tabAcumulado" role="tab" data-toggle="tab">Acumulado Entrada de Tomate</a></li>
-                    <li role="presentation" class="{{ ($retorno['tab']=='cla') ? 'active' : null }}"><a href="#tabClassificacao" role="tab" data-toggle="tab">Classificação de Tomate</a></li> 
+                    <li role="presentation" class="{{ ($retorno['tab']=='ent') ? 'active' : null }}"><a href="#tabAcumulado" role="tab" data-toggle="tab">Entrada de Tomate</a></li>
+                    <li role="presentation" class="{{ ($retorno['tab']=='ent_polpa') ? 'active' : null }}"><a href="#tabPolpa" role="tab" data-toggle="tab">Entrada de Polpas</a></li>
+                    <li role="presentation" class="{{ ($retorno['tab']=='cla') ? 'active' : null }}"><a href="#tabClassificacao" role="tab" data-toggle="tab">Classificação</a></li>
+                      
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -97,8 +99,140 @@
                                     </div>
                                 </div>
                             </div>
+
+
+                            <div role="tabpanel">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs nav-justified" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tabResultado" role="tab" data-toggle="tab">Resultado</a></li>
+                                    <li role="presentation" class=""><a href="#tabCadEntradas" role="tab" data-toggle="tab">Entrada de Tomate</a></li>
+                                    <li role="presentation" class=""><a href="#tabCadEntradasPolpas" role="tab" data-toggle="tab">Entrada de Polpas</a></li>
+                                    <li role="presentation" class=""><a href="#tabCadClassificacao" role="tab" data-toggle="tab">Classificação</a></li>
+                                     
+                                      
+                                </ul>
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                   
+                                    <div role="tabpanel"  class="tab-pane fade active  in" id="tabResultado"    >
+                                        <div class="row" >
+                                            <div class="col-md-8 col-sm-8 col-xs-8  col-md-offset-2" >
+                                                <table class="table table-striped" style="margin-bottom: 0">
+                                                    <thead>
+                                                        <tr class="text-left">
+                                                            <th>Acumulado Entrada de Tomate</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                        <tr class="text-left"> 
+                                                            <th>Média Brix Ponderado</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                        <tr class="active"> 
+                                                            <th>Total Acumulado Entrar de Polpa 21 Brix</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                   
+                                                        <tr class="text-left">
+                                                            <th>Entrada de Polpa 17/19 Brix Tambor Estoque </th>   
+                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                        <tr class="text-left"> 
+                                                            <th>Entrada de Polpa 20/22 Brix  Tambor Estoque</th>   
+                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                        <tr class="text-left"> 
+                                                            <th>Consumo Polpa BRIX 17/19   ( produção P.A )</th>   
+                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                        <tr class="text-left"> 
+                                                            <th>Consumo Polpa BRIX 20/22   ( produção P.A )</th>   
+                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                        <tr class="active"> 
+                                                            <th>Total de Entrada de Polpa 18 Brix</th>   
+                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                        <tr class="active"> 
+                                                            <th>Rendimento lavoura</th>   
+                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                        <tr  > 
+                                                            <th> </th>   
+                                                            <th class="text-right">   </th>  
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                    </thead>  
+                                                </table>  
+                                                <br>
+                                                <table class="table table-striped" style="margin-bottom: 0">
+                                                    <thead>
+                                                        <tr class="active"> 
+                                                            <th class="text-center" colspan="3">Balanceamento de Massa</th>  
+                                                        </tr>
+                                                        <tr class="text-left">
+                                                            <th>Acumulado Entrada de Tomate</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                        <tr class="text-left"> 
+                                                            <th>Residuo</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                        <tr > 
+                                                            <th>Sujeiras</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                        <tr > 
+                                                            <th>Terra</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                        <tr > 
+                                                            <th>Verde</th>   
+                                                            <th class="text-right"> -- </th>      
+                                                            <th class="text-right"> -- </th>  
+                                                        </tr>
+                                                        <tr class="active"> 
+                                                            <th>Sub Total</th>   
+                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                        <tr class="active"> 
+                                                            <th>Total</th>   
+                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> -- </th>    
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
           
-         
+                                    <div role="tabpanel"  class="tab-pane fade " id="tabCadEntradas"    >
+                                        tabEntradas Toamate
+                                    </div>
+
+                                    <div role="tabpanel"  class="tab-pane fade " id="tabCadEntradasPolpas"    >
+                                        tabEntradas Polpas
+                                    </div>
+
+                                    <div role="tabpanel"  class="tab-pane fade " id="tabCadClassificacao"    >
+                                        tab  Classificação
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
         
                         <div class="panel-footer">
@@ -112,6 +246,84 @@
                         <form action="{{ route('balancomassa-editar', $balanco) }}" method="get"  >
                             @csrf 
                             <input type="hidden" name="tab" value="ent">
+                            <div class="panel-body">
+            
+                                <div class="row">
+                    
+                                    <div class="col-md-2 ">
+                                        <div class="form-group @if($errors->has('dt_inicial')) has-error @endif ">
+                                            <label for="fname">Data Inicial: <span class="red normal">*</span></label>
+                                            <input type="date" class="form-control" value="{{old('dt_inicial',$request['dt_inicial'])}}"     name="dt_inicial"> 
+                                            @if($errors->has('dt_inicial'))
+                                                <div class="error">{{ $errors->first('dt_inicial') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <div class="form-group @if($errors->has('dt_final')) has-error @endif ">
+                                            <label for="fname">Data Inicial: <span class="red normal">*</span></label>
+                                            <input type="date" class="form-control" value="{{old('dt_final',$request['dt_final'])}}"  name="dt_final"> 
+                                            @if($errors->has('dt_final'))
+                                                <div class="error">{{ $errors->first('dt_final') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-2 ">
+                                        <div style="margin-top: 22px;" class="form-group @if($errors->has('dt_final')) has-error @endif ">
+                                            <button class="btn btn-danger">Pesquisar</button>
+                                        </div>
+                                    </div>
+                                </div>  
+            
+                            </div>
+                        </form>
+                        <form action="{{ route('balancomassa-entrada', $balanco) }}" method="post"   >
+                            @csrf 
+                            <table class="table table-striped" style="margin-bottom: 0">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">##</th>
+                                        <th>Codigo</th>   
+                                        <th class="text-center">Data </th>  
+                                        <th class="text-center">Fornecedor</th> 
+                                        <th class="text-left">Nome do Fornecedor</th> 
+                                        <th class="text-right">Quantidade</th>   
+                                    </tr>
+                                </thead> 
+                                <tbody>
+                                    @if(isset($retorno['entrada']))
+                                        @foreach ( $retorno['entrada'] as $linha )
+                                            <tr  >
+                                                <td>
+                                                    <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">
+                                                        <label>
+                                                            <input type="checkbox" name="codigo[]" @if($linha->cd_entrada) checked @endif value="{{ $linha->doc_num }}">  
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td class="text-left">{{ $linha->doc_num  }}</td>  
+                                                <td class="text-left">{{ $linha->doc_date  }}</td>    
+                                                <td class="text-left">{{ $linha->card_code  }}</td>  
+                                                <td class="text-left">{{ $linha->card_name  }}</td>  
+                                                <td class="text-right">{{ $linha->qtde  }}</td>     
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
+                            <div class="panel-footer">
+                                <button class="btn btn-danger">Cadastrar</button>
+                            </div>
+                        </form>
+                      
+                    </div>
+                     
+                    <div role="tabpanel" class="tab-pane fade {{ ($retorno['tab']=='ent_polpa') ?  'active  in'  : null }}" id="tabPolpa"> 
+
+                        <form action="{{ route('balancomassa-editar', $balanco) }}" method="get"  >
+                            @csrf 
+                            <input type="hidden" name="tab" value="ent_polpa">
                             <div class="panel-body">
             
                                 <div class="row">
@@ -144,36 +356,39 @@
             
                             </div>
                         </form>
+
                         <form action="{{ route('balancomassa-entrada', $balanco) }}" method="post"   >
                             @csrf 
                             <table class="table table-striped" style="margin-bottom: 0">
                                 <thead>
                                     <tr class="active">
                                         <th class="text-center">##</th>
-                                        <th>Codigo</th>   
-                                        <th class="text-center">Data </th>  
-                                        <th class="text-center">Fornecedor</th> 
-                                        <th class="text-left">Nome do Fornecedor</th> 
-                                        <th class="text-right">Quantidade</th>   
+                                        <th>Codigo</th>    
+                                        <th class="text-center">Data</th> 
+                                        <th class="text-right">Qtde Consumida</th> 
+                                        <th class="text-right">Qtde Estoque</th> 
+                                        <th class="text-right">Qtde Produzida</th> 
                                     </tr>
                                 </thead> 
                                 <tbody>
-                                    @foreach ( $retorno['entrada'] as $linha )
-                                        <tr  >
-                                            <td>
-                                                <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">
-                                                    <label>
-                                                        <input type="checkbox" name="codigo[]" @if($linha->cd_entrada) checked @endif value="{{ $linha->doc_num }}">  
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td class="text-left">{{ $linha->doc_num  }}</td>  
-                                            <td class="text-left">{{ $linha->doc_date  }}</td>    
-                                            <td class="text-left">{{ $linha->card_code  }}</td>  
-                                            <td class="text-left">{{ $linha->card_name  }}</td>  
-                                            <td class="text-right">{{ $linha->qtde  }}</td>     
-                                        </tr>
-                                    @endforeach
+                                    @if(isset($retorno['entrada_polpa']))
+                                        @foreach ( $retorno['entrada_polpa'] as $linha )
+                                            <tr  >
+                                                <td>
+                                                    <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">
+                                                        <label>
+                                                            <input type="checkbox" name="codigo[]"   value="{{ $linha->DocEntry }}">  
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td class="text-left">{{ $linha->DocEntry  }}</td>  
+                                                <td class="text-center">{{   date( 'd/m/Y' , strtotime( $linha->DueDate )) }}</td>    
+                                                <td class="text-right">{{ number_format(($linha->quant_producao - ( ($linha->quant_estoque) ? $linha->quant_estoque : 0 ) ), 0, '.', '') }}</td>  
+                                                <td class="text-right">{{ ($linha->quant_estoque) ? number_format($linha->quant_estoque, 0, '.', '')  : 0   }}</td>  
+                                                <td class="text-right">{{  number_format($linha->quant_producao, 0, '.', '')  }}</td>     
+                                            </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                             <div class="panel-footer">
@@ -183,34 +398,108 @@
                       
                     </div>
                      
+                    <div role="tabpanel"  class="tab-pane fade {{ ($retorno['tab']=='cla') ?  'active  in'  : null }}" id="tabClassificacao"    >
+
+
+                        <form action="{{ route('balancomassa-editar', $balanco) }}" method="get"  >
+                            @csrf 
+                            <input type="hidden" name="tab" value="cla">
+                            <div class="panel-body">
+            
+                                <div class="row">
                     
-                    <div role="tabpanel" class="tab-pane fade {{ ($retorno['tab']=='cla') ?  'active  in'  : null }}" id="tabClassificacao">
-                        <table class="table table-striped" style="margin-bottom: 0">
-                            <thead>
-                                <tr class="active"> 
-                                    <th>Codigo</th>   
-                                    <th class="text-center">Data </th>  
-                                    <th class="text-right">Resíduo</th> 
-                                    <th class="text-right">Terra</th> 
-                                    <th class="text-right">Sujeira</th>   
-                                    <th class="text-right">Verdes</th>
-                                    <th class="text-right">Total</th>
-                                </tr>
-                            </thead> 
-                            <tbody>
-                                @foreach ( $retorno['classificacao'] as $linha )
-                                    <tr  >
-                                        <td  >{{ $linha->cd_classificacao }}</td>  
-                                        <td class="text-center">{{  date( 'd/m/Y' , strtotime( $linha->dt_recebimento ) ) }}</td>  
-                                        <td class="text-right">{{ $linha->residuo }}</td> 
-                                        <td class="text-right">{{ $linha->terra }}</td> 
-                                        <td class="text-right" >{{ $linha->sujeira  }}</td> 
-                                        <td class="text-right">{{ $linha->verde }}</td>   
-                                        <td class="text-right">{{ $linha->total }}</td> 
+                                    <div class="col-md-2 ">
+                                        <div class="form-group @if($errors->has('dt_inicial')) has-error @endif ">
+                                            <label for="fname">Data Inicial: <span class="red normal">*</span></label>
+                                            <input type="date" class="form-control" value="{{old('dt_inicial',$balanco->dt_inicial)}}"     name="dt_inicial"> 
+                                            @if($errors->has('dt_inicial'))
+                                                <div class="error">{{ $errors->first('dt_inicial') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 ">
+                                        <div class="form-group @if($errors->has('dt_final')) has-error @endif ">
+                                            <label for="fname">Data Inicial: <span class="red normal">*</span></label>
+                                            <input type="date" class="form-control" value="{{old('dt_final',$balanco->dt_final)}}"  name="dt_final"> 
+                                            @if($errors->has('dt_final'))
+                                                <div class="error">{{ $errors->first('dt_final') }}</div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-2 ">
+                                        <div style="margin-top: 22px;" class="form-group @if($errors->has('dt_final')) has-error @endif ">
+                                            <button class="btn btn-danger">Pesquisar</button>
+                                        </div>
+                                    </div>
+                                </div>  
+            
+                            </div>
+                        </form>
+
+                        <form action="{{ route('balancomassa-editar', $balanco) }}" method="get"  >
+                            @csrf 
+                            <table class="table table-striped" style="margin-bottom: 0">
+                                <thead>
+                                    <tr class="active"> 
+                                        <th>###</th>   
+                                        <th>Codigo</th>   
+                                        <th class="text-center">Data </th>  
+                                        <th class="text-right">Resíduo</th> 
+                                        <th class="text-right">Terra</th> 
+                                        <th class="text-right">Sujeira</th>   
+                                        <th class="text-right">Verdes</th>
+                                        <th class="text-right">Total</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead> 
+                                <tbody>
+                                    @php
+                                        $residuo= 0;  $terra= 0;  $sujeira= 0;  $verde= 0;  $total= 0;
+                                    @endphp
+                                    @if(isset($retorno['classificacao']))
+                                    @foreach ( $retorno['classificacao'] as $linha )
+                                        @php
+                                            $terra=$terra+$linha->terra;
+                                            $residuo=$residuo+$linha->residuo;
+                                            $sujeira=$sujeira+$linha->sujeira;
+                                            $verde=$verde+$linha->verde;
+                                            $total=$total+$linha->total;
+                                        @endphp
+                                        <tr  >
+                                            <td>
+                                                <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">
+                                                    <label>
+                                                        <input type="checkbox" name="codigo[]"   value="{{ $linha->cd_classificacao }}">  
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td  >{{ $linha->cd_classificacao }}</td>  
+                                            <td class="text-center">{{  date( 'd/m/Y' , strtotime( $linha->dt_recebimento ) ) }}</td>  
+                                            <td class="text-right">{{ $linha->residuo }}</td> 
+                                            <td class="text-right">{{ $linha->terra }}</td> 
+                                            <td class="text-right" >{{ $linha->sujeira  }}</td> 
+                                            <td class="text-right">{{ $linha->verde }}</td>   
+                                            <td class="text-right">{{ $linha->total }}</td> 
+                                        </tr>
+                                    @endforeach
+                                    @endif
+                                    <tr class="active"> 
+                                        <th>--</th>   
+                                        <th>--</th>   
+                                        <th class="text-center">-- </th>  
+                                        <th class="text-right">{{ $residuo }}</th> 
+                                        <th class="text-right">{{ $terra }}</th> 
+                                        <th class="text-right">{{ $sujeira }}</th>   
+                                        <th class="text-right">{{ $verde }}</th>
+                                        <th class="text-right">{{ $total }}</th>
+                                    </tr>
+                                 
+                                </tbody>
+                            </table>
+                            <div class="panel-footer">
+                                <button class="btn btn-danger">Cadastrar</button>
+                            </div>
+                        </form>
                     </div>
                    
                 </div>
