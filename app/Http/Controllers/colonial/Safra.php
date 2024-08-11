@@ -123,7 +123,7 @@ class Safra extends Controller
     public function listarJson(Request $request) { 
 
       try{
-
+ 
         if($request['valida']==true){
             $validator = Validator::make($request->all(), [
                 'ano' => 'required|integer',
@@ -144,6 +144,8 @@ class Safra extends Controller
         if(empty($request['mes'])){
             $request['dia']=null;
         }
+ 
+
         $MESES = array(1 => "JANEIRO", 2 => "FEVEREIRO", 3 => "MARÇO", 4 => "ABRIL", 5 => "MAIO", 6 => "JUNHO", 7 => "JULHO", 8 => "AGOSTO", 9 => "SETEMBRO", 10 => "OUTUBRO", 11 => "NOVEMBRO", 12 => "DEZEMBRO");
         $mes = $request['mes'];       
         $ano = $request['ano'];  
@@ -151,6 +153,8 @@ class Safra extends Controller
         $request['ultimo_dia']=$ultimo_dia;
 
         $dataParametro=$request['ano']; 
+
+        
         if($request['mes']){
             $dataParametro=$dataParametro.'-'.$request['mes'];
             if($request['dia']){
@@ -174,6 +178,7 @@ class Safra extends Controller
             $request['dti']=$dataParametro.'-01-01';
             $request['dtf']=$dataParametro.'-12-31';
         }
+ 
 
         $request['dt_comparativa_ano']=($request['ano']-9).'-01-01';
         $request['dt_comparativa_dia']=date("Y-m-d", strtotime("-30 days",strtotime($request['dtf'])));
@@ -407,7 +412,8 @@ class Safra extends Controller
         where CONVERT(CHAR(10),dt_recebimento, 23)  between '".$request['dti']."' and '".$request['dtf']."' ");
         $PerdasTotal= (isset($dadosPerdas[0]->total_perda)) ? $dadosPerdas[0]->total_perda : 0;
         $PerdasTotalPerc= (isset($dadosPerdas[0]->total_perc)) ? $dadosPerdas[0]->total_perc : 0;
-       
+        
+
         /* Fornecedor */ 
         $retorno['fornecedor'] = DB::select(" 
         select OPCH.CardCode,OPCH.CardName nome,sum(Quantity) total
