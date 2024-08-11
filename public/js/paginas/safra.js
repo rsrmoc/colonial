@@ -108,6 +108,7 @@ Alpine.data('app', function () {
       this.MoagemDiariaData = null;
       console.log(this.parametros);
       axios.post('/colonial/safra-json', this.parametros).then(function (res) {
+        console.log(res.data);
         _this3.parametros.valida = true;
         _this3.iconHeaderMoagemTotal = res.data.request.MoagemTotalTo + '<span class="headerUnidade"> (T) </span>';
         _this3.iconHeaderPolpaEstoque = res.data.request.PolpaEstoqueKg + '<span class="headerUnidade"> (T) </span>';

@@ -128,6 +128,9 @@ Alpine.data('app', () => ({
 
       axios.post('/colonial/safra-json',this.parametros)
       .then((res) => {
+        
+        console.log(res.data);
+
         this.parametros.valida = true;
         this.iconHeaderMoagemTotal = res.data.request.MoagemTotalTo+'<span class="headerUnidade"> (T) </span>';
        
