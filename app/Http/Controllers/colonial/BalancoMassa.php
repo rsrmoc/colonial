@@ -165,7 +165,7 @@ class BalancoMassa extends Controller
 
        $retorno['totEntradas']=0;
        foreach($retorno['balanco_entrada'] as $Entradas){
-            $retorno['totEntradas']=$Entradas->Quantity;
+            $retorno['totEntradas']=($retorno['totEntradas']+$Entradas->Quantity);
        }
  
      
