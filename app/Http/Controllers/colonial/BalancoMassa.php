@@ -168,6 +168,10 @@ class BalancoMassa extends Controller
             $retorno['totEntradas']=($retorno['totEntradas']+$Entradas->Quantity);
        }
  
+       $retorno['totAcumPolpa21'] = 0;
+       if($retorno['totEntradas']>0){
+            $retorno['totAcumPolpa21'] = $retorno['totEntradas']*$balanco->brix_ponderado/21;
+       }
  
      
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 

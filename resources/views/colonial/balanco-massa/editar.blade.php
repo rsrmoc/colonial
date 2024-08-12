@@ -127,12 +127,12 @@
                                                         <tr class="text-left"> 
                                                             <th>Média Brix Ponderado</th>   
                                                             <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> {{ $balanco->brix_ponderado  }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Total Acumulado Entrar de Polpa 21 Brix</th>   
                                                             <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['totAcumPolpa21'], 2, ',', '.') }} </th>  
                                                         </tr>
                                                    
                                                         <tr class="text-left">
