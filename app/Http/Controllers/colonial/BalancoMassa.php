@@ -148,6 +148,26 @@ class BalancoMassa extends Controller
         where Warehouse='MPP' and owor.ItemCode <> '001208' 
         order by DueDate ");
 
+        $retorno['tot1719est']=0;$retorno['tot1719prod']=0;
+        $retorno['tot2022est']=0;$retorno['tot2022prod']=0;
+        
+        $retorno['Btot1719est']=0;$retorno['Btot1719prod']=0;
+        $retorno['Btot2022est']=0;$retorno['Btot2022prod']=0;
+        foreach($retorno['balanco_polpa'] as $polpas){
+            if($polpas->itemCode==173685){
+                $retorno['tot1719est']=($retorno['tot1719est']+$polpas->quant_estoque);
+                $retorno['tot1719prod']=($retorno['tot1719prod']+$polpas->quant_producao);
+            }
+            if($polpas->itemCode=='001197'){
+                $retorno['tot2022est']=($retorno['tot2022est']+$polpas->quant_estoque);
+                $retorno['tot2022prod']=($retorno['tot2022prod']+$polpas->quant_producao);
+            } 
+        } 
+        if($retorno['tot1719est']>0){ $retorno['Btot1719est']=($retorno['tot1719est']*210*18/21); }
+        if($retorno['tot1719prod']>0){ $retorno['Btot1719prod']=($retorno['tot1719prod']*210*18/21); }
+        if($retorno['tot2022est']>0){ $retorno['Btot2022est']=($retorno['tot2022est']*210*21/21); }
+        if($retorno['tot2022prod']>0){ $retorno['Btot2022prod']=($retorno['tot2022prod']*210*21/21);   }
+
         $retorno['balanco_classif'] = ModelsClassificacaoTomate::
         join('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
         ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ") 
@@ -166,8 +186,7 @@ class BalancoMassa extends Controller
        $retorno['totEntradas']=0;
        foreach($retorno['balanco_entrada'] as $Entradas){
             $retorno['totEntradas']=($retorno['totEntradas']+$Entradas->Quantity);
-       }
- 
+       } 
        $balanco['brix_ponderado'] =  str_replace(",",".",$balanco['brix_ponderado']); 
        $retorno['totAcumPolpa21'] = 0;
        if($retorno['totEntradas']>0){
