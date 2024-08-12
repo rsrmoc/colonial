@@ -201,13 +201,13 @@
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Sub Total</th>   
-                                                            <th class="text-right"> {{ number_format(($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde']), 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format((($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde'])/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['totClassf'], 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format((($retorno['totClassf'])/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Total</th>   
-                                                            <th class="text-right"> {{ number_format($retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde']), 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format(( ( $retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde']) ) /$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['totNaoClassf'], 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format(( $retorno['totNaoClassf'] /$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                     </thead>
                                                 </table>

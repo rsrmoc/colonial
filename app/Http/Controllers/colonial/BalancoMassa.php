@@ -137,6 +137,26 @@ class BalancoMassa extends Controller
         }
 
 
+        $retorno['balanco_entrada'] = DB::select(" 
+        select  OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
+        OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,PCH1.Quantity,balanco_massa_entrada.cd_entrada
+        from SBO_KARAMBI_PRD.dbo.OPCH
+        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
+        inner join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
+         where PCH1.ItemCode='001208' 
+        and OPCH.InvntSttus <>'C' 
+        order by OPCH.DocDate ");
+ 
+        $retorno['totEntradas']=0;
+        foreach($retorno['balanco_entrada'] as $Entradas){
+             $retorno['totEntradas']=($retorno['totEntradas']+$Entradas->Quantity);
+        } 
+        $balanco['brix_ponderado'] =  str_replace(",",".",$balanco['brix_ponderado']); 
+        $retorno['totAcumPolpa21'] = 0;
+        if($retorno['totEntradas']>0){
+             $retorno['totAcumPolpa21'] = ($retorno['totEntradas']*$balanco['brix_ponderado'])/21;
+        }
+
         $retorno['balanco_polpa'] = DB::select(" select owor.DocEntry,  DueDate, owor.itemCode,oitm.itemName, 
         CmpltQty quant_producao ,Quantity quant_estoque ,balanco_massa_polpa.cd_ordem
         from  SBO_KARAMBI_PRD.dbo.owor 
@@ -175,32 +195,16 @@ class BalancoMassa extends Controller
 
        $retorno['residuo']=0; $retorno['sujeira']=0;
        $retorno['terra']=0; $retorno['verde']=0;
+       $retorno['totClassf']=0;
        foreach($retorno['balanco_classif'] as $Classif){
             $retorno['residuo'] = ($retorno['residuo']+$Classif->residuo);
             $retorno['sujeira'] = ($retorno['sujeira']+$Classif->sujeira);
             $retorno['verde'] = ($retorno['verde']+$Classif->verde);
             $retorno['terra'] = ($retorno['terra']+$Classif->terra);
        }
-
-       $retorno['balanco_entrada'] = DB::select(" 
-       select  OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
-       OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,PCH1.Quantity,balanco_massa_entrada.cd_entrada
-       from SBO_KARAMBI_PRD.dbo.OPCH
-       inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-       inner join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
-        where PCH1.ItemCode='001208' 
-       and OPCH.InvntSttus <>'C' 
-       order by OPCH.DocDate ");
-
-       $retorno['totEntradas']=0;
-       foreach($retorno['balanco_entrada'] as $Entradas){
-            $retorno['totEntradas']=($retorno['totEntradas']+$Entradas->Quantity);
-       } 
-       $balanco['brix_ponderado'] =  str_replace(",",".",$balanco['brix_ponderado']); 
-       $retorno['totAcumPolpa21'] = 0;
-       if($retorno['totEntradas']>0){
-            $retorno['totAcumPolpa21'] = ($retorno['totEntradas']*$balanco['brix_ponderado'])/21;
-       }
+       $retorno['totClassf']=$retorno['residuo']+$retorno['sujeira']+$retorno['verde']+$retorno['terra']; 
+       $retorno['totNaoClassf']= $retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['verde']+$retorno['terra']); 
+ 
   
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
         return view('colonial.balanco-massa.editar', compact('balanco','fornecedor','retorno','request'));
