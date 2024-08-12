@@ -127,7 +127,7 @@
                                                         <tr class="text-left"> 
                                                             <th>Média Brix Ponderado</th>   
                                                             <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> {{ $balanco->brix_ponderado  }} </th>  
+                                                            <th class="text-right"> {{ number_format($balanco->brix_ponderado, 2, ',', '.')  }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Total Acumulado Entrar de Polpa 21 Brix</th>   
