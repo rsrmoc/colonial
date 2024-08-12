@@ -155,7 +155,7 @@ class BalancoMassa extends Controller
 
        $retorno['balanco_entrada'] = DB::select(" 
        select  OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
-       OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,balanco_massa_entrada.cd_entrada
+       OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,PCH1.Quantity,balanco_massa_entrada.cd_entrada
        from SBO_KARAMBI_PRD.dbo.OPCH
        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
        inner join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
@@ -163,6 +163,11 @@ class BalancoMassa extends Controller
        and OPCH.InvntSttus <>'C' 
        order by OPCH.DocDate ");
 
+       $retorno['totEntradas']=0;
+       foreach($retorno['balanco_entrada'] as $Entradas){
+            $retorno['totEntradas']=$Entradas->Quantity;
+       }
+ 
      
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
         return view('colonial.balanco-massa.editar', compact('balanco','fornecedor','retorno','request'));

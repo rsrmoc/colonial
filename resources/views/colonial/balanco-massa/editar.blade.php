@@ -122,7 +122,7 @@
                                                         <tr class="text-left">
                                                             <th>Acumulado Entrada de Tomate</th>   
                                                             <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right">{{ $retorno['totEntradas'] }}</th>  
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Média Brix Ponderado</th>   
