@@ -163,12 +163,12 @@
                                                         <tr class="active"> 
                                                             <th>Rendimento lavoura</th>   
                                                             <th class="text-right"> -- </th>  
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format(( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ), 2, ',', '.') }} </th>    
                                                         </tr>
                                                         <tr  > 
                                                             <th> </th>   
                                                             <th class="text-right">   </th>  
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format( ( ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ) / $retorno['totAcumPolpa21'] * 100 ) , 2, ',', '.') }} </th>    
                                                         </tr>
                                                     </thead>  
                                                 </table>  
