@@ -137,8 +137,8 @@
                                                    
                                                         <tr class="text-left">
                                                             <th>Entrada de Polpa 17/19 Brix Tambor Estoque </th>   
-                                                            <th class="text-right"> -- </th>    
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['tot1719est'], 2, ',', '.')  }} </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['Btot1719est'], 2, ',', '.')  }} </th>    
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Entrada de Polpa 20/22 Brix  Tambor Estoque</th>   
@@ -147,8 +147,8 @@
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Consumo Polpa BRIX 17/19   ( produção P.A )</th>   
-                                                            <th class="text-right"> -- </th>    
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['tot1719prod'], 2, ',', '.')  }} </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['Btot1719prod'], 2, ',', '.')  }} </th>    
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Consumo Polpa BRIX 20/22   ( produção P.A )</th>   
