@@ -116,7 +116,7 @@ class BalancoMassa extends Controller
         if($request['tab']=='cla'){
             $retorno['tab']='cla';
             $retorno['classificacao'] = ModelsClassificacaoTomate::whereBetween('dt_recebimento',[$request['dt_inicial'],$request['dt_final']])
-             ->lefJoin('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
+             ->leftJoin('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
              ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ")
             ->where('cd_fornecedor',$balanco['cd_fornecedor'])
             ->orderBy('dt_recebimento')->get();
