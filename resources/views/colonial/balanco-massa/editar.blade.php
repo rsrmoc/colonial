@@ -375,6 +375,7 @@
                                 <tbody>
                                     @if(isset($retorno['entrada_polpa']))
                                         @foreach ( $retorno['entrada_polpa'] as $linha )
+                                        <input type="hidden" name="tipo_entrada" value="polpa">
                                             <tr  >
                                                 <td>
                                                     <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">

@@ -185,7 +185,7 @@ class BalancoMassa extends Controller
 
         $validator = Validator::make($request->all(), [
             'codigo' => 'required|array',   
-            'tipo' => 'required',   
+            'tipo_entrada' => 'required',   
         ]);
         
         if ($validator->fails()) {  
