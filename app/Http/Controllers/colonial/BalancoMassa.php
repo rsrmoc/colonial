@@ -168,7 +168,7 @@ class BalancoMassa extends Controller
             $retorno['totEntradas']=($retorno['totEntradas']+$Entradas->Quantity);
        }
  
-       $balanco['brix_ponderado'] =  str_replace(",","",$balanco['brix_ponderado']); 
+       $balanco['brix_ponderado'] =  str_replace(",",".",$balanco['brix_ponderado']); 
        $retorno['totAcumPolpa21'] = 0;
        if($retorno['totEntradas']>0){
             $retorno['totAcumPolpa21'] = ($retorno['totEntradas']*$balanco['brix_ponderado'])/21;
