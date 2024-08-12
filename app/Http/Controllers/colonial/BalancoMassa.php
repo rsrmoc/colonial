@@ -145,14 +145,12 @@ class BalancoMassa extends Controller
         left join 
             (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag 
             on ige1_bag.BaseRef=owor.DocEntry
-        where Warehouse='MPP' and owor.ItemCode <> '001208'
-        and CONVERT(CHAR(10),DueDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
+        where Warehouse='MPP' and owor.ItemCode <> '001208' 
         order by DueDate ");
 
         $retorno['balanco_classif'] = ModelsClassificacaoTomate::whereBetween('dt_recebimento',[$request['dt_inicial'],$request['dt_final']])
         ->join('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
-        ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ")
-       ->where('cd_fornecedor',$balanco['cd_fornecedor'])
+        ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ") 
        ->orderBy('dt_recebimento')->get();
 
        $retorno['balanco_entrada'] = DB::select(" 
@@ -161,9 +159,7 @@ class BalancoMassa extends Controller
        from SBO_KARAMBI_PRD.dbo.OPCH
        inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
        inner join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
-        where PCH1.ItemCode='001208'
-       and   CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
-       and OPCH.CardCode = '".$balanco['cd_fornecedor']."'
+        where PCH1.ItemCode='001208' 
        and OPCH.InvntSttus <>'C' 
        order by OPCH.DocDate ");
 
