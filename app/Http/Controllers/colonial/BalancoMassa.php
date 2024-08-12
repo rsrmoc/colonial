@@ -93,7 +93,7 @@ class BalancoMassa extends Controller
 
     public function edit(Request $request, ModelsBalancoMassa $balanco) {  
 
-        $balanco['brix_ponderado']=  str_replace(".",",",$balanco['brix_ponderado']); 
+        $balanco['brix_ponderado'] =  str_replace(".",",",$balanco['brix_ponderado']); 
  
         $balanco->load('balanco_entradas');
         $retorno['tab']='upd';
@@ -170,7 +170,7 @@ class BalancoMassa extends Controller
  
        $retorno['totAcumPolpa21'] = 0;
        if($retorno['totEntradas']>0){
-            $retorno['totAcumPolpa21'] = $retorno['totEntradas']*$balanco->brix_ponderado/21;
+            $retorno['totAcumPolpa21'] = ($retorno['totEntradas']*$balanco['brix_ponderado'])/21;
        }
  
      
