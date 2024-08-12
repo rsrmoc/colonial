@@ -192,14 +192,14 @@ class BalancoMassa extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        if($request['tipo']=='tomate'){
+        if($request['tipo_entrada']=='tomate'){
             BalancoMassaEntrada::where('cd_balanco',$balanco->cd_balanco)->delete();
             foreach($request['codigo'] as $linha){
                 BalancoMassaEntrada::create(['cd_balanco'=>$balanco->cd_balanco,'cd_entrada'=>$linha,'cd_usuario'=> Auth::user()->id]);
             }
             return redirect()->route('balancomassa-editar',$balanco)->with('success', 'Entradas cadastradas com sucesso!');
         }
-        if($request['tipo']=='polpa'){
+        if($request['tipo_entrada']=='polpa'){
             BalancoMassaPolpa::where('cd_balanco',$balanco->cd_balanco)->delete();
             foreach($request['codigo'] as $linha){
                 BalancoMassaPolpa::create(['cd_balanco'=>$balanco->cd_balanco,'cd_ordem'=>$linha,'cd_usuario'=> Auth::user()->id]);
@@ -207,7 +207,7 @@ class BalancoMassa extends Controller
             return redirect()->route('balancomassa-editar',$balanco)->with('success', 'Polpas cadastradas com sucesso!');
         }
 
-        if($request['tipo']=='classificacao'){
+        if($request['tipo_entrada']=='classificacao'){
             BalancoMassaClassif::where('cd_balanco',$balanco->cd_balanco)->delete();
             foreach($request['codigo'] as $linha){
                 BalancoMassaClassif::create(['cd_balanco'=>$balanco->cd_balanco,'cd_classificacao'=>$linha,'cd_usuario'=> Auth::user()->id]);
