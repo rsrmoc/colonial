@@ -165,11 +165,7 @@
                                                             <th class="text-right"> -- </th>  
                                                             <th class="text-right"> {{ number_format( ( ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ) / $retorno['totAcumPolpa21'] * 100 ) , 2, ',', '.') }} </th>    
                                                         </tr>
-                                                        <tr  > 
-                                                            <th> </th>   
-                                                            <th class="text-right">   </th>  
-                                                            <th class="text-right">  </th>    
-                                                        </tr>
+                                                       
                                                     </thead>  
                                                 </table>  
                                                 <br>
@@ -180,8 +176,8 @@
                                                         </tr>
                                                         <tr class="text-left">
                                                             <th>Acumulado Entrada de Tomate</th>   
-                                                            <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['totEntradas'], 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> 100% </th>  
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Residuo</th>   
