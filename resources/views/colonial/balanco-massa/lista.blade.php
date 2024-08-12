@@ -71,7 +71,7 @@
                                                     @endif
 
                                                     @if (auth()->user()->isPermissao('balancomassa', 'excluir'))
-                                                        <button class="btn btn-danger btn-xs" onclick="excluirCad('#tr-balancomassa-{{ $linha->cd_classificacao }}', {{ $linha->cd_classificacao }})">
+                                                        <button class="btn btn-danger btn-xs" onclick="excluirCad('#tr-balancomassa-{{ $linha->cd_balanco }}', {{ $linha->cd_balanco }})">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     @endif
