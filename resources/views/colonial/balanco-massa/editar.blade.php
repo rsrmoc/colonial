@@ -142,8 +142,8 @@
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Entrada de Polpa 20/22 Brix  Tambor Estoque</th>   
-                                                            <th class="text-right"> -- </th>    
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['tot2022est'], 2, ',', '.')  }} </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['Btot2022est'], 2, ',', '.')  }} </th>    
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Consumo Polpa BRIX 17/19   ( produção P.A )</th>   
@@ -152,8 +152,8 @@
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Consumo Polpa BRIX 20/22   ( produção P.A )</th>   
-                                                            <th class="text-right"> -- </th>    
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['tot2022prod'], 2, ',', '.')  }} </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['Btot2022prod'], 2, ',', '.')  }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Total de Entrada de Polpa 18 Brix</th>   
