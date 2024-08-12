@@ -418,7 +418,7 @@ class Safra extends Controller
         from SBO_KARAMBI_PRD.dbo.OPCH
         inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
         where PCH1.ItemCode='001208'
-        and OPCH.canceled = 'N'
+        and OPCH.InvntSttus not in ('C')
         and CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."'
         group by OPCH.CardCode,OPCH.CardName
         order by sum(Quantity) desc ";
@@ -429,7 +429,7 @@ class Safra extends Controller
         from SBO_KARAMBI_PRD.dbo.OPCH
         inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
         where PCH1.ItemCode='001208'
-        and OPCH.canceled = 'N'
+        and OPCH.InvntSttus not in ('C')
         and CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dti']."' and '".$request['dtf']."'
         group by OPCH.CardCode,OPCH.CardName
         order by sum(Quantity) desc ");
