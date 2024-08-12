@@ -110,7 +110,7 @@ class BalancoMassa extends Controller
              where PCH1.ItemCode='001208'
             and   CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
             and OPCH.CardCode = '".$balanco['cd_fornecedor']."'
-            and OPCH.DocStatus = 'O'  
+            and OPCH.InvntSttus <>'C' 
             order by OPCH.DocDate ");
         }
         if($request['tab']=='cla'){
@@ -164,7 +164,7 @@ class BalancoMassa extends Controller
         where PCH1.ItemCode='001208'
        and   CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
        and OPCH.CardCode = '".$balanco['cd_fornecedor']."'
-       and OPCH.DocStatus = 'O'  
+       and OPCH.InvntSttus <>'C' 
        order by OPCH.DocDate ");
 
      
