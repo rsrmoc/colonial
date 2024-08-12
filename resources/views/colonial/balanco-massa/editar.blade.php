@@ -206,8 +206,8 @@
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Total</th>   
-                                                            <th class="text-right"> -- </th>  
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde']), 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format(( ( $retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde']) ) /$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                     </thead>
                                                 </table>
