@@ -173,6 +173,15 @@ class BalancoMassa extends Controller
         ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ") 
        ->orderBy('dt_recebimento')->get();
 
+       $retorno['residuo']=0; $retorno['sujeira']=0;
+       $retorno['terra']=0; $retorno['verde']=0;
+       foreach($retorno['balanco_classif'] as $Classif){
+            $retorno['residuo'] = ($retorno['residuo']+$Classif->residuo);
+            $retorno['sujeira'] = ($retorno['sujeira']+$Classif->sujeira);
+            $retorno['verde'] = ($retorno['verde']+$Classif->verde);
+            $retorno['terra'] = ($retorno['terra']+$Classif->terra);
+       }
+
        $retorno['balanco_entrada'] = DB::select(" 
        select  OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
        OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,PCH1.Quantity,balanco_massa_entrada.cd_entrada

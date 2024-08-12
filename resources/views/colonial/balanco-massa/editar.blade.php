@@ -181,28 +181,28 @@
                                                         </tr>
                                                         <tr class="text-left"> 
                                                             <th>Residuo</th>   
-                                                            <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['residuo'], 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format(($retorno['residuo']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr > 
                                                             <th>Sujeiras</th>   
-                                                            <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['sujeira'], 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format(($retorno['sujeira']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr > 
                                                             <th>Terra</th>   
-                                                            <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['terra'], 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format(($retorno['terra']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr > 
                                                             <th>Verde</th>   
-                                                            <th class="text-right"> -- </th>      
-                                                            <th class="text-right"> -- </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['verde'], 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format(($retorno['verde']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Sub Total</th>   
-                                                            <th class="text-right"> -- </th>  
-                                                            <th class="text-right"> -- </th>    
+                                                            <th class="text-right"> {{ number_format(($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde']), 2, ',', '.') }} </th>      
+                                                            <th class="text-right"> {{ number_format((($retorno['residuo']+$retorno['sujeira']+$retorno['terra']+$retorno['verde'])/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Total</th>   
