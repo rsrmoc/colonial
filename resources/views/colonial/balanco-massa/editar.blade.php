@@ -220,15 +220,110 @@
                                     </div>
           
                                     <div role="tabpanel"  class="tab-pane fade " id="tabCadEntradas"    >
-                                        tabEntradas Toamate
+                                        <table class="table table-striped" style="margin-bottom: 0">
+                                            <thead>
+                                                <tr class="active"> 
+                                                    <th>Codigo</th>   
+                                                    <th class="text-center">Data </th>  
+                                                    <th class="text-center">Fornecedor</th> 
+                                                    <th class="text-left">Nome do Fornecedor</th> 
+                                                    <th class="text-right">Quantidade</th>   
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                                                @if(isset($retorno['balanco_entrada']))
+                                                    @foreach ( $retorno['balanco_entrada'] as $linha )
+                                                        <tr  > 
+                                                            <td class="text-left">{{ $linha->doc_num  }}</td>  
+                                                            <td class="text-left">{{ $linha->doc_date  }}</td>    
+                                                            <td class="text-left">{{ $linha->card_code  }}</td>  
+                                                            <td class="text-left">{{ $linha->card_name  }}</td>  
+                                                            <td class="text-right">{{ $linha->qtde  }}</td>     
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
                                     </div>
 
                                     <div role="tabpanel"  class="tab-pane fade " id="tabCadEntradasPolpas"    >
-                                        tabEntradas Polpas
+                                        <table class="table table-striped" style="margin-bottom: 0">
+                                            <thead>
+                                                <tr class="active"> 
+                                                    <th>Codigo</th>    
+                                                    <th class="text-center">Data</th> 
+                                                    <th class="text-right">Qtde Consumida</th> 
+                                                    <th class="text-right">Qtde Estoque</th> 
+                                                    <th class="text-right">Qtde Produzida</th> 
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                                                @if(isset($retorno['balanco_polpa']))
+                                                    @foreach ( $retorno['balanco_polpa'] as $linha )
+                                                    <input type="hidden" name="tipo_entrada" value="polpa">
+                                                        <tr  > 
+                                                            <td class="text-left">{{ $linha->DocEntry  }}</td>  
+                                                            <td class="text-center">{{   date( 'd/m/Y' , strtotime( $linha->DueDate )) }}</td>    
+                                                            <td class="text-right">{{ number_format(($linha->quant_producao - ( ($linha->quant_estoque) ? $linha->quant_estoque : 0 ) ), 0, '.', '') }}</td>  
+                                                            <td class="text-right">{{ ($linha->quant_estoque) ? number_format($linha->quant_estoque, 0, '.', '')  : 0   }}</td>  
+                                                            <td class="text-right">{{  number_format($linha->quant_producao, 0, '.', '')  }}</td>     
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
                                     </div>
 
                                     <div role="tabpanel"  class="tab-pane fade " id="tabCadClassificacao"    >
-                                        tab  Classificação
+                                        <table class="table table-striped" style="margin-bottom: 0">
+                                            <thead>
+                                                <tr class="active">  
+                                                    <th>Codigo</th>   
+                                                    <th class="text-center">Data </th>  
+                                                    <th class="text-right">Resíduo</th> 
+                                                    <th class="text-right">Terra</th> 
+                                                    <th class="text-right">Sujeira</th>   
+                                                    <th class="text-right">Verdes</th>
+                                                    <th class="text-right">Total</th>
+                                                </tr>
+                                            </thead> 
+                                            <tbody>
+                                                @php
+                                                    $residuo= 0;  $terra= 0;  $sujeira= 0;  $verde= 0;  $total= 0;
+                                                @endphp
+                                                @if(isset($retorno['balanco_classif']))
+                                                @foreach ($retorno['balanco_classif'] as $linha )
+                                                    @php
+                                                        $terra=$terra+$linha->terra;
+                                                        $residuo=$residuo+$linha->residuo;
+                                                        $sujeira=$sujeira+$linha->sujeira;
+                                                        $verde=$verde+$linha->verde;
+                                                        $total=$total+$linha->total;
+                                                    @endphp
+                                                    <tr  > 
+                                                        <td  >{{ $linha->cd_classificacao }}</td>  
+                                                        <td class="text-center">{{  date( 'd/m/Y' , strtotime( $linha->dt_recebimento ) ) }}</td>  
+                                                        <td class="text-right">{{ $linha->residuo }}</td> 
+                                                        <td class="text-right">{{ $linha->terra }}</td> 
+                                                        <td class="text-right" >{{ $linha->sujeira  }}</td> 
+                                                        <td class="text-right">{{ $linha->verde }}</td>   
+                                                        <td class="text-right">{{ $linha->total }}</td> 
+                                                    </tr>
+                                                @endforeach
+                                                @endif
+                                                <tr class="active"> 
+                                                    <th>--</th>   
+                                                    <th>--</th>   
+                                                    <th class="text-center">-- </th>  
+                                                    <th class="text-right">{{ $residuo }}</th> 
+                                                    <th class="text-right">{{ $terra }}</th> 
+                                                    <th class="text-right">{{ $sujeira }}</th>   
+                                                    <th class="text-right">{{ $verde }}</th>
+                                                    <th class="text-right">{{ $total }}</th>
+                                                </tr>
+                                             
+                                            </tbody>
+                                        </table>
                                     </div>
 
                                 </div>
