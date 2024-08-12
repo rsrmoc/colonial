@@ -168,6 +168,7 @@ class BalancoMassa extends Controller
             $retorno['totEntradas']=($retorno['totEntradas']+$Entradas->Quantity);
        }
  
+ 
      
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
         return view('colonial.balanco-massa.editar', compact('balanco','fornecedor','retorno','request'));
