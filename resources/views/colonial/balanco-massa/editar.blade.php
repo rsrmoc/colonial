@@ -311,8 +311,7 @@
                                                     </tr>
                                                 @endforeach
                                                 @endif
-                                                <tr class="active"> 
-                                                    <th>--</th>   
+                                                <tr class="active">    
                                                     <th>--</th>   
                                                     <th class="text-center">-- </th>  
                                                     <th class="text-right">{{ $residuo }}</th> 
