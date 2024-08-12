@@ -4,7 +4,9 @@ namespace App\Http\Controllers\colonial;
 
 use App\Http\Controllers\Controller;
 use App\Models\BalancoMassa as ModelsBalancoMassa;
+use App\Models\BalancoMassaClassif;
 use App\Models\BalancoMassaEntrada;
+use App\Models\BalancoMassaPolpa;
 use App\Models\Boleto;
 use App\Models\ClassificacaoTomate as ModelsClassificacaoTomate;
 use App\Models\Condominio;
@@ -183,18 +185,38 @@ class BalancoMassa extends Controller
 
         $validator = Validator::make($request->all(), [
             'codigo' => 'required|array',   
+            'tipo' => 'required',   
         ]);
         
         if ($validator->fails()) {  
             return back()->withErrors($validator)->withInput();
         }
 
-        BalancoMassaEntrada::where('cd_balanco',$balanco->cd_balanco)->delete();
-        foreach($request['codigo'] as $linha){
-            BalancoMassaEntrada::create(['cd_balanco'=>$balanco->cd_balanco,'cd_entrada'=>$linha,'cd_usuario'=> Auth::user()->id]);
+        if($request['tipo']=='tomate'){
+            BalancoMassaEntrada::where('cd_balanco',$balanco->cd_balanco)->delete();
+            foreach($request['codigo'] as $linha){
+                BalancoMassaEntrada::create(['cd_balanco'=>$balanco->cd_balanco,'cd_entrada'=>$linha,'cd_usuario'=> Auth::user()->id]);
+            }
+            return redirect()->route('balancomassa-editar',$balanco)->with('success', 'Entradas cadastradas com sucesso!');
+        }
+        if($request['tipo']=='polpa'){
+            BalancoMassaPolpa::where('cd_balanco',$balanco->cd_balanco)->delete();
+            foreach($request['codigo'] as $linha){
+                BalancoMassaPolpa::create(['cd_balanco'=>$balanco->cd_balanco,'cd_ordem'=>$linha,'cd_usuario'=> Auth::user()->id]);
+            }
+            return redirect()->route('balancomassa-editar',$balanco)->with('success', 'Polpas cadastradas com sucesso!');
+        }
+
+        if($request['tipo']=='classificacao'){
+            BalancoMassaClassif::where('cd_balanco',$balanco->cd_balanco)->delete();
+            foreach($request['codigo'] as $linha){
+                BalancoMassaClassif::create(['cd_balanco'=>$balanco->cd_balanco,'cd_classificacao'=>$linha,'cd_usuario'=> Auth::user()->id]);
+            }
+            return redirect()->route('balancomassa-editar',$balanco)->with('success', 'Classificação cadastradas com sucesso!');
         }
          
-        return redirect()->route('balancomassa-editar',$balanco)->with('success', 'Entradas cadastradas com sucesso!');
+        return redirect()->route('balancomassa-editar',$balanco)->with('error', 'Tipo não cadastrado!');
+        
     }
 
 

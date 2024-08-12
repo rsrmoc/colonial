@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BalancoMassaEntrada extends Model
+class BalancoMassaPolpa extends Model
 {
-    protected $table = 'balanco_massa_entrada';
-    protected $primaryKey = 'cd_balanco_entrada';
+    protected $table = 'balanco_massa_polpa';
+    protected $primaryKey = 'cd_balanco_polpa';
 
     protected $fillable = [
-        'cd_balanco_entrada',
+        'cd_balanco_polpa',
         'cd_balanco',
-        'cd_entrada', 
+        'cd_ordem', 
         'cd_usuario', 
         'created_at',
         'updated_at', 

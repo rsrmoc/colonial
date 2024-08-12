@@ -280,6 +280,7 @@
                         </form>
                         <form action="{{ route('balancomassa-entrada', $balanco) }}" method="post"   >
                             @csrf 
+                            <input type="hidden" name="tipo_entrada" value="tomate">
                             <table class="table table-striped" style="margin-bottom: 0">
                                 <thead>
                                     <tr class="active">
@@ -359,6 +360,7 @@
 
                         <form action="{{ route('balancomassa-entrada', $balanco) }}" method="post"   >
                             @csrf 
+                            <input type="hidden" name="tipo_entrada" value="polpa">
                             <table class="table table-striped" style="margin-bottom: 0">
                                 <thead>
                                     <tr class="active">
@@ -439,6 +441,7 @@
 
                         <form action="{{ route('balancomassa-editar', $balanco) }}" method="get"  >
                             @csrf 
+                            <input type="hidden" name="tipo_entrada" value="classificacao">
                             <table class="table table-striped" style="margin-bottom: 0">
                                 <thead>
                                     <tr class="active"> 
