@@ -148,8 +148,8 @@ class BalancoMassa extends Controller
         where Warehouse='MPP' and owor.ItemCode <> '001208' 
         order by DueDate ");
 
-        $retorno['balanco_classif'] = ModelsClassificacaoTomate::whereBetween('dt_recebimento',[$request['dt_inicial'],$request['dt_final']])
-        ->join('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
+        $retorno['balanco_classif'] = ModelsClassificacaoTomate::
+        join('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
         ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ") 
        ->orderBy('dt_recebimento')->get();
 
