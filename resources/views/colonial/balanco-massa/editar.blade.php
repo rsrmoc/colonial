@@ -440,7 +440,7 @@
                             </div>
                         </form>
 
-                        <form action="{{ route('balancomassa-editar', $balanco) }}" method="get"  >
+                        <form action="{{ route('balancomassa-entrada', $balanco) }}" method="post"   >
                             @csrf 
                             <input type="hidden" name="tipo_entrada" value="classificacao">
                             <table class="table table-striped" style="margin-bottom: 0">
