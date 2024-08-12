@@ -116,15 +116,18 @@ class BalancoMassa extends Controller
         if($request['tab']=='cla'){
             $retorno['tab']='cla';
             $retorno['classificacao'] = ModelsClassificacaoTomate::whereBetween('dt_recebimento',[$request['dt_inicial'],$request['dt_final']])
+             ->lefJoin('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
+             ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ")
             ->where('cd_fornecedor',$balanco['cd_fornecedor'])
             ->orderBy('dt_recebimento')->get();
         }
         if($request['tab']=='ent_polpa'){
             $retorno['tab']='ent_polpa';
             $retorno['entrada_polpa'] = DB::select(" select owor.DocEntry,  DueDate, owor.itemCode,oitm.itemName, 
-            CmpltQty quant_producao ,Quantity quant_estoque 
+            CmpltQty quant_producao ,Quantity quant_estoque ,balanco_massa_polpa.cd_polpa
             from  SBO_KARAMBI_PRD.dbo.owor 
             inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
+            left join balanco_massa_polpa on balanco_massa_polpa.cd_polpa = owor.DocEntry
             left join 
                 (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag 
                 on ige1_bag.BaseRef=owor.DocEntry
