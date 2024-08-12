@@ -85,14 +85,10 @@
                                             <div class="error">{{ $errors->first('brix_ponderado') }}</div>
                                         @endif
                                     </div>
-                                </div> 
-                            </div>
-           
-                            <div class="row" >
-                                <div class="col-md-10 col-sm-10 col-xs-10  col-md-offset-1" >
-                                    <div class="form-group @if($errors->has('obs')) has-error @endif ">
-                                        <label for="fname">Observações Adicionais: <span class="red normal"> </span></label>
-                                        <textarea  class="form-control " name="obs" >{{old('obs',$balanco->obs)}}</textarea>
+                                </div>  
+                                <div class="col-md-4 col-sm-5 col-xs-5  " >
+                                    <div class="form-group @if($errors->has('obs')) has-error @endif "> 
+                                        <textarea  class="form-control " style="height: 60px;" name="obs" placeholder="Observação" >{{old('obs',$balanco->obs)}}</textarea>
                                         @if($errors->has('obs'))
                                             <div class="error">{{ $errors->first('obs') }}</div>
                                         @endif
@@ -158,12 +154,12 @@
                                                         <tr class="active"> 
                                                             <th>Total de Entrada de Polpa 18 Brix</th>   
                                                             <th class="text-right"> -- </th>  
-                                                            <th class="text-right"> {{ number_format(( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ), 2, ',', '.') }} </th>    
+                                                            <th class="text-right"> {{ number_format($retorno['totEnt18'], 2, ',', '.') }} </th>    
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Rendimento lavoura</th>   
                                                             <th class="text-right"> -- </th>  
-                                                            <th class="text-right"> {{ number_format( ( ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ) / $retorno['totAcumPolpa21'] * 100 ) , 2, ',', '.') }} </th>    
+                                                            <th class="text-right"> {{ number_format( $retorno['rendimento'] , 2, ',', '.') }} </th>    
                                                         </tr>
                                                        
                                                     </thead>  
@@ -182,32 +178,32 @@
                                                         <tr class="text-left"> 
                                                             <th>Residuo</th>   
                                                             <th class="text-right"> {{ number_format($retorno['residuo'], 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format(($retorno['residuo']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format( $retorno['Presiduo'] , 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr > 
                                                             <th>Sujeiras</th>   
                                                             <th class="text-right"> {{ number_format($retorno['sujeira'], 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format(($retorno['sujeira']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['Psujeira'], 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr > 
                                                             <th>Terra</th>   
                                                             <th class="text-right"> {{ number_format($retorno['terra'], 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format(($retorno['terra']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['Pterra'], 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr > 
                                                             <th>Verde</th>   
                                                             <th class="text-right"> {{ number_format($retorno['verde'], 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format(($retorno['verde']/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['Pverde'], 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Sub Total</th>   
                                                             <th class="text-right"> {{ number_format($retorno['totClassf'], 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format((($retorno['totClassf'])/$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['subTotal'], 2, ',', '.') }} </th>  
                                                         </tr>
                                                         <tr class="active"> 
                                                             <th>Total</th>   
                                                             <th class="text-right"> {{ number_format($retorno['totNaoClassf'], 2, ',', '.') }} </th>      
-                                                            <th class="text-right"> {{ number_format(( $retorno['totNaoClassf'] /$retorno['totEntradas'])*100, 2, ',', '.') }} </th>  
+                                                            <th class="text-right"> {{ number_format($retorno['total'], 2, ',', '.') }} </th>  
                                                         </tr>
                                                     </thead>
                                                 </table>

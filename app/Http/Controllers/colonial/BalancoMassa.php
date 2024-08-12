@@ -205,6 +205,15 @@ class BalancoMassa extends Controller
        $retorno['totClassf']=$retorno['residuo']+$retorno['sujeira']+$retorno['verde']+$retorno['terra']; 
        $retorno['totNaoClassf']= $retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['verde']+$retorno['terra']); 
  
+       $retorno['totEnt18'] = ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] );
+       $retorno['rendimento'] = ($retorno['totEnt18']) ? ( ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ) / $retorno['totAcumPolpa21'] * 100 ) : 0;
+
+       $retorno['Presiduo'] = ($retorno['residuo']) ? ($retorno['residuo']/$retorno['totEntradas'])*100 : 0;
+       $retorno['Psujeira'] = ($retorno['sujeira']) ? ($retorno['sujeira']/$retorno['totEntradas'])*100 : 0;
+       $retorno['Pverde'] = ($retorno['verde']) ? ($retorno['verde']/$retorno['totEntradas'])*100 : 0;
+       $retorno['Pterra'] = ($retorno['terra']) ? ($retorno['terra']/$retorno['totEntradas'])*100 : 0;
+       $retorno['subTotal'] = ($retorno['totClassf']) ?  (($retorno['totClassf'])/$retorno['totEntradas'])*100 : 0;
+       $retorno['total'] = ($retorno['totNaoClassf']) ? ( $retorno['totNaoClassf'] /$retorno['totEntradas'])*100 : 0;
   
         $fornecedor = Fornecedor::whereRaw("GroupCode=2")->selectRaw("CardCode codigo,CardName nome")->orderBy("CardName")->get(); 
         return view('colonial.balanco-massa.editar', compact('balanco','fornecedor','retorno','request'));
