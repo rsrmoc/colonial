@@ -380,7 +380,7 @@
                                                 <td>
                                                     <div class="checkbox" style="margin-top: 0px;   margin-bottom: 0px;">
                                                         <label>
-                                                            <input type="checkbox" name="codigo[]"  @if($linha->cd_polpa) checked @endif value="{{ $linha->DocEntry }}">  
+                                                            <input type="checkbox" name="codigo[]"  @if($linha->cd_ordem) checked @endif value="{{ $linha->DocEntry }}">  
                                                         </label>
                                                     </div>
                                                 </td>

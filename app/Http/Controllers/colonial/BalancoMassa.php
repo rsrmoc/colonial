@@ -124,16 +124,16 @@ class BalancoMassa extends Controller
         if($request['tab']=='ent_polpa'){
             $retorno['tab']='ent_polpa';
             $retorno['entrada_polpa'] = DB::select(" select owor.DocEntry,  DueDate, owor.itemCode,oitm.itemName, 
-            CmpltQty quant_producao ,Quantity quant_estoque ,balanco_massa_polpa.cd_polpa
+            CmpltQty quant_producao ,Quantity quant_estoque ,balanco_massa_polpa.cd_ordem
             from  SBO_KARAMBI_PRD.dbo.owor 
             inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-            left join balanco_massa_polpa on balanco_massa_polpa.cd_polpa = owor.DocEntry
+            left join balanco_massa_polpa on balanco_massa_polpa.cd_ordem = owor.DocEntry
             left join 
                 (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag 
                 on ige1_bag.BaseRef=owor.DocEntry
             where Warehouse='MPP' and owor.ItemCode <> '001208'
             and CONVERT(CHAR(10),DueDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
-            order by DueDate");
+            order by DueDate ");
         }
 
 
