@@ -427,6 +427,11 @@ Alpine.data('app', () => ({
                     "cursorAlpha": 0,
                     "zoomable": false
                   },
+                  "valueAxes": [{
+                    "axisAlpha": 0.2,
+                    "id": "v1",
+                    "minimum": 0 
+                  }],
                   "categoryField": "produto",
                   "categoryAxis": {
                     "gridPosition": "start",
@@ -465,6 +470,11 @@ Alpine.data('app', () => ({
             "cursorAlpha": 0,
             "zoomable": false
           },
+          "valueAxes": [{
+            "axisAlpha": 0.2,
+            "id": "v1",
+            "minimum": 0 
+          }],
           "categoryField": "produto",
           "categoryAxis": {
             "gridPosition": "start",
