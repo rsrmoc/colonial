@@ -498,6 +498,7 @@ ul {
                                 <div class="form-group" style="margin-bottom: 0px;"> 
                                     <select class="form-control" name="agrupamento" name="parametro-ano" id="parametro-ano" style="width: 100%; " > 
                                         <option value="" >ANO</option> 
+                                        <option value="2025">2025</option> 
                                         <option value="2024">2024</option> 
                                         <option value="2023">2023</option> 
                                         <option value="2022">2022</option> 
