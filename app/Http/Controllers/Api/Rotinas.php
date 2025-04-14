@@ -43,21 +43,22 @@ class Rotinas extends Controller
                         $texto="📍 *Produção: ". date('d/m/Y', strtotime($DT)) . " -  ( " . $NnDia . " )* \n `*** Data/Hora: ". date('d/mY H:i') ." ***`\n\n";
                         if(isset($query[0])){
                             foreach ($query as $key => $value) {
-                                $Prod=($Prod+round($value->CmpltQty));
-                                $Plan=($Plan+round($value->PlannedQty));
+                                $Prod=($Prod+(str_replace(',', '',$value->CmpltQty)));
+                                $Plan=($Plan+(str_replace(',', '',$value->PlannedQty)));
                                 $texto=$texto."> 🍅 ".$value->ItemName."\n* _*Planejado:*_ ".  number_format(str_replace(',', '',$value->PlannedQty), 0, ',', '.') ."cx \n* _*Produzido:*_ ". number_format(str_replace(',', '',$value->CmpltQty), 0, ',', '.') ."cx \n* *". number_format(str_replace(',', '',$value->perc), 2, ',', '.') ."%* \n\n";
                             } 
                             if(($Plan + $Prod) > 0){
-                                $texto=$texto."\n 🎯 *PERCENTUAL GERAL:* ".number_format(round(($Plan / $Prod)*100,2), 2, ',', '.') ."%";
+                                $texto=$texto."\n 🎯 *PERCENTUAL GERAL:* ".number_format(round(($Prod / $Plan)*100,2), 2, ',', '.') ."%";
                             }
                         }else{
-                            $texto=$texto."\n> 🚫 Não Houve Produção ou até o dia `".date('d/m/Y H:i')."` Ainda não foi digitado no sistema.";
+                            $texto=$texto."\n> 🚫 Não Houve Produção ou até o dia `".date('d/m/Y H:i')."` ou ainda não foi digitado no sistema.";
                         }
         
                         
                         $Empresa=ConfigGeral::find(1); 
                         $api = new ApiWaMe();
                         $dados = $api->sendTextMessage('120363400017473883@g.us',$texto,$Empresa);
+                        //$dados = $api->sendTextMessage('5538988281639',$texto,$Empresa);
                 
                 }
 
