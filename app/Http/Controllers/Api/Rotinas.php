@@ -48,9 +48,9 @@ class Rotinas extends Controller
                                 $texto=$texto."> 🍅 ".$value->ItemName."\n* _*Planejado:*_ ".  number_format(str_replace(',', '',$value->PlannedQty), 0, ',', '.') ."cx \n* _*Produzido:*_ ". number_format(str_replace(',', '',$value->CmpltQty), 0, ',', '.') ."cx \n* *". number_format(str_replace(',', '',$value->perc), 2, ',', '.') ."%* \n\n";
                             } 
                             if(($Plan + $Prod) > 0){
-                                $texto=$texto."\n 🎯 *PLANEJAMENTO GERAL:* ".number_format($Plan, 0, ',', '.') ."%";
-                                $texto=$texto."\n 🎯 *PRODUÇÃO GERAL:* ".number_format($Prod, 0, ',', '.') ."%";
-                                $texto=$texto."\n 🎯 *PERCENTUAL GERAL:* ".number_format(round(($Prod / $Plan)*100,2), 2, ',', '.') ."%";
+                                $texto=$texto."\n 🎯 *PLANEJAMENTO TOTAL:* ".number_format($Plan, 0, ',', '.') ."cx";
+                                $texto=$texto."\n 🎯 *PRODUÇÃO TOTAL:* ".number_format($Prod, 0, ',', '.') ."cx";
+                                $texto=$texto."\n 🎯 *PORCENTAGEM GERAL:* ".number_format(round(($Prod / $Plan)*100,2), 2, ',', '.') ."%";
                             }
                         }else{
                             $texto=$texto."\n> 🚫 Não Houve Produção ou até o dia `".date('d/m/Y H:i')."` ou ainda não foi digitado no sistema.";
