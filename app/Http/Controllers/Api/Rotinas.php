@@ -48,6 +48,8 @@ class Rotinas extends Controller
                                 $texto=$texto."> 🍅 ".$value->ItemName."\n* _*Planejado:*_ ".  number_format(str_replace(',', '',$value->PlannedQty), 0, ',', '.') ."cx \n* _*Produzido:*_ ". number_format(str_replace(',', '',$value->CmpltQty), 0, ',', '.') ."cx \n* *". number_format(str_replace(',', '',$value->perc), 2, ',', '.') ."%* \n\n";
                             } 
                             if(($Plan + $Prod) > 0){
+                                $texto=$texto."\n 🎯 *PLANEJAMENTO GERAL:* ".number_format($Plan, 0, ',', '.') ."%";
+                                $texto=$texto."\n 🎯 *PRODUÇÃO GERAL:* ".number_format($Prod, 0, ',', '.') ."%";
                                 $texto=$texto."\n 🎯 *PERCENTUAL GERAL:* ".number_format(round(($Prod / $Plan)*100,2), 2, ',', '.') ."%";
                             }
                         }else{
