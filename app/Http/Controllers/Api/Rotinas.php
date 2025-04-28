@@ -19,7 +19,7 @@ class Rotinas extends Controller
         try {
             
 		    date_default_timezone_set('America/Sao_Paulo');
-            $DATA=date('Y-m-d');
+            $DATA=date('Y-m-d'); 
             $NumeroDia=date('w', strtotime($DATA));
             if(($NumeroDia>0) and ($NumeroDia<6)){
 
@@ -41,6 +41,7 @@ class Rotinas extends Controller
                         ->whereRaw("Uom='CX'")->orderBy("oitm.ItemName")->get();
                         $Prod=0;$Plan=0;
                         $texto="📍 *Produção: ". date('d/m/Y', strtotime($DT)) . " -  ( " . $NnDia . " )* \n `*** Data/Hora: ". date('d/mY H:i') ." ***`\n\n";
+                        
                         if(isset($query[0])){
                             foreach ($query as $key => $value) {
                                 $Prod=($Prod+(str_replace(',', '',$value->CmpltQty)));
@@ -55,13 +56,14 @@ class Rotinas extends Controller
                         }else{
                             $texto=$texto."\n> 🚫 Não Houve Produção ou até o dia `".date('d/m/Y H:i')."` ou ainda não foi digitado no sistema.";
                         }
-        
-                        
+                       
+                        //120363158085158133@g.us - Rotinas RPsys
+                        //120363400017473883@g.us - Colonial 
                         $Empresa=ConfigGeral::find(1); 
                         $api = new ApiWaMe();
                         $dados = $api->sendTextMessage('120363400017473883@g.us',$texto,$Empresa);
                         //$dados = $api->sendTextMessage('5538988281639',$texto,$Empresa);
-                
+                        //dd($dados);
                 }
 
             }

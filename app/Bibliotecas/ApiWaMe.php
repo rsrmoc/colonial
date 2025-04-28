@@ -142,13 +142,13 @@ class ApiWaMe {
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
             curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','application/json; charset=utf-8') );
-
+             
             $protocol = (isset($_SERVER['HTTP_CF_VISITOR'])) ? 'https' : 'http';
             if($protocol=='http'){
               curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
               curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             }
-
+             
             $result = curl_exec($ch);
             curl_close($ch);
 

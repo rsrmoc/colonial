@@ -1375,7 +1375,7 @@ class ProdPrevReal extends Controller
         $porcPerda=null; 
         $dadosParada = DB::select("  
         select top(15) cd_produto,nm_produto,(Quantity-sum(qtde)) total,sum(qtde) qtde , 
-        ((sum(qtde)/(Quantity-sum(qtde)))*100) perc 
+        case when 1=1 then 0 else ((sum(qtde)/(Quantity-sum(qtde)))*100) end perc
         from perda
         left join (
           select IGE1.ItemCode, sum(Quantity) Quantity
@@ -1386,7 +1386,7 @@ class ProdPrevReal extends Controller
         ) IGE1 on IGE1.ItemCode=perda.cd_produto COLLATE Latin1_General_CI_AS
         where CONVERT(CHAR(10),perda.dt_ordem, 23) between '".$request['dti']."' and '".$request['dtf']."'
         group by cd_produto,nm_produto,Quantity 
-        order by ((sum(qtde)/(Quantity-sum(qtde)))*100) desc "); 
+        order by 5 desc "); 
         foreach($dadosParada as $key => $val){  
                           
             $porcPerda[]=array( 
