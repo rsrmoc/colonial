@@ -102,7 +102,7 @@ class BalancoMassa extends Controller
             $retorno['tab']='ent';
 
             $retorno['entrada'] = DB::select(" 
-            select  TOP (50) OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
+            select OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
             OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,balanco_massa_entrada.cd_entrada
             from SBO_KARAMBI_PRD.dbo.OPCH
             inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
@@ -138,7 +138,7 @@ class BalancoMassa extends Controller
 
 
         $retorno['balanco_entrada'] = DB::select(" 
-        select  OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
+        select OPCH.DocNum doc_num,CONVERT(CHAR(10),OPCH.DocDate, 103) doc_date,OPCH.CardCode card_code,OPCH.CardName card_name,
         OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,PCH1.Quantity,balanco_massa_entrada.cd_entrada
         from SBO_KARAMBI_PRD.dbo.OPCH
         inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
