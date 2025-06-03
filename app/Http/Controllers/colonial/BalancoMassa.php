@@ -127,7 +127,7 @@ class BalancoMassa extends Controller
             CmpltQty quant_producao ,Quantity quant_estoque ,balanco_massa_polpa.cd_ordem
             from  SBO_KARAMBI_PRD.dbo.owor 
             inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-            left join balanco_massa_polpa on balanco_massa_polpa.cd_ordem = owor.DocEntry
+            left join ( select * from bd_sistemas.dbo.balanco_massa_polpa where cd_balanco=" . $balanco->cd_balanco ." ) balanco_massa_polpa on balanco_massa_polpa.cd_ordem = owor.DocEntry
             left join 
                 (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag 
                 on ige1_bag.BaseRef=owor.DocEntry
