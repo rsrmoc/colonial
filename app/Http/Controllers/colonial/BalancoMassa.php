@@ -142,7 +142,7 @@ class BalancoMassa extends Controller
         OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,PCH1.Quantity,balanco_massa_entrada.cd_entrada
         from SBO_KARAMBI_PRD.dbo.OPCH
         inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-        inner join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
+        inner join  (select * from bd_sistemas.dbo.balanco_massa_entrada where cd_balanco=" . $balanco->cd_balanco .") balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
          where PCH1.ItemCode='001208' 
         and OPCH.InvntSttus <>'C' 
         order by OPCH.DocDate ");
@@ -161,7 +161,7 @@ class BalancoMassa extends Controller
         CmpltQty quant_producao ,Quantity quant_estoque ,balanco_massa_polpa.cd_ordem
         from  SBO_KARAMBI_PRD.dbo.owor 
         inner join SBO_KARAMBI_PRD.dbo.oitm on oitm.ItemCode=owor.ItemCode 
-        inner join balanco_massa_polpa on balanco_massa_polpa.cd_ordem = owor.DocEntry
+        inner join ( select * from bd_sistemas.dbo.balanco_massa_polpa where cd_balanco=" . $balanco->cd_balanco ." ) balanco_massa_polpa on balanco_massa_polpa.cd_ordem = owor.DocEntry
         left join 
             (select BaseRef,sum(Quantity) Quantity from SBO_KARAMBI_PRD.dbo.ige1 where ItemCode ='002463' group by BaseRef ) ige1_bag 
             on ige1_bag.BaseRef=owor.DocEntry
