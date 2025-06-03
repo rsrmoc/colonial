@@ -106,7 +106,7 @@ class BalancoMassa extends Controller
             OPCH.Address address, replace( cast( (PCH1.Quantity) as decimal(18,2)) ,'.',',') qtde,balanco_massa_entrada.cd_entrada
             from SBO_KARAMBI_PRD.dbo.OPCH
             inner join SBO_KARAMBI_PRD.dbo.PCH1 on PCH1.DocEntry=OPCH.DocEntry
-            left join balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
+            left join (select * from bd_sistemas.dbo.balanco_massa_entrada where cd_balanco=" . $balanco->cd_balanco .") balanco_massa_entrada on balanco_massa_entrada.cd_entrada = OPCH.DocNum
              where PCH1.ItemCode='001208'
             and   CONVERT(CHAR(10),OPCH.DocDate, 23) between '".$request['dt_inicial']."' and '".$request['dt_final']."'
             and OPCH.CardCode = '".$balanco['cd_fornecedor']."'
