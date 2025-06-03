@@ -190,6 +190,7 @@ class BalancoMassa extends Controller
 
         $retorno['balanco_classif'] = ModelsClassificacaoTomate::
         join('balanco_massa_classif','balanco_massa_classif.cd_classificacao','classificacao_tomate.cd_classificacao')
+        ->where('cd_balanco',$balanco->cd_balanco)
         ->selectRaw(" classificacao_tomate.*, balanco_massa_classif.cd_classificacao cd_classif ") 
        ->orderBy('dt_recebimento')->get();
 
