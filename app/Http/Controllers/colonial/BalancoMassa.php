@@ -206,9 +206,11 @@ class BalancoMassa extends Controller
        $retorno['totNaoClassf']= $retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['verde']+$retorno['terra']); 
  
        $retorno['totEnt18'] = ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] );
-       dd($retorno['totAcumPolpa21'],( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ));
-       $retorno['rendimento'] = ($retorno['totEnt18']) ? ( ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ) / $retorno['totAcumPolpa21'] * 100 ) : 0;
-
+       if($retorno['totAcumPolpa21']>0){
+            $retorno['rendimento'] = ($retorno['totEnt18']) ? ( ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ) / $retorno['totAcumPolpa21'] * 100 ) : 0;
+        }else{ 
+            $retorno['rendimento']=0;
+        }
        $retorno['Presiduo'] = ($retorno['residuo']) ? ($retorno['residuo']/$retorno['totEntradas'])*100 : 0;
        $retorno['Psujeira'] = ($retorno['sujeira']) ? ($retorno['sujeira']/$retorno['totEntradas'])*100 : 0;
        $retorno['Pverde'] = ($retorno['verde']) ? ($retorno['verde']/$retorno['totEntradas'])*100 : 0;
