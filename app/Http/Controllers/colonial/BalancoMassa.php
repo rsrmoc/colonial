@@ -206,6 +206,7 @@ class BalancoMassa extends Controller
        $retorno['totNaoClassf']= $retorno['totEntradas']-($retorno['residuo']+$retorno['sujeira']+$retorno['verde']+$retorno['terra']); 
  
        $retorno['totEnt18'] = ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] );
+       dd($retorno['totAcumPolpa21'],( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ));
        $retorno['rendimento'] = ($retorno['totEnt18']) ? ( ( $retorno['Btot1719est']+ $retorno['Btot2022est']+ $retorno['Btot2022prod']+ $retorno['Btot1719prod'] ) / $retorno['totAcumPolpa21'] * 100 ) : 0;
 
        $retorno['Presiduo'] = ($retorno['residuo']) ? ($retorno['residuo']/$retorno['totEntradas'])*100 : 0;
